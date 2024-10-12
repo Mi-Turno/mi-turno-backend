@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name="usuarios")
 public class UsuarioEntidad {
-
+        //todo ver lo que es nulleable, unique...
     //columnas
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

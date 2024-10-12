@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 
 public class Usuario {
-    //Atributos todo revisar los required
+    //Atributos
     private Long idUsuario;
     private String nombre;
     private String apellido;
@@ -19,7 +19,6 @@ public class Usuario {
     private RolUsuarioEnum rolUsuario;
 
     //constructor
-
 
     public Usuario() {
 
