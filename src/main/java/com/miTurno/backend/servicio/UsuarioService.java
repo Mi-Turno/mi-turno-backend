@@ -1,6 +1,7 @@
 package com.miTurno.backend.servicio;
 
 import com.miTurno.backend.entidad.UsuarioEntidad;
+import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import com.miTurno.backend.modelo.Usuario;
 import com.miTurno.backend.repositorio.UsuarioRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,9 @@ public class UsuarioService {
     public List<UsuarioEntidad> obtenerTodosLosUsuarios(){
         return usuarioRepositorio.findAll();
     }
-    public Optional<UsuarioEntidad> buscarUsuario(Long id){
-        return usuarioRepositorio.findById(id);
+    public UsuarioEntidad buscarUsuario(Long id) throws UsuarioNoExistenteException{
+
+        return usuarioRepositorio.findById(id).orElseThrow(()-> new UsuarioNoExistenteException(id));
     }
     //POST
     public Usuario crearUnUsuario(Usuario usuario){
@@ -52,7 +54,17 @@ public class UsuarioService {
         return usuario;
     }
     //UPDATE
-
+    public Usuario actualizarUsuarioPorId(Long id, Usuario actualizado) throws UsuarioNoExistenteException {
+        UsuarioEntidad usuarioEntidad = usuarioRepositorio.findById(id).orElseThrow(()-> new UsuarioNoExistenteException(id));
+        usuarioEntidad.setNombre(actualizado.getNombre());
+        usuarioEntidad.setApellido(actualizado.getApellido());
+        usuarioEntidad.setCorreoElectronico(actualizado.getCorreoElectronico());
+        usuarioEntidad.setCelular(actualizado.getCelular());
+        usuarioEntidad.setRolUsuarioEnum(actualizado.getRolUsuario());
+        // la fecha de nacimiento y el id no se podrian modificar
+        usuarioEntidad= usuarioRepositorio.save(usuarioEntidad);
+        return convertirEntidadAUsuario(usuarioEntidad);
+    }
 
     //DELETE
     public boolean eliminarUsuarioPorId(Long id){

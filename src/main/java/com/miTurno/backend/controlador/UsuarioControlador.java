@@ -3,6 +3,7 @@ package com.miTurno.backend.controlador;
 
 import com.miTurno.backend.DTO.UsuarioRequest;
 import com.miTurno.backend.entidad.UsuarioEntidad;
+import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import com.miTurno.backend.modelo.Usuario;
 import com.miTurno.backend.servicio.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,7 +48,7 @@ public class UsuarioControlador {
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
     @GetMapping("/{id}")//todo hacer exception para no usar Optional
-    public Optional<UsuarioEntidad> listarUsuarios(@Parameter(description = "ID del usuario",example = "1")
+    public UsuarioEntidad listarUsuarios(@Parameter(description = "ID del usuario",example = "1")
                                                        @PathVariable Long id){
         return usuarioService.buscarUsuario(id);
     }
@@ -74,7 +75,27 @@ public class UsuarioControlador {
         return usuarioService.crearUnUsuario(nuevoUsuario);
     }
     //UPDATE
-
+    @Operation(summary = "actualizar usuario por ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Usuario actualizado con exito"),
+            @ApiResponse(responseCode = "404",description = "Usuario no encontrado")
+    })
+    @PutMapping("/{id}")
+    public Usuario actualizarUsuario(
+            @Parameter(description = "ID del usuario para actualizar",example = "1")
+            @PathVariable Long id,
+            @Parameter(description = "Datos actualizado del usuario")
+            @RequestBody UsuarioRequest usuarioRequest){
+        Usuario actualizado = new Usuario(
+                usuarioRequest.getIdUsuario(),
+                usuarioRequest.getNombre(),
+                usuarioRequest.getApellido(),
+                usuarioRequest.getCorreoElectronico(),
+                usuarioRequest.getCelular(),
+                usuarioRequest.getFechaNacimiento(),
+                usuarioRequest.getRolUsuarioEnum());
+        return usuarioService.actualizarUsuarioPorId(id,actualizado);
+    }
 
    //DELETE
     @Operation(summary = "Eliminar un usuario por ID")
