@@ -20,6 +20,11 @@ public class Usuario {
 
     //constructor
 
+
+    public Usuario() {
+
+    }
+
     public Usuario(Long idUsuario, String nombre, String apellido, String correoElectronico, String celular, LocalDate fechaNacimiento, RolUsuarioEnum rolUsuario) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
