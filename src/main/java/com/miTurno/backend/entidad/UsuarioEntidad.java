@@ -41,8 +41,8 @@ public class UsuarioEntidad {
     public UsuarioEntidad(){
 
     }
-    public UsuarioEntidad(Long idUsuario, String nombre, String apellido, String correoElectronico, String celular, LocalDate fechaNacimiento, RolUsuarioEnum rolUsuarioEnum) {
-        this.idUsuario = idUsuario;
+    public UsuarioEntidad( String nombre, String apellido, String correoElectronico, String celular, LocalDate fechaNacimiento, RolUsuarioEnum rolUsuarioEnum) {
+        this.idUsuario = null;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correoElectronico = correoElectronico;
