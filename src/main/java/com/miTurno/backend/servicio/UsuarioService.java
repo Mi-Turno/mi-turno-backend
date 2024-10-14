@@ -30,7 +30,7 @@ public class UsuarioService {
     //POST
     public Usuario crearUnUsuario(Usuario usuario){
     UsuarioEntidad usuarioEntidad = new UsuarioEntidad();
-    usuarioEntidad.setIdUsuario(usuario.getIdUsuario());
+
         usuarioEntidad.setNombre(usuario.getNombre());
         usuarioEntidad.setApellido(usuario.getApellido());
         usuarioEntidad.setCorreoElectronico(usuario.getCorreoElectronico());

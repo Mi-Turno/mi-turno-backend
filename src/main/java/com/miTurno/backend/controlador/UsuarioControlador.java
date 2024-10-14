@@ -25,6 +25,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/usuarios")
+//@CrossOrigin(origins = "http://127.0.0.1:5500")  // Especifica el origen desde el cual permites solicitudes
 public class UsuarioControlador {
     private final UsuarioService usuarioService;
 

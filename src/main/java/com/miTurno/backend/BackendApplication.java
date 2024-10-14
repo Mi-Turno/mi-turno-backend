@@ -11,7 +11,7 @@ public class BackendApplication {
 		//http://localhost:8080/swagger-ui/index.html |entrar a swagger
 		//http://localhost:8080/h2-console | entrar en H2 bbdd
 
-
+		//todo poner que el swagger no pida el idUsuario
 		//probar en la bbdd
 		/*INSERT INTO USUARIOS (NOMBRE , APELLIDO , CORREO_ELECTRONICO , CELULAR ,FECHA_NACIMIENTO , ROL ) VALUES
 		('Juan', 'Pérez', 'juan.perez@example.com', '123456789', '1990-05-15', 'CLIENTE'),
