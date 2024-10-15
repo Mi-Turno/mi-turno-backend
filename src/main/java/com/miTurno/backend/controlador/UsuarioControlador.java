@@ -33,6 +33,7 @@ public class UsuarioControlador {
     public UsuarioControlador(UsuarioService usuarioService) {
         this.usuarioService = usuarioService;
     }
+
     //GET
     @Operation(summary = "Obtener todos los usuarios")
     @ApiResponses(value = {
@@ -43,6 +44,8 @@ public class UsuarioControlador {
     public List<UsuarioEntidad> listarUsuarios(){
         return usuarioService.obtenerTodosLosUsuarios();
     }
+
+
     @Operation(summary = "Obtener un usuario por ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "El usuario con el ID fue devuelto"),
