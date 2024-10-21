@@ -9,7 +9,7 @@ public class ConfiguracionWeb implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("http://127.0.0.1:5500")  // Permite solicitudes solo desde este origen
+                .allowedOrigins("http://localhost:4200")  // Permite solicitudes solo desde este origen
                 .allowedMethods("GET", "POST", "PUT", "DELETE")
                 .allowedHeaders("Content-Type", "Authorization") //* esto para permitir todos(es mala practica)
                 .allowCredentials(true);  // Permite el uso de credenciales como cookies
