@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
+import jdk.jfr.Timestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
@@ -35,7 +37,8 @@ public class UsuarioEntidad {
     @Column(name = "celular",unique = true)
     private String celular;
 
-    @Column(insertable = false,updatable = false,columnDefinition ="DATE")
+    @Temporal(TemporalType.DATE)
+    @Column(insertable = true,updatable = true,columnDefinition ="DATE")
     private LocalDate fechaNacimiento;//(YYYY-MM-DD)
     @Enumerated(EnumType.STRING)
     @Column(name = "rol")
