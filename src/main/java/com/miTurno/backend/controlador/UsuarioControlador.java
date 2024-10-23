@@ -3,7 +3,6 @@ package com.miTurno.backend.controlador;
 
 import com.miTurno.backend.DTO.UsuarioRequest;
 import com.miTurno.backend.entidad.UsuarioEntidad;
-import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import com.miTurno.backend.modelo.Usuario;
 import com.miTurno.backend.servicio.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -71,10 +69,11 @@ public class UsuarioControlador {
                 usuarioRequest.getIdUsuario(),
                 usuarioRequest.getNombre(),
                 usuarioRequest.getApellido(),
-                usuarioRequest.getCorreoElectronico(),
-                usuarioRequest.getCelular(),
+                usuarioRequest.getEmail(),
+                usuarioRequest.getPassword(),
+                usuarioRequest.getTelefono(),
                 usuarioRequest.getFechaNacimiento(),
-                usuarioRequest.getRolUsuarioEnum());
+                usuarioRequest.getRol());
 
         return usuarioService.crearUnUsuario(nuevoUsuario);
     }
@@ -94,10 +93,11 @@ public class UsuarioControlador {
                 usuarioRequest.getIdUsuario(),
                 usuarioRequest.getNombre(),
                 usuarioRequest.getApellido(),
-                usuarioRequest.getCorreoElectronico(),
-                usuarioRequest.getCelular(),
+                usuarioRequest.getEmail(),
+                usuarioRequest.getPassword(),
+                usuarioRequest.getTelefono(),
                 usuarioRequest.getFechaNacimiento(),
-                usuarioRequest.getRolUsuarioEnum());
+                usuarioRequest.getRol());
         return usuarioService.actualizarUsuarioPorId(id,actualizado);
     }
 
