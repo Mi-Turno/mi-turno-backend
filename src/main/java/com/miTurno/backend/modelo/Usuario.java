@@ -15,6 +15,8 @@ public class Usuario {
     private String nombre;
     private String apellido;
     private String correoElectronico;
+
+    private String password;
     private String celular;
     private LocalDate fechaNacimiento;
     private RolUsuarioEnum rolUsuario;
@@ -24,11 +26,12 @@ public class Usuario {
 
     }
 
-    public Usuario(Long idUsuario, String nombre, String apellido, String correoElectronico, String celular, LocalDate fechaNacimiento, RolUsuarioEnum rolUsuario) {
+    public Usuario(Long idUsuario, String nombre, String apellido, String correoElectronico,String password, String celular, LocalDate fechaNacimiento, RolUsuarioEnum rolUsuario) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correoElectronico = correoElectronico;
+        this.password = password;
         this.celular = celular;
         this.fechaNacimiento = fechaNacimiento;
         this.rolUsuario = rolUsuario;
@@ -66,6 +69,14 @@ public class Usuario {
 
     public void setCorreoElectronico(String correoElectronico) {
         this.correoElectronico = correoElectronico;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getCelular() {

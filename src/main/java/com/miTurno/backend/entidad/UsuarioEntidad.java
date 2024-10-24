@@ -7,6 +7,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
+import jdk.jfr.Timestamp;
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 import java.time.LocalDate;
 
@@ -32,10 +35,14 @@ public class UsuarioEntidad {
     @Column(name = "correo_electronico",unique = true)
     private String correoElectronico;
 
+    @Column(name = "password",unique = true)
+    private String password;
+
     @Column(name = "celular",unique = true)
     private String celular;
 
-    @Column(insertable = false,updatable = false,columnDefinition ="DATE")
+    @Temporal(TemporalType.DATE)
+    @Column(insertable = true,updatable = true,columnDefinition ="DATE")
     private LocalDate fechaNacimiento;//(YYYY-MM-DD)
     @Enumerated(EnumType.STRING)
     @Column(name = "rol")
@@ -44,8 +51,9 @@ public class UsuarioEntidad {
     public UsuarioEntidad(){
 
     }
-    public UsuarioEntidad( String nombre, String apellido, String correoElectronico, String celular, LocalDate fechaNacimiento, RolUsuarioEnum rolUsuarioEnum) {
+    public UsuarioEntidad( String nombre, String apellido, String correoElectronico,String password, String celular, LocalDate fechaNacimiento, RolUsuarioEnum rolUsuarioEnum) {
         this.idUsuario = null;
+        this.password = password;
         this.nombre = nombre;
         this.apellido = apellido;
         this.correoElectronico = correoElectronico;
@@ -84,6 +92,14 @@ public class UsuarioEntidad {
 
     public void setCorreoElectronico(String correoElectronico) {
         this.correoElectronico = correoElectronico;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getCelular() {

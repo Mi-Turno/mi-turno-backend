@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -73,10 +72,11 @@ public class UsuarioControlador {
                 usuarioRequest.getIdUsuario(),
                 usuarioRequest.getNombre(),
                 usuarioRequest.getApellido(),
-                usuarioRequest.getCorreoElectronico(),
-                usuarioRequest.getCelular(),
+                usuarioRequest.getEmail(),
+                usuarioRequest.getPassword(),
+                usuarioRequest.getTelefono(),
                 usuarioRequest.getFechaNacimiento(),
-                usuarioRequest.getRolUsuarioEnum());
+                usuarioRequest.getRol());
 
         return usuarioService.crearUnUsuario(nuevoUsuario);
     }
@@ -96,10 +96,11 @@ public class UsuarioControlador {
                 usuarioRequest.getIdUsuario(),
                 usuarioRequest.getNombre(),
                 usuarioRequest.getApellido(),
-                usuarioRequest.getCorreoElectronico(),
-                usuarioRequest.getCelular(),
+                usuarioRequest.getEmail(),
+                usuarioRequest.getPassword(),
+                usuarioRequest.getTelefono(),
                 usuarioRequest.getFechaNacimiento(),
-                usuarioRequest.getRolUsuarioEnum());
+                usuarioRequest.getRol());
         return usuarioService.actualizarUsuarioPorId(id,actualizado);
     }
 

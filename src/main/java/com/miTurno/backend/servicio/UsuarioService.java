@@ -34,6 +34,7 @@ public class UsuarioService {
         usuarioEntidad.setNombre(usuario.getNombre());
         usuarioEntidad.setApellido(usuario.getApellido());
         usuarioEntidad.setCorreoElectronico(usuario.getCorreoElectronico());
+        usuarioEntidad.setPassword(usuario.getPassword());
         usuarioEntidad.setCelular(usuario.getCelular());
         usuarioEntidad.setFechaNacimiento(usuario.getFechaNacimiento());
         usuarioEntidad.setRolUsuarioEnum(usuario.getRolUsuario());
@@ -47,6 +48,7 @@ public class UsuarioService {
         usuario.setNombre(usuarioEntidad.getNombre());
         usuario.setApellido(usuarioEntidad.getApellido());
         usuario.setCorreoElectronico(usuarioEntidad.getCorreoElectronico());
+        usuario.setPassword(usuarioEntidad.getPassword());
         usuario.setCelular(usuarioEntidad.getCelular());
         usuario.setFechaNacimiento(usuarioEntidad.getFechaNacimiento());
         usuario.setRolUsuario(usuarioEntidad.getRolUsuarioEnum());
@@ -59,6 +61,7 @@ public class UsuarioService {
         usuarioEntidad.setNombre(actualizado.getNombre());
         usuarioEntidad.setApellido(actualizado.getApellido());
         usuarioEntidad.setCorreoElectronico(actualizado.getCorreoElectronico());
+        usuarioEntidad.setPassword((actualizado.getPassword()));
         usuarioEntidad.setCelular(actualizado.getCelular());
         usuarioEntidad.setRolUsuarioEnum(actualizado.getRolUsuario());
         // la fecha de nacimiento y el id no se podrian modificar
