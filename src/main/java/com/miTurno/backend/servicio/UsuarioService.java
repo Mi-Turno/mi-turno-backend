@@ -70,8 +70,8 @@ public class UsuarioService {
     }
 
     //DELETE
-    public boolean eliminarUsuarioPorId(Long id){
-        boolean rta = false;
+    public Boolean eliminarUsuarioPorId(Long id){
+        Boolean rta = false;
         if(usuarioRepositorio.existsById(id)){
             usuarioRepositorio.deleteById(id);
             rta = true;

@@ -68,17 +68,8 @@ public class UsuarioControlador {
     @ResponseStatus(HttpStatus.CREATED)
     public Usuario crearUnUsuario(@Parameter(description = "Datos del usuario")
                                   @Valid @RequestBody UsuarioRequest usuarioRequest) {
-        Usuario nuevoUsuario = new Usuario(
-                usuarioRequest.getIdUsuario(),
-                usuarioRequest.getNombre(),
-                usuarioRequest.getApellido(),
-                usuarioRequest.getEmail(),
-                usuarioRequest.getPassword(),
-                usuarioRequest.getTelefono(),
-                usuarioRequest.getFechaNacimiento(),
-                usuarioRequest.getRol());
 
-        return usuarioService.crearUnUsuario(nuevoUsuario);
+        return usuarioService.crearUnUsuario(usuarioMapper.toModel(usuarioRequest));
     }
     //UPDATE
     @Operation(summary = "actualizar usuario por ID")
@@ -92,16 +83,8 @@ public class UsuarioControlador {
             @PathVariable Long id,
             @Parameter(description = "Datos actualizado del usuario")
             @RequestBody UsuarioRequest usuarioRequest){
-        Usuario actualizado = new Usuario(
-                usuarioRequest.getIdUsuario(),
-                usuarioRequest.getNombre(),
-                usuarioRequest.getApellido(),
-                usuarioRequest.getEmail(),
-                usuarioRequest.getPassword(),
-                usuarioRequest.getTelefono(),
-                usuarioRequest.getFechaNacimiento(),
-                usuarioRequest.getRol());
-        return usuarioService.actualizarUsuarioPorId(id,actualizado);
+
+        return usuarioService.actualizarUsuarioPorId(id,usuarioMapper.toModel(usuarioRequest));
     }
 
    //DELETE
@@ -112,12 +95,12 @@ public class UsuarioControlador {
     })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarUnUsuarioPorId(Long id){
-         boolean respuesta = usuarioService.eliminarUsuarioPorId(id);
-         if(respuesta){
+        Boolean respuesta = usuarioService.eliminarUsuarioPorId(id);
+        if(respuesta){
              return new ResponseEntity<>(HttpStatus.NO_CONTENT);//204
-         }else{
+        }else{
              return new ResponseEntity<>(HttpStatus.NOT_FOUND);//404
-         }
+        }
     }
 
 

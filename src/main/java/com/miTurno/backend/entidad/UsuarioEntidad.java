@@ -8,6 +8,8 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import jdk.jfr.Timestamp;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 
@@ -16,6 +18,8 @@ import java.time.LocalDate;
 @Builder
 @Entity
 @Table(name="usuarios")
+@Setter
+@Getter
 public class UsuarioEntidad {
         //todo ver lo que es nulleable, unique...
     //columnas
@@ -44,14 +48,20 @@ public class UsuarioEntidad {
     @Temporal(TemporalType.DATE)
     @Column(insertable = true,updatable = true,columnDefinition ="DATE")
     private LocalDate fechaNacimiento;//(YYYY-MM-DD)
+
     @Enumerated(EnumType.STRING)
     @Column(name = "rol")
     private RolUsuarioEnum rolUsuarioEnum;
 
+    @Column(name = "estado")
+    private Boolean estado;
+
+    //constructores
     public UsuarioEntidad(){
 
     }
-    public UsuarioEntidad( String nombre, String apellido, String correoElectronico,String password, String celular, LocalDate fechaNacimiento, RolUsuarioEnum rolUsuarioEnum) {
+
+    public UsuarioEntidad(String nombre, String apellido, String correoElectronico,String password, String celular, LocalDate fechaNacimiento, RolUsuarioEnum rolUsuarioEnum, Boolean estado) {
         this.idUsuario = null;
         this.password = password;
         this.nombre = nombre;
@@ -60,69 +70,7 @@ public class UsuarioEntidad {
         this.celular = celular;
         this.fechaNacimiento = fechaNacimiento;
         this.rolUsuarioEnum = rolUsuarioEnum;
+        this.estado = estado;
     }
 
-    public Long getIdUsuario() {
-        return idUsuario;
-    }
-
-    public void setIdUsuario(Long idUsuario) {
-        this.idUsuario = idUsuario;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getApellido() {
-        return apellido;
-    }
-
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    public String getCorreoElectronico() {
-        return correoElectronico;
-    }
-
-    public void setCorreoElectronico(String correoElectronico) {
-        this.correoElectronico = correoElectronico;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getCelular() {
-        return celular;
-    }
-
-    public void setCelular(String celular) {
-        this.celular = celular;
-    }
-
-    public LocalDate getFechaNacimiento() {
-        return fechaNacimiento;
-    }
-
-    public void setFechaNacimiento(LocalDate fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
-
-    public RolUsuarioEnum getRolUsuarioEnum() {
-        return rolUsuarioEnum;
-    }
-
-    public void setRolUsuarioEnum(RolUsuarioEnum rolUsuarioEnum) {
-        this.rolUsuarioEnum = rolUsuarioEnum;
-    }
 }

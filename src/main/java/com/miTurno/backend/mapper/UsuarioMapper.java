@@ -21,19 +21,20 @@ public class UsuarioMapper {
                 .correoElectronico(usuarioEntidad.getCorreoElectronico())
                 .fechaNacimiento(usuarioEntidad.getFechaNacimiento())
                 .nombre(usuarioEntidad.getNombre())
+                .password(usuarioEntidad.getPassword())
                 .build();
     }
 
     //request a usuario
     public Usuario toModel(UsuarioRequest usuarioRequest){
         return Usuario.builder()
-                .idUsuario(usuarioRequest.getIdUsuario())
-                .rolUsuario(usuarioRequest.getRolUsuarioEnum())
+                .rolUsuario(usuarioRequest.getRol())
                 .apellido(usuarioRequest.getApellido())
-                .celular(usuarioRequest.getCelular())
-                .correoElectronico(usuarioRequest.getCorreoElectronico())
+                .celular(usuarioRequest.getTelefono())
+                .correoElectronico(usuarioRequest.getEmail())
                 .fechaNacimiento(usuarioRequest.getFechaNacimiento())
                 .nombre(usuarioRequest.getNombre())
+                .password(usuarioRequest.getPassword())
                 .build();
     }
 }
