@@ -1,6 +1,7 @@
 package com.miTurno.backend.manejador;
 
 
+import com.miTurno.backend.excepcion.ServicioNoExisteException;
 import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -19,5 +20,12 @@ public class ManejadorGlobalExcepciones {
         Map<String, Long> errores = new HashMap<>();
         errores.put("id", ex.getId());
         return  new ResponseEntity<>(errores, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ServicioNoExisteException.class)
+    public ResponseEntity<Map<String,Long>> manejarServicioNoEncontrado(ServicioNoExisteException ex){
+        Map<String, Long> errores = new HashMap<>();
+        errores.put("id", ex.getId());
+        return new ResponseEntity<>(errores, HttpStatus.NOT_FOUND);
     }
 }
