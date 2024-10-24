@@ -4,6 +4,7 @@ package com.miTurno.backend.controlador;
 import com.miTurno.backend.DTO.UsuarioRequest;
 import com.miTurno.backend.entidad.UsuarioEntidad;
 import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
+import com.miTurno.backend.mapper.UsuarioMapper;
 import com.miTurno.backend.modelo.Usuario;
 import com.miTurno.backend.servicio.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -28,10 +29,11 @@ import java.util.Optional;
 //@CrossOrigin(origins = "http://127.0.0.1:5500")  // Especifica el origen desde el cual permites solicitudes
 public class UsuarioControlador {
     private final UsuarioService usuarioService;
-
+    private final UsuarioMapper usuarioMapper;
     @Autowired
-    public UsuarioControlador(UsuarioService usuarioService) {
+    public UsuarioControlador(UsuarioService usuarioService, UsuarioMapper usuarioMapper) {
         this.usuarioService = usuarioService;
+        this.usuarioMapper = usuarioMapper;
     }
 
     //GET

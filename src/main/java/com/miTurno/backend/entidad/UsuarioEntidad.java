@@ -6,9 +6,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 
 import java.time.LocalDate;
 
+@Builder
 @Entity
 @Table(name="usuarios")
 public class UsuarioEntidad {
@@ -21,6 +23,7 @@ public class UsuarioEntidad {
     @Size(min = 3, max = 50)
     @Column(name = "nombre")
     private String nombre;
+
     @Size(min = 3, max = 50)
     @Column(name = "apellido")
     private String apellido;
