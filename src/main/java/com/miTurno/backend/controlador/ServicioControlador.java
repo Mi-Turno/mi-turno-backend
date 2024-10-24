@@ -1,28 +1,39 @@
 package com.miTurno.backend.controlador;
 
+import com.miTurno.backend.DTO.ServicioRequest;
+import com.miTurno.backend.DTO.UsuarioRequest;
 import com.miTurno.backend.entidad.ServicioEntidad;
+import com.miTurno.backend.excepcion.ServicioNoExisteException;
+import com.miTurno.backend.mapper.ServicioMapper;
+import com.miTurno.backend.modelo.Servicio;
+import com.miTurno.backend.modelo.Usuario;
 import com.miTurno.backend.servicio.ServicioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/servicios")
-//@CrossOrigin(origins = "http://127.0.0.1:5500")
 public class ServicioControlador {
     private final ServicioService servicioService;
+    private final ServicioMapper servicioMapper;
 
     @Autowired
-    public ServicioControlador(ServicioService servicioService) {
+    public ServicioControlador(ServicioService servicioService, ServicioMapper servicioMapper) {
         this.servicioService = servicioService;
+        this.servicioMapper = servicioMapper;
     }
 
     //GET todos los servicios
@@ -43,15 +54,53 @@ public class ServicioControlador {
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
     @GetMapping
-    public List<ServicioEntidad> listarServicios(
+    public List<Servicio> listarServicios(
             @Parameter(description = "Filtro opcional para buscar servicios por nombre", example = "corte con maquina")
             @RequestParam(required = false) String nombreServicio,
             @Parameter(description = "Filtro opcional para buscar servicios por precio", example = "2500")
             @RequestParam(required = false) Double precio,
             @Parameter(description = "Filtro opcional para buscar servicios por duracion", example = "2500")
-            @RequestParam(required = false) String duracion
+            @RequestParam(required = false) Integer duracion
     ){
         return servicioService.obtenerListadoServicios(nombreServicio,precio,duracion);
     }
 
+    //POST
+    @Operation(summary = "Crear un nuevo Servicio")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Servicio creado con éxito"),
+            @ApiResponse(responseCode = "400", description = "Datos del servicio inválidos", content = @Content(schema =
+            @Schema(implementation = Map.Entry.class), examples = @ExampleObject(value = "{ \"precio\": \"no puede estar vacío, tampoco puede ser menor a 0\" }")))
+    })
+    @PostMapping
+    public Servicio crearUnServicio(
+            @Valid @RequestBody ServicioRequest servicioRequest
+            ){
+        return servicioService.crearUnServicio(servicioMapper.toModel(servicioRequest));
+    }
+
+    //DELETE
+    @Operation(summary = "Eliminar un servicio por id")
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Boolean eliminarUnServicio(@PathVariable Long id) throws ServicioNoExisteException {
+        return servicioService.eliminarUnServicio(id);
+    }
+
+    //UPDATE
+
+    @Operation(summary = "Actualiza un servicio por id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Servicio actualizado con exito"),
+            @ApiResponse(responseCode = "404",description = "Servicio no encontrado")
+    })
+    @PutMapping("/{id}")
+    public Servicio actualizarServicio (
+            @Parameter(description = "ID del Servicio para actualizar",example = "4")
+            @PathVariable Long id,
+            @Parameter(description = "Datos actualizado del Servicio")
+            @RequestBody ServicioRequest servicioRequest) throws ServicioNoExisteException{
+
+        return servicioService.actualizarUnServicio(id,servicioMapper.toModel(servicioRequest));
+    }
 }

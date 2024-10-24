@@ -2,12 +2,13 @@ package com.miTurno.backend.modelo;
 
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
 
-
+@Builder
 public class Usuario {
     //Atributos
     private Long idUsuario;
@@ -19,7 +20,6 @@ public class Usuario {
     private String celular;
     private LocalDate fechaNacimiento;
     private RolUsuarioEnum rolUsuario;
-
     //constructor
 
     public Usuario() {
