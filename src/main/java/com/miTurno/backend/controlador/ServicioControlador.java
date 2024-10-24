@@ -82,7 +82,10 @@ public class ServicioControlador {
     //DELETE
     @Operation(summary = "Eliminar un servicio por id")
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",description = "El servicio fue borrado con exito"),
+            @ApiResponse(responseCode = "404",description = "El servicio no fue encontrado")
+    })
     public Boolean eliminarUnServicio(@PathVariable Long id) throws ServicioNoExisteException {
         return servicioService.eliminarUnServicio(id);
     }

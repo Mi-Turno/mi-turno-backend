@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter
+@Setter
 @Builder
 @Entity
 @Table(name = "servicios")
@@ -16,20 +17,20 @@ public class ServicioEntidad {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idServicio;
 
-    @Setter
+
     @Size(min = 3, max = 50)
     @Column(name = "nombre_servicio")
     private String nombre;
 
-    @Setter
+
     @Column(name = "duracion")
     private Integer duracion;
 
-    @Setter
+
     @Column(name = "precio")
     private Double precio;
 
-    @Setter
+
     @Column(name = "estado")
     private Boolean estado;
 

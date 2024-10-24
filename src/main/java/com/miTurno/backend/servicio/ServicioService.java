@@ -53,11 +53,12 @@ public class ServicioService {
 
     //DELETE
     public Boolean eliminarUnServicio(Long idServicioAEliminar) throws ServicioNoExisteException{
-        Boolean flag=true;
-        ServicioEntidad servicioEntidad= servicioRepositorio.findById(idServicioAEliminar).orElseThrow(()-> new ServicioNoExisteException(idServicioAEliminar));
-        servicioEntidad.setEstado(false);
-        servicioRepositorio.save(servicioEntidad);
-        return flag;
+        Boolean rta = false;
+        if(servicioRepositorio.existsById(idServicioAEliminar)){
+            servicioRepositorio.deleteById(idServicioAEliminar);
+            rta = true;
+        }
+        return rta;
     }
     //UPDATE
 
