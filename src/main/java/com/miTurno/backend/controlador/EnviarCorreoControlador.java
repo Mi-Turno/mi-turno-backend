@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/correo")
+@RequestMapping("/enviar-correo")
 public class EnviarCorreoControlador {
 
     @Autowired
     private EnviarCorreoService emailService;
 
-    @PostMapping("/enviar")
+    @PostMapping
     public ResponseEntity<?> enviarCorreo(@Valid @RequestBody EmailRequest emailRequest) {
         // Delegar la lógica de negocio al servicio
         emailService.EnviarCorreoService(emailRequest);
