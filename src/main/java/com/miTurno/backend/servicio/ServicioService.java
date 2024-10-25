@@ -1,5 +1,6 @@
 package com.miTurno.backend.servicio;
 
+import com.miTurno.backend.controlador.ServicioControlador;
 import com.miTurno.backend.entidad.ServicioEntidad;
 import com.miTurno.backend.excepcion.ServicioNoExisteException;
 import com.miTurno.backend.mapper.ServicioMapper;
@@ -17,11 +18,13 @@ public class ServicioService {
 
     private final ServicioRepositorio servicioRepositorio;
     private final ServicioMapper servicioMapper;
+    private final ServicioControlador servicioControlador;
 
     @Autowired
-    public ServicioService(ServicioRepositorio servicioRepositorio, ServicioMapper servicioMapper) {
+    public ServicioService(ServicioRepositorio servicioRepositorio, ServicioMapper servicioMapper, ServicioControlador servicioControlador) {
         this.servicioRepositorio = servicioRepositorio;
         this.servicioMapper= servicioMapper;
+        this.servicioControlador = servicioControlador;
     }
 
     //GET all
@@ -53,15 +56,18 @@ public class ServicioService {
 
     //DELETE
     public Boolean eliminarUnServicio(Long idServicioAEliminar) throws ServicioNoExisteException{
-        Boolean rta = false;
-        if(servicioRepositorio.existsById(idServicioAEliminar)){
-            servicioRepositorio.deleteById(idServicioAEliminar);
-            rta = true;
-        }
+        Boolean rta = true;
+
+        ServicioEntidad servicioEntidad = servicioRepositorio.findById(idServicioAEliminar).orElseThrow(()-> new ServicioNoExisteException((idServicioAEliminar)));
+
+        //si se encuntra el servicio
+        servicioEntidad.setEstado(false);
+        servicioRepositorio.save(servicioEntidad);
+
         return rta;
     }
-    //UPDATE
 
+    //UPDATE
     public Servicio actualizarUnServicio(Long idServicioAActualizar,Servicio nuevoServicio) throws ServicioNoExisteException{
         ServicioEntidad servicioEntidad= servicioRepositorio.findById(idServicioAActualizar).orElseThrow(()->new ServicioNoExisteException(idServicioAActualizar));
         servicioEntidad.setDuracion(nuevoServicio.getDuracion());
