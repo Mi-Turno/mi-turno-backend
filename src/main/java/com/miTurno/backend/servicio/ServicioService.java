@@ -18,13 +18,13 @@ public class ServicioService {
 
     private final ServicioRepositorio servicioRepositorio;
     private final ServicioMapper servicioMapper;
-    private final ServicioControlador servicioControlador;
+
 
     @Autowired
-    public ServicioService(ServicioRepositorio servicioRepositorio, ServicioMapper servicioMapper, ServicioControlador servicioControlador) {
+    public ServicioService(ServicioRepositorio servicioRepositorio, ServicioMapper servicioMapper) {
         this.servicioRepositorio = servicioRepositorio;
         this.servicioMapper= servicioMapper;
-        this.servicioControlador = servicioControlador;
+       
     }
 
     //GET all
