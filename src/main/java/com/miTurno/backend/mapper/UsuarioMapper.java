@@ -22,6 +22,7 @@ public class UsuarioMapper {
                 .fechaNacimiento(usuarioEntidad.getFechaNacimiento())
                 .nombre(usuarioEntidad.getNombre())
                 .password(usuarioEntidad.getPassword())
+                .estado(usuarioEntidad.getEstado())
                 .build();
     }
 
@@ -35,6 +36,7 @@ public class UsuarioMapper {
                 .fechaNacimiento(usuarioRequest.getFechaNacimiento())
                 .nombre(usuarioRequest.getNombre())
                 .password(usuarioRequest.getPassword())
+                .estado(true)
                 .build();
     }
 }

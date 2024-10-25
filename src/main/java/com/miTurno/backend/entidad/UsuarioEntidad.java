@@ -15,11 +15,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 
-@Builder
+
 @Entity
 @Table(name="usuarios")
 @Setter
 @Getter
+@Builder
 public class UsuarioEntidad {
         //todo ver lo que es nulleable, unique...
     //columnas
@@ -27,11 +28,11 @@ public class UsuarioEntidad {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUsuario;
 
-    @Size(min = 3, max = 50)
+    //@Size(min = 3, max = 50)
     @Column(name = "nombre")
     private String nombre;
 
-    @Size(min = 3, max = 50)
+    //@Size(min = 3, max = 50)
     @Column(name = "apellido")
     private String apellido;
 
@@ -61,8 +62,8 @@ public class UsuarioEntidad {
 
     }
 
-    public UsuarioEntidad(String nombre, String apellido, String correoElectronico,String password, String celular, LocalDate fechaNacimiento, RolUsuarioEnum rolUsuarioEnum, Boolean estado) {
-        this.idUsuario = null;
+    public UsuarioEntidad(Long idUsuario,String nombre, String apellido, String correoElectronico,String password, String celular, LocalDate fechaNacimiento, RolUsuarioEnum rolUsuarioEnum, Boolean estado) {
+        this.idUsuario = idUsuario;
         this.password = password;
         this.nombre = nombre;
         this.apellido = apellido;

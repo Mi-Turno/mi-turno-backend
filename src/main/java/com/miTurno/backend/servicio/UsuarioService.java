@@ -38,7 +38,7 @@ public class UsuarioService {
         usuarioEntidad.setCelular(usuario.getCelular());
         usuarioEntidad.setFechaNacimiento(usuario.getFechaNacimiento());
         usuarioEntidad.setRolUsuarioEnum(usuario.getRolUsuario());
-
+        usuarioEntidad.setEstado(true);
         usuarioEntidad = usuarioRepositorio.save(usuarioEntidad);
         return convertirEntidadAUsuario(usuarioEntidad);
     }
@@ -71,9 +71,11 @@ public class UsuarioService {
 
     //DELETE
     public Boolean eliminarUsuarioPorId(Long id){
-        Boolean rta = false;
+        Boolean rta = false;//
         if(usuarioRepositorio.existsById(id)){
-            usuarioRepositorio.deleteById(id);
+           UsuarioEntidad usuarioEntidad= usuarioRepositorio.findById(id).orElseThrow(()-> new UsuarioNoExistenteException(id));
+           usuarioEntidad.setEstado(false);
+           usuarioRepositorio.save(usuarioEntidad);
             rta = true;
         }
         return rta;

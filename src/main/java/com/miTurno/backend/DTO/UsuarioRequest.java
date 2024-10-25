@@ -53,9 +53,9 @@ public class UsuarioRequest {
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
+        this.fechaNacimiento = fechaNacimiento;
         this.password = password;
         this.telefono = telefono;
-        this.fechaNacimiento = fechaNacimiento;
         this.rol = rol;
     }
 }
