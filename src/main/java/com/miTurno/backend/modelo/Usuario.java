@@ -16,7 +16,7 @@ public class Usuario {
     private Long idUsuario;
     private String nombre;
     private String apellido;
-    private String correoElectronico;
+    private String email;
 
     private String password;
     private String celular;
@@ -29,11 +29,11 @@ public class Usuario {
 
     }
 
-    public Usuario(Long idUsuario, String nombre, String apellido, String correoElectronico,String password, String celular, LocalDate fechaNacimiento, RolUsuarioEnum rolUsuario, Boolean estado) {
+    public Usuario(Long idUsuario, String nombre, String apellido, String email,String password, String celular, LocalDate fechaNacimiento, RolUsuarioEnum rolUsuario, Boolean estado) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.correoElectronico = correoElectronico;
+        this.email = email;
         this.password = password;
         this.celular = celular;
         this.fechaNacimiento = fechaNacimiento;
@@ -49,7 +49,7 @@ public class Usuario {
                 "apellido='" + apellido + '\'' +
                 ", idUsuario=" + idUsuario +
                 ", nombre='" + nombre + '\'' +
-                ", correoElectronico='" + correoElectronico + '\'' +
+                ", correoElectronico='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", celular='" + celular + '\'' +
                 ", fechaNacimiento=" + fechaNacimiento +
