@@ -7,6 +7,7 @@ import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import com.miTurno.backend.mapper.UsuarioMapper;
 import com.miTurno.backend.modelo.Usuario;
 import com.miTurno.backend.repositorio.UsuarioRepositorio;
+import com.miTurno.backend.tipos.RolUsuarioEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,12 @@ public class UsuarioService {
 
         return usuarioRepositorio.findById(id).orElseThrow(()-> new UsuarioNoExistenteException(id));
     }
+
+
+    public List<UsuarioEntidad> obtenerUsuariosPorRol(RolUsuarioEnum rol) {
+        return usuarioRepositorio.findByRolUsuarioEnum(rol);
+    }
+
     //POST
     public Usuario crearUnUsuario(Usuario usuario) throws EmailYaExisteException, CelularYaExisteException {
 

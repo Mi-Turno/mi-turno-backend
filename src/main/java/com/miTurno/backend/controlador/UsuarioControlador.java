@@ -7,6 +7,7 @@ import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import com.miTurno.backend.mapper.UsuarioMapper;
 import com.miTurno.backend.modelo.Usuario;
 import com.miTurno.backend.servicio.UsuarioService;
+import com.miTurno.backend.tipos.RolUsuarioEnum;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -57,6 +58,18 @@ public class UsuarioControlador {
                                                        @PathVariable Long id){
         return usuarioService.buscarUsuario(id);
     }
+
+
+    @Operation(summary = "Obtener un usuario por ROL")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "El usuario con el ID fue devuelto"),
+            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
+    })
+    @GetMapping("/rol/{rol}")
+    public List<UsuarioEntidad> obtenerUsuariosPorRol( @Parameter(description = "rol", example = "ADMIN") @PathVariable RolUsuarioEnum rol, @RequestParam RolUsuarioEnum rolUsuarioEnum ) {
+        return usuarioService.obtenerUsuariosPorRol(rolUsuarioEnum);
+    }
+
    //POST
     @Operation(summary = "Crear un nuevo usuario")
     @ApiResponses(value = {
