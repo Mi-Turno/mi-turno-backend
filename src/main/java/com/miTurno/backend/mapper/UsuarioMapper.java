@@ -18,7 +18,7 @@ public class UsuarioMapper {
                 .rolUsuario(usuarioEntidad.getRolUsuarioEnum())
                 .apellido(usuarioEntidad.getApellido())
                 .celular(usuarioEntidad.getCelular())
-                .correoElectronico(usuarioEntidad.getCorreoElectronico())
+                .email(usuarioEntidad.getEmail())
                 .fechaNacimiento(usuarioEntidad.getFechaNacimiento())
                 .nombre(usuarioEntidad.getNombre())
                 .password(usuarioEntidad.getPassword())
@@ -32,11 +32,27 @@ public class UsuarioMapper {
                 .rolUsuario(usuarioRequest.getRol())
                 .apellido(usuarioRequest.getApellido())
                 .celular(usuarioRequest.getTelefono())
-                .correoElectronico(usuarioRequest.getEmail())
+                .email(usuarioRequest.getEmail())
                 .fechaNacimiento(usuarioRequest.getFechaNacimiento())
                 .nombre(usuarioRequest.getNombre())
                 .password(usuarioRequest.getPassword())
                 .estado(true)
                 .build();
     }
+
+    //usuario a entidad
+
+    public UsuarioEntidad toEntidad(Usuario usuario){
+        UsuarioEntidad usuarioEntidad = new UsuarioEntidad();
+        usuarioEntidad.setNombre(usuario.getNombre());
+        usuarioEntidad.setApellido(usuario.getApellido());
+        usuarioEntidad.setEmail(usuario.getEmail());
+        usuarioEntidad.setPassword(usuario.getPassword());
+        usuarioEntidad.setCelular(usuario.getCelular());
+        usuarioEntidad.setFechaNacimiento(usuario.getFechaNacimiento());
+        usuarioEntidad.setRolUsuarioEnum(usuario.getRolUsuario());
+        usuarioEntidad.setEstado(true);
+        return usuarioEntidad;
+    }
+
 }

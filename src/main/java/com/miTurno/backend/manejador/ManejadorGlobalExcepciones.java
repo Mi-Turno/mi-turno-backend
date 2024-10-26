@@ -1,6 +1,8 @@
 package com.miTurno.backend.manejador;
 
 
+import com.miTurno.backend.excepcion.CelularYaExisteException;
+import com.miTurno.backend.excepcion.EmailYaExisteException;
 import com.miTurno.backend.excepcion.ServicioNoExisteException;
 import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import org.springframework.http.HttpStatus;
@@ -28,4 +30,19 @@ public class ManejadorGlobalExcepciones {
         errores.put("id", ex.getId());
         return new ResponseEntity<>(errores, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(EmailYaExisteException.class)
+    public ResponseEntity<Map<String,String>> manejarEmailYaExiste(EmailYaExisteException ex){
+        Map<String, String> errores = new HashMap<>();
+        errores.put("email", ex.getEmail());
+        return new ResponseEntity<>(errores, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(CelularYaExisteException.class)
+    public ResponseEntity<Map<String,String>> CelularYaExisteException(CelularYaExisteException ex){
+        Map<String, String> errores = new HashMap<>();
+        errores.put("celular", ex.getNroCelular());
+        return new ResponseEntity<>(errores, HttpStatus.CONFLICT);
+    }
+
 }

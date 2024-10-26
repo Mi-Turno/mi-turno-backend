@@ -37,10 +37,10 @@ public class UsuarioEntidad {
     private String apellido;
 
     @Email
-    @Column(name = "correo_electronico",unique = true)
-    private String correoElectronico;
+    @Column(name = "email",unique = true)
+    private String email;
 
-    @Column(name = "password",unique = true)
+    @Column(name = "password")
     private String password;
 
     @Column(name = "celular",unique = true)
@@ -62,12 +62,12 @@ public class UsuarioEntidad {
 
     }
 
-    public UsuarioEntidad(Long idUsuario,String nombre, String apellido, String correoElectronico,String password, String celular, LocalDate fechaNacimiento, RolUsuarioEnum rolUsuarioEnum, Boolean estado) {
+    public UsuarioEntidad(Long idUsuario,String nombre, String apellido, String email,String password, String celular, LocalDate fechaNacimiento, RolUsuarioEnum rolUsuarioEnum, Boolean estado) {
         this.idUsuario = idUsuario;
         this.password = password;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.correoElectronico = correoElectronico;
+        this.email = email;
         this.celular = celular;
         this.fechaNacimiento = fechaNacimiento;
         this.rolUsuarioEnum = rolUsuarioEnum;

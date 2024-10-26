@@ -62,7 +62,8 @@ public class UsuarioControlador {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Usuario creado con éxito"),
             @ApiResponse(responseCode = "400", description = "Datos del usuario inválidos", content = @Content(schema =
-            @Schema(implementation = Map.Entry.class), examples = @ExampleObject(value = "{ \"nombre\": \"no puede estar vacío\" }")))
+            @Schema(implementation = Map.Entry.class), examples = @ExampleObject(value = "{ \"nombre\": \"no puede estar vacío\" }"))),
+            @ApiResponse(responseCode = "409", description = "El mail o celular ingresado ya existe")
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
