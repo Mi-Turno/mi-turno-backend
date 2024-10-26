@@ -66,8 +66,8 @@ public class UsuarioControlador {
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
     @GetMapping("/rol/{rol}")
-    public List<UsuarioEntidad> obtenerUsuariosPorRol( @Parameter(description = "rol", example = "ADMIN") @PathVariable RolUsuarioEnum rol, @RequestParam RolUsuarioEnum rolUsuarioEnum ) {
-        return usuarioService.obtenerUsuariosPorRol(rolUsuarioEnum);
+    public List<UsuarioEntidad> obtenerUsuariosPorRol( @Parameter(description = "rol", example = "ADMIN") @PathVariable RolUsuarioEnum rol) {
+        return usuarioService.obtenerUsuariosPorRol(rol);
     }
 
    //POST
