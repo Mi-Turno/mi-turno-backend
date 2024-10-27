@@ -3,5 +3,7 @@ package com.miTurno.backend.tipos;
 public enum MetodosDePagoEnum {
     EFECTIVO,
     MERCADO_PAGO,
-    TARJETA
+    TARJETA_CREDITO,
+    TARJETA_DEBITO,
+    TRANSFERENCIA
 }
