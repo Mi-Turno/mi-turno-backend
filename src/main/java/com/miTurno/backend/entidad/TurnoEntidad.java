@@ -1,5 +1,6 @@
 package com.miTurno.backend.entidad;
 
+import com.miTurno.backend.tipos.MetodosDePagoEnum;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,17 +33,19 @@ public class TurnoEntidad {
     private LocalDate fechaInicio;
 
     @Temporal(TemporalType.TIME)
-    @Column(name = "horario")
+    @Column(name = "horarios")
     private LocalTime horario;
 
-    @Column(name="estado")
+    @Column(name="estados")
     private Boolean estado;
 
+    @Column(name = "metodos_de_pagos")
+    private MetodosDePagoEnum metodosDePagoEnum;
     //constructores
     public TurnoEntidad() {
 
     }
-    public TurnoEntidad(Long idTurno, Long idProfesional, Long idCliente, Long idNegocio, LocalDate fechaInicio, LocalTime horario,Boolean estado) {
+    public TurnoEntidad(Long idTurno, Long idProfesional, Long idCliente, Long idNegocio, LocalDate fechaInicio, LocalTime horario,Boolean estado,MetodosDePagoEnum metodosDePagoEnum) {
         this.idTurno = idTurno;
         this.idProfesional = idProfesional;
         this.idCliente = idCliente;
@@ -50,5 +53,6 @@ public class TurnoEntidad {
         this.fechaInicio = fechaInicio;
         this.horario = horario;
         this.estado = estado;
+        this.metodosDePagoEnum = metodosDePagoEnum;
     }
 }

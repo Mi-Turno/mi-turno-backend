@@ -1,6 +1,7 @@
 package com.miTurno.backend.modelo;
 
 
+import com.miTurno.backend.tipos.MetodosDePagoEnum;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,8 +21,9 @@ public class Turno {
     private LocalDate fechaInicio;
     private LocalTime horario;
     private Boolean estado;
+    private MetodosDePagoEnum metodosDePagoEnum;
     //constructor
-    public Turno(Long idTurno,Long idProfesional, Long idCliente, Long idNegocio, LocalDate fechaInicio, LocalTime horario,Boolean estado) {
+    public Turno(Long idTurno,Long idProfesional, Long idCliente, Long idNegocio, LocalDate fechaInicio, LocalTime horario,Boolean estado,MetodosDePagoEnum metodosDePagoEnum) {
         this.idTurno=idTurno;
         this.idProfesional = idProfesional;
         this.idCliente = idCliente;
@@ -29,6 +31,7 @@ public class Turno {
         this.fechaInicio = fechaInicio;
         this.horario = horario;
         this.estado = estado;
+        this.metodosDePagoEnum = metodosDePagoEnum;
     }
 
     @Override

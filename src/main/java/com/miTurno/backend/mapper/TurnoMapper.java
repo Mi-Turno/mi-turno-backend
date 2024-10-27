@@ -17,6 +17,7 @@ public class TurnoMapper {
                 .fechaInicio(turnoEntidad.getFechaInicio())
                 .horario(turnoEntidad.getHorario())
                 .estado(turnoEntidad.getEstado())
+                .metodosDePagoEnum(turnoEntidad.getMetodosDePagoEnum())
                 .build();
     }
 
@@ -28,6 +29,7 @@ public class TurnoMapper {
                 .fechaInicio(turnoRequest.getFechaInicio())
                 .horario(turnoRequest.getHorario())
                 .estado(true)
+                .metodosDePagoEnum(turnoRequest.getMetodosDePagoEnum())
                 .build();
     }
 

@@ -1,6 +1,7 @@
 package com.miTurno.backend.DTO;
 
 
+import com.miTurno.backend.tipos.MetodosDePagoEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,5 +30,9 @@ public class TurnoRequest {
 
     @Schema(description = "Horario del turno" ,example = "13:00")
     private LocalTime horario;/**LOCALTIME ES MEJOR PARA MANEJAR HORAS*/
+
+    @Schema(description = "Metodo de pago",example = "MERCADO_PAGO")
+    private MetodosDePagoEnum metodosDePagoEnum;
+
 
 }

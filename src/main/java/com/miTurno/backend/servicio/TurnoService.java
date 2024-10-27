@@ -43,6 +43,7 @@ public class TurnoService {
         turnoEntidad.setFechaInicio(nuevoTurno.getFechaInicio());
         turnoEntidad.setHorario(nuevoTurno.getHorario());
         turnoEntidad.setEstado(true);
+        turnoEntidad.setMetodosDePagoEnum(nuevoTurno.getMetodosDePagoEnum());
         turnoEntidad = turnoRepositorio.save(turnoEntidad);
         return turnoMapper.toModel(turnoEntidad);
     }
