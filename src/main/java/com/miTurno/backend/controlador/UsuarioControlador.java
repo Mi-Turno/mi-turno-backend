@@ -1,6 +1,7 @@
 package com.miTurno.backend.controlador;
 
 
+import com.miTurno.backend.DTO.UsuarioLoginRequest;
 import com.miTurno.backend.DTO.UsuarioRequest;
 import com.miTurno.backend.entidad.UsuarioEntidad;
 import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
@@ -54,9 +55,21 @@ public class UsuarioControlador {
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
     @GetMapping("/{id}")//todo hacer exception para no usar Optional
-    public UsuarioEntidad listarUsuarios(@Parameter(description = "ID del usuario",example = "1")
+    public UsuarioEntidad obtenerUsuarioPorId(@Parameter(description = "ID del usuario",example = "1")
                                                        @PathVariable Long id){
         return usuarioService.buscarUsuario(id);
+    }
+    /**Se utiliza POST para no enviar la contraseña por URL eso hace que sea mas seguro el proceso*/
+    @PostMapping("/login")
+    @Operation(summary = "Obtener un usuario por email y contraseña")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "El usuario con los datos solicitados fue devuelto"),
+            @ApiResponse(responseCode = "400", description = "Parámetros inválidos")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<UsuarioEntidad> obtenerUsuariosByEmailAndPassword(@RequestBody UsuarioLoginRequest usuarioLoginRequest) {
+            UsuarioEntidad usuario = usuarioService.obtenerUsuariosByEmailAndPassword(usuarioLoginRequest.getEmail(), usuarioLoginRequest.getPassword());
+            return ResponseEntity.ok(usuario);//200
     }
 
 
@@ -76,7 +89,7 @@ public class UsuarioControlador {
             @ApiResponse(responseCode = "201", description = "Usuario creado con éxito"),
             @ApiResponse(responseCode = "400", description = "Datos del usuario inválidos", content = @Content(schema =
             @Schema(implementation = Map.Entry.class), examples = @ExampleObject(value = "{ \"nombre\": \"no puede estar vacío\" }"))),
-            @ApiResponse(responseCode = "409", description = "El mail o celular ingresado ya existe")
+            @ApiResponse(responseCode = "409", description = "El email o telefono ingresado ya existe")
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

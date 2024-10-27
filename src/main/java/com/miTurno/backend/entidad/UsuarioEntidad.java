@@ -2,15 +2,11 @@ package com.miTurno.backend.entidad;
 
 
 import com.miTurno.backend.tipos.RolUsuarioEnum;
-import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
 import lombok.Builder;
-import jdk.jfr.Timestamp;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 
 import java.time.LocalDate;
@@ -43,8 +39,8 @@ public class UsuarioEntidad {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "celular",unique = true)
-    private String celular;
+    @Column(name = "telefono",unique = true)
+    private String telefono;
 
     @Temporal(TemporalType.DATE)
     @Column(insertable = true,updatable = true,columnDefinition ="DATE")
@@ -62,13 +58,13 @@ public class UsuarioEntidad {
 
     }
 
-    public UsuarioEntidad(Long idUsuario,String nombre, String apellido, String email,String password, String celular, LocalDate fechaNacimiento, RolUsuarioEnum rolUsuarioEnum, Boolean estado) {
+    public UsuarioEntidad(Long idUsuario,String nombre, String apellido, String email,String password, String telefono, LocalDate fechaNacimiento, RolUsuarioEnum rolUsuarioEnum, Boolean estado) {
         this.idUsuario = idUsuario;
         this.password = password;
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
-        this.celular = celular;
+        this.telefono = telefono;
         this.fechaNacimiento = fechaNacimiento;
         this.rolUsuarioEnum = rolUsuarioEnum;
         this.estado = estado;
