@@ -1,10 +1,7 @@
 package com.miTurno.backend.mapper;
 
-import com.miTurno.backend.DTO.ServicioRequest;
 import com.miTurno.backend.DTO.UsuarioRequest;
-import com.miTurno.backend.entidad.ServicioEntidad;
 import com.miTurno.backend.entidad.UsuarioEntidad;
-import com.miTurno.backend.modelo.Servicio;
 import com.miTurno.backend.modelo.Usuario;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +14,7 @@ public class UsuarioMapper {
                 .idUsuario(usuarioEntidad.getIdUsuario())
                 .rolUsuario(usuarioEntidad.getRolUsuarioEnum())
                 .apellido(usuarioEntidad.getApellido())
-                .celular(usuarioEntidad.getCelular())
+                .telefono(usuarioEntidad.getTelefono())
                 .email(usuarioEntidad.getEmail())
                 .fechaNacimiento(usuarioEntidad.getFechaNacimiento())
                 .nombre(usuarioEntidad.getNombre())
@@ -31,7 +28,7 @@ public class UsuarioMapper {
         return Usuario.builder()
                 .rolUsuario(usuarioRequest.getRol())
                 .apellido(usuarioRequest.getApellido())
-                .celular(usuarioRequest.getTelefono())
+                .telefono(usuarioRequest.getTelefono())
                 .email(usuarioRequest.getEmail())
                 .fechaNacimiento(usuarioRequest.getFechaNacimiento())
                 .nombre(usuarioRequest.getNombre())
@@ -48,7 +45,7 @@ public class UsuarioMapper {
         usuarioEntidad.setApellido(usuario.getApellido());
         usuarioEntidad.setEmail(usuario.getEmail());
         usuarioEntidad.setPassword(usuario.getPassword());
-        usuarioEntidad.setCelular(usuario.getCelular());
+        usuarioEntidad.setTelefono(usuario.getTelefono());
         usuarioEntidad.setFechaNacimiento(usuario.getFechaNacimiento());
         usuarioEntidad.setRolUsuarioEnum(usuario.getRolUsuario());
         usuarioEntidad.setEstado(true);

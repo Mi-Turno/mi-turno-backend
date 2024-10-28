@@ -1,7 +1,6 @@
 package com.miTurno.backend.modelo;
 
 import com.miTurno.backend.tipos.RolUsuarioEnum;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +18,7 @@ public class Usuario {
     private String email;
 
     private String password;
-    private String celular;
+    private String telefono;
     private LocalDate fechaNacimiento;
     private RolUsuarioEnum rolUsuario;
     private Boolean estado;
@@ -29,13 +28,13 @@ public class Usuario {
 
     }
 
-    public Usuario(Long idUsuario, String nombre, String apellido, String email,String password, String celular, LocalDate fechaNacimiento, RolUsuarioEnum rolUsuario, Boolean estado) {
+    public Usuario(Long idUsuario, String nombre, String apellido, String email, String password, String telefono, LocalDate fechaNacimiento, RolUsuarioEnum rolUsuario, Boolean estado) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.password = password;
-        this.celular = celular;
+        this.telefono = telefono;
         this.fechaNacimiento = fechaNacimiento;
         this.rolUsuario = rolUsuario;
         this.estado=estado;
@@ -51,7 +50,7 @@ public class Usuario {
                 ", nombre='" + nombre + '\'' +
                 ", correoElectronico='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", celular='" + celular + '\'' +
+                ", telefono='" + telefono + '\'' +
                 ", fechaNacimiento=" + fechaNacimiento +
                 ", rolUsuario=" + rolUsuario +
                 ", estado=" + estado +

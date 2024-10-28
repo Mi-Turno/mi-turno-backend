@@ -2,6 +2,7 @@ package com.miTurno.backend.servicio;
 
 import com.miTurno.backend.entidad.UsuarioEntidad;
 import com.miTurno.backend.excepcion.CelularYaExisteException;
+import com.miTurno.backend.excepcion.EmailNoExistenteException;
 import com.miTurno.backend.excepcion.EmailYaExisteException;
 import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import com.miTurno.backend.mapper.UsuarioMapper;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -33,7 +33,9 @@ public class UsuarioService {
 
         return usuarioRepositorio.findById(id).orElseThrow(()-> new UsuarioNoExistenteException(id));
     }
-
+    public UsuarioEntidad obtenerUsuariosByEmailAndPassword(String email,String password)throws UsuarioNoExistenteException{
+        return usuarioRepositorio.findByEmailAndPassword(email,password).orElseThrow(()-> new EmailNoExistenteException(email));
+    }
 
     public List<UsuarioEntidad> obtenerUsuariosPorRol(RolUsuarioEnum rol) {
         return usuarioRepositorio.findByRolUsuarioEnum(rol);
@@ -48,8 +50,8 @@ public class UsuarioService {
             throw new EmailYaExisteException(usuario.getEmail());
         }
 
-        if (usuarioRepositorio.existsByCelular(usuario.getCelular())){
-            throw new CelularYaExisteException(usuario.getCelular());
+        if (usuarioRepositorio.existsByTelefono(usuario.getTelefono())){
+            throw new CelularYaExisteException(usuario.getTelefono());
         }
 
 
@@ -80,7 +82,7 @@ public class UsuarioService {
         usuarioEntidad.setApellido(actualizado.getApellido());
         usuarioEntidad.setEmail(actualizado.getEmail());
         usuarioEntidad.setPassword((actualizado.getPassword()));
-        usuarioEntidad.setCelular(actualizado.getCelular());
+        usuarioEntidad.setTelefono(actualizado.getTelefono());
         usuarioEntidad.setRolUsuarioEnum(actualizado.getRolUsuario());
         // la fecha de nacimiento y el id no se podrian modificar
         usuarioEntidad= usuarioRepositorio.save(usuarioEntidad);
