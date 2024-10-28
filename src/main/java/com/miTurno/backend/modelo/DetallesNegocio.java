@@ -17,7 +17,7 @@ public class DetallesNegocio {
     private Long idNegocio;  //fk a tabla usuarios
 
     //constructor
-    public DetallesNegocio(Long idDetallesNegocio, Long idNegocio, String nombreNegocio, String rubro) {
+    public DetallesNegocio(Long idDetallesNegocio, String rubro, String nombreNegocio,Long idNegocio) {
         this.idDetallesNegocio = idDetallesNegocio;
         this.idNegocio = idNegocio;
         this.nombreNegocio = nombreNegocio;

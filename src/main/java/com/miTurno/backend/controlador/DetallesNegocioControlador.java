@@ -5,6 +5,7 @@ import com.miTurno.backend.modelo.DetallesNegocio;
 import com.miTurno.backend.modelo.Servicio;
 import com.miTurno.backend.modelo.Usuario;
 import com.miTurno.backend.servicio.DetallesNegocioService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,11 +18,11 @@ import java.util.List;
 public class DetallesNegocioControlador {
 
     //atributos
-    DetallesNegocioService detallesNegocioService;
-    DetallesNegocioMapper detallesNegocioMapper;
+    private final DetallesNegocioService detallesNegocioService;
+    private final DetallesNegocioMapper detallesNegocioMapper;
 
     //constructor
-
+    @Autowired
     public DetallesNegocioControlador(DetallesNegocioMapper detallesNegocioMapper, DetallesNegocioService detallesNegocioService) {
         this.detallesNegocioMapper = detallesNegocioMapper;
         this.detallesNegocioService = detallesNegocioService;
@@ -51,7 +52,7 @@ public class DetallesNegocioControlador {
 
     @GetMapping("/{nombre}/servicios")
     public  List<Servicio> getServiciosXNegocio(@PathVariable String nombre){
-        return detallesNegocioService.
+        return detallesNegocioService.obtenerServiciosDeNegocioPorNombre(nombre);
     }
 
 //    //GET todos profesionales de negocio X nombre
