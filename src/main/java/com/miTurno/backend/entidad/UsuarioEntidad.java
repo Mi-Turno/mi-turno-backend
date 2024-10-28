@@ -1,7 +1,6 @@
 package com.miTurno.backend.entidad;
 
 
-import com.miTurno.backend.tipos.RolUsuarioEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.Builder;
@@ -46,9 +45,11 @@ public class UsuarioEntidad {
     @Column(insertable = true,updatable = true,columnDefinition ="DATE")
     private LocalDate fechaNacimiento;//(YYYY-MM-DD)
 
+
+    @ManyToOne(fetch = FetchType.EAGER) // EAGER para cargar el rol junto con el usuario
+    @JoinColumn(name = "id_rol", nullable = false) // Define la clave foránea a RolEntidad
     @Enumerated(EnumType.STRING)
-    @Column(name = "rol")
-    private RolUsuarioEnum rolUsuarioEnum;
+    private RolEntidad rolEntidad;
 
     @Column(name = "estado")
     private Boolean estado;
@@ -58,7 +59,7 @@ public class UsuarioEntidad {
 
     }
 
-    public UsuarioEntidad(Long idUsuario,String nombre, String apellido, String email,String password, String telefono, LocalDate fechaNacimiento, RolUsuarioEnum rolUsuarioEnum, Boolean estado) {
+    public UsuarioEntidad(Long idUsuario,String nombre, String apellido, String email,String password, String telefono, LocalDate fechaNacimiento, RolEntidad rol, Boolean estado) {
         this.idUsuario = idUsuario;
         this.password = password;
         this.nombre = nombre;
@@ -66,7 +67,7 @@ public class UsuarioEntidad {
         this.email = email;
         this.telefono = telefono;
         this.fechaNacimiento = fechaNacimiento;
-        this.rolUsuarioEnum = rolUsuarioEnum;
+        this.rolEntidad = rol;
         this.estado = estado;
     }
 

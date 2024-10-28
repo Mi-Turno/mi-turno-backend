@@ -49,17 +49,19 @@ public class UsuarioControlador {
     }
 
 
+    //GET x id
     @Operation(summary = "Obtener un usuario por ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "El usuario con el ID fue devuelto"),
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
-
     @GetMapping("/{id}")//todo hacer exception para no usar Optional
     public UsuarioEntidad obtenerUsuarioPorId(@Parameter(description = "ID del usuario",example = "1")
                                                        @PathVariable Long id){
         return usuarioService.buscarUsuario(id);
     }
+
+    //GET
     /**Se utiliza POST para no enviar la contraseña por URL eso hace que sea mas seguro el proceso*/
     @PostMapping("/login")
     @Operation(summary = "Obtener un usuario por email y contraseña")

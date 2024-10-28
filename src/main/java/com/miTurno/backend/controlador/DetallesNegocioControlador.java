@@ -22,8 +22,11 @@ public class DetallesNegocioControlador {
     private final DetallesNegocioMapper detallesNegocioMapper;
 
     //constructor
+
+
+
     @Autowired
-    public DetallesNegocioControlador(DetallesNegocioMapper detallesNegocioMapper, DetallesNegocioService detallesNegocioService) {
+    public DetallesNegocioControlador(DetallesNegocioService detallesNegocioService,DetallesNegocioMapper detallesNegocioMapper) {
         this.detallesNegocioMapper = detallesNegocioMapper;
         this.detallesNegocioService = detallesNegocioService;
     }

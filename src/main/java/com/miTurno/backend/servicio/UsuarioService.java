@@ -1,5 +1,6 @@
 package com.miTurno.backend.servicio;
 
+import com.miTurno.backend.entidad.RolEntidad;
 import com.miTurno.backend.entidad.UsuarioEntidad;
 import com.miTurno.backend.excepcion.CelularYaExisteException;
 import com.miTurno.backend.excepcion.EmailNoExistenteException;
@@ -7,6 +8,7 @@ import com.miTurno.backend.excepcion.EmailYaExisteException;
 import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import com.miTurno.backend.mapper.UsuarioMapper;
 import com.miTurno.backend.modelo.Usuario;
+import com.miTurno.backend.repositorio.RolRepositorio;
 import com.miTurno.backend.repositorio.UsuarioRepositorio;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,11 +20,13 @@ import java.util.List;
 public class UsuarioService {
     private final UsuarioRepositorio usuarioRepositorio;
     private final UsuarioMapper usuarioMapper;
+    private final RolRepositorio rolRepositorio;
 
     @Autowired
-    public UsuarioService(UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper) {
+    public UsuarioService(UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, RolRepositorio rolRepositorio) {
         this.usuarioRepositorio = usuarioRepositorio;
         this.usuarioMapper = usuarioMapper;
+        this.rolRepositorio = rolRepositorio;
     }
 
     //GET
@@ -38,7 +42,7 @@ public class UsuarioService {
     }
 
     public List<UsuarioEntidad> obtenerUsuariosPorRol(RolUsuarioEnum rol) {
-        return usuarioRepositorio.findByRolUsuarioEnum(rol);
+        return usuarioRepositorio.findByRolEntidad_Rol(rol);
     }
 
     //POST
@@ -83,7 +87,10 @@ public class UsuarioService {
         usuarioEntidad.setEmail(actualizado.getEmail());
         usuarioEntidad.setPassword((actualizado.getPassword()));
         usuarioEntidad.setTelefono(actualizado.getTelefono());
-        usuarioEntidad.setRolUsuarioEnum(actualizado.getRolUsuario());
+
+
+
+        usuarioEntidad.setRolEntidad(rolRepositorio.findByRol(actualizado.getRolUsuario()));
         // la fecha de nacimiento y el id no se podrian modificar
         usuarioEntidad= usuarioRepositorio.save(usuarioEntidad);
         return usuarioMapper.toModel(usuarioEntidad);

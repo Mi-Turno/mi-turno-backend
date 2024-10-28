@@ -1,18 +1,28 @@
 package com.miTurno.backend.mapper;
 
 import com.miTurno.backend.DTO.UsuarioRequest;
+import com.miTurno.backend.entidad.RolEntidad;
 import com.miTurno.backend.entidad.UsuarioEntidad;
 import com.miTurno.backend.modelo.Usuario;
+import com.miTurno.backend.repositorio.RolRepositorio;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UsuarioMapper {
 
+    private final RolRepositorio rolRepositorio;
+
+    @Autowired
+    public UsuarioMapper(RolRepositorio rolRepositorio) {
+        this.rolRepositorio = rolRepositorio;
+    }
+
     //entidad a usuario
     public Usuario toModel(UsuarioEntidad usuarioEntidad){
         return Usuario.builder()
                 .idUsuario(usuarioEntidad.getIdUsuario())
-                .rolUsuario(usuarioEntidad.getRolUsuarioEnum())
+                .rolUsuario(usuarioEntidad.getRolEntidad().getRol())
                 .apellido(usuarioEntidad.getApellido())
                 .telefono(usuarioEntidad.getTelefono())
                 .email(usuarioEntidad.getEmail())
@@ -47,7 +57,10 @@ public class UsuarioMapper {
         usuarioEntidad.setPassword(usuario.getPassword());
         usuarioEntidad.setTelefono(usuario.getTelefono());
         usuarioEntidad.setFechaNacimiento(usuario.getFechaNacimiento());
-        usuarioEntidad.setRolUsuarioEnum(usuario.getRolUsuario());
+
+
+
+        usuarioEntidad.setRolEntidad(rolRepositorio.findByRol(usuario.getRolUsuario()));
         usuarioEntidad.setEstado(true);
         return usuarioEntidad;
     }

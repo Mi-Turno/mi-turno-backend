@@ -5,10 +5,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Builder
 @Getter
 @Setter
+@Table(name = "detalles_negocios")
 public class DetallesNegocioEntidad {
 
     @Id
@@ -24,6 +27,8 @@ public class DetallesNegocioEntidad {
     @Column(name = "id_negocio")
     private Long idNegocio;
 
+//    @OneToMany()
+//    private List<UsuarioEntidad> profesionales;
 
     public DetallesNegocioEntidad() {
     }
