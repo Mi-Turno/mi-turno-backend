@@ -13,15 +13,16 @@ import com.miTurno.backend.repositorio.UsuarioRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class DetallesNegocioService {
-    private ServicioMapper servicioMapper;
-    private UsuarioRepositorio usuarioRepositorio;
     //atributos
-    private DetallesNegocioRepositorio detallesNegocioRepositorio;
-    private DetallesNegocioMapper detallesNegocioMapper;
+    private final DetallesNegocioRepositorio detallesNegocioRepositorio;
+    private final ServicioMapper servicioMapper;
+    private final UsuarioRepositorio usuarioRepositorio;
+    private final DetallesNegocioMapper detallesNegocioMapper;
 
     //constructores
     @Autowired
@@ -53,8 +54,10 @@ public class DetallesNegocioService {
     //get servicios x nombre
 
     public List<Servicio> obtenerServiciosDeNegocioPorNombre(String nombreNegocio){
-        List<ServicioEntidad> servicioLista = detallesNegocioRepositorio.findAllServiciosPorNombreNegocio(nombreNegocio);
-        return servicioLista.stream().map(servicioMapper::toModel).toList();
+        List<Servicio> servicioEntidads= new ArrayList<>();
+//        List<ServicioEntidad> servicioLista = detallesNegocioRepositorio.findAllServiciosPorNombreNegocio(nombreNegocio);
+//        return servicioLista.stream().map(servicioMapper::toModel).toList();
+        return servicioEntidads;
     }
 
     //get profesionales x nombre de negocio
