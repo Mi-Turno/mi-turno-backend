@@ -66,7 +66,7 @@ public class TurnoControlador {
             @ApiResponse(responseCode = "404",description = "El turno no fue encontrado")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarTurnoPorId(Long id){
+    public ResponseEntity<Void> eliminarTurnoPorId(@PathVariable Long id){
         Boolean respuesta = turnoService.eliminarTurnoPorId(id);
         if(respuesta){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
