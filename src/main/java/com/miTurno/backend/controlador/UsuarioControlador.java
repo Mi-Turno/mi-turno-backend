@@ -54,6 +54,7 @@ public class UsuarioControlador {
             @ApiResponse(responseCode = "200",description = "El usuario con el ID fue devuelto"),
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
+
     @GetMapping("/{id}")//todo hacer exception para no usar Optional
     public UsuarioEntidad obtenerUsuarioPorId(@Parameter(description = "ID del usuario",example = "1")
                                                        @PathVariable Long id){
@@ -121,7 +122,7 @@ public class UsuarioControlador {
             @ApiResponse(responseCode = "404",description = "El usuario no fue encontrado")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarUnUsuarioPorId(Long id){
+    public ResponseEntity<Void> eliminarUnUsuarioPorId(@PathVariable Long id){
         Boolean respuesta = usuarioService.eliminarUsuarioPorId(id);
         if(respuesta){
              return new ResponseEntity<>(HttpStatus.NO_CONTENT);//204
