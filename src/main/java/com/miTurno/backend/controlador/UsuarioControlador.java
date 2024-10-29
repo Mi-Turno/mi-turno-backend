@@ -86,6 +86,30 @@ public class UsuarioControlador {
         return usuarioService.obtenerUsuariosPorRol(rol);
     }
 
+    @Operation(summary = "Obtener un usuario por Estado")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "El usuario con el ID fue devuelto"),
+            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
+    })
+    @GetMapping("/estado/{estado}")
+    public List<UsuarioEntidad> ontenerUsuariosPorEstado( @Parameter(description = "estado", example = "true") @PathVariable Boolean estado) {
+        return usuarioService.obtenerUsuariosPorEstado(estado);
+    }
+
+
+    @Operation(summary = "Obtener un usuario por Rol y estado")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Usuarios devueltos con rol y estado especificados"),
+            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
+    })
+    @GetMapping("/rol/{rol}/estado/{estado}")
+    public List<UsuarioEntidad> obtenerUsuariosPorRolYEstado(
+            @Parameter(description = "rol", example = "PROFESIONAL") @PathVariable RolUsuarioEnum rol ,
+            @Parameter(description = "estado", example = "true") @PathVariable Boolean estado
+    ) {
+        return usuarioService.obtenerUsuariosPorRolYEstado(rol, estado);
+    }
+
    //POST
     @Operation(summary = "Crear un nuevo usuario")
     @ApiResponses(value = {

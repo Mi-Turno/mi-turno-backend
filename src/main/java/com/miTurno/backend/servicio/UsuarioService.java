@@ -44,6 +44,14 @@ public class UsuarioService {
     public List<UsuarioEntidad> obtenerUsuariosPorRol(RolUsuarioEnum rol) {
         return usuarioRepositorio.findByRolEntidad_Rol(rol);
     }
+    
+    public List<UsuarioEntidad> obtenerUsuariosPorEstado(Boolean estado) {
+        return usuarioRepositorio.findByEstado(estado);
+    }
+
+    public List<UsuarioEntidad> obtenerUsuariosPorRolYEstado(RolUsuarioEnum rol, Boolean estado){
+        return usuarioRepositorio.findByRolEntidad_RolAndEstado(rol, estado);
+    }
 
     //POST
     public Usuario crearUnUsuario(Usuario usuario) throws EmailYaExisteException, CelularYaExisteException {

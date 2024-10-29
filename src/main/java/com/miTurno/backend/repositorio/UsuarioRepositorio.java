@@ -18,7 +18,12 @@ public interface UsuarioRepositorio extends JpaRepository<UsuarioEntidad,Long> {
     boolean existsByTelefono(String telefono);
     boolean existsByTelefonoAndEmail(@Email String email, String telefono);
     List<UsuarioEntidad> findByRolEntidad_Rol(RolUsuarioEnum rolUsuarioEnum);
+
+    List<UsuarioEntidad> findByEstado(Boolean estado);
+    List <UsuarioEntidad> findByRolEntidad_RolAndEstado (RolUsuarioEnum rol, Boolean estado);
     /**uso Optional para poder lanzar la exception ya que es un email*/
     Optional<UsuarioEntidad> findByEmailAndPassword(@Email String email, String password);
+
+
 
 }
