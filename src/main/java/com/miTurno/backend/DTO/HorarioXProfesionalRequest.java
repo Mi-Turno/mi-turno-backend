@@ -12,6 +12,7 @@ import java.time.LocalTime;
 @Getter
 @Setter
 @Builder
+@Schema(description="Requisitos para la creacion de un horario por profesional")
 public class HorarioXProfesionalRequest {
 
     @Schema(description = "ID del profesional",example = "1")
@@ -21,5 +22,11 @@ public class HorarioXProfesionalRequest {
     @Schema(description = "Horario del turno",example = "13:30")
     private LocalTime horario;
 
-
+    public HorarioXProfesionalRequest() {
+    }
+    public HorarioXProfesionalRequest(Long idProfesional, DiasEnum dia, LocalTime horario) {
+        this.idProfesional = idProfesional;
+        this.dia = dia;
+        this.horario = horario;
+    }
 }

@@ -48,7 +48,6 @@ public class UsuarioEntidad {
 
     @ManyToOne(fetch = FetchType.EAGER) // EAGER para cargar el rol junto con el usuario
     @JoinColumn(name = "id_rol", nullable = false) // Define la clave foránea a RolEntidad
-    @Enumerated(EnumType.STRING)
     private RolEntidad rolEntidad;
 
     @Column(name = "estado")

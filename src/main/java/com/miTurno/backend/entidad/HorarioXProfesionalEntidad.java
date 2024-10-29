@@ -21,27 +21,27 @@ public class HorarioXProfesionalEntidad {
 
 
     //@Column(name="id_usuario",nullable = false)
-    @JoinColumn(name = "id_usuario")
+    //@ManyToOne(fetch = FetchType.LAZY)todo descomentar cuando haya usuarios
+    @JoinColumn(name = "id_usuario",referencedColumnName = "id_usuario")
     private Long idProfesional;
 
 
-    @ManyToOne(fetch = FetchType.LAZY)//Carga luego
-    @JoinColumn(name = "id_dia",nullable = true)
-    private DiaEntidad diaEntidad;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dia_id")//si no funcion agregar , referencedColumnName = "id"
+    private DiaEntidad diaEntidad; // Aquí se mantiene la entidad
 
 
     @Column(name="horarios")
     @Temporal(TemporalType.TIME)
     private LocalTime horario;
 
-    public HorarioXProfesionalEntidad(){
-
-    }
-
     public HorarioXProfesionalEntidad(Long idHorarioXProfesional, Long idProfesional, DiaEntidad diaEntidad, LocalTime horario) {
         this.idHorarioXProfesional = idHorarioXProfesional;
         this.idProfesional = idProfesional;
         this.diaEntidad = diaEntidad;
         this.horario = horario;
+    }
+    public HorarioXProfesionalEntidad(){
+
     }
 }
