@@ -1,10 +1,9 @@
 package com.miTurno.backend.DTO;
 
 
-import com.miTurno.backend.tipos.RolUsuarioEnum;
+import com.miTurno.backend.entidad.RolEntidad;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -43,19 +42,19 @@ public class UsuarioRequest {
     @Schema(description = "La fecha del usuario", example = "2004-10-10")
     private LocalDate fechaNacimiento;//(YYYY-MM-DD)
     @Schema(description = "El rol del usuario", example = "CLIENTE")
-    private RolUsuarioEnum rol;
+    private RolEntidad rolEntidad;
 
 
     public UsuarioRequest() {
     }
 
-    public UsuarioRequest(String nombre, String apellido, String email, String password, String telefono, LocalDate fechaNacimiento, RolUsuarioEnum rol) {
+    public UsuarioRequest(String nombre, String apellido, String email, String password, String telefono, LocalDate fechaNacimiento, RolEntidad rol) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.password = password;
         this.telefono = telefono;
         this.fechaNacimiento = fechaNacimiento;
-        this.rol = rol;
+        this.rolEntidad = rol;
     }
 }
