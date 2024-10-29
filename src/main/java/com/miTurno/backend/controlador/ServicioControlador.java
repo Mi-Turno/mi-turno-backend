@@ -3,6 +3,7 @@ package com.miTurno.backend.controlador;
 import com.miTurno.backend.DTO.ServicioRequest;
 import com.miTurno.backend.DTO.UsuarioRequest;
 import com.miTurno.backend.entidad.ServicioEntidad;
+import com.miTurno.backend.entidad.UsuarioEntidad;
 import com.miTurno.backend.excepcion.ServicioNoExisteException;
 import com.miTurno.backend.mapper.ServicioMapper;
 import com.miTurno.backend.modelo.Servicio;
@@ -58,12 +59,17 @@ public class ServicioControlador {
             @Parameter(description = "Filtro opcional para buscar servicios por nombre", example = "corte con maquina")
             @RequestParam(required = false) String nombreServicio,
             @Parameter(description = "Filtro opcional para buscar servicios por precio", example = "2500")
-            @RequestParam(required = false) Double precio,
-            @Parameter(description = "Filtro opcional para buscar servicios por duracion", example = "2500")
-            @RequestParam(required = false) Integer duracion
+            @RequestParam(required = false) Boolean estado
+
     ){
-        return servicioService.obtenerListadoServicios(nombreServicio,precio,duracion);
+        return servicioService.obtenerListadoServicios(nombreServicio, estado);
     }
+
+
+
+
+
+
 
     //POST
     @Operation(summary = "Crear un nuevo Servicio")
