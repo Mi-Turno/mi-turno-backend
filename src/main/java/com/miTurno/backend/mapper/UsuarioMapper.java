@@ -59,8 +59,8 @@ public class UsuarioMapper {
         usuarioEntidad.setFechaNacimiento(usuario.getFechaNacimiento());
 
 
-
-        usuarioEntidad.setRolEntidad(rolRepositorio.findByRol(usuario.getRolUsuario()));
+        RolEntidad nuevoRol = rolRepositorio.findByRol(usuario.getRolUsuario());
+        usuarioEntidad.setRolEntidad(nuevoRol);
         usuarioEntidad.setEstado(true);
         return usuarioEntidad;
     }
