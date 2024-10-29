@@ -1,6 +1,8 @@
 package com.miTurno.backend.entidad;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,6 +30,7 @@ public class HorarioXProfesionalEntidad {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "dia_id")//si no funcion agregar , referencedColumnName = "id"
+    @JsonIgnore //todo sacar cuando haya usuarios
     private DiaEntidad diaEntidad; // Aquí se mantiene la entidad
 
 

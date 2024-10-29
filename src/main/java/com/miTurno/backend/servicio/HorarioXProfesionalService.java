@@ -6,8 +6,11 @@ import com.miTurno.backend.mapper.HorarioXProfesionalMapper;
 import com.miTurno.backend.modelo.HorarioXProfesional;
 import com.miTurno.backend.repositorio.DiaRepositorio;
 import com.miTurno.backend.repositorio.HorarioXProfesionalRepositorio;
+import com.miTurno.backend.tipos.DiasEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class HorarioXProfesionalService {
@@ -34,6 +37,11 @@ public class HorarioXProfesionalService {
         horarioXProfesionalEntidad = horarioXProfesionalRepositorio.save(horarioXProfesionalEntidad);
         return horarioXProfesionalMapper.toModel(horarioXProfesionalEntidad);
 
+    }
+
+
+    public List<HorarioXProfesionalEntidad> obtenerHorariosPorProfesionalYDia(Long idProfesional, DiasEnum dia) {
+        return horarioXProfesionalRepositorio.findByIdProfesionalAndDiaEntidad_Dia(idProfesional, dia);
     }
 
 }

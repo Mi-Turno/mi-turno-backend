@@ -10,6 +10,7 @@ import com.miTurno.backend.mapper.HorarioXProfesionalMapper;
 import com.miTurno.backend.modelo.HorarioXProfesional;
 import com.miTurno.backend.modelo.Usuario;
 import com.miTurno.backend.servicio.HorarioXProfesionalService;
+import com.miTurno.backend.tipos.DiasEnum;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -18,6 +19,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +36,7 @@ public class HorarioXProfesionalControlador {
 
     //constructores
 
-
+    @Autowired
     public HorarioXProfesionalControlador(HorarioXProfesionalService horarioXProfesionalService, HorarioXProfesionalMapper horarioXProfesionalMapper) {
         this.horarioXProfesionalService = horarioXProfesionalService;
         this.horarioXProfesionalMapper = horarioXProfesionalMapper;
@@ -52,4 +54,15 @@ public class HorarioXProfesionalControlador {
 
         return horarioXProfesionalService.crearUnHorarioXProfesional(horarioXProfesionalMapper.toModel(horarioXProfesionalRequest));
     }
+
+    @GetMapping("/profesional/dia")
+    public ResponseEntity<List<HorarioXProfesionalEntidad>> obtenerHorariosPorProfesionalYDia(
+            @RequestParam Long idProfesional,
+            @RequestParam DiasEnum dia) {
+
+        List<HorarioXProfesionalEntidad> horarios = horarioXProfesionalService.obtenerHorariosPorProfesionalYDia(idProfesional, dia);
+        return ResponseEntity.ok(horarios);
+    }
+
+
 }
