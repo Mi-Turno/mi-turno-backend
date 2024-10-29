@@ -33,7 +33,9 @@ public class Turno {
         this.estado = estado;
         this.metodosDePagoEnum = metodosDePagoEnum;
     }
+    public Turno(){
 
+    }
     @Override
     public String toString() {
         return "Turno{" +
