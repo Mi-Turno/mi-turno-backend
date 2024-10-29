@@ -11,4 +11,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DiaRepositorio extends JpaRepository<DiaEntidad,Long> {
     DiaEntidad findByDia(DiasEnum diasEnum);
+
+
+
 }
