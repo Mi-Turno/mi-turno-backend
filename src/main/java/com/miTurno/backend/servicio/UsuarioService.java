@@ -2,6 +2,7 @@ package com.miTurno.backend.servicio;
 
 import com.miTurno.backend.DTO.DetallesNegocioRequest;
 import com.miTurno.backend.DTO.UsuarioRequest;
+import com.miTurno.backend.entidad.RolEntidad;
 import com.miTurno.backend.entidad.UsuarioEntidad;
 import com.miTurno.backend.excepcion.*;
 import com.miTurno.backend.mapper.UsuarioMapper;
@@ -74,23 +75,27 @@ public class UsuarioService {
         return usuarioMapper.toModel(usuarioEntidad);
     }
     //crear negocio
-    public DetallesNegocio crearUnNegocio(DetallesNegocioRequest detallesNegocioRequest) throws NombreNegocioYaExisteException, RolIncorrectoException {
+    public DetallesNegocio crearUnNegocio(DetallesNegocioRequest detallesNegocioRequest)
+            throws NombreNegocioYaExisteException, RolIncorrectoException {
 
         String nombreNegocio = detallesNegocioRequest.getNombre();
-        RolUsuarioEnum rolUsuarioEnum= detallesNegocioRequest.getRolEntidad().getRol();
+        RolUsuarioEnum rolUsuarioEnum = detallesNegocioRequest.getRolEntidad().getRol();
 
-        //Si el nombre con el rol especifico existe, entonces tiro excepcion
-        if (detallesNegocioRequest.getRolEntidad().getRol() != RolUsuarioEnum.NEGOCIO){
-            throw new RolIncorrectoException(RolUsuarioEnum.NEGOCIO,rolUsuarioEnum);
+        if (rolUsuarioEnum != RolUsuarioEnum.NEGOCIO) {
+            throw new RolIncorrectoException(RolUsuarioEnum.NEGOCIO, rolUsuarioEnum);
         }
 
-        if (usuarioRepositorio.existsByNombreAndRolEntidad_Rol(nombreNegocio,rolUsuarioEnum)){
+        if (usuarioRepositorio.existsByNombreAndRolEntidad_Rol(nombreNegocio, rolUsuarioEnum)) {
             throw new NombreNegocioYaExisteException(nombreNegocio);
         }
 
-        //creo la request de usuario
-        UsuarioRequest usuarioRequest= UsuarioRequest.builder()
-                .rolEntidad(detallesNegocioRequest.getRolEntidad())
+        // Crear RolEntidad usando el RolUsuarioEnum
+        RolEntidad rolEntidad = new RolEntidad();
+        rolEntidad.setRol(rolUsuarioEnum);
+
+        // Crear UsuarioRequest usando RolEntidad
+        UsuarioRequest usuarioRequest = UsuarioRequest.builder()
+                .rolEntidad(rolEntidad.getRol())
                 .nombre(detallesNegocioRequest.getNombre())
                 .apellido(detallesNegocioRequest.getApellido())
                 .email(detallesNegocioRequest.getEmail())
@@ -98,12 +103,14 @@ public class UsuarioService {
                 .telefono(detallesNegocioRequest.getTelefono())
                 .fechaNacimiento(detallesNegocioRequest.getFechaNacimiento())
                 .build();
-        //y creo el usuario
 
+        // Crear el usuario
         crearUnUsuario(usuarioRequest);
-        //una vez creado el usuario puedo crear los detalles del negocio
+
+        // Crear los detalles del negocio
         return detallesNegocioService.crearDetallesNegocio(detallesNegocioRequest);
     }
+
 
     //obtener todos los negocios
 
