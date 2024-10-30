@@ -1,6 +1,7 @@
 package com.miTurno.backend.entidad;
 
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.miTurno.backend.tipos.DiasEnum;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -21,6 +22,11 @@ public class DiaEntidad {
     @Column(name = "nombre_dias",unique = true, nullable = false)
     @Enumerated(EnumType.STRING)
     private DiasEnum dia;
+
+    @JsonValue
+    public String getNombre() {
+        return dia.name();
+    }
     //constructores
     public DiaEntidad(Long id, DiasEnum diaEnum) {
         this.id = id;
