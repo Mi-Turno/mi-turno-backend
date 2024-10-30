@@ -2,13 +2,9 @@ package com.miTurno.backend.controlador;
 
 
 import com.miTurno.backend.DTO.HorarioXProfesionalRequest;
-import com.miTurno.backend.DTO.UsuarioLoginRequest;
-import com.miTurno.backend.DTO.UsuarioRequest;
-import com.miTurno.backend.entidad.HorarioXProfesionalEntidad;
-import com.miTurno.backend.entidad.UsuarioEntidad;
+import com.miTurno.backend.entidad.pivotEntidad.HorarioXProfesionalEntidad;
 import com.miTurno.backend.mapper.HorarioXProfesionalMapper;
 import com.miTurno.backend.modelo.HorarioXProfesional;
-import com.miTurno.backend.modelo.Usuario;
 import com.miTurno.backend.servicio.HorarioXProfesionalService;
 import com.miTurno.backend.tipos.DiasEnum;
 import io.swagger.v3.oas.annotations.Operation;

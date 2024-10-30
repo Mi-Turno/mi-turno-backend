@@ -21,22 +21,28 @@ public class DetallesNegocioEntidad {
     @Column(name = "rubro")
     private String rubro;
 
-    @Column(name ="nombre_negocio", unique = true)
-    private String nombreNegocio;
+    @Column(name = "calle")
+    private String calle;
 
-    @Column(name = "id_negocio")
-    private Long idNegocio;
+    @Column(name = "altura")
+    private String altura;
 
-//    @OneToMany()
-//    private List<UsuarioEntidad> profesionales;
+    @Column(name = "detalle")
+    private String detalle;
+
+//    @ManyToOne(targetEntity = UsuarioEntidad.class)
+//    private Long idNegocio;
+
 
     public DetallesNegocioEntidad() {
     }
 
-    public DetallesNegocioEntidad(Long idDetallesNegocio, String rubro, String nombreNegocio, Long idNegocio) {
+    public DetallesNegocioEntidad(Long idDetallesNegocio, String rubro, String calle, String altura, String detalle) {
         this.idDetallesNegocio = idDetallesNegocio;
         this.rubro = rubro;
-        this.nombreNegocio = nombreNegocio;
-        this.idNegocio = idNegocio;
+        this.calle = calle;
+        this.altura = altura;
+        this.detalle = detalle;
     }
+
 }

@@ -1,11 +1,13 @@
 package com.miTurno.backend.controlador;
 
 
+import com.miTurno.backend.DTO.DetallesNegocioRequest;
 import com.miTurno.backend.DTO.UsuarioLoginRequest;
 import com.miTurno.backend.DTO.UsuarioRequest;
 import com.miTurno.backend.entidad.UsuarioEntidad;
 import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import com.miTurno.backend.mapper.UsuarioMapper;
+import com.miTurno.backend.modelo.DetallesNegocio;
 import com.miTurno.backend.modelo.Usuario;
 import com.miTurno.backend.servicio.UsuarioService;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
@@ -31,6 +33,7 @@ import java.util.Map;
 public class UsuarioControlador {
     private final UsuarioService usuarioService;
     private final UsuarioMapper usuarioMapper;
+
     @Autowired
     public UsuarioControlador(UsuarioService usuarioService, UsuarioMapper usuarioMapper) {
         this.usuarioService = usuarioService;
@@ -123,7 +126,7 @@ public class UsuarioControlador {
     public Usuario crearUnUsuario(@Parameter(description = "Datos del usuario")
                                   @Valid @RequestBody UsuarioRequest usuarioRequest) {
 
-        return usuarioService.crearUnUsuario(usuarioMapper.toModel(usuarioRequest));
+        return usuarioService.crearUnUsuario(usuarioRequest);
     }
     //UPDATE
     @Operation(summary = "actualizar usuario por ID")
@@ -156,10 +159,6 @@ public class UsuarioControlador {
              return new ResponseEntity<>(HttpStatus.NOT_FOUND);//404
         }
     }
-
-
-
-
 
 
 }

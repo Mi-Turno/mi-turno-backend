@@ -1,6 +1,6 @@
-package com.miTurno.backend.repositorio;
+package com.miTurno.backend.repositorio.pivotRepositorios;
 
-import com.miTurno.backend.entidad.HorarioXProfesionalEntidad;
+import com.miTurno.backend.entidad.pivotEntidad.HorarioXProfesionalEntidad;
 import com.miTurno.backend.tipos.DiasEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

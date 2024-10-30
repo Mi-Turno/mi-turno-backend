@@ -1,11 +1,11 @@
 package com.miTurno.backend.servicio;
 
 import com.miTurno.backend.entidad.DiaEntidad;
-import com.miTurno.backend.entidad.HorarioXProfesionalEntidad;
+import com.miTurno.backend.entidad.pivotEntidad.HorarioXProfesionalEntidad;
 import com.miTurno.backend.mapper.HorarioXProfesionalMapper;
 import com.miTurno.backend.modelo.HorarioXProfesional;
 import com.miTurno.backend.repositorio.DiaRepositorio;
-import com.miTurno.backend.repositorio.HorarioXProfesionalRepositorio;
+import com.miTurno.backend.repositorio.pivotRepositorios.HorarioXProfesionalRepositorio;
 import com.miTurno.backend.tipos.DiasEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

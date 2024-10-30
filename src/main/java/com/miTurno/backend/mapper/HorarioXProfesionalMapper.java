@@ -2,8 +2,7 @@ package com.miTurno.backend.mapper;
 
 
 import com.miTurno.backend.DTO.HorarioXProfesionalRequest;
-import com.miTurno.backend.entidad.DiaEntidad;
-import com.miTurno.backend.entidad.HorarioXProfesionalEntidad;
+import com.miTurno.backend.entidad.pivotEntidad.HorarioXProfesionalEntidad;
 import com.miTurno.backend.modelo.HorarioXProfesional;
 import org.springframework.stereotype.Component;
 

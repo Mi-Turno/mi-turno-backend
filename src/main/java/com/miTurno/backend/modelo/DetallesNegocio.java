@@ -13,16 +13,21 @@ public class DetallesNegocio {
     //atributos
     private Long idDetallesNegocio; //pk
     private String rubro;
-    private String nombreNegocio; //unique
-    private Long idNegocio;  //fk a tabla usuarios
+    private String calle;
+    private String altura;
+    private String detalle;
+
 
     //constructor
-    public DetallesNegocio(Long idDetallesNegocio, String rubro, String nombreNegocio,Long idNegocio) {
+
+    public DetallesNegocio(Long idDetallesNegocio, String rubro, String calle, String altura, String detalle) {
         this.idDetallesNegocio = idDetallesNegocio;
-        this.idNegocio = idNegocio;
-        this.nombreNegocio = nombreNegocio;
         this.rubro = rubro;
+        this.calle = calle;
+        this.altura = altura;
+        this.detalle = detalle;
     }
+
 
     //metodos
 
@@ -30,10 +35,11 @@ public class DetallesNegocio {
     @Override
     public String toString() {
         return "DetallesNegocio{" +
-                "idDetallesNegocio=" + idDetallesNegocio +
-                ", idNegocio=" + idNegocio +
-                ", nombreNegocio='" + nombreNegocio + '\'' +
+                "altura='" + altura + '\'' +
+                ", idDetallesNegocio=" + idDetallesNegocio +
                 ", rubro='" + rubro + '\'' +
+                ", calle='" + calle + '\'' +
+                ", detalle='" + detalle + '\'' +
                 '}';
     }
 }

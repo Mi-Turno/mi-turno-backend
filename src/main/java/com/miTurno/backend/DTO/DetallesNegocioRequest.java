@@ -9,17 +9,15 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-
 import java.time.LocalDate;
 
+@Schema(description = "Requisitos para la creacion de un negocio")
+@Builder
 @Getter
 @Setter
-@Builder
-@Schema(description = "Requisitos para la creacion de un usuario ")
-public class UsuarioRequest {
+public class DetallesNegocioRequest {
 
-//    @Schema(description = "Identificador único del usuario", example = "1")
-//    private Long idUsuario;
+    //usuario
 
     @Schema(description = "El nombre del usuario", example = "Juan")
     //@Size(min = 3, max = 50)
@@ -43,8 +41,21 @@ public class UsuarioRequest {
     @Schema(description = "La fecha del usuario", example = "2004-10-10")
     private LocalDate fechaNacimiento;//(YYYY-MM-DD)
 
-    @Schema(description = "El rol del usuario", example = "CLIENTE")
+    @Schema(description = "El rol del usuario", example = "NEGOCIO")
     private RolUsuarioEnum rolUsuarioEnum;
+
+    //detalles negocio
+    @Schema(description = "rubro del negocio", example = "Peluqueria")
+    private String rubro;
+
+    @Schema(description = "calle del negocio", example = "San Juan")
+    private String calle;
+
+    @Schema(description = "altura del negocio", example = "3241")
+    private String altura;
+
+    @Schema(description = "detalles del negocio", example = "Departamento, piso 3")
+    private String detalle;
 
 
 
