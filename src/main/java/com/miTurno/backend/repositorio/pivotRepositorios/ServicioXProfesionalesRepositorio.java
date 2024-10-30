@@ -1,5 +1,6 @@
 package com.miTurno.backend.repositorio.pivotRepositorios;
 
+import com.miTurno.backend.entidad.ServicioEntidad;
 import com.miTurno.backend.entidad.pivotEntidad.ServiciosXProfesionalEntidad;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,6 +14,6 @@ public interface ServicioXProfesionalesRepositorio extends JpaRepository<Servici
             "JOIN ServiciosXProfesionalEntidad AS sxp ON s.idServicio = sxp.idServicio " +
             "JOIN UsuarioEntidad AS u ON sxp.idProfesional = u.idUsuario " +
             "WHERE  u.idUsuario = :id_profesional")
-    List<Long> findAllServiciosByProfesional(@Param("id_profesional")Long id_profesional);
+    List<ServicioEntidad> findAllServiciosByProfesional(@Param("id_profesional")Long id_profesional);
 
 }

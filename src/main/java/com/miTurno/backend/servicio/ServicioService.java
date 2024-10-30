@@ -59,14 +59,11 @@ public class ServicioService {
     }
 
     public List<Servicio> obtenerServiciosPorIdProfesional(Long idProfesional){
-        List<Long> idServiciosList= servicioXProfesionalesRepositorio.findAllServiciosByProfesional(idProfesional);
+        List<ServicioEntidad> idServiciosList= servicioXProfesionalesRepositorio.findAllServiciosByProfesional(idProfesional);
 
-        List<ServicioEntidad> servicioEntidadList = idServiciosList.stream()
-                .map(servicioRepositorio::findById)
-                .flatMap(Optional::stream)// Extrae los valores presentes
-                .toList();
 
-        return servicioEntidadList.stream().map(servicioMapper::toModel).toList();
+
+        return idServiciosList.stream().map(servicioMapper::toModel).toList();
     }
 
     //DELETE

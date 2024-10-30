@@ -1,6 +1,7 @@
 package com.miTurno.backend.servicio;
 
 import com.miTurno.backend.DTO.DetallesNegocioRequest;
+import com.miTurno.backend.DTO.ProfesionalRequest;
 import com.miTurno.backend.DTO.UsuarioRequest;
 import com.miTurno.backend.entidad.RolEntidad;
 import com.miTurno.backend.entidad.UsuarioEntidad;
@@ -22,14 +23,16 @@ public class UsuarioService {
     private final UsuarioMapper usuarioMapper;
     private final RolRepositorio rolRepositorio;
     private final DetallesNegocioService detallesNegocioService;
+    private final ProfesionalesXNegocioService profesionalesXNegocioService;
 
 
     @Autowired
-    public UsuarioService(UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, RolRepositorio rolRepositorio, DetallesNegocioService detallesNegocioService) {
+    public UsuarioService(UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, RolRepositorio rolRepositorio, DetallesNegocioService detallesNegocioService, ProfesionalesXNegocioService profesionalesXNegocioService) {
         this.usuarioRepositorio = usuarioRepositorio;
         this.usuarioMapper = usuarioMapper;
         this.rolRepositorio = rolRepositorio;
         this.detallesNegocioService = detallesNegocioService;
+        this.profesionalesXNegocioService = profesionalesXNegocioService;
     }
 
     //GET
@@ -74,12 +77,12 @@ public class UsuarioService {
         usuarioEntidad = usuarioRepositorio.save(usuarioEntidad);
         return usuarioMapper.toModel(usuarioEntidad);
     }
-    //crear negocio
+    //POST negocio
     public DetallesNegocio crearUnNegocio(DetallesNegocioRequest detallesNegocioRequest)
             throws NombreNegocioYaExisteException, RolIncorrectoException {
 
         String nombreNegocio = detallesNegocioRequest.getNombre();
-        RolUsuarioEnum rolUsuarioEnum = detallesNegocioRequest.getRolEntidad().getRol();
+        RolUsuarioEnum rolUsuarioEnum = detallesNegocioRequest.getRolEntidad();
 
         if (rolUsuarioEnum != RolUsuarioEnum.NEGOCIO) {
             throw new RolIncorrectoException(RolUsuarioEnum.NEGOCIO, rolUsuarioEnum);
@@ -109,6 +112,43 @@ public class UsuarioService {
 
         // Crear los detalles del negocio
         return detallesNegocioService.crearDetallesNegocio(detallesNegocioRequest);
+    }
+
+    //POST profesional
+
+    public Usuario crearUnprofesional(ProfesionalRequest profesionalRequest) throws  RolIncorrectoException {
+
+        RolUsuarioEnum rolUsuarioEnum = profesionalRequest.getRolEntidad();
+
+        if (rolUsuarioEnum != RolUsuarioEnum.PROFESIONAL) {
+            throw new RolIncorrectoException(RolUsuarioEnum.PROFESIONAL, rolUsuarioEnum);
+        }
+
+        // Crear RolEntidad usando el RolUsuarioEnum
+        RolEntidad rolEntidad = new RolEntidad();
+        rolEntidad.setRol(rolUsuarioEnum);
+
+        // Crear UsuarioRequest usando RolEntidad
+        UsuarioRequest usuarioRequest = UsuarioRequest.builder()
+                .rolEntidad(rolEntidad.getRol())
+                .nombre(profesionalRequest.getNombre())
+                .apellido(profesionalRequest.getApellido())
+                .email(profesionalRequest.getEmail())
+                .password(profesionalRequest.getPassword())
+                .telefono(profesionalRequest.getTelefono())
+                .fechaNacimiento(profesionalRequest.getFechaNacimiento())
+                .build();
+
+        // Crear el usuario
+        Usuario profesional = crearUnUsuario(usuarioRequest);
+
+
+        //el id relacion lo agarro de onda
+        Long idRelacion =profesionalesXNegocioService.crearProfesionalPorNegocio(profesional.getIdUsuario(), profesionalRequest.getIdNegocio());
+
+
+        // Crear los detalles del negocio
+        return profesional;
     }
 
 

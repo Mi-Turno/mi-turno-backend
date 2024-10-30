@@ -1,6 +1,8 @@
 package com.miTurno.backend.controlador;
 
 import com.miTurno.backend.DTO.DetallesNegocioRequest;
+import com.miTurno.backend.DTO.ProfesionalRequest;
+import com.miTurno.backend.DTO.UsuarioRequest;
 import com.miTurno.backend.entidad.UsuarioEntidad;
 import com.miTurno.backend.mapper.UsuarioMapper;
 import com.miTurno.backend.modelo.DetallesNegocio;
@@ -23,7 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController()
-@RequestMapping("/usuarios/negocios")
+@RequestMapping("usuarios/negocios")
 public class NegocioControlador {
     //atributos
 
@@ -55,6 +57,23 @@ public class NegocioControlador {
 
         return usuarioService.crearUnNegocio(detallesNegocioRequest);
     }
+
+    //POST profesional por negocio
+    @Operation(summary = "Crear un nuevo profesional")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "profesional creado con éxito"),
+            @ApiResponse(responseCode = "400", description = "Datos del profesional inválidos", content = @Content(schema =
+            @Schema(implementation = Map.Entry.class), examples = @ExampleObject(value = "{ \"nombre\": \"no puede estar vacío\" }"))),
+            @ApiResponse(responseCode = "409", description = "El email o telefono ingresado ya existe")
+    })
+    @PostMapping("/profesionales")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Usuario crearUnProfesionalPorNegocio(@Parameter(description = "Datos del profesional")
+                                          @Valid @RequestBody ProfesionalRequest profesionalRequest) {
+
+        return usuarioService.crearUnprofesional(profesionalRequest);
+    }
+
 
     //GET all
     @Operation(summary = "Obtener todos los negocios")
@@ -95,7 +114,7 @@ public class NegocioControlador {
     //GET servicios x id negocio
 
     //GET profesionales x id negocio
-    @Operation(summary = "Obtener negocio por id")
+    @Operation(summary = "Obtener profesionales por id negocio")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "Negocio obtenido con exito"),
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
@@ -104,6 +123,7 @@ public class NegocioControlador {
     public List<Usuario> obtenerProfesionalesPorIdNegocio(@PathVariable Long idNegocio){
        return profesionalesXNegocioService.obtenerProfesionalesPorIdNegocio(idNegocio);
     }
-    
+
+
 
 }

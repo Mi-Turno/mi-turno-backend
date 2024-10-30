@@ -1,7 +1,5 @@
 package com.miTurno.backend.DTO;
 
-
-import com.miTurno.backend.entidad.RolEntidad;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
@@ -11,13 +9,14 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
-@Schema(description = "Requisitos para la creacion de un negocio")
+@Schema(description = "Requisitos para la creacion de un profesional")
 @Builder
 @Getter
 @Setter
-public class DetallesNegocioRequest {
+public class ProfesionalRequest {
 
-    //usuario
+    @Schema(description = "id del negocio al que esta relacionado", example = "4")
+    private Long idNegocio;
 
     @Schema(description = "El nombre del usuario", example = "Juan")
     //@Size(min = 3, max = 50)
@@ -41,23 +40,11 @@ public class DetallesNegocioRequest {
     @Schema(description = "La fecha del usuario", example = "2004-10-10")
     private LocalDate fechaNacimiento;//(YYYY-MM-DD)
 
-    @Schema(description = "El rol del usuario", example = "NEGOCIO")
+    @Schema(description = "El rol del usuario", example = "CLIENTE", allowableValues = {"CLIENTE", "ADMIN", "PROFESIONAL", "NEGOCIO"})
     private RolUsuarioEnum rolEntidad;
 
-    //detalles negocio
-    @Schema(description = "rubro del negocio", example = "Peluqueria")
-    private String rubro;
-
-    @Schema(description = "calle del negocio", example = "San Juan")
-    private String calle;
-
-    @Schema(description = "altura del negocio", example = "3241")
-    private String altura;
-
-    @Schema(description = "detalles del negocio", example = "Departamento, piso 3")
-    private String detalle;
-
-    public DetallesNegocioRequest(String nombre, String apellido, String email, String password, String telefono, LocalDate fechaNacimiento, RolUsuarioEnum rolEntidad, String rubro, String calle, String altura, String detalle) {
+    public ProfesionalRequest(Long idNegocio,String nombre, String apellido, String email, String password, String telefono, LocalDate fechaNacimiento, RolUsuarioEnum rolEntidad) {
+        this.idNegocio = idNegocio;
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
@@ -65,12 +52,9 @@ public class DetallesNegocioRequest {
         this.telefono = telefono;
         this.fechaNacimiento = fechaNacimiento;
         this.rolEntidad = rolEntidad;
-        this.rubro = rubro;
-        this.calle = calle;
-        this.altura = altura;
-        this.detalle = detalle;
     }
-    public DetallesNegocioRequest(){
+
+    public ProfesionalRequest() {
 
     }
 }

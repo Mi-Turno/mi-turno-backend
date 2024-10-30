@@ -85,6 +85,11 @@ public class ServicioControlador {
         return servicioService.crearUnServicio(servicioMapper.toModel(servicioRequest));
     }
 
+
+    //todo POST asignar servicio a un profesional
+
+
+
     //DELETE
     @Operation(summary = "Eliminar un servicio por id")
     @DeleteMapping("/{id}")
