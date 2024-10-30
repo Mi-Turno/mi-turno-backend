@@ -1,10 +1,13 @@
 package com.miTurno.backend.configuracion.dbInicializador;
 
 import com.miTurno.backend.entidad.DiaEntidad;
+import com.miTurno.backend.entidad.MetodoDePagoEntidad;
 import com.miTurno.backend.entidad.RolEntidad;
 import com.miTurno.backend.repositorio.DiaRepositorio;
+import com.miTurno.backend.repositorio.MetodosDePagoRepositorio;
 import com.miTurno.backend.repositorio.RolRepositorio;
 import com.miTurno.backend.tipos.DiasEnum;
+import com.miTurno.backend.tipos.MetodosDePagoEnum;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,11 +18,14 @@ public class DbInicializador {
     //atributos
     private final RolRepositorio rolRepositorio;
     private final DiaRepositorio diaRepositorio;
+    private final MetodosDePagoRepositorio metodosDePagoRepositorio;
     @Autowired
-    public DbInicializador(RolRepositorio rolRepositorio, DiaRepositorio diaRepositorio) {
+    public DbInicializador(RolRepositorio rolRepositorio, DiaRepositorio diaRepositorio,MetodosDePagoRepositorio metodosDePagoRepositorio) {
         //todo inicializar todos los repos
         this.rolRepositorio = rolRepositorio;
         this.diaRepositorio = diaRepositorio;
+        this.metodosDePagoRepositorio = metodosDePagoRepositorio;
+
     }
     @PostConstruct
     public void init(){
@@ -28,6 +34,7 @@ public class DbInicializador {
         //todo init dias
         initRoles();
         initDias();
+        initMetodoDePagos();
     }
 
 
@@ -68,6 +75,23 @@ public class DbInicializador {
         }
         if(diaRepositorio.findByDia(DiasEnum.DOMINGO)==null){
             diaRepositorio.save(new DiaEntidad(DiasEnum.DOMINGO));
+        }
+    }
+    public void initMetodoDePagos(){
+        if(metodosDePagoRepositorio.findBymetodosDePago(MetodosDePagoEnum.EFECTIVO)==null){
+            metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.EFECTIVO));
+        }
+        if(metodosDePagoRepositorio.findBymetodosDePago(MetodosDePagoEnum.TRANSFERENCIA)==null){
+            metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.TRANSFERENCIA));
+        }
+        if(metodosDePagoRepositorio.findBymetodosDePago(MetodosDePagoEnum.MERCADO_PAGO)==null){
+            metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.MERCADO_PAGO));
+        }
+        if(metodosDePagoRepositorio.findBymetodosDePago(MetodosDePagoEnum.TARJETA_DEBITO)==null){
+            metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.TARJETA_DEBITO));
+        }
+        if(metodosDePagoRepositorio.findBymetodosDePago(MetodosDePagoEnum.TARJETA_CREDITO)==null){
+            metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.TARJETA_CREDITO));
         }
     }
 

@@ -44,4 +44,14 @@ public class HorarioXProfesionalService {
         return horarioXProfesionalRepositorio.findByIdProfesionalAndDiaEntidad_Dia(idProfesional, dia);
     }
 
+
+    public boolean eliminarHorarioPorProfesional(Long idHorarioPorProfesional) {
+        boolean rta = false;
+        if(horarioXProfesionalRepositorio.existsById(idHorarioPorProfesional)) {
+            horarioXProfesionalRepositorio.deleteById(idHorarioPorProfesional);
+            rta = true;
+        }
+        return rta;
+    }
+
 }
