@@ -1,12 +1,11 @@
 package com.miTurno.backend.servicio;
 
-import com.miTurno.backend.entidad.RolEntidad;
+import com.miTurno.backend.DTO.DetallesNegocioRequest;
+import com.miTurno.backend.DTO.UsuarioRequest;
 import com.miTurno.backend.entidad.UsuarioEntidad;
-import com.miTurno.backend.excepcion.CelularYaExisteException;
-import com.miTurno.backend.excepcion.EmailNoExistenteException;
-import com.miTurno.backend.excepcion.EmailYaExisteException;
-import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
+import com.miTurno.backend.excepcion.*;
 import com.miTurno.backend.mapper.UsuarioMapper;
+import com.miTurno.backend.modelo.DetallesNegocio;
 import com.miTurno.backend.modelo.Usuario;
 import com.miTurno.backend.repositorio.RolRepositorio;
 import com.miTurno.backend.repositorio.UsuarioRepositorio;
@@ -21,12 +20,15 @@ public class UsuarioService {
     private final UsuarioRepositorio usuarioRepositorio;
     private final UsuarioMapper usuarioMapper;
     private final RolRepositorio rolRepositorio;
+    private final DetallesNegocioService detallesNegocioService;
+
 
     @Autowired
-    public UsuarioService(UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, RolRepositorio rolRepositorio) {
+    public UsuarioService(UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, RolRepositorio rolRepositorio, DetallesNegocioService detallesNegocioService) {
         this.usuarioRepositorio = usuarioRepositorio;
         this.usuarioMapper = usuarioMapper;
         this.rolRepositorio = rolRepositorio;
+        this.detallesNegocioService = detallesNegocioService;
     }
 
     //GET
@@ -53,8 +55,8 @@ public class UsuarioService {
         return usuarioRepositorio.findByRolEntidad_RolAndEstado(rol, estado);
     }
 
-    //POST
-    public Usuario crearUnUsuario(Usuario usuario) throws EmailYaExisteException, CelularYaExisteException {
+    //POST usuario
+    public Usuario crearUnUsuario(UsuarioRequest usuario) throws EmailYaExisteException, CelularYaExisteException {
 
         //verificar si ya existe un mail, si no existe, tira excepcion
 
@@ -67,24 +69,58 @@ public class UsuarioService {
         }
 
 
-        UsuarioEntidad usuarioEntidad= usuarioMapper.toEntidad(usuario);
+        UsuarioEntidad usuarioEntidad= usuarioMapper.toEntidad(usuarioMapper.toModel(usuario));
         usuarioEntidad = usuarioRepositorio.save(usuarioEntidad);
         return usuarioMapper.toModel(usuarioEntidad);
     }
+    //crear negocio
+    public DetallesNegocio crearUnNegocio(DetallesNegocioRequest detallesNegocioRequest) throws NombreNegocioYaExisteException, RolIncorrectoException {
 
-//    public Usuario convertirEntidadAUsuario(UsuarioEntidad usuarioEntidad){
-//        Usuario usuario = new Usuario();
-//        usuario.setIdUsuario(usuarioEntidad.getIdUsuario());
-//        usuario.setNombre(usuarioEntidad.getNombre());
-//        usuario.setApellido(usuarioEntidad.getApellido());
-//        usuario.setCorreoElectronico(usuarioEntidad.getCorreoElectronico());
-//        usuario.setPassword(usuarioEntidad.getPassword());
-//        usuario.setCelular(usuarioEntidad.getCelular());
-//        usuario.setFechaNacimiento(usuarioEntidad.getFechaNacimiento());
-//        usuario.setRolUsuario(usuarioEntidad.getRolUsuarioEnum());
-//
-//        return usuario;
-//    }
+        String nombreNegocio = detallesNegocioRequest.getNombre();
+        RolUsuarioEnum rolUsuarioEnum= detallesNegocioRequest.getRolUsuarioEnum();
+
+        //Si el nombre con el rol especifico existe, entonces tiro excepcion
+        if (detallesNegocioRequest.getRolUsuarioEnum() != RolUsuarioEnum.NEGOCIO){
+            throw new RolIncorrectoException(RolUsuarioEnum.NEGOCIO,rolUsuarioEnum);
+        }
+
+        if (usuarioRepositorio.existsByNombreAndRolEntidad_Rol(nombreNegocio,rolUsuarioEnum)){
+            throw new NombreNegocioYaExisteException(nombreNegocio);
+        }
+
+        //creo la request de usuario
+        UsuarioRequest usuarioRequest= UsuarioRequest.builder()
+                .rolUsuarioEnum(detallesNegocioRequest.getRolUsuarioEnum())
+                .nombre(detallesNegocioRequest.getNombre())
+                .apellido(detallesNegocioRequest.getApellido())
+                .email(detallesNegocioRequest.getEmail())
+                .password(detallesNegocioRequest.getPassword())
+                .telefono(detallesNegocioRequest.getTelefono())
+                .fechaNacimiento(detallesNegocioRequest.getFechaNacimiento())
+                .build();
+        //y creo el usuario
+
+        crearUnUsuario(usuarioRequest);
+        //una vez creado el usuario puedo crear los detalles del negocio
+        return detallesNegocioService.crearDetallesNegocio(detallesNegocioRequest);
+    }
+
+    //obtener todos los negocios
+
+    public List<UsuarioEntidad> obtenerTodosLosNegocios(){
+        return usuarioRepositorio.findByRolEntidad_Rol(RolUsuarioEnum.NEGOCIO);
+    }
+
+    //obtener negocio x nombre
+    public UsuarioEntidad obtenerNegocioPorNombre(String nombre) throws NombreNoExisteException{
+       return usuarioRepositorio.findByRolEntidad_RolAndNombre(RolUsuarioEnum.NEGOCIO,nombre).orElseThrow(()->new NombreNoExisteException(nombre));
+    }
+
+    //obtener negocio x id
+    public UsuarioEntidad obtenerNegocioPorId(Long idNegocio) throws UsuarioNoExistenteException{
+        return usuarioRepositorio.findByRolEntidad_RolAndIdUsuario(RolUsuarioEnum.NEGOCIO, idNegocio).orElseThrow(()->new UsuarioNoExistenteException(idNegocio));
+    }
+
     //UPDATE
     public Usuario actualizarUsuarioPorId(Long id, Usuario actualizado) throws UsuarioNoExistenteException {
         UsuarioEntidad usuarioEntidad = usuarioRepositorio.findById(id).orElseThrow(()-> new UsuarioNoExistenteException(id));
