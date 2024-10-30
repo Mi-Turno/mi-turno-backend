@@ -1,10 +1,7 @@
 package com.miTurno.backend.manejador;
 
 
-import com.miTurno.backend.excepcion.CelularYaExisteException;
-import com.miTurno.backend.excepcion.EmailYaExisteException;
-import com.miTurno.backend.excepcion.ServicioNoExisteException;
-import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
+import com.miTurno.backend.excepcion.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +40,27 @@ public class ManejadorGlobalExcepciones {
         Map<String, String> errores = new HashMap<>();
         errores.put("celular", ex.getNroCelular());
         return new ResponseEntity<>(errores, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(NombreNegocioYaExisteException.class)
+    public ResponseEntity<Map<String,String>> NombreNegocioYaExisteException(NombreNegocioYaExisteException ex){
+        Map<String, String> errores = new HashMap<>();
+        errores.put("nombre Negocio", ex.getMessage());
+        return new ResponseEntity<>(errores, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(RolIncorrectoException.class)
+    public ResponseEntity<Map<String,String>> RolIncorrectoException(RolIncorrectoException ex){
+        Map<String, String> errores = new HashMap<>();
+        errores.put("Error de roles", ex.getMessage());
+        return new ResponseEntity<>(errores, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NombreNoExisteException.class)
+    public ResponseEntity<Map<String,String>> NombreNoExisteException(NombreNoExisteException ex){
+        Map<String, String> errores = new HashMap<>();
+        errores.put("Nombre", ex.getMessage());
+        return new ResponseEntity<>(errores, HttpStatus.NOT_FOUND);
     }
 
 }
