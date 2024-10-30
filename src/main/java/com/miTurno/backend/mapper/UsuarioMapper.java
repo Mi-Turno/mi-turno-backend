@@ -36,7 +36,7 @@ public class UsuarioMapper {
     //request a usuario
     public Usuario toModel(UsuarioRequest usuarioRequest){
         return Usuario.builder()
-                .rolUsuario(usuarioRequest.getRolEntidad().getRol())
+                .rolUsuario(usuarioRequest.getRolEntidad())
                 .apellido(usuarioRequest.getApellido())
                 .telefono(usuarioRequest.getTelefono())
                 .email(usuarioRequest.getEmail())

@@ -1,5 +1,6 @@
 package com.miTurno.backend.entidad;
 
+import com.fasterxml.jackson.annotation.JsonValue;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -22,6 +23,11 @@ public class RolEntidad {
     private RolUsuarioEnum rol;
 
 
+    @JsonValue
+    public String getNombre() {
+        return rol.name();
+    }
+
     //constructores
 
     public RolEntidad(Long id_rol, RolUsuarioEnum rol) {
@@ -32,7 +38,6 @@ public class RolEntidad {
     public RolEntidad(RolUsuarioEnum rol) {
         this.rol = rol;
     }
-
     public RolEntidad() {
 
     }
