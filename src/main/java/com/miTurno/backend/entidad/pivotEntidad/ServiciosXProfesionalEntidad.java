@@ -17,20 +17,20 @@ public class ServiciosXProfesionalEntidad {
     private Long Servicios_x_profesional;
 
     @Column(name = "id_profesional")
-    private Long profesional;
+    private Long idProfesional;
 
     @Column(name = "id_servicio")
-    private Long servicio;
+    private Long idServicio;
 
     @Column(name = "precio")
     private Double precio;
     public ServiciosXProfesionalEntidad() {
     }
 
-    public ServiciosXProfesionalEntidad(Long servicios_x_profesional, Long profesional, Long servicio, Double precio) {
+    public ServiciosXProfesionalEntidad(Long servicios_x_profesional, Long idProfesional, Long idServicio, Double precio) {
         Servicios_x_profesional = servicios_x_profesional;
-        this.profesional = profesional;
-        this.servicio = servicio;
+        this.idProfesional = idProfesional;
+        this.idServicio = idServicio;
         this.precio = precio;
     }
 }
