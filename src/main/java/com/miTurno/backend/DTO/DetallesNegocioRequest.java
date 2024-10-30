@@ -42,7 +42,7 @@ public class DetallesNegocioRequest {
     private LocalDate fechaNacimiento;//(YYYY-MM-DD)
 
     @Schema(description = "El rol del usuario", example = "NEGOCIO")
-    private RolUsuarioEnum rolUsuarioEnum;
+    private RolEntidad rolEntidad;
 
     //detalles negocio
     @Schema(description = "rubro del negocio", example = "Peluqueria")
@@ -57,6 +57,20 @@ public class DetallesNegocioRequest {
     @Schema(description = "detalles del negocio", example = "Departamento, piso 3")
     private String detalle;
 
+    public DetallesNegocioRequest(String nombre, String apellido, String email, String password, String telefono, LocalDate fechaNacimiento, RolEntidad rolEntidad, String rubro, String calle, String altura, String detalle) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.email = email;
+        this.password = password;
+        this.telefono = telefono;
+        this.fechaNacimiento = fechaNacimiento;
+        this.rolEntidad = rolEntidad;
+        this.rubro = rubro;
+        this.calle = calle;
+        this.altura = altura;
+        this.detalle = detalle;
+    }
+    public DetallesNegocioRequest(){
 
-
+    }
 }

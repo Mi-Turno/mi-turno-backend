@@ -1,8 +1,9 @@
-package com.miTurno.backend.entidad;
+package com.miTurno.backend.entidad.pivotEntidad;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.miTurno.backend.entidad.DiaEntidad;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

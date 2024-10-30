@@ -77,10 +77,10 @@ public class UsuarioService {
     public DetallesNegocio crearUnNegocio(DetallesNegocioRequest detallesNegocioRequest) throws NombreNegocioYaExisteException, RolIncorrectoException {
 
         String nombreNegocio = detallesNegocioRequest.getNombre();
-        RolUsuarioEnum rolUsuarioEnum= detallesNegocioRequest.getRolUsuarioEnum();
+        RolUsuarioEnum rolUsuarioEnum= detallesNegocioRequest.getRolEntidad().getRol();
 
         //Si el nombre con el rol especifico existe, entonces tiro excepcion
-        if (detallesNegocioRequest.getRolUsuarioEnum() != RolUsuarioEnum.NEGOCIO){
+        if (detallesNegocioRequest.getRolEntidad().getRol() != RolUsuarioEnum.NEGOCIO){
             throw new RolIncorrectoException(RolUsuarioEnum.NEGOCIO,rolUsuarioEnum);
         }
 
@@ -90,7 +90,7 @@ public class UsuarioService {
 
         //creo la request de usuario
         UsuarioRequest usuarioRequest= UsuarioRequest.builder()
-                .rolUsuarioEnum(detallesNegocioRequest.getRolUsuarioEnum())
+                .rolEntidad(detallesNegocioRequest.getRolEntidad())
                 .nombre(detallesNegocioRequest.getNombre())
                 .apellido(detallesNegocioRequest.getApellido())
                 .email(detallesNegocioRequest.getEmail())

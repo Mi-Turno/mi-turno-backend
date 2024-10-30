@@ -44,8 +44,19 @@ public class UsuarioRequest {
     private LocalDate fechaNacimiento;//(YYYY-MM-DD)
 
     @Schema(description = "El rol del usuario", example = "CLIENTE")
-    private RolUsuarioEnum rolUsuarioEnum;
+    private RolEntidad rolEntidad;
 
+    public UsuarioRequest(String nombre, String apellido, String email, String password, String telefono, LocalDate fechaNacimiento, RolEntidad rolEntidad) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.email = email;
+        this.password = password;
+        this.telefono = telefono;
+        this.fechaNacimiento = fechaNacimiento;
+        this.rolEntidad = rolEntidad;
+    }
 
+    public UsuarioRequest() {
 
+    }
 }
