@@ -5,23 +5,26 @@ import com.miTurno.backend.excepcion.ServicioNoExisteException;
 import com.miTurno.backend.mapper.ServicioMapper;
 import com.miTurno.backend.modelo.Servicio;
 import com.miTurno.backend.repositorio.ServicioRepositorio;
+import com.miTurno.backend.repositorio.pivotRepositorios.ServicioXProfesionalesRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ServicioService {
 
     private final ServicioRepositorio servicioRepositorio;
     private final ServicioMapper servicioMapper;
+    private final ServicioXProfesionalesRepositorio servicioXProfesionalesRepositorio;
 
 
     @Autowired
-    public ServicioService(ServicioRepositorio servicioRepositorio, ServicioMapper servicioMapper) {
+    public ServicioService(ServicioRepositorio servicioRepositorio, ServicioMapper servicioMapper, ServicioXProfesionalesRepositorio servicioXProfesionalesRepositorio) {
         this.servicioRepositorio = servicioRepositorio;
         this.servicioMapper= servicioMapper;
-       
+        this.servicioXProfesionalesRepositorio = servicioXProfesionalesRepositorio;
     }
 
     //GET all
@@ -53,6 +56,17 @@ public class ServicioService {
         servicioEntidad.setPrecio(0.0);
         servicioRepositorio.save(servicioEntidad);
         return servicioMapper.toModel(servicioEntidad);
+    }
+
+    public List<Servicio> obtenerServiciosPorIdProfesional(Long idProfesional){
+        List<Long> idServiciosList= servicioXProfesionalesRepositorio.findAllServiciosByProfesional(idProfesional);
+
+        List<ServicioEntidad> servicioEntidadList = idServiciosList.stream()
+                .map(servicioRepositorio::findById)
+                .flatMap(Optional::stream)// Extrae los valores presentes
+                .toList();
+
+        return servicioEntidadList.stream().map(servicioMapper::toModel).toList();
     }
 
     //DELETE
