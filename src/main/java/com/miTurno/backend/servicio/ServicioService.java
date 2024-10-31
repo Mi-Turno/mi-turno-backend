@@ -3,14 +3,13 @@ package com.miTurno.backend.servicio;
 import com.miTurno.backend.entidad.ServicioEntidad;
 import com.miTurno.backend.excepcion.ServicioNoExisteException;
 import com.miTurno.backend.mapper.ServicioMapper;
-import com.miTurno.backend.modelo.Servicio;
+import com.miTurno.backend.DTO.Servicio;
 import com.miTurno.backend.repositorio.ServicioRepositorio;
 import com.miTurno.backend.repositorio.pivotRepositorios.ServicioXProfesionalesRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ServicioService {

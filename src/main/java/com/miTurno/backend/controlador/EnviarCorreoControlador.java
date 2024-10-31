@@ -1,6 +1,6 @@
 package com.miTurno.backend.controlador;
 
-import com.miTurno.backend.DTO.EmailRequest;
+import com.miTurno.backend.request.EmailRequest;
 
 import com.miTurno.backend.servicio.EnviarCorreoService;
 import jakarta.validation.Valid;

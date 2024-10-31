@@ -1,14 +1,11 @@
 package com.miTurno.backend.controlador;
 
 
-import com.miTurno.backend.DTO.DetallesNegocioRequest;
-import com.miTurno.backend.DTO.UsuarioLoginRequest;
-import com.miTurno.backend.DTO.UsuarioRequest;
+import com.miTurno.backend.request.UsuarioLoginRequest;
+import com.miTurno.backend.request.UsuarioRequest;
 import com.miTurno.backend.entidad.UsuarioEntidad;
-import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import com.miTurno.backend.mapper.UsuarioMapper;
-import com.miTurno.backend.modelo.DetallesNegocio;
-import com.miTurno.backend.modelo.Usuario;
+import com.miTurno.backend.DTO.Usuario;
 import com.miTurno.backend.servicio.UsuarioService;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,8 +44,9 @@ public class UsuarioControlador {
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
     @GetMapping
-    public List<UsuarioEntidad> listarUsuarios(){
-        return usuarioService.obtenerTodosLosUsuarios();
+    public ResponseEntity<List<UsuarioEntidad> >listarUsuarios(){
+        List<UsuarioEntidad> usuarioEntidadList= usuarioService.obtenerTodosLosNegocios();
+        return ResponseEntity.ok(usuarioEntidadList);//200
     }
 
 
@@ -59,9 +57,10 @@ public class UsuarioControlador {
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
     @GetMapping("/{id}")//todo hacer exception para no usar Optional
-    public UsuarioEntidad obtenerUsuarioPorId(@Parameter(description = "ID del usuario",example = "1")
+    public ResponseEntity<UsuarioEntidad> obtenerUsuarioPorId(@Parameter(description = "ID del usuario",example = "1")
                                                        @PathVariable Long id){
-        return usuarioService.buscarUsuario(id);
+        UsuarioEntidad usuarioEntidad= usuarioService.buscarUsuario(id);
+        return ResponseEntity.ok(usuarioEntidad);//200
     }
 
     //GET
@@ -126,7 +125,7 @@ public class UsuarioControlador {
     public Usuario crearUnUsuario(@Parameter(description = "Datos del usuario")
                                   @Valid @RequestBody UsuarioRequest usuarioRequest) {
 
-        return usuarioService.crearUnUsuario(usuarioRequest);
+        return usuarioService.crearUnUsuario(usuarioMapper.toModel(usuarioRequest));
     }
     //UPDATE
     @Operation(summary = "actualizar usuario por ID")

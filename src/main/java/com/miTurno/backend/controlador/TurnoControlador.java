@@ -1,10 +1,10 @@
 package com.miTurno.backend.controlador;
 
 
-import com.miTurno.backend.DTO.TurnoRequest;
+import com.miTurno.backend.request.TurnoRequest;
 import com.miTurno.backend.entidad.TurnoEntidad;
 import com.miTurno.backend.mapper.TurnoMapper;
-import com.miTurno.backend.modelo.Turno;
+import com.miTurno.backend.DTO.Turno;
 import com.miTurno.backend.servicio.TurnoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -23,8 +23,10 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/turnos")
+@RequestMapping("/negocios/{idNegocio}/turnos")
 public class TurnoControlador {
+
+    //TODO, ESTE CONTROLADOR SE DEBERIA BORRAR Y MANDARLO AL DE PROFESIONALES
 
     private final TurnoService turnoService;
     private final TurnoMapper turnoMapper;
@@ -41,7 +43,7 @@ public class TurnoControlador {
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
     @GetMapping
-    public List<TurnoEntidad> listarTurnos(){
+    public List<TurnoEntidad> listarTurnosPorNegocio(){
         return turnoService.obtenerTodosLosTurnos();
     }
 

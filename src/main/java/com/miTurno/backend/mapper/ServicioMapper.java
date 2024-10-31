@@ -1,9 +1,8 @@
 package com.miTurno.backend.mapper;
 
-import com.miTurno.backend.DTO.ServicioRequest;
+import com.miTurno.backend.request.ServicioRequest;
 import com.miTurno.backend.entidad.ServicioEntidad;
-import com.miTurno.backend.modelo.Servicio;
-import lombok.Builder;
+import com.miTurno.backend.DTO.Servicio;
 import org.springframework.stereotype.Component;
 
 @Component

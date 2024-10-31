@@ -26,6 +26,7 @@ public class MetodoDePagoEntidad {
     public String getNombre() {
         return metodosDePago.name();
     }
+
     public MetodoDePagoEntidad(Long idMetodoDePago, MetodosDePagoEnum metodosDePago) {
         this.id_metodo_de_pago = idMetodoDePago;
         this.metodosDePago = metodosDePago;

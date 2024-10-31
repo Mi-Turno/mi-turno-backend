@@ -17,6 +17,7 @@ public class DiaEntidad {
     //atributos
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_dia")
     private Long id;
 
     @Column(name = "nombre_dias",unique = true, nullable = false)
