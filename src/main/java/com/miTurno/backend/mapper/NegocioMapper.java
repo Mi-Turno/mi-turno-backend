@@ -1,7 +1,6 @@
 package com.miTurno.backend.mapper;
 
 import com.miTurno.backend.request.NegocioRequest;
-import com.miTurno.backend.entidad.DetallesNegocioEntidad;
 import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.DTO.Negocio;
 import org.springframework.stereotype.Component;

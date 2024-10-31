@@ -39,8 +39,9 @@ public class ServicioControlador {
             @ApiResponse(responseCode = "200",description = "Lista de servicios obtenida exitosamente"),
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
-    public List<ServicioEntidad> listarTodosLosServicios(){
-        return servicioService.obtenerListadoTodosLosServicios();
+    @GetMapping("/negocios/{idNegocio}")
+    public List<ServicioEntidad> listarTodosLosServicios(@PathVariable Long idNegocio){
+        return servicioService.obtenerListadoTodosLosServiciosPorNegocio(idNegocio);
     }
 
     //POST servicio por negocio /negocios/{idNegocio}/servicios
@@ -84,13 +85,13 @@ public class ServicioControlador {
 
     //DELETE
     @Operation(summary = "Eliminar un servicio por id")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{idServicio}")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204",description = "El servicio fue borrado con exito"),
             @ApiResponse(responseCode = "404",description = "El servicio no fue encontrado")
     })
-    public Boolean eliminarUnServicio(@PathVariable Long id) throws ServicioNoExisteException {
-        return servicioService.eliminarUnServicio(id);
+    public Boolean eliminarUnServicio(@PathVariable Long idNegocio,@PathVariable Long idServicio) throws ServicioNoExisteException {
+        return servicioService.eliminarUnServicio(idNegocio,idServicio);
     }
 
     //UPDATE
@@ -100,13 +101,14 @@ public class ServicioControlador {
             @ApiResponse(responseCode = "200",description = "Servicio actualizado con exito"),
             @ApiResponse(responseCode = "404",description = "Servicio no encontrado")
     })
-    @PutMapping("/{id}")
+    @PutMapping("/{idServicio}")
     public Servicio actualizarServicio (
-            @Parameter(description = "ID del Servicio para actualizar",example = "4")
-            @PathVariable Long id,
+            @Parameter(description = "ID del Servicio para actualizar",example = "1")
+            @PathVariable Long idNegocio,
             @Parameter(description = "Datos actualizado del Servicio")
+            @PathVariable Long idServicio,
             @RequestBody ServicioRequest servicioRequest) throws ServicioNoExisteException{
 
-        return servicioService.actualizarUnServicio(id,servicioMapper.toModel(servicioRequest));
+        return servicioService.actualizarUnServicio(idNegocio,idServicio,servicioMapper.toModel(servicioRequest));
     }
 }

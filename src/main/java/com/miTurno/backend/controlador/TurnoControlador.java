@@ -46,8 +46,8 @@ public class TurnoControlador {
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
     @GetMapping
-    public List<TurnoEntidad> listarTurnosPorNegocio(){
-        return turnoService.obtenerTodosLosTurnos();
+    public List<TurnoEntidad> listarTurnosPorNegocio(@PathVariable Long idNegocio){
+        return turnoService.obtenerTodosLosTurnosPorNegocio(idNegocio);
     }
 
     //POST
@@ -70,9 +70,9 @@ public class TurnoControlador {
             @ApiResponse(responseCode = "204",description = "El turno fue borrado con exito"),
             @ApiResponse(responseCode = "404",description = "El turno no fue encontrado")
     })
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarTurnoPorId(@PathVariable Long id){
-        Boolean respuesta = turnoService.eliminarTurnoPorId(id);
+    @DeleteMapping("/{idTurno}")
+    public ResponseEntity<Void> eliminarTurnoPorId(@PathVariable Long idNegocio,@PathVariable Long idTurno){
+        Boolean respuesta = turnoService.eliminarTurnoPorId(idNegocio,idTurno);
         if(respuesta){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }else{

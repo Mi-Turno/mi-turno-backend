@@ -10,6 +10,7 @@ import lombok.Setter;
 public class Servicio {
     //atributos
     private Long idServicio;
+    private Long idNegocio;
     private String nombre;
     private Integer duracion;
     private Double precio;
@@ -20,23 +21,25 @@ public class Servicio {
     public Servicio() {
     }
 
-    public Servicio(Long idServicio, String nombre, Integer duracion, Double precio, Boolean estado) {
-        this.duracion = duracion;
-        this.estado = estado;
+    public Servicio(Long idServicio, Long idNegocio, String nombre, Integer duracion, Double precio, Boolean estado) {
         this.idServicio = idServicio;
+        this.idNegocio = idNegocio;
         this.nombre = nombre;
+        this.duracion = duracion;
         this.precio = precio;
+        this.estado = estado;
     }
-    
+
     //metodos
 
 
     @Override
     public String toString() {
         return "Servicio{" +
-                "duracion=" + duracion +
-                ", idServicio=" + idServicio +
+                "idServicio=" + idServicio +
+                ", idNegocio=" + idNegocio +
                 ", nombre='" + nombre + '\'' +
+                ", duracion=" + duracion +
                 ", precio=" + precio +
                 ", estado=" + estado +
                 '}';
