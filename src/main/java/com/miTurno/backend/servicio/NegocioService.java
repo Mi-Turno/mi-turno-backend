@@ -8,7 +8,7 @@ import com.miTurno.backend.mapper.UsuarioMapper;
 import com.miTurno.backend.repositorio.RolRepositorio;
 import com.miTurno.backend.repositorio.UsuarioRepositorio;
 import com.miTurno.backend.request.NegocioRequest;
-import com.miTurno.backend.entidad.DetallesNegocioEntidad;
+
 import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.entidad.ProfesionalEntidad;
 import com.miTurno.backend.mapper.NegocioMapper;

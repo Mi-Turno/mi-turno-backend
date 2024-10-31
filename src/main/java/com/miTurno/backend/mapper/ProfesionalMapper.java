@@ -7,6 +7,9 @@ import com.miTurno.backend.request.ProfesionalRequest;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class ProfesionalMapper {
 
@@ -50,5 +53,11 @@ public class ProfesionalMapper {
                 .fechaNacimiento(profesionalRequest.getFechaNacimiento())
                 .idNegocio(profesionalRequest.getIdNegocio())
                 .build();
+    }
+
+    public List<Profesional> toModel(List<ProfesionalEntidad> profesionalList) {
+        return profesionalList.stream()
+                .map(this::toModel) // Usa el método toModel(ProfesionalEntidad) para cada entidad en la lista
+                .collect(Collectors.toList());
     }
 }
