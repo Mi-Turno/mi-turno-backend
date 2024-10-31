@@ -50,7 +50,7 @@ public class ProfesionalService {
         }
 
         //si el negocio que quiero asignar al profesional no existe, tiro excepcion
-        NegocioEntidad negocioEntidad = negocioRepositorio.findById(profesionalRequest.getIdNegocio()).orElseThrow(()-> new RecursoNoExisteException("Id negocio no existe"))
+        NegocioEntidad negocioEntidad = negocioRepositorio.findById(profesionalRequest.getIdNegocio()).orElseThrow(()-> new RecursoNoExisteException("Id negocio no existe"));
 
         // Crear UsuarioRequest usando RolEntidad
         UsuarioRequest usuarioRequest = UsuarioRequest.builder()
@@ -79,6 +79,6 @@ public class ProfesionalService {
     public List<Profesional> obtenerProfesionalesPorIdNegocio(Long idNegocio) {
         List<ProfesionalEntidad> profesionalList = profesionalRepositorio.findAllByIdNegocio(idNegocio);
 
-        return profesionalList.stream().map()
+        return profesionalMapper.toModel(profesionalList);
     }
 }

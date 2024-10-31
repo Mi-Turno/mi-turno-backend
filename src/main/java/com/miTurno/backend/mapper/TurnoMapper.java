@@ -25,12 +25,12 @@ public class TurnoMapper {
         MetodosDePagoEnum metodosDePagoEnum= metodosDePagoRepositorio.findById(turnoEntidad.getMetodoDePagoEntidad().getId_metodo_de_pago()).get().getMetodosDePago();
         HorarioProfesional horarioProfesional= horarioProfesionalMapper.toModel(turnoEntidad.getHorarioProfesionalEntidad());
         return Turno.builder()
-                .idServicio(turnoEntidad.getIdTurno())
+                .idServicio(turnoEntidad.getIdServicio().getIdServicio())
                 .idTurno(turnoEntidad.getIdTurno())
                 .metodosDePagoEnum(metodosDePagoEnum)
                 .idCliente(turnoEntidad.getIdTurno())
                 .idNegocio(turnoEntidad.getNegocioEntidad().getIdUsuario())
-                .horarioProfesional()
+                .horarioProfesional(horarioProfesional)
                 .estado(turnoEntidad.getEstado())
                 .build();
     }

@@ -12,6 +12,7 @@ public class ServicioMapper {
     public Servicio toModel(ServicioEntidad servicioEntidad){
         return  Servicio.builder()
                 .idServicio(servicioEntidad.getIdServicio())
+                .idNegocio(servicioEntidad.getIdNegocio().getIdUsuario())
                 .duracion(servicioEntidad.getDuracion())
                 .estado(servicioEntidad.getEstado())
                 .precio(servicioEntidad.getPrecio())
@@ -22,6 +23,7 @@ public class ServicioMapper {
     //request a servicio
     public Servicio toModel(ServicioRequest servicioRequest){
         return Servicio.builder()
+                .idNegocio(servicioRequest.getIdNegocio())
                 .duracion(servicioRequest.getDuracion())
                 .precio(servicioRequest.getPrecio())
                 .nombre(servicioRequest.getNombre())

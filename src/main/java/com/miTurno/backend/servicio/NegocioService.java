@@ -86,7 +86,9 @@ public class NegocioService {
 
 
 
+
         usuarioService.crearUnUsuario(negocio);
+
 
 
         return negocio;
