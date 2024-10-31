@@ -43,4 +43,13 @@ public class CredencialesEntidad {
 
     }
 
+    public CredencialesEntidad(Long id, String email, String password, String telefono, UsuarioEntidad usuario, RolEntidad rolEntidad, Boolean estado) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.telefono = telefono;
+        this.usuario = usuario;
+        this.rolEntidad = rolEntidad;
+        this.estado = estado;
+    }
 }

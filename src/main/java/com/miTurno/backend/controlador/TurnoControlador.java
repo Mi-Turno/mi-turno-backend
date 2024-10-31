@@ -40,7 +40,7 @@ public class TurnoControlador {
 
 
     //GET x id negocio
-    @Operation(summary = "Obtener todos los turnos")
+   /* @Operation(summary = "Obtener todos los turnos")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "Lista de turnos obtenida"),
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
@@ -48,7 +48,7 @@ public class TurnoControlador {
     @GetMapping
     public List<TurnoEntidad> listarTurnosPorNegocio(@PathVariable Long idNegocio){
         return turnoService.obtenerTodosLosTurnosPorNegocio(idNegocio);
-    }
+    }*/
 
     //POST
     @Operation(summary = "Crear un nuevo turno")
@@ -65,7 +65,7 @@ public class TurnoControlador {
     }
 
     //DELETE
-    @Operation(summary = "Eliminar un Turno por ID")
+   /* @Operation(summary = "Eliminar un Turno por ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204",description = "El turno fue borrado con exito"),
             @ApiResponse(responseCode = "404",description = "El turno no fue encontrado")
@@ -78,7 +78,7 @@ public class TurnoControlador {
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-    }
+    }*/
 
 
 

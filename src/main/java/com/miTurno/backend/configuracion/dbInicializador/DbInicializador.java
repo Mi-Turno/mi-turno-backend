@@ -32,25 +32,25 @@ public class DbInicializador {
 
         //todo init metodos de pago
         //todo init dias
-        initRoles();
-        initDias();
-        initMetodoDePagos();
+        //initRoles();
+        //initDias();
+        //initMetodoDePagos();
     }
 
 
 
     public void initRoles() {
         if (rolRepositorio.findByRol(RolUsuarioEnum.ADMIN) == null) {
-            rolRepositorio.save(new RolEntidad(RolUsuarioEnum.ADMIN));
+            rolRepositorio.save(new RolEntidad());
         }
         if (rolRepositorio.findByRol(RolUsuarioEnum.CLIENTE) == null) {
-            rolRepositorio.save(new RolEntidad(RolUsuarioEnum.CLIENTE));
+            rolRepositorio.save(new RolEntidad());
         }
         if (rolRepositorio.findByRol(RolUsuarioEnum.PROFESIONAL) == null) {
-            rolRepositorio.save(new RolEntidad(RolUsuarioEnum.PROFESIONAL));
+            rolRepositorio.save(new RolEntidad());
         }
         if (rolRepositorio.findByRol(RolUsuarioEnum.NEGOCIO) == null) {
-            rolRepositorio.save(new RolEntidad(RolUsuarioEnum.NEGOCIO));
+            rolRepositorio.save(new RolEntidad());
         }
     }
 

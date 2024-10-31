@@ -17,10 +17,10 @@ public class ClienteEntidad extends UsuarioEntidad{
 
     //listado de turnos
 
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "clienteEntidad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TurnoEntidad>listadoDeTurnos;
 
     public ClienteEntidad() {
-
+    super();
     }
 }

@@ -38,10 +38,10 @@ public class TurnoService {
         this.metodosDePagoRepositorio = metodosDePagoRepositorio;
     }
     //GET
-    public List<TurnoEntidad> obtenerTodosLosTurnosPorNegocio(Long idNegocio){
+   /* public List<TurnoEntidad> obtenerTodosLosTurnosPorNegocio(Long idNegocio){
         return turnoRepositorio.findByNegocioEntidad_Id(idNegocio);
     }
-
+*/
     //todo agregar comportamiento para esto en el repo
     /*public List<Turno> obtenerListadoPorProfesional(Long idProfesional){
         return turnoRepositorio.findAll().stream().map(turnoMapper::toModel).toList();
@@ -77,7 +77,7 @@ public class TurnoService {
         turnoEntidad = turnoRepositorio.save(turnoEntidad);
         return turnoMapper.toModel(turnoEntidad);
     }
-    public Boolean eliminarTurnoPorId(Long idNegocio,Long id){
+    /*public Boolean eliminarTurnoPorId(Long idNegocio,Long id){
         Boolean rta = false;
         if(turnoRepositorio.existsById(id)){
             TurnoEntidad turnoEntidad = turnoRepositorio.findByNegocioEntidad_IdAndTurnoId(idNegocio, id);
@@ -88,6 +88,6 @@ public class TurnoService {
 
         return rta;
     }
-
+*/
 
 }

@@ -29,7 +29,7 @@ public class ProfesionalControlador {
 
 
     //GET todos los profesionales x id negocio
-    @Operation(summary = "Obtener profesionales por id negocio")
+    /*@Operation(summary = "Obtener profesionales por id negocio")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "Negocio obtenido con exito"),
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
@@ -37,7 +37,7 @@ public class ProfesionalControlador {
     @GetMapping
     public List<Profesional> obtenerProfesionalesPorIdNegocio(@PathVariable Long idNegocio){
         return profesionalService.obtenerProfesionalesPorIdNegocio(idNegocio);
-    }
+    }*/
 
     //GET profesional x id ("/{idProfesional}")
 
@@ -50,7 +50,7 @@ public class ProfesionalControlador {
     //POST un profesional
 
     //POST profesional por negocio
-    @Operation(summary = "Crear un nuevo profesional")
+    /*@Operation(summary = "Crear un nuevo profesional")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "profesional creado con éxito"),
             @ApiResponse(responseCode = "400", description = "Datos del profesional inválidos", content = @Content(schema =
@@ -65,7 +65,7 @@ public class ProfesionalControlador {
 
         //todo CAMBIAR A PROFESIONALES SERVICE
         return profesionalService.crearUnprofesional(profesionalRequest);
-    }
+    }*/
 
 
     //POST nuevo turno a un profesional ("/{idProfesional}/turnos")

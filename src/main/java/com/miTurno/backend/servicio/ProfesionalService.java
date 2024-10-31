@@ -4,7 +4,6 @@ import com.miTurno.backend.DTO.Profesional;
 import com.miTurno.backend.DTO.Usuario;
 import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.entidad.ProfesionalEntidad;
-import com.miTurno.backend.entidad.RolEntidad;
 import com.miTurno.backend.excepcion.RecursoNoExisteException;
 import com.miTurno.backend.excepcion.RolIncorrectoException;
 import com.miTurno.backend.mapper.ProfesionalMapper;
@@ -40,7 +39,7 @@ public class ProfesionalService {
 
     //POST profesional
 
-    public Usuario crearUnprofesional(ProfesionalRequest profesionalRequest) throws RolIncorrectoException,RecursoNoExisteException {
+    /*public Usuario crearUnprofesional(ProfesionalRequest profesionalRequest) throws RolIncorrectoException,RecursoNoExisteException {
 
 
         RolUsuarioEnum rolUsuarioEnum = rolRepositorio.findById(profesionalRequest.getIdRol()).get().getRol();
@@ -76,9 +75,9 @@ public class ProfesionalService {
         return profesionalMapper.toModel(profesionalEntidad);
     }
 
-    public List<Profesional> obtenerProfesionalesPorIdNegocio(Long idNegocio) {
-        List<ProfesionalEntidad> profesionalList = profesionalRepositorio.findAllByIdNegocio(idNegocio);
+   /* public List<Profesional> obtenerProfesionalesPorIdNegocio(Long idNegocio) {
+        List<ProfesionalEntidad> profesionalList = profesionalRepositorio.findAllByid_negocio(idNegocio);
 
         return profesionalMapper.toModel(profesionalList);
-    }
+    }*/
 }

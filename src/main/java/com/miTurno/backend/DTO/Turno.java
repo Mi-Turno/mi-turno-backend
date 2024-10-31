@@ -30,4 +30,14 @@ public class Turno {
 
     }
 
+    public Turno(Long idTurno, Long idServicio, Long idCliente, Long idNegocio, MetodosDePagoEnum metodosDePagoEnum, LocalDate fechaInicio, HorarioProfesional horarioProfesional, Boolean estado) {
+        this.idTurno = idTurno;
+        this.idServicio = idServicio;
+        this.idCliente = idCliente;
+        this.idNegocio = idNegocio;
+        this.metodosDePagoEnum = metodosDePagoEnum;
+        this.fechaInicio = fechaInicio;
+        this.horarioProfesional = horarioProfesional;
+        this.estado = estado;
+    }
 }

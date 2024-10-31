@@ -25,17 +25,17 @@ public class UsuarioService {
     private final UsuarioRepositorio usuarioRepositorio;
     private final UsuarioMapper usuarioMapper;
     private final RolRepositorio rolRepositorio;
-    private final NegocioService negocioService;
+   // private final NegocioService negocioService;
 
     private final CredencialesRepositorio credencialesRepositorio;
 
 
     @Autowired
-    public UsuarioService(UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, RolRepositorio rolRepositorio, NegocioService negocioService, CredencialesRepositorio credencialesRepositorio) {
+    public UsuarioService(UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, RolRepositorio rolRepositorio, CredencialesRepositorio credencialesRepositorio) {
         this.usuarioRepositorio = usuarioRepositorio;
         this.usuarioMapper = usuarioMapper;
         this.rolRepositorio = rolRepositorio;
-        this.negocioService = negocioService;
+        //this.negocioService = negocioService;
 
         this.credencialesRepositorio = credencialesRepositorio;
     }
@@ -52,7 +52,7 @@ public class UsuarioService {
     }
 
     //get x email y contra
-    public UsuarioEntidad obtenerUsuariosByEmailAndPassword(String email,String password)throws UsuarioNoExistenteException{
+    /*public UsuarioEntidad obtenerUsuariosByEmailAndPassword(String email,String password)throws UsuarioNoExistenteException{
         return usuarioRepositorio.findByEmailAndPassword(email,password).orElseThrow(()-> new EmailNoExistenteException(email));
     }
 
@@ -69,9 +69,9 @@ public class UsuarioService {
     public List<UsuarioEntidad> obtenerUsuariosPorRolYEstado(RolUsuarioEnum rol, Boolean estado){
         return usuarioRepositorio.findByRolEntidad_RolAndEstado(rol, estado);
     }
-
+*/
     //POST usuario
-    public Usuario crearUnUsuario(Usuario usuario) throws EmailYaExisteException, CelularYaExisteException {
+  /*  public Usuario crearUnUsuario(Usuario usuario) throws EmailYaExisteException, CelularYaExisteException {
 
         //verificamos en el repo de credenciales
         //verificar si ya existe un mail, si es asi tira excepcion
@@ -89,16 +89,16 @@ public class UsuarioService {
         usuarioEntidad = usuarioRepositorio.save(usuarioEntidad);
         return usuarioMapper.toModel(usuarioEntidad);
     }
-
+*/
 
     //GET usuario x id y rol
-    public Usuario obtenerUsuarioPorIdyRol(RolUsuarioEnum rolUsuarioEnum,Long idNegocio){
+   /* public Usuario obtenerUsuarioPorIdyRol(RolUsuarioEnum rolUsuarioEnum,Long idNegocio){
         CredencialesEntidad credencialesEntidad= credencialesRepositorio.findByIdAndRolEntidad_Rol(idNegocio,rolUsuarioEnum).orElseThrow(()->new UsuarioNoExistenteException(idNegocio));
 
         return usuarioMapper.toModel(credencialesEntidad.getUsuario());
 
     }
-
+*/
     //UPDATE
     public Usuario actualizarUsuarioPorId(Long id, Usuario actualizado) throws UsuarioNoExistenteException {
 

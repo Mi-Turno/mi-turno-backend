@@ -6,13 +6,14 @@ import jakarta.validation.constraints.Email;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @Schema(description = "Requisitos para la creacion de un usuario ")
 public class UsuarioRequest {
 
@@ -47,6 +48,16 @@ public class UsuarioRequest {
 
 
     public UsuarioRequest() {
+    super();
+    }
 
+    public UsuarioRequest(String nombre, String apellido, String email, String password, String telefono, LocalDate fechaNacimiento, Long idRol) {
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.email = email;
+        this.password = password;
+        this.telefono = telefono;
+        this.fechaNacimiento = fechaNacimiento;
+        this.idRol = idRol;
     }
 }

@@ -27,4 +27,11 @@ public class TurnoRequest {
     // Constructor vacío
     public TurnoRequest() {}
 
+    public TurnoRequest(Long idServicio, Long idMetodoDePago, Long idCliente, Long idNegocio, HorarioProfesionalRequest horarioProfesional) {
+        this.idServicio = idServicio;
+        this.idMetodoDePago = idMetodoDePago;
+        this.idCliente = idCliente;
+        this.idNegocio = idNegocio;
+        this.horarioProfesional = horarioProfesional;
+    }
 }

@@ -73,4 +73,15 @@ public class TurnoEntidad {
 
     }
 
+    public TurnoEntidad(Long idTurno, ServicioEntidad idServicio, MetodoDePagoEntidad metodoDePagoEntidad, ClienteEntidad clienteEntidad, NegocioEntidad negocioEntidad, ProfesionalEntidad profesionalEntidad, LocalDate fechaInicio, HorarioProfesionalEntidad horarioProfesionalEntidad, Boolean estado) {
+        this.idTurno = idTurno;
+        this.idServicio = idServicio;
+        this.metodoDePagoEntidad = metodoDePagoEntidad;
+        this.clienteEntidad = clienteEntidad;
+        this.negocioEntidad = negocioEntidad;
+        this.profesionalEntidad = profesionalEntidad;
+        this.fechaInicio = fechaInicio;
+        this.horarioProfesionalEntidad = horarioProfesionalEntidad;
+        this.estado = estado;
+    }
 }

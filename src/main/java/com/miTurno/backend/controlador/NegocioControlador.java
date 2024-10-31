@@ -42,7 +42,7 @@ public class NegocioControlador {
     }
 
     //POST negocio
-    @Operation(summary = "Crear un nuevo negocio")
+   /* @Operation(summary = "Crear un nuevo negocio")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "negocio creado con éxito"),
             @ApiResponse(responseCode = "400", description = "Datos del negocio inválidos", content = @Content(schema =
@@ -57,7 +57,7 @@ public class NegocioControlador {
         //todo CAMBIAR
         return negocioService.crearUnNegocio(negocioRequest);
     }
-
+*/
 
 
     //GET all

@@ -25,7 +25,9 @@ public class RolEntidad {
     @Column(name = "nombre", unique = true, nullable = false)
     private RolUsuarioEnum rol;
 
-    @OneToMany(mappedBy = "rol", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    //@OneToMany(mappedBy = "rol", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_rol")
     private List<UsuarioEntidad> usuarios; // Lista de usuarios que tienen este rol
 
     @JsonValue
@@ -35,6 +37,19 @@ public class RolEntidad {
 
     //constructores
 
-    public RolEntidad() {}
-    public RolEntidad(RolUsuarioEnum rol){}
+
+    public RolEntidad() {
+        super();
+    }
+
+    public RolEntidad(Long id_rol, RolUsuarioEnum rol) {
+        this.id_rol = id_rol;
+        this.rol = rol;
+    }
+
+    public RolEntidad(Long id_rol, RolUsuarioEnum rol, List<UsuarioEntidad> usuarios) {
+        this.id_rol = id_rol;
+        this.rol = rol;
+        this.usuarios = usuarios;
+    }
 }

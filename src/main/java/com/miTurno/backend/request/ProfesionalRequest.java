@@ -5,9 +5,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Schema(description = "Requisitos para la creacion de un profesional")
-@Builder
+@SuperBuilder
 @Getter
 @Setter
 public class ProfesionalRequest extends UsuarioRequest{
@@ -19,6 +20,11 @@ public class ProfesionalRequest extends UsuarioRequest{
     private Long idNegocio;
 
     public ProfesionalRequest() {
+    super();
+    }
 
+    public ProfesionalRequest(Long idNegocio) {
+        super();
+        this.idNegocio = idNegocio;
     }
 }

@@ -34,7 +34,7 @@ public class ServicioControlador {
 
     //GET todos los servicios
 
-    @Operation(summary = "Obtener todos los servicios")
+   /* @Operation(summary = "Obtener todos los servicios")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "Lista de servicios obtenida exitosamente"),
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
@@ -42,7 +42,7 @@ public class ServicioControlador {
     @GetMapping("/negocios/{idNegocio}")
     public List<ServicioEntidad> listarTodosLosServicios(@PathVariable Long idNegocio){
         return servicioService.obtenerListadoTodosLosServiciosPorNegocio(idNegocio);
-    }
+    }*/
 
     //POST servicio por negocio /negocios/{idNegocio}/servicios
 
@@ -96,7 +96,7 @@ public class ServicioControlador {
 
     //UPDATE
 
-    @Operation(summary = "Actualiza un servicio por id")
+    /*@Operation(summary = "Actualiza un servicio por id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "Servicio actualizado con exito"),
             @ApiResponse(responseCode = "404",description = "Servicio no encontrado")
@@ -110,5 +110,5 @@ public class ServicioControlador {
             @RequestBody ServicioRequest servicioRequest) throws ServicioNoExisteException{
 
         return servicioService.actualizarUnServicio(idNegocio,idServicio,servicioMapper.toModel(servicioRequest));
-    }
+    }*/
 }

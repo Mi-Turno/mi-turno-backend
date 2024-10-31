@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 
 import java.time.LocalDate;
@@ -14,7 +15,7 @@ import java.time.LocalDate;
 @Table(name="usuarios")
 @Setter
 @Getter
-@Builder
+@SuperBuilder
 public class UsuarioEntidad {
 
     //columnas
@@ -58,7 +59,7 @@ public class UsuarioEntidad {
 
     //constructores
     public UsuarioEntidad(){
-
+    super();
     }
 
 

@@ -31,20 +31,24 @@ public class NegocioEntidad extends UsuarioEntidad{
 
 
     //profesionales del negocio
-    @OneToMany(mappedBy = "negocio", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_negocios")
     private List<ProfesionalEntidad> profesionales;
 
     //servicios que ofrece el negocio
-    @OneToMany(mappedBy = "negocio", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_servicios")
     private List<ServicioEntidad> servicios;
 
     //listado de clientes
-    @OneToMany(mappedBy = "negocio", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_negocio")
     private List<UsuarioEntidad> clientes;
 
 
 
     public NegocioEntidad() {
+        super();
     }
 
 

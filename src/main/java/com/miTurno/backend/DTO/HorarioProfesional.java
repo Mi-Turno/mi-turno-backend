@@ -18,4 +18,12 @@ public class HorarioProfesional {
     private LocalTime horaFin;
 
     public HorarioProfesional() {}
+
+    public HorarioProfesional(Long idHorario, Long idProfesional, DiasEnum dia, LocalTime horaInicio, LocalTime horaFin) {
+        this.idHorario = idHorario;
+        this.idProfesional = idProfesional;
+        this.dia = dia;
+        this.horaInicio = horaInicio;
+        this.horaFin = horaFin;
+    }
 }

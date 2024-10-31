@@ -51,5 +51,13 @@ public class ServicioEntidad {
     public ServicioEntidad() {
     }
 
-
+    public ServicioEntidad(Long idServicio, String nombre, Integer duracion, Double precio, Boolean estado, List<ProfesionalEntidad> profesionales, NegocioEntidad idNegocio) {
+        this.idServicio = idServicio;
+        this.nombre = nombre;
+        this.duracion = duracion;
+        this.precio = precio;
+        this.estado = estado;
+        this.profesionales = profesionales;
+        this.idNegocio = idNegocio;
+    }
 }

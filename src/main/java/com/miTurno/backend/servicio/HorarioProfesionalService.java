@@ -4,11 +4,13 @@ import com.miTurno.backend.DTO.HorarioProfesional;
 import com.miTurno.backend.entidad.DiaEntidad;
 import com.miTurno.backend.entidad.HorarioProfesionalEntidad;
 import com.miTurno.backend.entidad.ProfesionalEntidad;
-import com.miTurno.backend.entidad.pivotEntidad.HorarioXProfesionalEntidad;
+
+import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import com.miTurno.backend.mapper.HorarioProfesionalMapper;
 import com.miTurno.backend.repositorio.DiaRepositorio;
 import com.miTurno.backend.repositorio.HorarioProfesionalRepositorio;
-import com.miTurno.backend.repositorio.pivotRepositorios.HorarioXProfesionalRepositorio;
+
+import com.miTurno.backend.repositorio.ProfesionalRepositorio;
 import com.miTurno.backend.tipos.DiasEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,13 +23,15 @@ public class HorarioProfesionalService {
     private final HorarioProfesionalRepositorio horarioProfesionalRepositorio;
     private final DiaRepositorio diaRepositorio;
     private final HorarioProfesionalMapper horarioProfesionalMapper;
+    private final ProfesionalRepositorio profesionalRepositorio;
 
     //constructores
     @Autowired
-    public HorarioProfesionalService(HorarioProfesionalRepositorio horarioProfesionalRepositorio, HorarioProfesionalMapper horarioProfesionalMapper, DiaRepositorio diaRepositorio) {
+    public HorarioProfesionalService(HorarioProfesionalRepositorio horarioProfesionalRepositorio, HorarioProfesionalMapper horarioProfesionalMapper, DiaRepositorio diaRepositorio,ProfesionalRepositorio profesionalRepositorio) {
         this.horarioProfesionalRepositorio = horarioProfesionalRepositorio;
         this.horarioProfesionalMapper = horarioProfesionalMapper;
         this.diaRepositorio = diaRepositorio;
+        this.profesionalRepositorio = profesionalRepositorio;
     }
 
     public HorarioProfesional crearUnHorarioXProfesional(HorarioProfesional nuevoHP){
@@ -35,19 +39,19 @@ public class HorarioProfesionalService {
 
         //todo obtener el profesiona por id
 
-        ProfesionalEntidad profesionalEntidad =
+        ProfesionalEntidad profesionalEntidad = profesionalRepositorio.findById(nuevoHP.getIdProfesional()).orElseThrow(()-> new UsuarioNoExistenteException(nuevoHP.getIdProfesional()));
+        horarioProfesionalEntidad.setProfesionalEntidad(profesionalEntidad);
 
-        horarioProfesionalEntidad.setProfesionalEntidad(nuevoHP.getIdProfesional());
-        DiaEntidad nuevoDiaEntidad = diaRepositorio.findByDia(nuevoHXP.getDia());
+        DiaEntidad nuevoDiaEntidad = diaRepositorio.findByDia(nuevoHP.getDia());
         horarioProfesionalEntidad.setDiaEntidad(nuevoDiaEntidad);
-        horarioProfesionalEntidad.setHorario(nuevoHXP.getHorario());
-        horarioProfesionalEntidad = horarioProfesionalRepositorio.save(horarioXProfesionalEntidad);
-        return horarioProfesionalMapper.toModel(horarioXProfesionalEntidad);
+        horarioProfesionalEntidad.setIdHorario(nuevoHP.getIdHorario());
+        horarioProfesionalEntidad = horarioProfesionalRepositorio.save(horarioProfesionalEntidad);
+        return horarioProfesionalMapper.toModel(horarioProfesionalEntidad);
 
     }
 
 
-    public List<HorarioProfesional> obtenerHorariosPorProfesionalYDia(Long idProfesional, DiasEnum dia) {
+    /*public List<HorarioProfesional> obtenerHorariosPorProfesionalYDia(Long idProfesional, DiasEnum dia) {
 
         List<HorarioProfesionalEntidad> horarioProfesionalEntidadList = horarioProfesionalRepositorio.findByIdProfesionalAndDiaEntidad_Dia(idProfesional, dia);
 
@@ -62,6 +66,6 @@ public class HorarioProfesionalService {
             rta = true;
         }
         return rta;
-    }
+    }*/
 
 }

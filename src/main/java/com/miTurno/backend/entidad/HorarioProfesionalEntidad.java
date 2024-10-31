@@ -37,6 +37,14 @@ public class HorarioProfesionalEntidad {
 
     public HorarioProfesionalEntidad() {}
 
+    public HorarioProfesionalEntidad(Long idHorario, ProfesionalEntidad profesionalEntidad, DiaEntidad diaEntidad, LocalTime horaInicio, LocalTime horaFin, Boolean estado) {
+        this.idHorario = idHorario;
+        this.profesionalEntidad = profesionalEntidad;
+        this.diaEntidad = diaEntidad;
+        this.horaInicio = horaInicio;
+        this.horaFin = horaFin;
+        this.estado = estado;
+    }
 }
 
 

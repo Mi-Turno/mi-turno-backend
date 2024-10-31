@@ -28,6 +28,6 @@ public class NegocioRequest extends UsuarioRequest{
 
 
     public NegocioRequest(){
-
+    super();
     }
 }

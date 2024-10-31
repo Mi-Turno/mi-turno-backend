@@ -11,7 +11,7 @@ public interface CredencialesRepositorio extends JpaRepository<CredencialesEntid
 
     Optional<CredencialesEntidad>findByEmail(String email);
 
-    Optional<CredencialesEntidad>findByIdAndRolEntidad_Rol(Long idNegocio, RolUsuarioEnum rolUsuarioEnum);
+    //Optional<CredencialesEntidad>findByIdAndRolEntidad_Rol(Long idNegocio, RolUsuarioEnum rolUsuarioEnum);
 
     List<CredencialesEntidad>findAllByRolEntidad_Rol(RolUsuarioEnum rolUsuarioEnum);
 

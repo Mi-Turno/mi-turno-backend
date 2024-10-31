@@ -65,7 +65,7 @@ public class NegocioService {
 
 
     //POST negocio
-    public Negocio crearUnNegocio(NegocioRequest negocioRequest)
+   /* public Negocio crearUnNegocio(NegocioRequest negocioRequest)
             throws NombreNegocioYaExisteException, RolIncorrectoException {
 
         String nombreNegocio = negocioRequest.getNombre();
@@ -92,7 +92,7 @@ public class NegocioService {
 
 
         return negocio;
-    }
+    }*/
 
     //GET profesionales de negocio x id
     public List<ProfesionalEntidad> obtenerProfesionalesPorIdNegocio(Long idNegocio){

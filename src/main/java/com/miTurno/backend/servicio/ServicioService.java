@@ -33,10 +33,10 @@ public class ServicioService {
     //GET all
 
 
-    public List<ServicioEntidad> obtenerListadoTodosLosServiciosPorNegocio(Long idNegocio){
+    /*public List<ServicioEntidad> obtenerListadoTodosLosServiciosPorNegocio(Long idNegocio){
         return servicioRepositorio.findAllByIdNegocio(idNegocio);
     }
-
+*/
     //GET x criterio
 //
    /* public List<Servicio> obtenerListadoServicios(String nombre, Boolean estado){
@@ -78,7 +78,7 @@ public class ServicioService {
     }
 
     //UPDATE
-    public Servicio actualizarUnServicio(Long idNegocio,Long idServicioAActualizar,Servicio nuevoServicio) throws ServicioNoExisteException{
+   /* public Servicio actualizarUnServicio(Long idNegocio,Long idServicioAActualizar,Servicio nuevoServicio) throws ServicioNoExisteException{
         ServicioEntidad servicioEntidad= servicioRepositorio.findByIdNegocioAndIdServicio(idNegocio,idServicioAActualizar);
 
         servicioEntidad.setDuracion(nuevoServicio.getDuracion());
@@ -90,5 +90,5 @@ public class ServicioService {
         servicioRepositorio.save(servicioEntidad);
 
         return servicioMapper.toModel(servicioEntidad);
-    }
+    }*/
 }

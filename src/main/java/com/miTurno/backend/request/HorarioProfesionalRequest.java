@@ -36,4 +36,10 @@ public class HorarioProfesionalRequest {
     public HorarioProfesionalRequest() {
     }
 
+    public HorarioProfesionalRequest(Long idProfesional, DiasEnum dia, LocalTime horaInicio, LocalTime horaFin) {
+        this.idProfesional = idProfesional;
+        this.dia = dia;
+        this.horaInicio = horaInicio;
+        this.horaFin = horaFin;
+    }
 }

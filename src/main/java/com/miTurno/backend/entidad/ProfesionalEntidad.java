@@ -32,14 +32,19 @@ public class ProfesionalEntidad extends UsuarioEntidad{
     private List<ServicioEntidad> listaServiciosEntidad;
 
     // listado de horarios DISPONIBLES
-    @OneToMany(mappedBy = "profesional", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+   // @OneToMany(mappedBy = "profesional", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_profesional")
     private List<HorarioProfesionalEntidad> horariosDisponibles;
 
     //lista de turnos AGENDADOS
-    @OneToMany(mappedBy = "profesional", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    //@OneToMany(mappedBy = "profesional", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_turno")
     private List<TurnoEntidad> turnosAgendados;
 
 
     public ProfesionalEntidad() {
+        super();
     }
 }

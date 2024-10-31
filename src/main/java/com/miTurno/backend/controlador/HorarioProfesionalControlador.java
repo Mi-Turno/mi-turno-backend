@@ -33,7 +33,7 @@ public class HorarioProfesionalControlador {
         this.horarioProfesionalMapper = horarioProfesionalMapper;
     }
 
-    @Operation(summary = "Crear un nuevo horario para un profesional")
+    /*@Operation(summary = "Crear un nuevo horario para un profesional")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "horario creado con éxito"),
             @ApiResponse(responseCode = "400", description = "Datos del horario inválidos", content = @Content(schema =
@@ -55,10 +55,10 @@ public class HorarioProfesionalControlador {
         //TODO CAMBIARLO AL PATHVARIABLE
         List<HorarioProfesionalEntidad> horarios = horarioProfesionalService.obtenerHorariosPorProfesionalYDia(idProfesional, dia);
         return ResponseEntity.ok(horarios);
-    }
+    }*/
 
 
-    @Operation(summary = "Eliminar un horario por ID")
+    /*@Operation(summary = "Eliminar un horario por ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204",description = "El horario fue borrado con exito"),
             @ApiResponse(responseCode = "404",description = "El horario no fue encontrado")
@@ -71,7 +71,7 @@ public class HorarioProfesionalControlador {
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);//404
         }
-    }
+    }*/
 
 
 }
