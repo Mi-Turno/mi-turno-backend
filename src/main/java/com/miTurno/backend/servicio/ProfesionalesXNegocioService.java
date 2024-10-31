@@ -2,17 +2,14 @@ package com.miTurno.backend.servicio;
 
 import com.miTurno.backend.entidad.UsuarioEntidad;
 import com.miTurno.backend.entidad.pivotEntidad.ProfesionalesXNegocioEntidad;
-import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import com.miTurno.backend.mapper.UsuarioMapper;
-import com.miTurno.backend.modelo.Usuario;
+import com.miTurno.backend.DTO.Usuario;
 import com.miTurno.backend.repositorio.UsuarioRepositorio;
 import com.miTurno.backend.repositorio.pivotRepositorios.ProfesionalesXNegocioRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProfesionalesXNegocioService {

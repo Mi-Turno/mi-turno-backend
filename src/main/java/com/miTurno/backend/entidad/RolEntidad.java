@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -16,12 +18,15 @@ public class RolEntidad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_rol")
     private Long id_rol;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "nombre", unique = true, nullable = false)
     private RolUsuarioEnum rol;
 
+    @OneToMany(mappedBy = "rol", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<UsuarioEntidad> usuarios; // Lista de usuarios que tienen este rol
 
     @JsonValue
     public String getNombre() {
@@ -30,15 +35,6 @@ public class RolEntidad {
 
     //constructores
 
-    public RolEntidad(Long id_rol, RolUsuarioEnum rol) {
-        this.id_rol = id_rol;
-        this.rol = rol;
-    }
-
-    public RolEntidad(RolUsuarioEnum rol) {
-        this.rol = rol;
-    }
-    public RolEntidad() {
-
-    }
+    public RolEntidad() {}
+    public RolEntidad(RolUsuarioEnum rol){}
 }

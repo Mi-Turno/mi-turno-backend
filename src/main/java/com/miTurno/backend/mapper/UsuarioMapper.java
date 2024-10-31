@@ -1,16 +1,18 @@
 package com.miTurno.backend.mapper;
 
-import com.miTurno.backend.DTO.UsuarioRequest;
+import com.miTurno.backend.entidad.CredencialesEntidad;
+import com.miTurno.backend.repositorio.CredencialesRepositorio;
+import com.miTurno.backend.request.UsuarioRequest;
 import com.miTurno.backend.entidad.RolEntidad;
 import com.miTurno.backend.entidad.UsuarioEntidad;
-import com.miTurno.backend.modelo.Usuario;
+import com.miTurno.backend.DTO.Usuario;
 import com.miTurno.backend.repositorio.RolRepositorio;
+import com.miTurno.backend.tipos.RolUsuarioEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class UsuarioMapper {
-
     private final RolRepositorio rolRepositorio;
 
     @Autowired
@@ -22,21 +24,23 @@ public class UsuarioMapper {
     public Usuario toModel(UsuarioEntidad usuarioEntidad){
         return Usuario.builder()
                 .idUsuario(usuarioEntidad.getIdUsuario())
-                .rolUsuario(usuarioEntidad.getRolEntidad().getRol())
+                .rolUsuario(usuarioEntidad.getCredenciales().getRolEntidad().getRol())
                 .apellido(usuarioEntidad.getApellido())
                 .telefono(usuarioEntidad.getTelefono())
-                .email(usuarioEntidad.getEmail())
+                .email(usuarioEntidad.getCredenciales().getEmail())
                 .fechaNacimiento(usuarioEntidad.getFechaNacimiento())
                 .nombre(usuarioEntidad.getNombre())
-                .password(usuarioEntidad.getPassword())
-                .estado(usuarioEntidad.getEstado())
+                .estado(usuarioEntidad.getCredenciales().getEstado())
                 .build();
     }
 
     //request a usuario
     public Usuario toModel(UsuarioRequest usuarioRequest){
+
+        RolUsuarioEnum rolUsuarioEnum = rolRepositorio.findById(usuarioRequest.getIdRol()).get().getRol();
+
         return Usuario.builder()
-                .rolUsuario(usuarioRequest.getRolEntidad())
+                .rolUsuario(rolUsuarioEnum)
                 .apellido(usuarioRequest.getApellido())
                 .telefono(usuarioRequest.getTelefono())
                 .email(usuarioRequest.getEmail())
@@ -50,19 +54,28 @@ public class UsuarioMapper {
     //usuario a entidad
 
     public UsuarioEntidad toEntidad(Usuario usuario){
-        UsuarioEntidad usuarioEntidad = new UsuarioEntidad();
-        usuarioEntidad.setNombre(usuario.getNombre());
-        usuarioEntidad.setApellido(usuario.getApellido());
-        usuarioEntidad.setEmail(usuario.getEmail());
-        usuarioEntidad.setPassword(usuario.getPassword());
-        usuarioEntidad.setTelefono(usuario.getTelefono());
-        usuarioEntidad.setFechaNacimiento(usuario.getFechaNacimiento());
+
+        RolEntidad rolEntidad= rolRepositorio.findByRol(usuario.getRolUsuario());
+
+        //creamos primero las credenciales
+        CredencialesEntidad credencialesEntidad =
+                CredencialesEntidad.builder()
+                        .rolEntidad(rolEntidad)
+                        .email(usuario.getEmail())
+                        .password(usuario.getPassword())
+                        .estado(true)
+                        .build();
 
 
-        RolEntidad nuevoRol = rolRepositorio.findByRol(usuario.getRolUsuario());
-        usuarioEntidad.setRolEntidad(nuevoRol);
-        usuarioEntidad.setEstado(true);
-        return usuarioEntidad;
+        //luego la entidad
+        return UsuarioEntidad.builder()
+                        .credenciales(credencialesEntidad)
+                        .nombre(usuario.getNombre())
+                        .telefono(usuario.getTelefono())
+                        .apellido(usuario.getApellido())
+                        .fechaNacimiento(usuario.getFechaNacimiento())
+                        .build();
+
     }
 
 }

@@ -3,14 +3,12 @@ package com.miTurno.backend.servicio;
 
 import com.miTurno.backend.entidad.TurnoEntidad;
 import com.miTurno.backend.excepcion.TurnoNoExistenteException;
-import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import com.miTurno.backend.mapper.TurnoMapper;
-import com.miTurno.backend.modelo.Turno;
+import com.miTurno.backend.DTO.Turno;
 import com.miTurno.backend.repositorio.TurnoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.swing.plaf.PanelUI;
 import java.util.List;
 
 @Service
@@ -25,7 +23,7 @@ public class TurnoService {
     }
     //GET
     public List<TurnoEntidad> obtenerTodosLosTurnos(){
-        return turnoRepositorio.findAll();
+        return turnoRepositorio.fin
     }
 
     //todo agregar comportamiento para esto en el repo
@@ -37,13 +35,13 @@ public class TurnoService {
     public Turno crearUnTurno(Turno nuevoTurno){
         TurnoEntidad turnoEntidad = new TurnoEntidad();
 
-        turnoEntidad.setIdProfesional(nuevoTurno.getIdProfesional());
-        turnoEntidad.setIdCliente(nuevoTurno.getIdCliente());
-        turnoEntidad.setIdNegocio(nuevoTurno.getIdNegocio());
+        turnoEntidad.setProfesionalEntidad(nuevoTurno.getIdProfesional());
+        turnoEntidad.setClienteEntidad(nuevoTurno.getIdCliente());
+        turnoEntidad.setNegocioEntidad(nuevoTurno.getIdNegocio());
         turnoEntidad.setFechaInicio(nuevoTurno.getFechaInicio());
         turnoEntidad.setHorario(nuevoTurno.getHorario());
         turnoEntidad.setEstado(true);
-        turnoEntidad.setMetodosDePagoEnum(nuevoTurno.getMetodosDePagoEnum());
+        turnoEntidad.setMetodoDePagoEntidad(nuevoTurno.getMetodosDePagoEnum());
         turnoEntidad = turnoRepositorio.save(turnoEntidad);
         return turnoMapper.toModel(turnoEntidad);
     }

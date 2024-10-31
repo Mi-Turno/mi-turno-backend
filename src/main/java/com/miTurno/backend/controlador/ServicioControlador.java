@@ -1,13 +1,10 @@
 package com.miTurno.backend.controlador;
 
-import com.miTurno.backend.DTO.ServicioRequest;
-import com.miTurno.backend.DTO.UsuarioRequest;
+import com.miTurno.backend.request.ServicioRequest;
 import com.miTurno.backend.entidad.ServicioEntidad;
-import com.miTurno.backend.entidad.UsuarioEntidad;
 import com.miTurno.backend.excepcion.ServicioNoExisteException;
 import com.miTurno.backend.mapper.ServicioMapper;
-import com.miTurno.backend.modelo.Servicio;
-import com.miTurno.backend.modelo.Usuario;
+import com.miTurno.backend.DTO.Servicio;
 import com.miTurno.backend.servicio.ServicioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -18,15 +15,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/servicios")
+@RequestMapping("/negocios/{idNegocio}/servicios")
 public class ServicioControlador {
     private final ServicioService servicioService;
     private final ServicioMapper servicioMapper;
@@ -48,27 +43,24 @@ public class ServicioControlador {
         return servicioService.obtenerListadoTodosLosServicios();
     }
 
+    //POST servicio por negocio /negocios/{idNegocio}/servicios
+
     //GET servicios x criterio
-    @Operation(summary = "Obtener servicios por un criterio especifico(nombreServicio,precio o duracion)")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",description = "Lista de servicios obtenida exitosamente"),
-            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
-    })
-    @GetMapping
-    public List<Servicio> listarServicios(
-            @Parameter(description = "Filtro opcional para buscar servicios por nombre", example = "corte con maquina")
-            @RequestParam(required = false) String nombreServicio,
-            @Parameter(description = "Filtro opcional para buscar servicios por precio", example = "2500")
-            @RequestParam(required = false) Boolean estado
-
-    ){
-        return servicioService.obtenerListadoServicios(nombreServicio, estado);
-    }
-
-
-
-
-
+//    @Operation(summary = "Obtener servicios por un criterio especifico(nombreServicio,precio o duracion)")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200",description = "Lista de servicios obtenida exitosamente"),
+//            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
+//    })
+//    @GetMapping
+//    public List<Servicio> listarServicios(
+//            @Parameter(description = "Filtro opcional para buscar servicios por nombre", example = "corte con maquina")
+//            @RequestParam(required = false) String nombreServicio,
+//            @Parameter(description = "Filtro opcional para buscar servicios por precio", example = "2500")
+//            @RequestParam(required = false) Boolean estado
+//
+//    ){
+//        return servicioService.obtenerListadoServicios(nombreServicio, estado);
+//    }
 
 
     //POST
@@ -86,7 +78,7 @@ public class ServicioControlador {
     }
 
 
-    //todo POST asignar servicio a un profesional
+
 
 
 
