@@ -1,8 +1,11 @@
 package com.miTurno.backend.servicio;
 
+import com.miTurno.backend.DTO.Usuario;
+import com.miTurno.backend.entidad.CredencialesEntidad;
 import com.miTurno.backend.excepcion.NombreNegocioYaExisteException;
 import com.miTurno.backend.excepcion.RecursoNoExisteException;
 import com.miTurno.backend.excepcion.RolIncorrectoException;
+import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import com.miTurno.backend.repositorio.RolRepositorio;
 import com.miTurno.backend.repositorio.UsuarioRepositorio;
 import com.miTurno.backend.request.NegocioRequest;
@@ -42,17 +45,21 @@ public class NegocioService {
     //metodos
 
     //GET all negocios
-    public List<NegocioEntidad> listarTodosLosNegocios(){
-        List<NegocioEntidad> negocios = null;
+    public List<Negocio> listarTodosLosNegocios(){
+        List<NegocioEntidad> negocioEntidadList = negocioRepositorio.findAll();
 
-        return negocios;
+        return negocioEntidadList.stream().map(negocioMapper::toModel).toList();
     }
 
     //GET negocio x id
-    public NegocioEntidad obtenerNegocioPorId(Long idNegocio){
-        NegocioEntidad negocioEntidad = null;
-        return negocioEntidad;
+    public Negocio obtenerNegocioPorId(Long idNegocio){
+        NegocioEntidad negocioEntidad= negocioRepositorio.findById(idNegocio).orElseThrow(()-> new UsuarioNoExistenteException(idNegocio));
+
+        return negocioMapper.toModel(negocioEntidad);
     }
+
+
+
 
     //POST negocio
     public Negocio crearUnNegocio(NegocioRequest negocioRequest)

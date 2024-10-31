@@ -29,7 +29,6 @@ public class NegocioEntidad extends UsuarioEntidad{
 
 
 
-
     //profesionales del negocio
     @OneToMany(mappedBy = "negocio", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProfesionalEntidad> profesionales;

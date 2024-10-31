@@ -24,10 +24,13 @@ public class CredencialesEntidad {
     @Column(nullable = false)
     private String password;
 
-//    @OneToOne
-//    @JoinColumn(name = "id_usuario")
-//    @JsonIgnore // Para evitar el ciclo en serialización/deserialización
-//    private UsuarioEntidad usuario;
+    @Column(name = "telefono",unique = true)
+    private String telefono;
+
+    @OneToOne
+    @JoinColumn(name = "id_usuario")
+    @JsonIgnore // Para evitar el ciclo en serialización/deserialización
+    private UsuarioEntidad usuario;
 
     @ManyToOne(fetch = FetchType.EAGER) // EAGER para cargar el rol junto con el usuario
     @JoinColumn(name = "id_rol", nullable = false) // Define la clave foránea a RolEntidad

@@ -32,6 +32,9 @@ public class HorarioProfesionalEntidad {
     @Column(name = "hora_fin", nullable = false)
     private LocalTime horaFin;
 
+    @Column(name = "estado")
+    private Boolean estado;
+
     public HorarioProfesionalEntidad() {}
 
 }

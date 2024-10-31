@@ -51,14 +51,20 @@ public class TurnoEntidad {
     @JoinColumn(name = "id_profesional",nullable = false)
     private ProfesionalEntidad profesionalEntidad;
 
+
     //fecha de inicio del turno
-    @ManyToOne(fetch = FetchType.EAGER)
     @Temporal(TemporalType.DATE)
     @Column(name = "fecha_inicio")
+    private LocalDate fechaInicio;
+
+
+    //hora de inicio del turno
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_hora_inicio",nullable = false)
     private HorarioProfesionalEntidad horarioProfesionalEntidad;
 
     //estado del turno
-    @Column(name="estados")
+    @Column(name="estado")
     private Boolean estado;
 
 

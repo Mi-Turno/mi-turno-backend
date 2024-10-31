@@ -57,13 +57,14 @@ public class UsuarioControlador {
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
     @GetMapping("/{id}")//todo hacer exception para no usar Optional
-    public ResponseEntity<UsuarioEntidad> obtenerUsuarioPorId(@Parameter(description = "ID del usuario",example = "1")
+    public ResponseEntity<Usuario> obtenerUsuarioPorId(@Parameter(description = "ID del usuario",example = "1")
                                                        @PathVariable Long id){
-        UsuarioEntidad usuarioEntidad= usuarioService.buscarUsuario(id);
-        return ResponseEntity.ok(usuarioEntidad);//200
+        Usuario usuario= usuarioService.buscarUsuario(id);
+        return ResponseEntity.ok(usuario);//200
     }
 
     //GET
+    //TODO, ESTE POST DEBERIA APUNTAR AL REPOSITORIO DE CREDENCIALES
     /**Se utiliza POST para no enviar la contraseña por URL eso hace que sea mas seguro el proceso*/
     @PostMapping("/login")
     @Operation(summary = "Obtener un usuario por email y contraseña")
