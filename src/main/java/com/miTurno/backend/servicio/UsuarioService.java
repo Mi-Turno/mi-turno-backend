@@ -84,22 +84,13 @@ public class UsuarioService {
             throw new CelularYaExisteException(usuario.getTelefono());
         }
 
-        UsuarioEntidad usuarioEntidad= usuarioMapper.toEntidad(usuarioMapper.toModel(usuario));
+        UsuarioEntidad usuarioEntidad= usuarioMapper.toEntidad(usuario);
 
         usuarioEntidad = usuarioRepositorio.save(usuarioEntidad);
         return usuarioMapper.toModel(usuarioEntidad);
     }
 
 
-
-
-
-
-
-    //obtener negocio x nombre
-    public UsuarioEntidad obtenerNegocioPorNombre(String nombre) throws NombreNoExisteException{
-       return usuarioRepositorio.findByRolEntidad_RolAndNombre(RolUsuarioEnum.NEGOCIO,nombre).orElseThrow(()->new NombreNoExisteException(nombre));
-    }
     //GET usuario x id y rol
     public Usuario obtenerUsuarioPorIdyRol(RolUsuarioEnum rolUsuarioEnum,Long idNegocio){
         CredencialesEntidad credencialesEntidad= credencialesRepositorio.findByIdAndRolEntidad_Rol(idNegocio,rolUsuarioEnum).orElseThrow(()->new UsuarioNoExistenteException(idNegocio));
@@ -139,7 +130,8 @@ public class UsuarioService {
         if(usuarioRepositorio.existsById(id)){
            UsuarioEntidad usuarioEntidad= usuarioRepositorio.findById(id).orElseThrow(()-> new UsuarioNoExistenteException(id));
 
-            usuarioEntidad.setEstado(false);
+            usuarioEntidad.getCredenciales().setEstado(false);
+
             usuarioRepositorio.save(usuarioEntidad);
             rta = true;
         }

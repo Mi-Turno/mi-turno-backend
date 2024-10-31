@@ -4,10 +4,11 @@ package com.miTurno.backend.DTO;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 public class Negocio extends Usuario{
     //atributos
 
