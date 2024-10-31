@@ -38,8 +38,6 @@ public class UsuarioEntidad {
 //    @Column(name = "password")
 //    private String password;
 
-    @Column(name = "telefono",unique = true)
-    private String telefono;
 
     @Temporal(TemporalType.DATE)
     @Column(insertable = true,updatable = true,columnDefinition ="DATE")
@@ -48,6 +46,7 @@ public class UsuarioEntidad {
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_credenciales", nullable = false) // Clave foránea a CredencialesEntidad
     private CredencialesEntidad credenciales; // Relación con Credenciales
+
 
 
 //    @ManyToOne(fetch = FetchType.EAGER) // EAGER para cargar el rol junto con el usuario

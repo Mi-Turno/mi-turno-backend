@@ -1,5 +1,7 @@
 package com.miTurno.backend.servicio;
 
+import com.miTurno.backend.entidad.CredencialesEntidad;
+import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.repositorio.CredencialesRepositorio;
 import com.miTurno.backend.request.NegocioRequest;
 import com.miTurno.backend.request.ProfesionalRequest;
@@ -24,17 +26,17 @@ public class UsuarioService {
     private final UsuarioMapper usuarioMapper;
     private final RolRepositorio rolRepositorio;
     private final NegocioService negocioService;
-    private final ProfesionalesXNegocioService profesionalesXNegocioService;
+
     private final CredencialesRepositorio credencialesRepositorio;
 
 
     @Autowired
-    public UsuarioService(UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, RolRepositorio rolRepositorio, NegocioService negocioService, ProfesionalesXNegocioService profesionalesXNegocioService, CredencialesRepositorio credencialesRepositorio) {
+    public UsuarioService(UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, RolRepositorio rolRepositorio, NegocioService negocioService, CredencialesRepositorio credencialesRepositorio) {
         this.usuarioRepositorio = usuarioRepositorio;
         this.usuarioMapper = usuarioMapper;
         this.rolRepositorio = rolRepositorio;
         this.negocioService = negocioService;
-        this.profesionalesXNegocioService = profesionalesXNegocioService;
+
         this.credencialesRepositorio = credencialesRepositorio;
     }
 
@@ -44,9 +46,9 @@ public class UsuarioService {
     }
 
     //get x id
-    public UsuarioEntidad buscarUsuario(Long id) throws UsuarioNoExistenteException{
+    public Usuario buscarUsuario(Long id) throws UsuarioNoExistenteException{
 
-        return usuarioRepositorio.findById(id).orElseThrow(()-> new UsuarioNoExistenteException(id));
+        return usuarioMapper.toModel(usuarioRepositorio.findById(id).orElseThrow(()-> new UsuarioNoExistenteException(id)))ñ
     }
 
     //get x email y contra
@@ -71,8 +73,8 @@ public class UsuarioService {
     //POST usuario
     public Usuario crearUnUsuario(Usuario usuario) throws EmailYaExisteException, CelularYaExisteException {
 
+        //verificamos en el repo de credenciales
         //verificar si ya existe un mail, si es asi tira excepcion
-
         if (credencialesRepositorio.findByEmail(usuario.getEmail()).isPresent()){
             throw new EmailYaExisteException(usuario.getEmail());
         }
@@ -92,38 +94,42 @@ public class UsuarioService {
 
 
 
-    //obtener todos los negocios
 
-    public List<UsuarioEntidad> obtenerTodosLosNegocios(){
-        return usuarioRepositorio.findByRolEntidad_Rol(RolUsuarioEnum.NEGOCIO);
-    }
 
     //obtener negocio x nombre
     public UsuarioEntidad obtenerNegocioPorNombre(String nombre) throws NombreNoExisteException{
        return usuarioRepositorio.findByRolEntidad_RolAndNombre(RolUsuarioEnum.NEGOCIO,nombre).orElseThrow(()->new NombreNoExisteException(nombre));
     }
+    //GET usuario x id y rol
+    public Usuario obtenerUsuarioPorIdyRol(RolUsuarioEnum rolUsuarioEnum,Long idNegocio){
+        CredencialesEntidad credencialesEntidad= credencialesRepositorio.findByIdAndRolEntidad_Rol(idNegocio,rolUsuarioEnum).orElseThrow(()->new UsuarioNoExistenteException(idNegocio));
 
-    //obtener negocio x id
-    public UsuarioEntidad obtenerNegocioPorId(Long idNegocio) throws UsuarioNoExistenteException{
-        return usuarioRepositorio.findByRolEntidad_RolAndIdUsuario(RolUsuarioEnum.NEGOCIO, idNegocio).orElseThrow(()->new UsuarioNoExistenteException(idNegocio));
+        return usuarioMapper.toModel(credencialesEntidad.getUsuario());
+
     }
 
     //UPDATE
     public Usuario actualizarUsuarioPorId(Long id, Usuario actualizado) throws UsuarioNoExistenteException {
+
         UsuarioEntidad usuarioEntidad = usuarioRepositorio.findById(id).orElseThrow(()-> new UsuarioNoExistenteException(id));
 
         //si existe
         usuarioEntidad.setNombre(actualizado.getNombre());
         usuarioEntidad.setApellido(actualizado.getApellido());
-        usuarioEntidad.setEmail(actualizado.getEmail());
-        usuarioEntidad.setPassword((actualizado.getPassword()));
-        usuarioEntidad.setTelefono(actualizado.getTelefono());
 
 
+        //  Actualizar credenciales
+        //    actualizarCredenciales(usuarioEntidad, actualizado);
+        usuarioEntidad.getCredenciales().setEmail(actualizado.getEmail());
+        usuarioEntidad.getCredenciales().setPassword((actualizado.getPassword()));
+        usuarioEntidad.getCredenciales().setTelefono(actualizado.getTelefono());
 
-        usuarioEntidad.setRolEntidad(rolRepositorio.findByRol(actualizado.getRolUsuario()));
-        // la fecha de nacimiento y el id no se podrian modificar
+
+        //usuarioEntidad.getCredenciales().setRolEntidad(rolRepositorio.findByRol(actualizado.getRolUsuario()));
+        // la fecha de nacimiento, el rol y el id no se podrian modificar
+
         usuarioEntidad= usuarioRepositorio.save(usuarioEntidad);
+
         return usuarioMapper.toModel(usuarioEntidad);
     }
 

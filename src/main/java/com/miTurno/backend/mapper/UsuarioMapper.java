@@ -26,7 +26,7 @@ public class UsuarioMapper {
                 .idUsuario(usuarioEntidad.getIdUsuario())
                 .rolUsuario(usuarioEntidad.getCredenciales().getRolEntidad().getRol())
                 .apellido(usuarioEntidad.getApellido())
-                .telefono(usuarioEntidad.getTelefono())
+                .telefono(usuarioEntidad.getCredenciales().getTelefono())
                 .email(usuarioEntidad.getCredenciales().getEmail())
                 .fechaNacimiento(usuarioEntidad.getFechaNacimiento())
                 .nombre(usuarioEntidad.getNombre())
@@ -63,7 +63,8 @@ public class UsuarioMapper {
                         .rolEntidad(rolEntidad)
                         .email(usuario.getEmail())
                         .password(usuario.getPassword())
-                        .estado(true)
+                        .telefono(usuario.getTelefono())
+                        .estado(usuario.getEstado())
                         .build();
 
 
@@ -71,7 +72,6 @@ public class UsuarioMapper {
         return UsuarioEntidad.builder()
                         .credenciales(credencialesEntidad)
                         .nombre(usuario.getNombre())
-                        .telefono(usuario.getTelefono())
                         .apellido(usuario.getApellido())
                         .fechaNacimiento(usuario.getFechaNacimiento())
                         .build();

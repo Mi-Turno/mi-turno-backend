@@ -104,8 +104,7 @@ public class NegocioControlador {
     })
     @GetMapping("/{idNegocio}")
     public Usuario obtenerUnNegocioPorIdNegocio(@PathVariable Long idNegocio){
-        UsuarioEntidad usuarioEntidad= usuarioService.obtenerNegocioPorId(idNegocio);
-        return usuarioMapper.toModel(usuarioEntidad);
+        return negocioService.obtenerNegocioPorId(idNegocio);
     }
 
     //GET servicios x id negocio

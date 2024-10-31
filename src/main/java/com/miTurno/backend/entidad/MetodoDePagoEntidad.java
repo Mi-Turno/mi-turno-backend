@@ -27,11 +27,6 @@ public class MetodoDePagoEntidad {
         return metodosDePago.name();
     }
 
-    public MetodoDePagoEntidad(Long idMetodoDePago, MetodosDePagoEnum metodosDePago) {
-        this.id_metodo_de_pago = idMetodoDePago;
-        this.metodosDePago = metodosDePago;
-    }
-
     public MetodoDePagoEntidad(MetodosDePagoEnum metodosDePago) {
         this.metodosDePago = metodosDePago;
     }

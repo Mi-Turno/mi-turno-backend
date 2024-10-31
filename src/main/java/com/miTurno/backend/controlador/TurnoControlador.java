@@ -26,7 +26,7 @@ import java.util.List;
 @RequestMapping("/negocios/{idNegocio}/turnos")
 public class TurnoControlador {
 
-    //TODO, ESTE CONTROLADOR SE DEBERIA BORRAR Y MANDARLO AL DE PROFESIONALES
+
 
     private final TurnoService turnoService;
     private final TurnoMapper turnoMapper;
@@ -36,7 +36,10 @@ public class TurnoControlador {
         this.turnoService = turnoService;
         this.turnoMapper = turnoMapper;
     }
-    //GET
+
+
+
+    //GET x id negocio
     @Operation(summary = "Obtener todos los turnos")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "Lista de turnos obtenida"),

@@ -47,8 +47,11 @@ public class HorarioProfesionalService {
     }
 
 
-    public List<HorarioXProfesionalEntidad> obtenerHorariosPorProfesionalYDia(Long idProfesional, DiasEnum dia) {
-        return horarioXProfesionalRepositorio.findByIdProfesionalAndDiaEntidad_Dia(idProfesional, dia);
+    public List<HorarioProfesional> obtenerHorariosPorProfesionalYDia(Long idProfesional, DiasEnum dia) {
+
+        List<HorarioProfesionalEntidad> horarioProfesionalEntidadList = horarioProfesionalRepositorio.findByIdProfesionalAndDiaEntidad_Dia(idProfesional, dia);
+
+        return horarioProfesionalEntidadList.stream().map(horarioProfesionalMapper::toModel).toList();
     }
 
 
