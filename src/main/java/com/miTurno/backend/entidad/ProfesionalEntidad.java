@@ -20,7 +20,7 @@ public class ProfesionalEntidad extends UsuarioEntidad{
     // negocio al que esta relacionado
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_negocio", nullable = false) // Clave foránea hacia Negocio
-    private NegocioEntidad idNegocio;
+    private NegocioEntidad negocioEntidad;
 
     // Servicios específicos que ofrece el profesional
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -29,7 +29,7 @@ public class ProfesionalEntidad extends UsuarioEntidad{
             joinColumns = @JoinColumn(name = "id_profesional"),
             inverseJoinColumns = @JoinColumn(name = "id_servicio")
     )
-    private List<ServicioEntidad> servicios;
+    private List<ServicioEntidad> listaServiciosEntidad;
 
     // listado de horarios DISPONIBLES
     @OneToMany(mappedBy = "profesional", cascade = CascadeType.ALL, fetch = FetchType.EAGER)

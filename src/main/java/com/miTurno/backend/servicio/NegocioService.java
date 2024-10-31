@@ -1,11 +1,10 @@
 package com.miTurno.backend.servicio;
 
-import com.miTurno.backend.DTO.Usuario;
-import com.miTurno.backend.entidad.CredencialesEntidad;
 import com.miTurno.backend.excepcion.NombreNegocioYaExisteException;
 import com.miTurno.backend.excepcion.RecursoNoExisteException;
 import com.miTurno.backend.excepcion.RolIncorrectoException;
 import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
+import com.miTurno.backend.mapper.UsuarioMapper;
 import com.miTurno.backend.repositorio.RolRepositorio;
 import com.miTurno.backend.repositorio.UsuarioRepositorio;
 import com.miTurno.backend.request.NegocioRequest;
@@ -27,6 +26,7 @@ public class NegocioService {
     private final RolRepositorio rolRepositorio;
     private final UsuarioRepositorio usuarioRepositorio;
     private final UsuarioService usuarioService;
+    private final UsuarioMapper usuarioMapper;
     //atributos
     private NegocioRepositorio negocioRepositorio;
     private NegocioMapper negocioMapper;
@@ -34,12 +34,13 @@ public class NegocioService {
 
     //constructores
     @Autowired
-    public NegocioService(NegocioMapper negocioMapper, NegocioRepositorio negocioRepositorio, RolRepositorio rolRepositorio, UsuarioRepositorio usuarioRepositorio, UsuarioService usuarioService) {
+    public NegocioService(NegocioMapper negocioMapper, NegocioRepositorio negocioRepositorio, RolRepositorio rolRepositorio, UsuarioRepositorio usuarioRepositorio, UsuarioService usuarioService, UsuarioMapper usuarioMapper) {
         this.negocioMapper = negocioMapper;
         this.negocioRepositorio = negocioRepositorio;
         this.rolRepositorio = rolRepositorio;
         this.usuarioRepositorio = usuarioRepositorio;
         this.usuarioService = usuarioService;
+        this.usuarioMapper = usuarioMapper;
     }
 
     //metodos
@@ -58,7 +59,10 @@ public class NegocioService {
         return negocioMapper.toModel(negocioEntidad);
     }
 
-
+    //obtener negocio x nombre
+//    public UsuarioEntidad obtenerNegocioPorNombre(String nombre) throws NombreNoExisteException{
+//       return usuarioRepositorio.findByRolEntidad_RolAndNombre(RolUsuarioEnum.NEGOCIO,nombre).orElseThrow(()->new NombreNoExisteException(nombre));
+//    }
 
 
     //POST negocio
@@ -77,25 +81,17 @@ public class NegocioService {
         if (usuarioRepositorio.existsByNombreAndRolEntidad_Rol(nombreNegocio, rolUsuarioEnum)) {
             throw new NombreNegocioYaExisteException(nombreNegocio);
         }
+        Negocio negocio= negocioMapper.toModel(negocioRequest);
+        NegocioEntidad negocioEntidad= negocioMapper.toEntidad(negocio);
 
-
-        // Crear UsuarioRequest usando negocioRequest
-        UsuarioRequest usuarioRequest = UsuarioRequest.builder()
-                .idRol(negocioRequest.getIdRol())
-                .nombre(negocioRequest.getNombre())
-                .apellido(negocioRequest.getApellido())
-                .email(negocioRequest.getEmail())
-                .password(negocioRequest.getPassword())
-                .telefono(negocioRequest.getTelefono())
-                .fechaNacimiento(negocioRequest.getFechaNacimiento())
-                .build();
+        usuarioRepositorio.save(negocioEntidad);
 
 
         // Crear el usuario negocio
-        usuarioService.crearUnUsuario(usuarioRequest);
+        usuarioService.crearUnUsuario(usuarioMapper.toModel(usuarioRequest));
 
         // Crear los detalles del negocio
-        return crearDetallesNegocio(negocioRequest);
+        return crearNegocio(negocioRequest);
     }
 
     //GET profesionales de negocio x id
@@ -119,7 +115,7 @@ public class NegocioService {
     //POST clientes de negocio x id
 
     //POST detalles negocio
-    public Negocio crearDetallesNegocio(NegocioRequest negocioRequest){
+    public Negocio crearNegocio(NegocioRequest negocioRequest){
 
         //primero lo paso a clase modelo
         Negocio negocio = negocioMapper.toModel(negocioRequest);

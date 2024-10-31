@@ -61,26 +61,6 @@ public class NegocioControlador {
         return negocioService.crearUnNegocio(negocioRequest);
     }
 
-    //POST profesional por negocio
-    @Operation(summary = "Crear un nuevo profesional")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "profesional creado con éxito"),
-            @ApiResponse(responseCode = "400", description = "Datos del profesional inválidos", content = @Content(schema =
-            @Schema(implementation = Map.Entry.class), examples = @ExampleObject(value = "{ \"nombre\": \"no puede estar vacío\" }"))),
-            @ApiResponse(responseCode = "409", description = "El email o telefono ingresado ya existe")
-    })
-    @PostMapping("{idNegocio}/profesionales")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Usuario crearUnProfesionalPorNegocio(@Parameter(description = "Datos del profesional")
-                                                @Valid @RequestBody ProfesionalRequest profesionalRequest,
-                                                @PathVariable Long idNegocio) {
-
-        //todo CAMBIAR A PROFESIONALES SERVICE
-        return usuarioService.crearUnprofesional(profesionalRequest);
-    }
-
-
-
 
 
     //GET all
@@ -109,16 +89,7 @@ public class NegocioControlador {
 
     //GET servicios x id negocio
 
-    //GET profesionales x id negocio
-    @Operation(summary = "Obtener profesionales por id negocio")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",description = "Negocio obtenido con exito"),
-            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
-    })
-    @GetMapping("/{idNegocio}/profesionales")
-    public List<Usuario> obtenerProfesionalesPorIdNegocio(@PathVariable Long idNegocio){
-       return profesionalesXNegocioService.obtenerProfesionalesPorIdNegocio(idNegocio);
-    }
+
 
     //GET profesional especifico x id x negocio
 

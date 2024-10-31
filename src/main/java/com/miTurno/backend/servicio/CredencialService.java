@@ -11,16 +11,16 @@ import java.util.List;
 public class CredencialService {
 
 
-    
+
 
     //obtener todos los negocios
     //TODO PASARLO AL SERVICIO DE CREDENCIALES
-    public List<UsuarioEntidad> obtenerTodosLosNegocios(){
-
-        List<CredencialesEntidad> credencialesEntidadList= credencialesRepositorio.findAllByRolEntidad_Rol(RolUsuarioEnum.NEGOCIO);
-
-        List<UsuarioEntidad> usuarioEntidadList = credencialesEntidadList.stream(credencialesEntidadList.get())
-
-    }
+//    public List<UsuarioEntidad> obtenerTodosLosNegocios(){
+//
+//        List<CredencialesEntidad> credencialesEntidadList= credencialesRepositorio.findAllByRolEntidad_Rol(RolUsuarioEnum.NEGOCIO);
+//
+//        List<UsuarioEntidad> usuarioEntidadList = credencialesEntidadList.stream(credencialesEntidadList.get())
+//
+//    }
 
 }

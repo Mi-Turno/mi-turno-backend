@@ -38,7 +38,7 @@ public class ServicioEntidad {
     private Boolean estado;
 
     // Relación con los profesionales que ofrecen este servicio
-    @ManyToMany(mappedBy = "servicios", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "listaServiciosEntidad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProfesionalEntidad> profesionales;
 
     //relacion con el negocio
