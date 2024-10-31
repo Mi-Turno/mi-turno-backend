@@ -1,11 +1,15 @@
 package com.miTurno.backend.servicio;
 
+import com.miTurno.backend.DTO.Negocio;
+import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.entidad.ServicioEntidad;
 import com.miTurno.backend.excepcion.ServicioNoExisteException;
+import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import com.miTurno.backend.mapper.ServicioMapper;
 import com.miTurno.backend.DTO.Servicio;
+import com.miTurno.backend.repositorio.NegocioRepositorio;
 import com.miTurno.backend.repositorio.ServicioRepositorio;
-import com.miTurno.backend.repositorio.pivotRepositorios.ServicioXProfesionalesRepositorio;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,31 +20,32 @@ public class ServicioService {
 
     private final ServicioRepositorio servicioRepositorio;
     private final ServicioMapper servicioMapper;
-    private final ServicioXProfesionalesRepositorio servicioXProfesionalesRepositorio;
 
-
+    private final NegocioRepositorio negocioRepositorio;
     @Autowired
-    public ServicioService(ServicioRepositorio servicioRepositorio, ServicioMapper servicioMapper, ServicioXProfesionalesRepositorio servicioXProfesionalesRepositorio) {
+    public ServicioService(ServicioRepositorio servicioRepositorio, ServicioMapper servicioMapper,NegocioRepositorio negocioRepositorio) {
         this.servicioRepositorio = servicioRepositorio;
         this.servicioMapper= servicioMapper;
-        this.servicioXProfesionalesRepositorio = servicioXProfesionalesRepositorio;
+        this.negocioRepositorio = negocioRepositorio;
+
     }
 
     //GET all
 
-    public List<ServicioEntidad> obtenerListadoTodosLosServicios(){
-        return servicioRepositorio.findAll();
+
+    public List<ServicioEntidad> obtenerListadoTodosLosServiciosPorNegocio(Long idNegocio){
+        return servicioRepositorio.findAllByIdNegocio(idNegocio);
     }
 
     //GET x criterio
 //
-    public List<Servicio> obtenerListadoServicios(String nombre, Boolean estado){
+   /* public List<Servicio> obtenerListadoServicios(String nombre, Boolean estado){
         //todo: Hay que hacer un repo custom, y llamar ese metodo.
         return servicioRepositorio.findAll().stream()
                 .filter(servicioEntidad -> nombre == null || servicioEntidad.getNombre().toUpperCase().contains(nombre.toUpperCase()))
                 .filter(servicioEntidad -> estado == null || (servicioEntidad.getEstado() != null && servicioEntidad.getEstado().equals(estado)))
                 .map(servicioMapper::toModel).toList();
-    }
+    }*/
 
 
     //GET ID
@@ -48,7 +53,8 @@ public class ServicioService {
     //POST
     public Servicio crearUnServicio(Servicio nuevoServicio){
         ServicioEntidad servicioEntidad= new ServicioEntidad();
-
+        NegocioEntidad negocioEntidad = negocioRepositorio.findById(nuevoServicio.getIdNegocio()).orElseThrow(()->new UsuarioNoExistenteException(nuevoServicio.getIdNegocio()));
+        servicioEntidad.setIdNegocio(negocioEntidad);
         servicioEntidad.setDuracion(nuevoServicio.getDuracion());
         servicioEntidad.setNombre(nuevoServicio.getNombre());
         servicioEntidad.setEstado(true);
@@ -57,16 +63,9 @@ public class ServicioService {
         return servicioMapper.toModel(servicioEntidad);
     }
 
-    public List<Servicio> obtenerServiciosPorIdProfesional(Long idProfesional){
-        List<ServicioEntidad> idServiciosList= servicioXProfesionalesRepositorio.findAllServiciosByProfesional(idProfesional);
-
-
-
-        return idServiciosList.stream().map(servicioMapper::toModel).toList();
-    }
 
     //DELETE
-    public Boolean eliminarUnServicio(Long idServicioAEliminar) throws ServicioNoExisteException{
+    public Boolean eliminarUnServicio(Long idNegocio,Long idServicioAEliminar) throws ServicioNoExisteException{
         Boolean rta = true;
 
         ServicioEntidad servicioEntidad = servicioRepositorio.findById(idServicioAEliminar).orElseThrow(()-> new ServicioNoExisteException((idServicioAEliminar)));
@@ -79,8 +78,9 @@ public class ServicioService {
     }
 
     //UPDATE
-    public Servicio actualizarUnServicio(Long idServicioAActualizar,Servicio nuevoServicio) throws ServicioNoExisteException{
-        ServicioEntidad servicioEntidad= servicioRepositorio.findById(idServicioAActualizar).orElseThrow(()->new ServicioNoExisteException(idServicioAActualizar));
+    public Servicio actualizarUnServicio(Long idNegocio,Long idServicioAActualizar,Servicio nuevoServicio) throws ServicioNoExisteException{
+        ServicioEntidad servicioEntidad= servicioRepositorio.findByIdNegocioAndIdServicio(idNegocio,idServicioAActualizar);
+
         servicioEntidad.setDuracion(nuevoServicio.getDuracion());
         //todo: El precio no debería estar aca sinó que depende de cada profesional
         //servicioEntidad.setPrecio(nuevoServicio.getPrecio());

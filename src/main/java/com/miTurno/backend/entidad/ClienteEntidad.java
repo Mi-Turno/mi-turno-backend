@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
@@ -11,7 +12,7 @@ import java.util.List;
 @Table(name="clientes")
 @Setter
 @Getter
-@Builder
+@SuperBuilder
 public class ClienteEntidad extends UsuarioEntidad{
 
     //listado de turnos

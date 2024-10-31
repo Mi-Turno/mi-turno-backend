@@ -14,12 +14,12 @@ import java.time.LocalTime;
 @Builder
 public class Turno {
     //atributos
+    private Long idTurno;
     private Long idServicio;
-    //private Long idTurno;
-    private MetodosDePagoEnum metodosDePagoEnum;
     private Long idCliente;
     private Long idNegocio;
-
+    private MetodosDePagoEnum metodosDePagoEnum;
+    private LocalDate fechaInicio;
     private HorarioProfesional horarioProfesional;
 
     private Boolean estado;
