@@ -45,7 +45,7 @@ public class UsuarioControlador {
     })
     @GetMapping
     public ResponseEntity<List<UsuarioEntidad> >listarUsuarios(){
-        List<UsuarioEntidad> usuarioEntidadList= usuarioService.obtenerTodosLosNegocios();
+        List<UsuarioEntidad> usuarioEntidadList= usuarioService.obtenerTodosLosUsuarios();
         return ResponseEntity.ok(usuarioEntidadList);//200
     }
 

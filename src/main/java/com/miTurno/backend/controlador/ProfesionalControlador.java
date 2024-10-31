@@ -1,5 +1,6 @@
 package com.miTurno.backend.controlador;
 
+import com.miTurno.backend.DTO.Profesional;
 import com.miTurno.backend.DTO.Usuario;
 import com.miTurno.backend.request.ProfesionalRequest;
 import com.miTurno.backend.servicio.ProfesionalService;
@@ -34,7 +35,7 @@ public class ProfesionalControlador {
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
     @GetMapping
-    public List<Usuario> obtenerProfesionalesPorIdNegocio(@PathVariable Long idNegocio){
+    public List<Profesional> obtenerProfesionalesPorIdNegocio(@PathVariable Long idNegocio){
         return profesionalService.obtenerProfesionalesPorIdNegocio(idNegocio);
     }
 

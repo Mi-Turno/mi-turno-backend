@@ -1,5 +1,6 @@
 package com.miTurno.backend.controlador;
 
+import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.request.NegocioRequest;
 import com.miTurno.backend.entidad.UsuarioEntidad;
 import com.miTurno.backend.mapper.UsuarioMapper;
@@ -29,16 +30,14 @@ public class NegocioControlador {
 
     private final UsuarioService usuarioService;
     private final UsuarioMapper usuarioMapper;
-    private final ProfesionalesXNegocioService profesionalesXNegocioService;
     private final NegocioService negocioService;
 
 
     //constructores
     @Autowired
-    public NegocioControlador(UsuarioService usuarioService, UsuarioMapper usuarioMapper, ProfesionalesXNegocioService profesionalesXNegocioService, NegocioService negocioService) {
+    public NegocioControlador(UsuarioService usuarioService, UsuarioMapper usuarioMapper, NegocioService negocioService) {
         this.usuarioService = usuarioService;
         this.usuarioMapper = usuarioMapper;
-        this.profesionalesXNegocioService = profesionalesXNegocioService;
         this.negocioService = negocioService;
     }
 
@@ -68,9 +67,9 @@ public class NegocioControlador {
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
     @GetMapping
-    public List<Usuario> listarNegocios(){
-        List<UsuarioEntidad> usuarioEntidadList = usuarioService.obtenerTodosLosNegocios();
-        return usuarioEntidadList.stream().map(usuarioMapper::toModel).toList();
+    public List<Negocio> listarNegocios(){
+        List<Negocio> negocioEntidadList = negocioService.listarTodosLosNegocios();
+        return negocioEntidadList;
     }
 
 

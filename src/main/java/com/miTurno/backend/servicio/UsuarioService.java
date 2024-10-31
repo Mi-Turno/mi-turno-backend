@@ -48,7 +48,7 @@ public class UsuarioService {
     //get x id
     public Usuario buscarUsuario(Long id) throws UsuarioNoExistenteException{
 
-        return usuarioMapper.toModel(usuarioRepositorio.findById(id).orElseThrow(()-> new UsuarioNoExistenteException(id)))ñ
+        return usuarioMapper.toModel(usuarioRepositorio.findById(id).orElseThrow(()-> new UsuarioNoExistenteException(id)));
     }
 
     //get x email y contra
