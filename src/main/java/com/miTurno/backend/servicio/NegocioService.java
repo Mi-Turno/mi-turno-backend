@@ -8,7 +8,6 @@ import com.miTurno.backend.mapper.UsuarioMapper;
 import com.miTurno.backend.repositorio.RolRepositorio;
 import com.miTurno.backend.repositorio.UsuarioRepositorio;
 import com.miTurno.backend.request.NegocioRequest;
-
 import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.entidad.ProfesionalEntidad;
 import com.miTurno.backend.mapper.NegocioMapper;
@@ -81,16 +80,18 @@ public class NegocioService {
         if (usuarioRepositorio.existsByNombreAndRolEntidad_Rol(nombreNegocio, rolUsuarioEnum)) {
             throw new NombreNegocioYaExisteException(nombreNegocio);
         }
+
+        //todo verificar si funciona bien
         Negocio negocio= negocioMapper.toModel(negocioRequest);
-        NegocioEntidad negocioEntidad= negocioMapper.toEntidad(negocio);
-
-        usuarioRepositorio.save(negocioEntidad);
 
 
-        // Crear el usuario negocio
 
-        // Crear los detalles del negocio
-        return crearNegocio(negocioRequest);
+
+        usuarioService.crearUnUsuario(negocio);
+
+
+
+        return negocio;
     }
 
     //GET profesionales de negocio x id
@@ -113,18 +114,6 @@ public class NegocioService {
 
     //POST clientes de negocio x id
 
-    //POST detalles negocio
-    public Negocio crearNegocio(NegocioRequest negocioRequest){
-
-        //primero lo paso a clase modelo
-        Negocio negocio = negocioMapper.toModel(negocioRequest);
-
-        //despues lo paso a entidad
-        NegocioEntidad negocioEntidad= negocioMapper.toEntidad(negocio);
-
-        //y ya despues lo guardo y lo que me retorna .save, lo mappeo
-        return negocioMapper.toModel(negocioRepositorio.save(negocioEntidad));
-    }
 
 
 
