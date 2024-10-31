@@ -88,7 +88,6 @@ public class NegocioService {
 
 
         // Crear el usuario negocio
-        usuarioService.crearUnUsuario(usuarioMapper.toModel(usuarioRequest));
 
         // Crear los detalles del negocio
         return crearNegocio(negocioRequest);

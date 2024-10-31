@@ -1,13 +1,11 @@
 package com.miTurno.backend.controlador;
 
 import com.miTurno.backend.request.NegocioRequest;
-import com.miTurno.backend.request.ProfesionalRequest;
 import com.miTurno.backend.entidad.UsuarioEntidad;
 import com.miTurno.backend.mapper.UsuarioMapper;
 import com.miTurno.backend.DTO.Negocio;
 import com.miTurno.backend.DTO.Usuario;
 import com.miTurno.backend.servicio.NegocioService;
-import com.miTurno.backend.servicio.ProfesionalesXNegocioService;
 import com.miTurno.backend.servicio.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
