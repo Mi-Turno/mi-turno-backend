@@ -94,6 +94,14 @@ public class NegocioService {
         return negocioEntidad.getIdUsuario();
     }
 
+    //GET listado de negocios x nombre parecido
+    public List<NegocioEntidad> obtenerListadoDeNegociosConNombreAproximado(String nombreNegocio){
+
+        List<NegocioEntidad> listaNegocioEntidad= negocioRepositorio.getNegocioEntidadsByNombreLikeIgnoreCase(nombreNegocio);
+        return listaNegocioEntidad;
+    }
+
+
     //todo todas estos metodos van en los servicios correspondientes
 
     //GET todos los profesionales x id negocio

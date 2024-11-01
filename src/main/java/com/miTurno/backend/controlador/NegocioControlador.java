@@ -108,8 +108,18 @@ public class NegocioControlador {
         return negocioService.obtenerIdNegocioPorNombreNegocio(nombreNegocio);
     }
 
-    //GET servicios x id negocio
+    //GET negocios x aproximacion de nombre
+    @Operation(summary = "Obtener listado de negocios por nombre(busqueda)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Negocios obtenido con exito"),
+            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
+    })
+    @GetMapping("buscar/{nombreNegocio}")
+    public List<NegocioEntidad> obtenerNegociosPorNombreParecido(@PathVariable String nombreNegocio){
 
+
+        return negocioService.obtenerListadoDeNegociosConNombreAproximado(nombreNegocio);
+    }
 
 
     //GET profesional especifico x id x negocio
