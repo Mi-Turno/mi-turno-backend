@@ -1,6 +1,7 @@
 package com.miTurno.backend.entidad;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -47,7 +48,7 @@ public class UsuarioEntidad {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_credenciales", nullable = false) // Clave foránea a CredencialesEntidad
-    @JsonIgnore
+   // @JsonIgnore
     private CredencialesEntidad credenciales; // Relación con Credenciales
 
 

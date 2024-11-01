@@ -1,5 +1,6 @@
 package com.miTurno.backend.entidad;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,6 +21,7 @@ public class ProfesionalEntidad extends UsuarioEntidad{
     // negocio al que esta relacionado
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_negocio", nullable = false) // Clave foránea hacia Negocio
+    @JsonBackReference
     private NegocioEntidad negocioEntidad;
 
     // Servicios específicos que ofrece el profesional
