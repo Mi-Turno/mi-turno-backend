@@ -63,4 +63,11 @@ public class ManejadorGlobalExcepciones {
         return new ResponseEntity<>(errores, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(RecursoNoExisteException.class)
+    public ResponseEntity<Map<String,String>> RecursoNoExisteException(RecursoNoExisteException ex){
+        Map<String, String> errores = new HashMap<>();
+        errores.put("recurso ", ex.getMessage());
+        return new ResponseEntity<>(errores, HttpStatus.NOT_FOUND);
+    }
+
 }

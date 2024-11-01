@@ -79,7 +79,7 @@ public class UsuarioControlador {
     }
 */
 
-   /* @Operation(summary = "Obtener un usuario por ROL")
+   @Operation(summary = "Obtener un usuario por ROL")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "El usuario con el ID fue devuelto"),
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
@@ -87,7 +87,7 @@ public class UsuarioControlador {
     @GetMapping("/rol/{rol}")
     public List<UsuarioEntidad> obtenerUsuariosPorRol( @Parameter(description = "rol", example = "ADMIN") @PathVariable RolUsuarioEnum rol) {
         return usuarioService.obtenerUsuariosPorRol(rol);
-    }*/
+    }
 
   /*  @Operation(summary = "Obtener un usuario por Estado")
     @ApiResponses(value = {
@@ -114,7 +114,7 @@ public class UsuarioControlador {
     }
 */
    //POST
-   /* @Operation(summary = "Crear un nuevo usuario")
+    @Operation(summary = "Crear un nuevo usuario")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Usuario creado con éxito"),
             @ApiResponse(responseCode = "400", description = "Datos del usuario inválidos", content = @Content(schema =
@@ -127,7 +127,7 @@ public class UsuarioControlador {
                                   @Valid @RequestBody UsuarioRequest usuarioRequest) {
 
         return usuarioService.crearUnUsuario(usuarioMapper.toModel(usuarioRequest));
-    }*/
+    }
     //UPDATE
     @Operation(summary = "actualizar usuario por ID")
     @ApiResponses(value = {

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ServicioRepositorio extends JpaRepository<ServicioEntidad, Long> {
-   /* List<ServicioEntidad> findAllByIdNegocio(Long idNegocio);
-    ServicioEntidad findByIdNegocioAndIdServicio(Long idNegocio,Long idServicio);*/
+
+    List<ServicioEntidad> findAllByNegocioEntidad_IdUsuario(Long idNegocio);
+    ServicioEntidad findByNegocioEntidad_IdUsuarioAndIdServicio(Long idNegocio,Long idServicio);
 }

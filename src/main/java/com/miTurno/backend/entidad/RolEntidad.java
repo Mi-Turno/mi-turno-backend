@@ -30,6 +30,10 @@ public class RolEntidad {
     @JoinColumn(name = "id_rol")
     private List<UsuarioEntidad> usuarios; // Lista de usuarios que tienen este rol
 
+    public RolEntidad(RolUsuarioEnum rolUsuarioEnum) {
+        rol=rolUsuarioEnum;
+    }
+
     @JsonValue
     public String getNombre() {
         return rol.name();

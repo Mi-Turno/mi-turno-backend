@@ -4,10 +4,8 @@ import com.miTurno.backend.request.ServicioRequest;
 import com.miTurno.backend.entidad.ServicioEntidad;
 import com.miTurno.backend.excepcion.ServicioNoExisteException;
 import com.miTurno.backend.mapper.ServicioMapper;
-import com.miTurno.backend.DTO.Servicio;
 import com.miTurno.backend.servicio.ServicioService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -63,6 +61,27 @@ public class ServicioControlador {
 //        return servicioService.obtenerListadoServicios(nombreServicio, estado);
 //    }
 
+//GET x id
+    @Operation(summary = "Obtener servicio por id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Lista de servicios obtenida exitosamente"),
+            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
+    })
+    @GetMapping("/{idServicio}")
+    public ServicioEntidad obtenerServicioPorId(@PathVariable Long idNegocio,@PathVariable Long idServicio){
+        return servicioService.obtenerUnServicioPorId(idNegocio, idServicio);
+    }
+//GET listado x id negocio
+
+    @Operation(summary = "Obtener servicio por id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Lista de servicios obtenida exitosamente"),
+            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
+    })
+    @GetMapping
+    public List<ServicioEntidad> obtenerListadoDeServiciosPorIdNegocio(@PathVariable Long idNegocio){
+        return servicioService.obtenerListadoDeServiciosPorIdNegocio(idNegocio);
+    }
 
     //POST
     @Operation(summary = "Crear un nuevo Servicio")
@@ -72,10 +91,11 @@ public class ServicioControlador {
             @Schema(implementation = Map.Entry.class), examples = @ExampleObject(value = "{ \"precio\": \"no puede estar vacío, tampoco puede ser menor a 0\" }")))
     })
     @PostMapping
-    public Servicio crearUnServicio(
-            @Valid @RequestBody ServicioRequest servicioRequest
+    public ServicioEntidad crearUnServicio(
+            @Valid @RequestBody ServicioRequest servicioRequest,
+            @PathVariable Long idNegocio
             ){
-        return servicioService.crearUnServicio(servicioMapper.toModel(servicioRequest));
+        return servicioService.crearUnServicio(idNegocio,servicioRequest);
     }
 
 

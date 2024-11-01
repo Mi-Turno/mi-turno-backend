@@ -2,6 +2,7 @@ package com.miTurno.backend.controlador;
 
 import com.miTurno.backend.DTO.Profesional;
 import com.miTurno.backend.DTO.Usuario;
+import com.miTurno.backend.entidad.ProfesionalEntidad;
 import com.miTurno.backend.request.ProfesionalRequest;
 import com.miTurno.backend.servicio.ProfesionalService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,15 +30,15 @@ public class ProfesionalControlador {
 
 
     //GET todos los profesionales x id negocio
-    /*@Operation(summary = "Obtener profesionales por id negocio")
+    @Operation(summary = "Obtener profesionales por id negocio")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "Negocio obtenido con exito"),
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
     @GetMapping
-    public List<Profesional> obtenerProfesionalesPorIdNegocio(@PathVariable Long idNegocio){
+    public List<ProfesionalEntidad> obtenerProfesionalesPorIdNegocio(@PathVariable Long idNegocio){
         return profesionalService.obtenerProfesionalesPorIdNegocio(idNegocio);
-    }*/
+    }
 
     //GET profesional x id ("/{idProfesional}")
 
@@ -50,7 +51,7 @@ public class ProfesionalControlador {
     //POST un profesional
 
     //POST profesional por negocio
-    /*@Operation(summary = "Crear un nuevo profesional")
+    @Operation(summary = "Crear un nuevo profesional")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "profesional creado con éxito"),
             @ApiResponse(responseCode = "400", description = "Datos del profesional inválidos", content = @Content(schema =
@@ -59,13 +60,13 @@ public class ProfesionalControlador {
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Usuario crearUnProfesionalPorNegocio(@Parameter(description = "Datos del profesional")
+    public ProfesionalEntidad crearUnProfesionalPorNegocio(@Parameter(description = "Datos del profesional")
                                                 @Valid @RequestBody ProfesionalRequest profesionalRequest,
                                                 @PathVariable Long idNegocio) {
 
-        //todo CAMBIAR A PROFESIONALES SERVICE
-        return profesionalService.crearUnprofesional(profesionalRequest);
-    }*/
+
+        return profesionalService.crearUnprofesional(idNegocio, profesionalRequest);
+    }
 
 
     //POST nuevo turno a un profesional ("/{idProfesional}/turnos")

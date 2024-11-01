@@ -39,6 +39,8 @@ public class NegocioMapper {
         return Negocio.builder()
                 .email(negocioRequest.getEmail())
                 .estado(true)
+                .nombre(negocioRequest.getNombre())
+                .apellido(negocioRequest.getApellido())
                 .rolUsuario(rolUsuarioEnum)
                 .password(negocioRequest.getPassword())
                 .telefono(negocioRequest.getTelefono())

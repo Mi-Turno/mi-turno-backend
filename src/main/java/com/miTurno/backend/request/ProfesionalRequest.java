@@ -15,16 +15,16 @@ public class ProfesionalRequest extends UsuarioRequest{
 
     //datos profesional
 
-    @Schema(description = "ID del negocio al que pertenece el profesional", example = "1")
-    @NotNull
-    private Long idNegocio;
+//    @Schema(description = "ID del negocio al que pertenece el profesional", example = "1")
+//    @NotNull
+//    private Long idNegocio;
 
     public ProfesionalRequest() {
     super();
     }
 
-    public ProfesionalRequest(Long idNegocio) {
-        super();
-        this.idNegocio = idNegocio;
-    }
+//    public ProfesionalRequest(Long idNegocio) {
+//        super();
+//        this.idNegocio = idNegocio;
+//    }
 }

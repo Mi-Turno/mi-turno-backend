@@ -1,18 +1,19 @@
 package com.miTurno.backend.servicio;
 
+import com.miTurno.backend.DTO.Profesional;
+import com.miTurno.backend.DTO.Usuario;
 import com.miTurno.backend.excepcion.NombreNegocioYaExisteException;
 import com.miTurno.backend.excepcion.RecursoNoExisteException;
 import com.miTurno.backend.excepcion.RolIncorrectoException;
 import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
+import com.miTurno.backend.mapper.ProfesionalMapper;
 import com.miTurno.backend.mapper.UsuarioMapper;
-import com.miTurno.backend.repositorio.RolRepositorio;
-import com.miTurno.backend.repositorio.UsuarioRepositorio;
+import com.miTurno.backend.repositorio.*;
 import com.miTurno.backend.request.NegocioRequest;
 import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.entidad.ProfesionalEntidad;
 import com.miTurno.backend.mapper.NegocioMapper;
 import com.miTurno.backend.DTO.Negocio;
-import com.miTurno.backend.repositorio.NegocioRepositorio;
 import com.miTurno.backend.request.UsuarioRequest;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class NegocioService {
     private final UsuarioRepositorio usuarioRepositorio;
     private final UsuarioService usuarioService;
     private final UsuarioMapper usuarioMapper;
+    private final CredencialesRepositorio credencialesRepositorio;
+    private final ProfesionalRepositorio profesionalRepositorio;
+    private final ProfesionalMapper profesionalMapper;
     //atributos
     private NegocioRepositorio negocioRepositorio;
     private NegocioMapper negocioMapper;
@@ -33,29 +37,28 @@ public class NegocioService {
 
     //constructores
     @Autowired
-    public NegocioService(NegocioMapper negocioMapper, NegocioRepositorio negocioRepositorio, RolRepositorio rolRepositorio, UsuarioRepositorio usuarioRepositorio, UsuarioService usuarioService, UsuarioMapper usuarioMapper) {
+    public NegocioService(NegocioMapper negocioMapper, NegocioRepositorio negocioRepositorio, RolRepositorio rolRepositorio, UsuarioRepositorio usuarioRepositorio, UsuarioService usuarioService, UsuarioMapper usuarioMapper, CredencialesRepositorio credencialesRepositorio, ProfesionalRepositorio profesionalRepositorio, ProfesionalMapper profesionalMapper) {
         this.negocioMapper = negocioMapper;
         this.negocioRepositorio = negocioRepositorio;
         this.rolRepositorio = rolRepositorio;
         this.usuarioRepositorio = usuarioRepositorio;
         this.usuarioService = usuarioService;
         this.usuarioMapper = usuarioMapper;
+        this.credencialesRepositorio = credencialesRepositorio;
+        this.profesionalRepositorio = profesionalRepositorio;
+        this.profesionalMapper = profesionalMapper;
     }
 
     //metodos
 
     //GET all negocios
-    public List<Negocio> listarTodosLosNegocios(){
-        List<NegocioEntidad> negocioEntidadList = negocioRepositorio.findAll();
-
-        return negocioEntidadList.stream().map(negocioMapper::toModel).toList();
+    public List<NegocioEntidad> listarTodosLosNegocios(){
+        return negocioRepositorio.findAll();
     }
 
     //GET negocio x id
-    public Negocio obtenerNegocioPorId(Long idNegocio){
-        NegocioEntidad negocioEntidad= negocioRepositorio.findById(idNegocio).orElseThrow(()-> new UsuarioNoExistenteException(idNegocio));
-
-        return negocioMapper.toModel(negocioEntidad);
+    public NegocioEntidad obtenerNegocioPorId(Long idNegocio){
+        return negocioRepositorio.findById(idNegocio).orElseThrow(()-> new UsuarioNoExistenteException(idNegocio));
     }
 
     //obtener negocio x nombre
@@ -65,7 +68,7 @@ public class NegocioService {
 
 
     //POST negocio
-   /* public Negocio crearUnNegocio(NegocioRequest negocioRequest)
+    public NegocioEntidad crearUnNegocio(NegocioRequest negocioRequest)
             throws NombreNegocioYaExisteException, RolIncorrectoException {
 
         String nombreNegocio = negocioRequest.getNombre();
@@ -77,32 +80,23 @@ public class NegocioService {
             throw new RolIncorrectoException(RolUsuarioEnum.NEGOCIO, rolUsuarioEnum);
         }
 
-        if (usuarioRepositorio.existsByNombreAndRolEntidad_Rol(nombreNegocio, rolUsuarioEnum)) {
+        if (credencialesRepositorio.existsByRolEntidad_RolAndUsuario_Nombre(rolUsuarioEnum,nombreNegocio)) {
             throw new NombreNegocioYaExisteException(nombreNegocio);
         }
 
-        //todo verificar si funciona bien
         Negocio negocio= negocioMapper.toModel(negocioRequest);
 
-
-
-
-        usuarioService.crearUnUsuario(negocio);
-
-
-
-        return negocio;
-    }*/
-
-    //GET profesionales de negocio x id
-    public List<ProfesionalEntidad> obtenerProfesionalesPorIdNegocio(Long idNegocio){
-        List<ProfesionalEntidad> profesionales = null;
-
-        return profesionales;
+        return negocioRepositorio.save(negocioMapper.toEntidad(negocio));
+        //return usuarioService.crearUnUsuario(negocio);
     }
 
 
+
     //todo todas estos metodos van en los servicios correspondientes
+
+    //GET todos los profesionales x id negocio
+
+
     //POST profesionales de negocio x id
 
     //GET servicios de negocio x id

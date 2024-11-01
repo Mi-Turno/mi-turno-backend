@@ -1,15 +1,12 @@
 package com.miTurno.backend.servicio;
 
-import com.miTurno.backend.DTO.Negocio;
-import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.entidad.ServicioEntidad;
 import com.miTurno.backend.excepcion.ServicioNoExisteException;
-import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import com.miTurno.backend.mapper.ServicioMapper;
-import com.miTurno.backend.DTO.Servicio;
 import com.miTurno.backend.repositorio.NegocioRepositorio;
 import com.miTurno.backend.repositorio.ServicioRepositorio;
 
+import com.miTurno.backend.request.ServicioRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,19 +45,22 @@ public class ServicioService {
     }*/
 
 
-    //GET ID
+    //GET uno x ID
+    public ServicioEntidad obtenerUnServicioPorId(Long idNegocio,Long idServicio){
+
+        return servicioRepositorio.findByNegocioEntidad_IdUsuarioAndIdServicio(idNegocio,idServicio);
+    }
+    //GET all x id
+
+    public List<ServicioEntidad> obtenerListadoDeServiciosPorIdNegocio(Long idNegocio){
+
+        return servicioRepositorio.findAllByNegocioEntidad_IdUsuario(idNegocio);
+    }
 
     //POST
-    public Servicio crearUnServicio(Servicio nuevoServicio){
-        ServicioEntidad servicioEntidad= new ServicioEntidad();
-        NegocioEntidad negocioEntidad = negocioRepositorio.findById(nuevoServicio.getIdNegocio()).orElseThrow(()->new UsuarioNoExistenteException(nuevoServicio.getIdNegocio()));
-        servicioEntidad.setIdNegocio(negocioEntidad);
-        servicioEntidad.setDuracion(nuevoServicio.getDuracion());
-        servicioEntidad.setNombre(nuevoServicio.getNombre());
-        servicioEntidad.setEstado(true);
-        servicioEntidad.setPrecio(0.0);
-        servicioRepositorio.save(servicioEntidad);
-        return servicioMapper.toModel(servicioEntidad);
+    public ServicioEntidad crearUnServicio(Long idNegocio,ServicioRequest nuevoServicio){
+
+        return servicioRepositorio.save(servicioMapper.toEntidad(idNegocio,nuevoServicio));
     }
 
 

@@ -1,6 +1,7 @@
 package com.miTurno.backend.mapper;
 
 import com.miTurno.backend.entidad.CredencialesEntidad;
+import com.miTurno.backend.excepcion.RecursoNoExisteException;
 import com.miTurno.backend.repositorio.CredencialesRepositorio;
 import com.miTurno.backend.request.UsuarioRequest;
 import com.miTurno.backend.entidad.RolEntidad;
@@ -36,8 +37,9 @@ public class UsuarioMapper {
 
     //request a usuario
     public Usuario toModel(UsuarioRequest usuarioRequest){
+        RolEntidad rolEntidad = rolRepositorio.findById(usuarioRequest.getIdRol()).orElseThrow(()->new RecursoNoExisteException("El id rol no existe"));
 
-        RolUsuarioEnum rolUsuarioEnum = rolRepositorio.findById(usuarioRequest.getIdRol()).get().getRol();
+        RolUsuarioEnum rolUsuarioEnum = rolEntidad.getRol();
 
         return Usuario.builder()
                 .rolUsuario(rolUsuarioEnum)

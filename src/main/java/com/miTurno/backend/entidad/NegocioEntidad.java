@@ -30,6 +30,8 @@ public class NegocioEntidad extends UsuarioEntidad{
 
 
 
+    //todo, ESTOS ARREGLOS SE PUEDEN NO RETORNAR CON @JSONIGNORE
+
     //profesionales del negocio
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_negocios")

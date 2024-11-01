@@ -2,6 +2,7 @@ package com.miTurno.backend.servicio;
 
 
 import com.miTurno.backend.entidad.*;
+import com.miTurno.backend.excepcion.RecursoNoExisteException;
 import com.miTurno.backend.excepcion.ServicioNoExisteException;
 import com.miTurno.backend.excepcion.TurnoNoExistenteException;
 import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
@@ -51,19 +52,24 @@ public class TurnoService {
     public Turno crearUnTurno(Turno nuevoTurno){
         TurnoEntidad turnoEntidad = new TurnoEntidad();
 
+        //busco si existe el cliente
         ClienteEntidad nuevoCliente = clienteRepositorio.findById(nuevoTurno.getIdCliente()).orElseThrow(()->new UsuarioNoExistenteException(nuevoTurno.getIdCliente()));
         turnoEntidad.setClienteEntidad(nuevoCliente);
 
+        //busco si existe el servicio
         ServicioEntidad nuevoServicio = servicioRepositorio.findById(nuevoTurno.getIdServicio()).orElseThrow(()->new ServicioNoExisteException(nuevoTurno.getIdServicio()));
         turnoEntidad.setIdServicio(nuevoServicio);
 
+        //busco si existe el profesional
         ProfesionalEntidad nuevoProfesional = profesionalRepositorio.findById(nuevoTurno.getHorarioProfesional().getIdProfesional()).orElseThrow(()->new UsuarioNoExistenteException(nuevoTurno.getHorarioProfesional().getIdProfesional()));
         turnoEntidad.setProfesionalEntidad(nuevoProfesional);
 
+        //busco si existe el negocio
         NegocioEntidad nuevoNegocio = negocioRepositorio.findById(nuevoTurno.getIdNegocio()).orElseThrow(()-> new UsuarioNoExistenteException(nuevoTurno.getIdNegocio()));
         turnoEntidad.setNegocioEntidad(nuevoNegocio);
 
-        HorarioProfesionalEntidad nuevoHorario = horarioProfesionalRepositorio.findById(nuevoTurno.getHorarioProfesional().getIdHorario()).orElseThrow(()->new RuntimeException());
+        //busco el horario profesional entidad
+        HorarioProfesionalEntidad nuevoHorario = horarioProfesionalRepositorio.findById(nuevoTurno.getHorarioProfesional().getIdHorario()).orElseThrow(()->new RecursoNoExisteException("horario"));
         turnoEntidad.setHorarioProfesionalEntidad(nuevoHorario);
 
         turnoEntidad.setFechaInicio(nuevoTurno.getFechaInicio());

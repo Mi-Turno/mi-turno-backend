@@ -1,8 +1,14 @@
 package com.miTurno.backend.mapper;
 
 import com.miTurno.backend.DTO.Profesional;
+import com.miTurno.backend.entidad.CredencialesEntidad;
+import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.entidad.ProfesionalEntidad;
+import com.miTurno.backend.entidad.RolEntidad;
+import com.miTurno.backend.excepcion.RecursoNoExisteException;
+import com.miTurno.backend.repositorio.NegocioRepositorio;
 import com.miTurno.backend.repositorio.RolRepositorio;
+import com.miTurno.backend.repositorio.ServicioRepositorio;
 import com.miTurno.backend.request.ProfesionalRequest;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import org.springframework.stereotype.Component;
@@ -14,9 +20,36 @@ import java.util.stream.Collectors;
 public class ProfesionalMapper {
 
     private final RolRepositorio rolRepositorio;
+    private final NegocioRepositorio negocioRepositorio;
+    private final ServicioRepositorio servicioRepositorio;
 
-    public ProfesionalMapper(RolRepositorio rolRepositorio) {
+    public ProfesionalMapper(RolRepositorio rolRepositorio, NegocioRepositorio negocioRepositorio, ServicioRepositorio servicioRepositorio) {
         this.rolRepositorio = rolRepositorio;
+        this.negocioRepositorio = negocioRepositorio;
+        this.servicioRepositorio = servicioRepositorio;
+    }
+
+    //request a entidad
+    public ProfesionalEntidad toEntidad(Long idNegocio,ProfesionalRequest profesionalRequest){
+
+        NegocioEntidad negocioEntidad= negocioRepositorio.findById(idNegocio).orElseThrow(()->new RecursoNoExisteException("id negocio"));
+        RolEntidad rolEntidad = rolRepositorio.findById(profesionalRequest.getIdRol()).orElseThrow(()->new RecursoNoExisteException("id rol"));
+
+        CredencialesEntidad credencialesEntidad = CredencialesEntidad.builder()
+                .email(profesionalRequest.getEmail())
+                .password(profesionalRequest.getPassword())
+                .rolEntidad(rolEntidad)
+                .telefono(profesionalRequest.getTelefono())
+                .estado(true)
+                .build();
+
+        return ProfesionalEntidad.builder()
+                .negocioEntidad(negocioEntidad)
+                .nombre(profesionalRequest.getNombre())
+                .apellido(profesionalRequest.getApellido())
+                .fechaNacimiento(profesionalRequest.getFechaNacimiento())
+                .credenciales(credencialesEntidad)
+                .build();
     }
 
     //entidad a modelo
@@ -51,7 +84,7 @@ public class ProfesionalMapper {
                 .rolUsuario(rolUsuarioEnum)
                 .password(profesionalRequest.getPassword())
                 .fechaNacimiento(profesionalRequest.getFechaNacimiento())
-                .idNegocio(profesionalRequest.getIdNegocio())
+//                .idNegocio(profesionalRequest.getIdNegocio()), lo comento porque el idNegocio viene por variable global en negocio controller
                 .build();
     }
 
