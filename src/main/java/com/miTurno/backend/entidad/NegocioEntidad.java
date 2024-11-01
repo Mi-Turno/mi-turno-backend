@@ -1,5 +1,7 @@
 package com.miTurno.backend.entidad;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,17 +36,20 @@ public class NegocioEntidad extends UsuarioEntidad{
 
     //profesionales del negocio
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_negocios")
+    @JoinColumn(name = "id_negocio")
+    @JsonManagedReference
     private List<ProfesionalEntidad> profesionales;
 
     //servicios que ofrece el negocio
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_servicios")
+    @JoinColumn(name = "id_servicio")
+    @JsonManagedReference
     private List<ServicioEntidad> servicios;
 
     //listado de clientes
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_negocio")
+    //@JoinColumn(name = "id_usuario")
+    @JsonManagedReference
     private List<UsuarioEntidad> clientes;
 
 

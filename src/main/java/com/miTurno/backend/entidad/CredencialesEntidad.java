@@ -1,5 +1,6 @@
 package com.miTurno.backend.entidad;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -30,6 +31,7 @@ public class CredencialesEntidad {
     @OneToOne
     @JoinColumn(name = "id_usuario")
     @JsonIgnore // Para evitar el ciclo en serialización/deserialización
+
     private UsuarioEntidad usuario;
 
     @ManyToOne(fetch = FetchType.EAGER) // EAGER para cargar el rol junto con el usuario

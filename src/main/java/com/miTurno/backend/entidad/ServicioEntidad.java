@@ -1,5 +1,6 @@
 package com.miTurno.backend.entidad;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
@@ -17,7 +18,9 @@ public class ServicioEntidad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonBackReference
     @Column(name = "id_servicio")
+
     private Long idServicio;
 
 
@@ -44,6 +47,7 @@ public class ServicioEntidad {
     //relacion con el negocio
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_negocio", nullable = false) // Clave foránea hacia Negocio
+    @JsonBackReference
     private NegocioEntidad negocioEntidad;
 
 
