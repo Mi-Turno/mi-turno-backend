@@ -43,13 +43,16 @@ public class ProfesionalMapper {
                 .estado(true)
                 .build();
 
-        return ProfesionalEntidad.builder()
+
+        ProfesionalEntidad profesionalEntidad= ProfesionalEntidad.builder()
                 .negocioEntidad(negocioEntidad)
                 .nombre(profesionalRequest.getNombre())
                 .apellido(profesionalRequest.getApellido())
                 .fechaNacimiento(profesionalRequest.getFechaNacimiento())
                 .credenciales(credencialesEntidad)
                 .build();
+        negocioEntidad.getProfesionales().add(profesionalEntidad);
+        return profesionalEntidad;
     }
 
     //entidad a modelo

@@ -48,9 +48,9 @@ public class NegocioEntidad extends UsuarioEntidad{
 
     //listado de clientes
     @OneToMany(fetch = FetchType.LAZY)
-    //@JoinColumn(name = "id_usuario")
+    @JoinColumn(name = "id_cliente")
     @JsonManagedReference
-    private List<UsuarioEntidad> clientes;
+    private List<ClienteEntidad> clientes;
 
 
 

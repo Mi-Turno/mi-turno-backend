@@ -20,7 +20,6 @@ public class ServicioEntidad {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonBackReference
     @Column(name = "id_servicio")
-
     private Long idServicio;
 
 
@@ -41,11 +40,11 @@ public class ServicioEntidad {
     private Boolean estado;
 
     // Relación con los profesionales que ofrecen este servicio
-    @ManyToMany(mappedBy = "listaServiciosEntidad", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ProfesionalEntidad> profesionales;
 
     //relacion con el negocio
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_negocio", nullable = false) // Clave foránea hacia Negocio
     @JsonBackReference
     private NegocioEntidad negocioEntidad;

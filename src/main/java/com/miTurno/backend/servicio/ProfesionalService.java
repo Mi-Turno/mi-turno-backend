@@ -52,8 +52,10 @@ public class ProfesionalService {
             throw new RolIncorrectoException(RolUsuarioEnum.PROFESIONAL, rolUsuarioEnum);
         }
 
+        //todo: falta verificacion de email ver como poder anexarlo con crear un usuario de usuario Service
+
         //si el negocio que quiero asignar al profesional no existe, tiro excepcion
-        UsuarioEntidad negocioEntidad = usuarioRepositorio.findById(idNegocio).orElseThrow(()-> new RecursoNoExisteException("Id negocio"));
+        NegocioEntidad negocioEntidad = negocioRepositorio.findById(idNegocio).orElseThrow(()-> new RecursoNoExisteException("Id negocio"));
 
         // Crear el usuario
         ProfesionalEntidad profesionalEntidad= profesionalMapper.toEntidad(idNegocio,profesionalRequest);

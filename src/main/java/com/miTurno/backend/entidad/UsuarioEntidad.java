@@ -48,7 +48,7 @@ public class UsuarioEntidad {
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_credenciales", nullable = false) // Clave foránea a CredencialesEntidad
-   // @JsonIgnore
+    @JsonIgnore
     private CredencialesEntidad credenciales; // Relación con Credenciales
 
 

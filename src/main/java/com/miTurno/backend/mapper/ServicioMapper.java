@@ -42,9 +42,13 @@ public class ServicioMapper {
     //request a entidad
     public ServicioEntidad toEntidad(Long idNegocio,ServicioRequest servicioRequest) {
         ServicioEntidad servicioEntidad= new ServicioEntidad();
-        NegocioEntidad negocioEntidad = negocioRepositorio.findById(idNegocio).orElseThrow(()->new UsuarioNoExistenteException(idNegocio));
 
+        NegocioEntidad negocioEntidad = negocioRepositorio.findById(idNegocio).orElseThrow(()->new UsuarioNoExistenteException(idNegocio));
         servicioEntidad.setNegocioEntidad(negocioEntidad);
+
+        // Agregar el servicio a la lista de servicios del negocio
+        negocioEntidad.getServicios().add(servicioEntidad);
+
         servicioEntidad.setDuracion(servicioRequest.getDuracion());
         servicioEntidad.setNombre(servicioRequest.getNombre());
         servicioEntidad.setEstado(true);
