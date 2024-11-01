@@ -9,4 +9,6 @@ import java.util.Optional;
 
 public interface NegocioRepositorio extends JpaRepository<NegocioEntidad,Long> {
     NegocioEntidad getNegocioEntidadByIdUsuario(Long idNegocio);
+    Optional<NegocioEntidad> getNegocioEntidadByNombreIgnoreCase(String nombreNegocio);
+
 }

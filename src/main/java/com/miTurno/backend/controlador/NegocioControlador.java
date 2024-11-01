@@ -77,9 +77,35 @@ public class NegocioControlador {
             @ApiResponse(responseCode = "200",description = "Negocio obtenido con exito"),
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
-    @GetMapping("/{idNegocio}")
+    @GetMapping("/id/{idNegocio}")
     public NegocioEntidad obtenerUnNegocioPorIdNegocio(@PathVariable Long idNegocio){
         return negocioService.obtenerNegocioPorId(idNegocio);
+    }
+
+
+
+    //GET negocio x nombre
+    @Operation(summary = "Obtener negocio por nombre")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Negocio obtenido con exito"),
+            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
+    })
+    @GetMapping("/nombre/{nombreNegocio}")
+    public NegocioEntidad obtenerUnNegocioPorNombreNegocio(@PathVariable String nombreNegocio){
+        return negocioService.obtenerNegocioPorNombre(nombreNegocio);
+    }
+
+    //GET idnegocio x nombre
+    @Operation(summary = "Obtener id negocio por nombre")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Negocio obtenido con exito"),
+            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
+    })
+    @GetMapping("/{nombreNegocio}")
+    public Long obtenerIdNegocioPorNombreNegocio(@PathVariable String nombreNegocio){
+
+
+        return negocioService.obtenerIdNegocioPorNombreNegocio(nombreNegocio);
     }
 
     //GET servicios x id negocio

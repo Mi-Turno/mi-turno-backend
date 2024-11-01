@@ -2,10 +2,7 @@ package com.miTurno.backend.servicio;
 
 import com.miTurno.backend.DTO.Profesional;
 import com.miTurno.backend.DTO.Usuario;
-import com.miTurno.backend.excepcion.NombreNegocioYaExisteException;
-import com.miTurno.backend.excepcion.RecursoNoExisteException;
-import com.miTurno.backend.excepcion.RolIncorrectoException;
-import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
+import com.miTurno.backend.excepcion.*;
 import com.miTurno.backend.mapper.ProfesionalMapper;
 import com.miTurno.backend.mapper.UsuarioMapper;
 import com.miTurno.backend.repositorio.*;
@@ -62,9 +59,9 @@ public class NegocioService {
     }
 
     //obtener negocio x nombre
-//    public UsuarioEntidad obtenerNegocioPorNombre(String nombre) throws NombreNoExisteException{
-//       return usuarioRepositorio.findByRolEntidad_RolAndNombre(RolUsuarioEnum.NEGOCIO,nombre).orElseThrow(()->new NombreNoExisteException(nombre));
-//    }
+    public NegocioEntidad obtenerNegocioPorNombre(String nombre) throws NombreNoExisteException {
+       return negocioRepositorio.getNegocioEntidadByNombreIgnoreCase(nombre).orElseThrow(()->new NombreNoExisteException(nombre));
+    }
 
 
     //POST negocio
@@ -90,7 +87,12 @@ public class NegocioService {
         //return usuarioService.crearUnUsuario(negocio);
     }
 
+    //GET id negocio x nombre negocio
+    public Long obtenerIdNegocioPorNombreNegocio(String nombreNegocio){
 
+        NegocioEntidad negocioEntidad= negocioRepositorio.getNegocioEntidadByNombreIgnoreCase(nombreNegocio).orElseThrow(()-> new NombreNoExisteException("Nombre negocio"));
+        return negocioEntidad.getIdUsuario();
+    }
 
     //todo todas estos metodos van en los servicios correspondientes
 
