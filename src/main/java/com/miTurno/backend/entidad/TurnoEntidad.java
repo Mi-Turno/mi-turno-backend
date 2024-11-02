@@ -63,6 +63,10 @@ public class TurnoEntidad {
     @JoinColumn(name = "id_hora_inicio",nullable = false)
     private HorarioProfesionalEntidad horarioProfesionalEntidad;
 
+    //@Schema(description = "Hora de fin del horario", example = "17:00")
+    //    @NotNull
+    //    private LocalTime horaFin;
+
     //estado del turno
     @Column(name="estado")
     private Boolean estado;

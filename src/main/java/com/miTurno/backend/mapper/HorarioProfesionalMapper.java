@@ -20,7 +20,7 @@ public class HorarioProfesionalMapper {
                 .idProfesional(horarioProfesionalEntidad.getProfesionalEntidad().getIdUsuario())
                 .dia(horarioProfesionalEntidad.getDiaEntidad().getDia())
                 .horaInicio(horarioProfesionalEntidad.getHoraInicio())
-                .horaFin(horarioProfesionalEntidad.getHoraFin())
+//                .horaFin(horarioProfesionalEntidad.getHoraFin())
                 .build();
     }
 
@@ -28,10 +28,10 @@ public class HorarioProfesionalMapper {
     public HorarioProfesional toModel(HorarioProfesionalRequest horarioProfesionalRequest){
 
         return HorarioProfesional.builder()
-                .idProfesional(horarioProfesionalRequest.getIdProfesional())
+//                .idProfesional(horarioProfesionalRequest.getIdProfesional())
                 .dia(horarioProfesionalRequest.getDia())
                 .horaInicio(horarioProfesionalRequest.getHoraInicio())
-                .horaFin(horarioProfesionalRequest.getHoraFin())
+//                .horaFin(horarioProfesionalRequest.getHoraFin())
                 .build();
     }
 

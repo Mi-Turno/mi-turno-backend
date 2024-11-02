@@ -2,6 +2,7 @@ package com.miTurno.backend.controlador;
 
 import com.miTurno.backend.DTO.HorarioProfesional;
 import com.miTurno.backend.entidad.HorarioProfesionalEntidad;
+import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.mapper.HorarioProfesionalMapper;
 import com.miTurno.backend.request.HorarioProfesionalRequest;
 import com.miTurno.backend.servicio.HorarioProfesionalService;
@@ -33,7 +34,7 @@ public class HorarioProfesionalControlador {
         this.horarioProfesionalMapper = horarioProfesionalMapper;
     }
 
-    /*@Operation(summary = "Crear un nuevo horario para un profesional")
+    @Operation(summary = "Crear un nuevo horario para un profesional")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "horario creado con éxito"),
             @ApiResponse(responseCode = "400", description = "Datos del horario inválidos", content = @Content(schema =
@@ -41,21 +42,46 @@ public class HorarioProfesionalControlador {
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<HorarioProfesional> crearUnHorario(@Parameter(description = "Datos del horario")
-                                              @Valid @RequestBody HorarioProfesionalRequest horarioXProfesionalRequest) {
-
-        return horarioProfesionalService.crearUnHorarioXProfesional(horarioProfesionalMapper.toModel(horarioXProfesionalRequest));
+    public ResponseEntity<HorarioProfesionalEntidad> crearUnHorario(@Parameter(description = "Datos del horario")
+                                              @Valid @RequestBody HorarioProfesionalRequest horarioXProfesionalRequest,
+                                                             @PathVariable Long idNegocio,
+                                                             @PathVariable Long idProfesional) {
+        HorarioProfesionalEntidad horarioProfesionalEntidad=horarioProfesionalService.crearUnHorarioXProfesional(idNegocio,idProfesional,horarioXProfesionalRequest);
+        return ResponseEntity.ok(horarioProfesionalEntidad);
     }
 
-    @GetMapping("/dia/{idDia}")
-    public ResponseEntity<List<HorarioProfesionalEntidad>> obtenerHorariosPorProfesionalYDia(
-            @RequestParam Long idProfesional,
-            @RequestParam DiasEnum dia) {
 
-        //TODO CAMBIARLO AL PATHVARIABLE
-        List<HorarioProfesionalEntidad> horarios = horarioProfesionalService.obtenerHorariosPorProfesionalYDia(idProfesional, dia);
+    @Operation(summary = "Obtener listado de horarios de un profesional")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Horarios obtenido con exito"),
+            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
+    })
+    @GetMapping
+    public List<HorarioProfesionalEntidad> obtenerListadoDeHorariosDeUnProfesional(@PathVariable Long idNegocio,@PathVariable Long idProfesional){
+
+
+        return horarioProfesionalService.obtenerListadoDeHorariosDeUnProfesional(idNegocio,idProfesional);
+    }
+
+
+    //GET horarios del profesional por dia
+    @GetMapping("/dia/{idDia}")
+    @Operation(summary = "Obtener listado de horarios de un profesional por dia")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Horarios del profesional obtenido con exito"),
+            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
+    })
+    public ResponseEntity<List<HorarioProfesionalEntidad>> obtenerHorariosPorProfesionalYDia(
+            @PathVariable Long idProfesional,
+            @PathVariable Long idNegocio,
+            @RequestParam Long idDia) {
+
+
+        List<HorarioProfesionalEntidad> horarios = horarioProfesionalService.obtenerHorariosPorProfesionalYDia(idNegocio,idProfesional,idDia);
         return ResponseEntity.ok(horarios);
-    }*/
+    }
+
+
 
 
     /*@Operation(summary = "Eliminar un horario por ID")
