@@ -42,13 +42,13 @@ public class NegocioEntidad extends UsuarioEntidad{
 
     //servicios que ofrece el negocio
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_servicio")
+    @JoinColumn(name = "id_negocio")
     @JsonManagedReference
     private List<ServicioEntidad> servicios;
 
     //listado de clientes
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_cliente")
+    @JoinColumn(name = "id_negocio")
     @JsonManagedReference
     private List<ClienteEntidad> clientes;
 
