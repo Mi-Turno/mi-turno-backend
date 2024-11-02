@@ -1,6 +1,7 @@
 package com.miTurno.backend.entidad;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -37,6 +38,7 @@ public class ProfesionalEntidad extends UsuarioEntidad{
    // @OneToMany(mappedBy = "profesional", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_profesional")
+    @JsonManagedReference
     private List<HorarioProfesionalEntidad> horariosDisponibles;
 
     //lista de turnos AGENDADOS
