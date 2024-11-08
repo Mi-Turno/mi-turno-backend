@@ -2,10 +2,15 @@ package com.miTurno.backend.mapper;
 
 
 import com.miTurno.backend.DTO.HorarioProfesional;
+import com.miTurno.backend.DTO.Servicio;
 import com.miTurno.backend.entidad.HorarioProfesionalEntidad;
+import com.miTurno.backend.entidad.ServicioEntidad;
 import com.miTurno.backend.request.HorarioProfesionalRequest;
 
 import org.springframework.stereotype.Component;
+
+import java.util.Collections;
+import java.util.List;
 
 @Component
 public class HorarioProfesionalMapper {
@@ -22,6 +27,17 @@ public class HorarioProfesionalMapper {
                 .horaInicio(horarioProfesionalEntidad.getHoraInicio())
 //                .horaFin(horarioProfesionalEntidad.getHoraFin())
                 .build();
+    }
+    //lista de entidad a lista horario
+    public List<HorarioProfesional> toModelList(List<HorarioProfesionalEntidad> listaHorarioProfesionalEntidad) {
+        // Si la lista es null, retorna una lista vacía en lugar de null
+        if (listaHorarioProfesionalEntidad == null) {
+            return Collections.emptyList();
+        }
+
+        return listaHorarioProfesionalEntidad.stream()
+                .map(this::toModel)
+                .toList();
     }
 
     //request a HorarioXProfesional

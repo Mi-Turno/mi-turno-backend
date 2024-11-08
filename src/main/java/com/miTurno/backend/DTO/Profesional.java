@@ -19,9 +19,9 @@ public class Profesional extends Usuario{
 
     private Long idNegocio;
 
-    private List<ServicioEntidad> listaServicios;
-    private List<HorarioProfesionalEntidad> horariosDisponibles;
-    private List<TurnoEntidad> turnosAgendados;
+    private List<Servicio> listaServicios;
+    private List<HorarioProfesional> horariosDisponibles;
+    private List<Turno> turnosAgendados;
 
     public Profesional() {
     }

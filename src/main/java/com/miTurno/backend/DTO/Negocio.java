@@ -24,7 +24,7 @@ public class Negocio extends Usuario{
     private String detalle;
 
     private List<Profesional> profesionales;
-    private List<ServicioEntidad>servicios;
+    private List<Servicio>servicios;
     private List<ClienteEntidad> clientes;
 
     //constructor

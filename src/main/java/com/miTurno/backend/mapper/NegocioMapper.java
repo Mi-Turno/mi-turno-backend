@@ -15,10 +15,12 @@ public class NegocioMapper {
 
     private final RolRepositorio rolRepositorio;
     private final ProfesionalMapper profesionalMapper;
+    private final ServicioMapper servicioMapper;
 
-    public NegocioMapper(RolRepositorio rolRepositorio,ProfesionalMapper profesionalMapper) {
+    public NegocioMapper(RolRepositorio rolRepositorio,ProfesionalMapper profesionalMapper,ServicioMapper servicioMapper) {
         this.rolRepositorio = rolRepositorio;
         this.profesionalMapper = profesionalMapper;
+        this.servicioMapper = servicioMapper;
     }
 
     //entidad a Negocio
@@ -101,7 +103,7 @@ public class NegocioMapper {
                .detalle(negocioEntidad.getDetalle())
 
                .profesionales(profesionalMapper.toModelList(negocioEntidad.getProfesionales()))
-               .servicios(negocioEntidad.getServicios())
+               .servicios(servicioMapper.toModelList(negocioEntidad.getServicios()))
                .clientes(negocioEntidad.getClientes())
                .build();
     }
