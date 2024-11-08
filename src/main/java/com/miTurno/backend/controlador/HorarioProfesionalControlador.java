@@ -65,7 +65,7 @@ public class HorarioProfesionalControlador {
 
 
     //GET horarios del profesional por dia
-    @GetMapping("/dia/{idDia}")
+    @GetMapping("/dia")
     @Operation(summary = "Obtener listado de horarios de un profesional por dia")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "Horarios del profesional obtenido con exito"),
