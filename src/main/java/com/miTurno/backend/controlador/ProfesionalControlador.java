@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -76,6 +77,19 @@ public class ProfesionalControlador {
         return profesionalService.crearUnprofesional(idNegocio, profesionalRequest);
     }
 
+    @Operation(
+            summary = "Asignar un servicio a un profesional",
+            description = "Este endpoint permite asignar un servicio existente a un profesional dentro de un negocio. Actualiza la relación entre ambos recursos."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Servicio asignado correctamente al profesional"),
+            @ApiResponse(responseCode = "404", description = "Negocio, profesional o servicio no encontrados"),
+            @ApiResponse(responseCode = "400", description = "Solicitud inválida")
+    })
+    @PutMapping("/{idProfesional}/servicios/{idServicio}")
+     public ResponseEntity<Profesional> asignarUnServicio(@PathVariable Long idNegocio,@PathVariable Long idProfesional,@PathVariable Long idServicio){
+        return ResponseEntity.ok(profesionalService.asignarUnServicio(idProfesional,idServicio));
+     }
 
     //POST nuevo turno a un profesional ("/{idProfesional}/turnos")
 
