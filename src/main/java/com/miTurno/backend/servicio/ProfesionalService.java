@@ -5,15 +5,10 @@ import com.miTurno.backend.DTO.Usuario;
 import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.entidad.ProfesionalEntidad;
 import com.miTurno.backend.entidad.UsuarioEntidad;
-import com.miTurno.backend.excepcion.RecursoNoExisteException;
-import com.miTurno.backend.excepcion.RolIncorrectoException;
-import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
+import com.miTurno.backend.excepcion.*;
 import com.miTurno.backend.mapper.ProfesionalMapper;
 import com.miTurno.backend.mapper.UsuarioMapper;
-import com.miTurno.backend.repositorio.NegocioRepositorio;
-import com.miTurno.backend.repositorio.ProfesionalRepositorio;
-import com.miTurno.backend.repositorio.RolRepositorio;
-import com.miTurno.backend.repositorio.UsuarioRepositorio;
+import com.miTurno.backend.repositorio.*;
 import com.miTurno.backend.request.ProfesionalRequest;
 import com.miTurno.backend.request.UsuarioRequest;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
@@ -30,8 +25,9 @@ public class ProfesionalService {
     private final NegocioRepositorio negocioRepositorio;
     private final ProfesionalMapper profesionalMapper;
     private final UsuarioRepositorio usuarioRepositorio;
+    private final CredencialesRepositorio credencialesRepositorio;
 
-    public ProfesionalService(ProfesionalRepositorio profesionalRepositorio, RolRepositorio rolRepositorio, UsuarioService usuarioService, UsuarioMapper usuarioMapper, NegocioRepositorio negocioRepositorio, ProfesionalMapper profesionalMapper, UsuarioRepositorio usuarioRepositorio) {
+    public ProfesionalService(ProfesionalRepositorio profesionalRepositorio, RolRepositorio rolRepositorio, UsuarioService usuarioService, UsuarioMapper usuarioMapper, NegocioRepositorio negocioRepositorio, ProfesionalMapper profesionalMapper, UsuarioRepositorio usuarioRepositorio,CredencialesRepositorio credencialesRepositorio) {
         this.profesionalRepositorio = profesionalRepositorio;
         this.rolRepositorio = rolRepositorio;
         this.usuarioService = usuarioService;
@@ -39,6 +35,7 @@ public class ProfesionalService {
         this.negocioRepositorio = negocioRepositorio;
         this.profesionalMapper = profesionalMapper;
         this.usuarioRepositorio = usuarioRepositorio;
+        this.credencialesRepositorio = credencialesRepositorio;
     }
 
 
@@ -54,6 +51,15 @@ public class ProfesionalService {
         }
 
         //todo: falta verificacion de email ver como poder anexarlo con crear un usuario de usuario Service
+
+        if (credencialesRepositorio.findByEmail(profesionalRequest.getEmail()).isPresent()){
+            throw new EmailYaExisteException(profesionalRequest.getEmail());
+        }
+
+        //verificar si ya existe un celular, si es asi tira excepcion
+        if (credencialesRepositorio.findByTelefono(profesionalRequest.getTelefono()).isPresent()){
+            throw new CelularYaExisteException(profesionalRequest.getTelefono());
+        }
 
         //si el negocio que quiero asignar al profesional no existe, tiro excepcion
         NegocioEntidad negocioEntidad = negocioRepositorio.findById(idNegocio).orElseThrow(()-> new RecursoNoExisteException("Id negocio"));
