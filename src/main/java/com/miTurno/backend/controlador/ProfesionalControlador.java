@@ -1,9 +1,13 @@
 package com.miTurno.backend.controlador;
 
 import com.miTurno.backend.DTO.Profesional;
+import com.miTurno.backend.DTO.Servicio;
 import com.miTurno.backend.DTO.Usuario;
 import com.miTurno.backend.entidad.ProfesionalEntidad;
+import com.miTurno.backend.excepcion.ServicioNoExisteException;
+import com.miTurno.backend.mapper.ProfesionalMapper;
 import com.miTurno.backend.request.ProfesionalRequest;
+import com.miTurno.backend.request.ServicioRequest;
 import com.miTurno.backend.servicio.ProfesionalService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -24,9 +28,11 @@ import java.util.Map;
 @RequestMapping("/negocios/{idNegocio}/profesionales")
 public class ProfesionalControlador {
     private final ProfesionalService profesionalService;
+    private final ProfesionalMapper profesionalMapper;
 
-    public ProfesionalControlador(ProfesionalService profesionalService) {
+    public ProfesionalControlador(ProfesionalService profesionalService, ProfesionalMapper profesionalMapper) {
         this.profesionalService = profesionalService;
+        this.profesionalMapper = profesionalMapper;
     }
 
 
@@ -91,6 +97,9 @@ public class ProfesionalControlador {
         return ResponseEntity.ok(profesionalService.asignarUnServicio(idProfesional,idServicio));
      }
 
+
+
+
     //POST nuevo turno a un profesional ("/{idProfesional}/turnos")
 
     //POST nuevo servicio a un profesional ("/{idProfesional}/servicios") (el servicio debe encontrarse en el negocio en el que esta el profesional)
@@ -98,6 +107,22 @@ public class ProfesionalControlador {
     //POST nuevo horario que ofrece un profesional ("/{idProfesional}/horarios")
 
     //UPDATE un profesional x id ("/{idProfesional}")
+
+    //UPDATE - PUT
+    @Operation(summary = "Actualiza un profesional por id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Profesional actualizado con exito"),
+            @ApiResponse(responseCode = "404",description = "Profesional no encontrado")
+    })
+    @PutMapping("/{idProfesional}")
+    public Profesional actualizarServicio (
+            @Parameter(description = "ID del Servicio para actualizar",example = "1")
+            @PathVariable Long idNegocio,
+            @Parameter(description = "Datos actualizado del Profesional")
+            @PathVariable Long idProfesional,
+            @RequestBody ProfesionalRequest profesionalRequest) throws ServicioNoExisteException {
+        return profesionalService.actualizarProfesional(idNegocio,idProfesional,profesionalMapper.toModel(profesionalRequest));
+    }
 
     //DELETE un profesional x id ("/{idProfesional}")
 
