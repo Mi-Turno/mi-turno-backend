@@ -30,8 +30,8 @@ public class CredencialesEntidad {
 
     @OneToOne
     @JoinColumn(name = "id_usuario")
-    @JsonIgnore // Para evitar el ciclo en serialización/deserialización
-
+   //@JsonIgnore // Para evitar el ciclo en serialización/deserialización
+    @JsonBackReference
     private UsuarioEntidad usuario;
 
     @ManyToOne(fetch = FetchType.EAGER) // EAGER para cargar el rol junto con el usuario

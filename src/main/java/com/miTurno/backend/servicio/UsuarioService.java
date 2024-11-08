@@ -48,9 +48,9 @@ public class UsuarioService {
     }
 
     //get x email y contra
-//    public UsuarioEntidad obtenerUsuariosByEmailAndPassword(String email,String password)throws UsuarioNoExistenteException{
-//        return usuarioRepositorio.findByEmailAndPassword(email,password).orElseThrow(()-> new EmailNoExistenteException(email));
-//    }
+   public Usuario obtenerUsuariosByEmailAndPassword(String email,String password)throws UsuarioNoExistenteException{
+        return usuarioMapper.toModel(usuarioRepositorio.findByCredencialesEmailAndCredencialesPassword(email,password));
+   }
 
     //get x rol
     public List<UsuarioEntidad> obtenerUsuariosPorRol(RolUsuarioEnum rol) {

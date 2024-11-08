@@ -28,6 +28,7 @@ public class UsuarioMapper {
                 .rolUsuario(usuarioEntidad.getCredenciales().getRolEntidad().getRol())
                 .apellido(usuarioEntidad.getApellido())
                 .telefono(usuarioEntidad.getCredenciales().getTelefono())
+                .password(usuarioEntidad.getCredenciales().getPassword())
                 .email(usuarioEntidad.getCredenciales().getEmail())
                 .fechaNacimiento(usuarioEntidad.getFechaNacimiento())
                 .nombre(usuarioEntidad.getNombre())
