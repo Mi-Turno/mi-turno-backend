@@ -13,6 +13,7 @@ import com.miTurno.backend.request.ProfesionalRequest;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -73,6 +74,18 @@ public class ProfesionalMapper {
                 .turnosAgendados(profesionalEntidad.getTurnosAgendados())
                 .build();
     }
+    public List<Profesional> toModelList(List<ProfesionalEntidad> listaProfesionalEntidad) {
+        // Si la lista es null, retorna una lista vacía en lugar de null
+        if (listaProfesionalEntidad == null) {
+            return Collections.emptyList();
+        }
+
+        return listaProfesionalEntidad.stream()
+                .map(this::toModel)
+                .toList();
+    }
+
+
 
 
     //request a modelo
@@ -94,9 +107,9 @@ public class ProfesionalMapper {
                 .build();
     }
 
-    public List<Profesional> toModel(List<ProfesionalEntidad> profesionalList) {
+    /*public List<Profesional> toModel(List<ProfesionalEntidad> profesionalList) {
         return profesionalList.stream()
                 .map(this::toModel) // Usa el método toModel(ProfesionalEntidad) para cada entidad en la lista
                 .collect(Collectors.toList());
-    }
+    }*/
 }

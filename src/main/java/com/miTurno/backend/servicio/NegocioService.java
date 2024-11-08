@@ -24,6 +24,7 @@ public class NegocioService {
     private final UsuarioRepositorio usuarioRepositorio;
     private final UsuarioService usuarioService;
     private final UsuarioMapper usuarioMapper;
+
     private final CredencialesRepositorio credencialesRepositorio;
     private final ProfesionalRepositorio profesionalRepositorio;
     private final ProfesionalMapper profesionalMapper;

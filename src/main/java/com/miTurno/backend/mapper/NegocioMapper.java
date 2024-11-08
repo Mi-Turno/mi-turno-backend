@@ -14,9 +14,11 @@ import org.springframework.stereotype.Component;
 public class NegocioMapper {
 
     private final RolRepositorio rolRepositorio;
+    private final ProfesionalMapper profesionalMapper;
 
-    public NegocioMapper(RolRepositorio rolRepositorio) {
+    public NegocioMapper(RolRepositorio rolRepositorio,ProfesionalMapper profesionalMapper) {
         this.rolRepositorio = rolRepositorio;
+        this.profesionalMapper = profesionalMapper;
     }
 
     //entidad a Negocio
@@ -98,7 +100,7 @@ public class NegocioMapper {
                .altura(negocioEntidad.getAltura())
                .detalle(negocioEntidad.getDetalle())
 
-               .profesionales(negocioEntidad.getProfesionales())
+               .profesionales(profesionalMapper.toModelList(negocioEntidad.getProfesionales()))
                .servicios(negocioEntidad.getServicios())
                .clientes(negocioEntidad.getClientes())
                .build();
