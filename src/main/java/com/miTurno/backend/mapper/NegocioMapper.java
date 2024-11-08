@@ -20,7 +20,7 @@ public class NegocioMapper {
     }
 
     //entidad a Negocio
-    public Negocio toModel(NegocioEntidad negocioEntidad){
+    /*public Negocio toModel(NegocioEntidad negocioEntidad){
 
         return Negocio.builder()
                 .idUsuario(negocioEntidad.getIdUsuario())
@@ -29,7 +29,7 @@ public class NegocioMapper {
                 .altura(negocioEntidad.getAltura())
                 .detalle(negocioEntidad.getDetalle())
                 .build();
-    }
+    }*/
 
 
     //request a negocio
@@ -78,6 +78,30 @@ public class NegocioMapper {
 
 
         return negocioEntidad;
+    }
+    //entidad a modelo
+    public Negocio toModel(NegocioEntidad negocioEntidad){
+       return Negocio.builder()
+               .idUsuario(negocioEntidad.getIdUsuario())
+               .email(negocioEntidad.getCredenciales().getEmail())
+               .password(negocioEntidad.getCredenciales().getPassword())
+               .telefono(negocioEntidad.getCredenciales().getTelefono())
+               .rolUsuario(negocioEntidad.getCredenciales().getRolEntidad().getRol())
+               .estado(negocioEntidad.getCredenciales().getEstado())
+
+               .nombre(negocioEntidad.getNombre())
+               .apellido(negocioEntidad.getApellido())
+               .fechaNacimiento(negocioEntidad.getFechaNacimiento())
+
+               .rubro(negocioEntidad.getRubro())
+               .calle(negocioEntidad.getCalle())
+               .altura(negocioEntidad.getAltura())
+               .detalle(negocioEntidad.getDetalle())
+
+               .profesionales(negocioEntidad.getProfesionales())
+               .servicios(negocioEntidad.getServicios())
+               .clientes(negocioEntidad.getClientes())
+               .build();
     }
 
 }

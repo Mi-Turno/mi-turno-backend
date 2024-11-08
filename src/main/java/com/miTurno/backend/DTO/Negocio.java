@@ -1,10 +1,15 @@
 package com.miTurno.backend.DTO;
 
 
+import com.miTurno.backend.entidad.ClienteEntidad;
+import com.miTurno.backend.entidad.ProfesionalEntidad;
+import com.miTurno.backend.entidad.ServicioEntidad;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,6 +22,9 @@ public class Negocio extends Usuario{
     private String altura;
     private String detalle;
 
+    private List<ProfesionalEntidad> profesionales;
+    private List<ServicioEntidad>servicios;
+    private List<ClienteEntidad> clientes;
 
     //constructor
 
