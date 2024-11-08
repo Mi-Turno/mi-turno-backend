@@ -12,4 +12,5 @@ public interface ServicioRepositorio extends JpaRepository<ServicioEntidad, Long
 
     ServicioEntidad findByIdServicioAndNegocioEntidad_IdUsuario(Long idServicio, Long idNegocio);
 
+    List<ServicioEntidad> findByNegocioEntidad_IdUsuarioAndEstado(Long idNegocio, Boolean estado);
 }

@@ -85,6 +85,23 @@ public class ServicioControlador {
         return servicioService.obtenerListadoDeServiciosPorIdNegocio(idNegocio);
     }
 
+
+    //todo Hay que ver bien el tema de la ruta
+
+    // GET todos los servicios por id negocio y estado
+    @Operation(summary = "Obtener servicios por id de negocio y estado")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Servicios obtenidos con éxito"),
+            @ApiResponse(responseCode = "400", description = "Parámetros inválidos"),
+            @ApiResponse(responseCode = "404", description = "No se encontraron servicios para el negocio y estado especificados")
+    })
+    @GetMapping("/estado/{estado}")
+    public List<ServicioEntidad> obtenerServiciosPorIdNegocioYEstado(@PathVariable Long idNegocio, @PathVariable String estado) {
+        Boolean estadoBooleano = Boolean.valueOf(estado);  // Convierte "true" o "false" a Boolean
+
+        return servicioService.obtenerServiciosPorIdNegocioYEstado(idNegocio, estadoBooleano);
+    }
+
     //POST
     @Operation(summary = "Crear un nuevo Servicio")
     @ApiResponses(value = {
