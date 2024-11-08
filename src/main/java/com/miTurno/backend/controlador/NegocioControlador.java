@@ -51,7 +51,7 @@ public class NegocioControlador {
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public NegocioEntidad crearUnNegocio(@Parameter(description = "Datos del negocio")
+    public Negocio crearUnNegocio(@Parameter(description = "Datos del negocio")
                                           @Valid @RequestBody NegocioRequest negocioRequest) {
 
         return negocioService.crearUnNegocio(negocioRequest);
@@ -78,7 +78,7 @@ public class NegocioControlador {
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
     @GetMapping("/id/{idNegocio}")
-    public NegocioEntidad obtenerUnNegocioPorIdNegocio(@PathVariable Long idNegocio){
+    public Negocio obtenerUnNegocioPorIdNegocio(@PathVariable Long idNegocio){
         return negocioService.obtenerNegocioPorId(idNegocio);
     }
 
@@ -91,7 +91,7 @@ public class NegocioControlador {
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
     @GetMapping("/nombre/{nombreNegocio}")
-    public NegocioEntidad obtenerUnNegocioPorNombreNegocio(@PathVariable String nombreNegocio){
+    public Negocio obtenerUnNegocioPorNombreNegocio(@PathVariable String nombreNegocio){
         return negocioService.obtenerNegocioPorNombre(nombreNegocio);
     }
 

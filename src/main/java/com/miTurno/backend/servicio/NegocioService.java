@@ -24,6 +24,7 @@ public class NegocioService {
     private final UsuarioRepositorio usuarioRepositorio;
     private final UsuarioService usuarioService;
     private final UsuarioMapper usuarioMapper;
+
     private final CredencialesRepositorio credencialesRepositorio;
     private final ProfesionalRepositorio profesionalRepositorio;
     private final ProfesionalMapper profesionalMapper;
@@ -54,18 +55,18 @@ public class NegocioService {
     }
 
     //GET negocio x id
-    public NegocioEntidad obtenerNegocioPorId(Long idNegocio){
-        return negocioRepositorio.findById(idNegocio).orElseThrow(()-> new UsuarioNoExistenteException(idNegocio));
+    public Negocio obtenerNegocioPorId(Long idNegocio){
+        return negocioMapper.toModel(negocioRepositorio.findById(idNegocio).orElseThrow(()-> new UsuarioNoExistenteException(idNegocio)));
     }
 
     //obtener negocio x nombre
-    public NegocioEntidad obtenerNegocioPorNombre(String nombre) throws NombreNoExisteException {
-       return negocioRepositorio.getNegocioEntidadByNombreIgnoreCase(nombre).orElseThrow(()->new NombreNoExisteException(nombre));
+    public Negocio obtenerNegocioPorNombre(String nombre) throws NombreNoExisteException {
+       return negocioMapper.toModel(negocioRepositorio.getNegocioEntidadByNombreIgnoreCase(nombre).orElseThrow(()->new NombreNoExisteException(nombre)));
     }
 
 
     //POST negocio
-    public NegocioEntidad crearUnNegocio(NegocioRequest negocioRequest)
+    public Negocio crearUnNegocio(NegocioRequest negocioRequest)
             throws NombreNegocioYaExisteException, RolIncorrectoException {
 
         String nombreNegocio = negocioRequest.getNombre();
@@ -83,7 +84,7 @@ public class NegocioService {
 
         Negocio negocio= negocioMapper.toModel(negocioRequest);
 
-        return negocioRepositorio.save(negocioMapper.toEntidad(negocio));
+        return negocioMapper.toModel(negocioRepositorio.save(negocioMapper.toEntidad(negocio)));
         //return usuarioService.crearUnUsuario(negocio);
     }
 

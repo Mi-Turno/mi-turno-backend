@@ -14,13 +14,17 @@ import org.springframework.stereotype.Component;
 public class NegocioMapper {
 
     private final RolRepositorio rolRepositorio;
+    private final ProfesionalMapper profesionalMapper;
+    private final ServicioMapper servicioMapper;
 
-    public NegocioMapper(RolRepositorio rolRepositorio) {
+    public NegocioMapper(RolRepositorio rolRepositorio,ProfesionalMapper profesionalMapper,ServicioMapper servicioMapper) {
         this.rolRepositorio = rolRepositorio;
+        this.profesionalMapper = profesionalMapper;
+        this.servicioMapper = servicioMapper;
     }
 
     //entidad a Negocio
-    public Negocio toModel(NegocioEntidad negocioEntidad){
+    /*public Negocio toModel(NegocioEntidad negocioEntidad){
 
         return Negocio.builder()
                 .idUsuario(negocioEntidad.getIdUsuario())
@@ -29,7 +33,7 @@ public class NegocioMapper {
                 .altura(negocioEntidad.getAltura())
                 .detalle(negocioEntidad.getDetalle())
                 .build();
-    }
+    }*/
 
 
     //request a negocio
@@ -78,6 +82,30 @@ public class NegocioMapper {
 
 
         return negocioEntidad;
+    }
+    //entidad a modelo
+    public Negocio toModel(NegocioEntidad negocioEntidad){
+       return Negocio.builder()
+               .idUsuario(negocioEntidad.getIdUsuario())
+               .email(negocioEntidad.getCredenciales().getEmail())
+               .password(negocioEntidad.getCredenciales().getPassword())
+               .telefono(negocioEntidad.getCredenciales().getTelefono())
+               .rolUsuario(negocioEntidad.getCredenciales().getRolEntidad().getRol())
+               .estado(negocioEntidad.getCredenciales().getEstado())
+
+               .nombre(negocioEntidad.getNombre())
+               .apellido(negocioEntidad.getApellido())
+               .fechaNacimiento(negocioEntidad.getFechaNacimiento())
+
+               .rubro(negocioEntidad.getRubro())
+               .calle(negocioEntidad.getCalle())
+               .altura(negocioEntidad.getAltura())
+               .detalle(negocioEntidad.getDetalle())
+
+               .profesionales(profesionalMapper.toModelList(negocioEntidad.getProfesionales()))
+               .servicios(servicioMapper.toModelList(negocioEntidad.getServicios()))
+               .clientes(negocioEntidad.getClientes())
+               .build();
     }
 
 }

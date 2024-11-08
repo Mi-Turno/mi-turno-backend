@@ -1,6 +1,7 @@
 package com.miTurno.backend.mapper;
 
 import com.miTurno.backend.DTO.Profesional;
+import com.miTurno.backend.DTO.Turno;
 import com.miTurno.backend.entidad.CredencialesEntidad;
 import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.entidad.ProfesionalEntidad;
@@ -13,6 +14,7 @@ import com.miTurno.backend.request.ProfesionalRequest;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,11 +24,17 @@ public class ProfesionalMapper {
     private final RolRepositorio rolRepositorio;
     private final NegocioRepositorio negocioRepositorio;
     private final ServicioRepositorio servicioRepositorio;
+    private final ServicioMapper servicioMapper;
+    private final HorarioProfesionalMapper profesionalMapper;
+    private final TurnoMapper turnoMapper;
 
-    public ProfesionalMapper(RolRepositorio rolRepositorio, NegocioRepositorio negocioRepositorio, ServicioRepositorio servicioRepositorio) {
+    public ProfesionalMapper(RolRepositorio rolRepositorio, NegocioRepositorio negocioRepositorio, ServicioRepositorio servicioRepositorio,ServicioMapper servicioMapper,HorarioProfesionalMapper profesionalMapper,TurnoMapper turnoMapper) {
         this.rolRepositorio = rolRepositorio;
         this.negocioRepositorio = negocioRepositorio;
         this.servicioRepositorio = servicioRepositorio;
+        this.servicioMapper = servicioMapper;
+        this.profesionalMapper = profesionalMapper;
+        this.turnoMapper = turnoMapper;
     }
 
     //request a entidad
@@ -68,8 +76,23 @@ public class ProfesionalMapper {
                 .password(profesionalEntidad.getCredenciales().getPassword())
                 .fechaNacimiento(profesionalEntidad.getFechaNacimiento())
                 .idNegocio(profesionalEntidad.getNegocioEntidad().getIdUsuario())
+                .listaServicios(servicioMapper.toModelList(profesionalEntidad.getListaServiciosEntidad()))
+                .horariosDisponibles(profesionalMapper.toModelList(profesionalEntidad.getHorariosDisponibles()))
+                .turnosAgendados(turnoMapper.toModelList(profesionalEntidad.getTurnosAgendados()))
                 .build();
     }
+    public List<Profesional> toModelList(List<ProfesionalEntidad> listaProfesionalEntidad) {
+        // Si la lista es null, retorna una lista vacía en lugar de null
+        if (listaProfesionalEntidad == null) {
+            return Collections.emptyList();
+        }
+
+        return listaProfesionalEntidad.stream()
+                .map(this::toModel)
+                .toList();
+    }
+
+
 
 
     //request a modelo
@@ -91,9 +114,9 @@ public class ProfesionalMapper {
                 .build();
     }
 
-    public List<Profesional> toModel(List<ProfesionalEntidad> profesionalList) {
+    /*public List<Profesional> toModel(List<ProfesionalEntidad> profesionalList) {
         return profesionalList.stream()
                 .map(this::toModel) // Usa el método toModel(ProfesionalEntidad) para cada entidad en la lista
                 .collect(Collectors.toList());
-    }
+    }*/
 }

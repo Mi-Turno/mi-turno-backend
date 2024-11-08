@@ -1,5 +1,6 @@
 package com.miTurno.backend.controlador;
 
+import com.miTurno.backend.DTO.Servicio;
 import com.miTurno.backend.request.ServicioRequest;
 import com.miTurno.backend.entidad.ServicioEntidad;
 import com.miTurno.backend.excepcion.ServicioNoExisteException;
@@ -68,7 +69,7 @@ public class ServicioControlador {
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
     @GetMapping("/{idServicio}")
-    public ServicioEntidad obtenerServicioPorId(@PathVariable Long idNegocio,@PathVariable Long idServicio){
+    public Servicio obtenerServicioPorId(@PathVariable Long idNegocio, @PathVariable Long idServicio){
         return servicioService.obtenerUnServicioPorIdYPorIdNegocio(idNegocio, idServicio);
     }
 //GET listado x id negocio
@@ -79,7 +80,7 @@ public class ServicioControlador {
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
     @GetMapping
-    public List<ServicioEntidad> obtenerListadoDeServiciosPorIdNegocio(@PathVariable Long idNegocio){
+    public List<Servicio> obtenerListadoDeServiciosPorIdNegocio(@PathVariable Long idNegocio){
         return servicioService.obtenerListadoDeServiciosPorIdNegocio(idNegocio);
     }
 
@@ -91,7 +92,7 @@ public class ServicioControlador {
             @Schema(implementation = Map.Entry.class), examples = @ExampleObject(value = "{ \"precio\": \"no puede estar vacío, tampoco puede ser menor a 0\" }")))
     })
     @PostMapping
-    public ServicioEntidad crearUnServicio(
+    public Servicio crearUnServicio(
             @Valid @RequestBody ServicioRequest servicioRequest,
             @PathVariable Long idNegocio
             ){

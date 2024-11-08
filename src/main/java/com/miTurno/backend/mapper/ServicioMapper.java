@@ -1,12 +1,17 @@
 package com.miTurno.backend.mapper;
 
+import com.miTurno.backend.DTO.Profesional;
 import com.miTurno.backend.entidad.NegocioEntidad;
+import com.miTurno.backend.entidad.ProfesionalEntidad;
 import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import com.miTurno.backend.repositorio.NegocioRepositorio;
 import com.miTurno.backend.request.ServicioRequest;
 import com.miTurno.backend.entidad.ServicioEntidad;
 import com.miTurno.backend.DTO.Servicio;
 import org.springframework.stereotype.Component;
+
+import java.util.Collections;
+import java.util.List;
 
 @Component
 public class ServicioMapper {
@@ -28,7 +33,16 @@ public class ServicioMapper {
                 .nombre(servicioEntidad.getNombre())
                 .build();
     }
+    public List<Servicio> toModelList(List<ServicioEntidad> listaServicioEntidad) {
+        // Si la lista es null, retorna una lista vacía en lugar de null
+        if (listaServicioEntidad == null) {
+            return Collections.emptyList();
+        }
 
+        return listaServicioEntidad.stream()
+                .map(this::toModel)
+                .toList();
+    }
     //request a servicio
     public Servicio toModel(ServicioRequest servicioRequest){
         return Servicio.builder()
@@ -56,6 +70,18 @@ public class ServicioMapper {
 
         return servicioEntidad;
     }
+
+    //Entidad to modelo
+   /* public Servicio toModel(ServicioEntidad servicioEntidad){
+        return Servicio.builder()
+                .idNegocio(servicioEntidad.getIdServicio())
+                .idServicio(servicioEntidad.getIdServicio())
+                .nombre(servicioEntidad.getNombre())
+                .duracion(servicioEntidad.getDuracion())
+                .precio(servicioEntidad.getPrecio())
+                .estado(servicioEntidad.getEstado())
+                .build();
+    }*/
 
 
 }

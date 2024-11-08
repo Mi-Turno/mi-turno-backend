@@ -1,12 +1,17 @@
 package com.miTurno.backend.mapper;
 
 import com.miTurno.backend.DTO.HorarioProfesional;
+import com.miTurno.backend.DTO.Profesional;
+import com.miTurno.backend.entidad.ProfesionalEntidad;
 import com.miTurno.backend.repositorio.MetodosDePagoRepositorio;
 import com.miTurno.backend.request.TurnoRequest;
 import com.miTurno.backend.entidad.TurnoEntidad;
 import com.miTurno.backend.DTO.Turno;
 import com.miTurno.backend.tipos.MetodosDePagoEnum;
 import org.springframework.stereotype.Component;
+
+import java.util.Collections;
+import java.util.List;
 
 @Component
 public class TurnoMapper {
@@ -33,6 +38,16 @@ public class TurnoMapper {
                 .horarioProfesional(horarioProfesional)
                 .estado(turnoEntidad.getEstado())
                 .build();
+    }
+    public List<Turno> toModelList(List<TurnoEntidad> listaTurnoEntidad) {
+        // Si la lista es null, retorna una lista vacía en lugar de null
+        if (listaTurnoEntidad == null) {
+            return Collections.emptyList();
+        }
+
+        return listaTurnoEntidad.stream()
+                .map(this::toModel)
+                .toList();
     }
 
 
