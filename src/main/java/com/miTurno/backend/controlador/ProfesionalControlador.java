@@ -36,12 +36,20 @@ public class ProfesionalControlador {
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
     @GetMapping
-    public List<ProfesionalEntidad> obtenerProfesionalesPorIdNegocio(@PathVariable Long idNegocio){
+    public List<Profesional> obtenerProfesionalesPorIdNegocio(@PathVariable Long idNegocio){
         return profesionalService.obtenerProfesionalesPorIdNegocio(idNegocio);
     }
 
-    //GET profesional x id ("/{idProfesional}")
-
+    //GET profesional x id ("/{idProfesional}")obtenerUnProfesional
+    @Operation(summary = "Obtener profesionales por id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Profesional obtenido con exito"),
+            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
+    })
+    @GetMapping("/{idProfesional}")
+    public Profesional obtenerProfesionalPorId(@PathVariable Long idProfesional){
+        return profesionalService.obtenerUnProfesional(idProfesional);
+    }
     //GET listado de turnos agendados del profesional ("/{idProfesional}/turnos")
 
     //GET listado de horarios del profesional ("/{idProfesional}/horarios")
@@ -60,7 +68,7 @@ public class ProfesionalControlador {
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ProfesionalEntidad crearUnProfesionalPorNegocio(@Parameter(description = "Datos del profesional")
+    public Profesional crearUnProfesionalPorNegocio(@Parameter(description = "Datos del profesional")
                                                 @Valid @RequestBody ProfesionalRequest profesionalRequest,
                                                 @PathVariable Long idNegocio) {
 

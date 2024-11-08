@@ -68,6 +68,9 @@ public class ProfesionalMapper {
                 .password(profesionalEntidad.getCredenciales().getPassword())
                 .fechaNacimiento(profesionalEntidad.getFechaNacimiento())
                 .idNegocio(profesionalEntidad.getNegocioEntidad().getIdUsuario())
+                .listaServicios(profesionalEntidad.getListaServiciosEntidad())
+                .horariosDisponibles(profesionalEntidad.getHorariosDisponibles())
+                .turnosAgendados(profesionalEntidad.getTurnosAgendados())
                 .build();
     }
 
