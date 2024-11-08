@@ -62,14 +62,14 @@ public class ServicioControlador {
 //    }
 
 //GET x id
-    @Operation(summary = "Obtener servicio por id")
+    @Operation(summary = "Obtener servicio por id y por negocio")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "Lista de servicios obtenida exitosamente"),
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
     @GetMapping("/{idServicio}")
     public ServicioEntidad obtenerServicioPorId(@PathVariable Long idNegocio,@PathVariable Long idServicio){
-        return servicioService.obtenerUnServicioPorId(idNegocio, idServicio);
+        return servicioService.obtenerUnServicioPorIdYPorIdNegocio(idNegocio, idServicio);
     }
 //GET listado x id negocio
 

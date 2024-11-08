@@ -46,7 +46,7 @@ public class ServicioService {
 
 
     //GET uno x ID
-    public ServicioEntidad obtenerUnServicioPorId(Long idNegocio,Long idServicio){
+    public ServicioEntidad obtenerUnServicioPorIdYPorIdNegocio(Long idNegocio, Long idServicio){
 
         return servicioRepositorio.findByNegocioEntidad_IdUsuarioAndIdServicio(idNegocio,idServicio);
     }
@@ -56,6 +56,7 @@ public class ServicioService {
 
         return servicioRepositorio.findAllByNegocioEntidad_IdUsuario(idNegocio);
     }
+
 
     //POST
     public ServicioEntidad crearUnServicio(Long idNegocio,ServicioRequest nuevoServicio){
