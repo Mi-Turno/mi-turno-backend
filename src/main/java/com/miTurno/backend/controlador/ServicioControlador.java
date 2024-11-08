@@ -96,7 +96,7 @@ public class ServicioControlador {
             @ApiResponse(responseCode = "404", description = "No se encontraron servicios para el negocio y estado especificados")
     })
     @GetMapping("/estado/{estado}")
-    public List<ServicioEntidad> obtenerServiciosPorIdNegocioYEstado(@PathVariable Long idNegocio, @PathVariable String estado) {
+    public List<Servicio> obtenerServiciosPorIdNegocioYEstado(@PathVariable Long idNegocio, @PathVariable String estado) {
         Boolean estadoBooleano = Boolean.valueOf(estado);  // Convierte "true" o "false" a Boolean
 
         return servicioService.obtenerServiciosPorIdNegocioYEstado(idNegocio, estadoBooleano);

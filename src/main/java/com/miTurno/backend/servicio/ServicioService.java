@@ -66,9 +66,9 @@ public class ServicioService {
     }
 
 
-    public List<ServicioEntidad> obtenerServiciosPorIdNegocioYEstado(Long idNegocio, Boolean estado) {
+    public List<Servicio> obtenerServiciosPorIdNegocioYEstado(Long idNegocio, Boolean estado) {
 
-        return servicioRepositorio.findByNegocioEntidad_IdUsuarioAndEstado(idNegocio, estado);
+        return servicioMapper.toModelList(servicioRepositorio.findByNegocioEntidad_IdUsuarioAndEstado(idNegocio, estado));
     }
 
     //DELETE
