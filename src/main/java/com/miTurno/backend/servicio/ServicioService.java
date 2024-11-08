@@ -1,5 +1,6 @@
 package com.miTurno.backend.servicio;
 
+import com.miTurno.backend.DTO.Servicio;
 import com.miTurno.backend.entidad.ServicioEntidad;
 import com.miTurno.backend.excepcion.ServicioNoExisteException;
 import com.miTurno.backend.mapper.ServicioMapper;
@@ -46,22 +47,22 @@ public class ServicioService {
 
 
     //GET uno x ID
-    public ServicioEntidad obtenerUnServicioPorIdYPorIdNegocio(Long idNegocio, Long idServicio){
+    public Servicio obtenerUnServicioPorIdYPorIdNegocio(Long idNegocio, Long idServicio){
 
-        return servicioRepositorio.findByNegocioEntidad_IdUsuarioAndIdServicio(idNegocio,idServicio);
+        return servicioMapper.toModel(servicioRepositorio.findByNegocioEntidad_IdUsuarioAndIdServicio(idNegocio,idServicio));
     }
     //GET all x id
 
-    public List<ServicioEntidad> obtenerListadoDeServiciosPorIdNegocio(Long idNegocio){
+    public List<Servicio> obtenerListadoDeServiciosPorIdNegocio(Long idNegocio){
 
-        return servicioRepositorio.findAllByNegocioEntidad_IdUsuario(idNegocio);
+        return servicioMapper.toModelList(servicioRepositorio.findAllByNegocioEntidad_IdUsuario(idNegocio));
     }
 
 
     //POST
-    public ServicioEntidad crearUnServicio(Long idNegocio,ServicioRequest nuevoServicio){
+    public Servicio crearUnServicio(Long idNegocio,ServicioRequest nuevoServicio){
 
-        return servicioRepositorio.save(servicioMapper.toEntidad(idNegocio,nuevoServicio));
+        return servicioMapper.toModel(servicioRepositorio.save(servicioMapper.toEntidad(idNegocio,nuevoServicio)));
     }
 
 
