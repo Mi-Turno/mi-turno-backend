@@ -10,4 +10,6 @@ public interface ServicioRepositorio extends JpaRepository<ServicioEntidad, Long
     List<ServicioEntidad> findAllByNegocioEntidad_IdUsuario(Long idNegocio);
     ServicioEntidad findByNegocioEntidad_IdUsuarioAndIdServicio(Long idNegocio,Long idServicio);
 
+    ServicioEntidad findByIdServicioAndNegocioEntidad_IdUsuario(Long idServicio, Long idNegocio);
+
 }

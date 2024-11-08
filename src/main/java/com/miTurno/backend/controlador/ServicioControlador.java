@@ -7,6 +7,7 @@ import com.miTurno.backend.excepcion.ServicioNoExisteException;
 import com.miTurno.backend.mapper.ServicioMapper;
 import com.miTurno.backend.servicio.ServicioService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -117,7 +118,7 @@ public class ServicioControlador {
 
     //UPDATE
 
-    /*@Operation(summary = "Actualiza un servicio por id")
+    @Operation(summary = "Actualiza un servicio por id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "Servicio actualizado con exito"),
             @ApiResponse(responseCode = "404",description = "Servicio no encontrado")
@@ -131,5 +132,5 @@ public class ServicioControlador {
             @RequestBody ServicioRequest servicioRequest) throws ServicioNoExisteException{
 
         return servicioService.actualizarUnServicio(idNegocio,idServicio,servicioMapper.toModel(servicioRequest));
-    }*/
+    }
 }
