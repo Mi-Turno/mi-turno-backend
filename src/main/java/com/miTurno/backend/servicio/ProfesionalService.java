@@ -1,16 +1,13 @@
 package com.miTurno.backend.servicio;
 
 import com.miTurno.backend.DTO.Profesional;
-import com.miTurno.backend.DTO.Usuario;
 import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.entidad.ProfesionalEntidad;
-import com.miTurno.backend.entidad.UsuarioEntidad;
 import com.miTurno.backend.excepcion.*;
 import com.miTurno.backend.mapper.ProfesionalMapper;
 import com.miTurno.backend.mapper.UsuarioMapper;
 import com.miTurno.backend.repositorio.*;
 import com.miTurno.backend.request.ProfesionalRequest;
-import com.miTurno.backend.request.UsuarioRequest;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +41,7 @@ public class ProfesionalService {
     public Profesional crearUnprofesional(Long idNegocio, ProfesionalRequest profesionalRequest) throws RolIncorrectoException,RecursoNoExisteException {
 
 
-        RolUsuarioEnum rolUsuarioEnum = rolRepositorio.findById(profesionalRequest.getIdRol()).get().getRol();
+        RolUsuarioEnum rolUsuarioEnum = rolRepositorio.findById(profesionalRequest.getIdRolUsuario()).get().getRol();
 
         if (rolUsuarioEnum != RolUsuarioEnum.PROFESIONAL) {
             throw new RolIncorrectoException(RolUsuarioEnum.PROFESIONAL, rolUsuarioEnum);

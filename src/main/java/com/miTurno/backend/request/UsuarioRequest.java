@@ -3,7 +3,6 @@ package com.miTurno.backend.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -43,7 +42,7 @@ public class UsuarioRequest {
     private LocalDate fechaNacimiento;//(YYYY-MM-DD)
 
     @Schema(description = "ID del rol del usuario", example = "2")//"CLIENTE", "ADMIN", "PROFESIONAL", "NEGOCIO"
-    private Long idRol;
+    private Long idRolUsuario;
 
 
 
@@ -51,13 +50,13 @@ public class UsuarioRequest {
     super();
     }
 
-    public UsuarioRequest(String nombre, String apellido, String email, String password, String telefono, LocalDate fechaNacimiento, Long idRol) {
+    public UsuarioRequest(String nombre, String apellido, String email, String password, String telefono, LocalDate fechaNacimiento, Long idRolUsuario) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.password = password;
         this.telefono = telefono;
         this.fechaNacimiento = fechaNacimiento;
-        this.idRol = idRol;
+        this.idRolUsuario = idRolUsuario;
     }
 }

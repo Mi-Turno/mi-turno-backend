@@ -2,7 +2,6 @@ package com.miTurno.backend.mapper;
 
 import com.miTurno.backend.entidad.CredencialesEntidad;
 import com.miTurno.backend.excepcion.RecursoNoExisteException;
-import com.miTurno.backend.repositorio.CredencialesRepositorio;
 import com.miTurno.backend.request.UsuarioRequest;
 import com.miTurno.backend.entidad.RolEntidad;
 import com.miTurno.backend.entidad.UsuarioEntidad;
@@ -25,7 +24,7 @@ public class UsuarioMapper {
     public Usuario toModel(UsuarioEntidad usuarioEntidad){
         return Usuario.builder()
                 .idUsuario(usuarioEntidad.getIdUsuario())
-                .rolUsuario(usuarioEntidad.getCredenciales().getRolEntidad().getRol())
+                .idRolUsuario(usuarioEntidad.getCredenciales().getRolEntidad().getRol())
                 .apellido(usuarioEntidad.getApellido())
                 .telefono(usuarioEntidad.getCredenciales().getTelefono())
                 .password(usuarioEntidad.getCredenciales().getPassword())
@@ -38,12 +37,12 @@ public class UsuarioMapper {
 
     //request a usuario
     public Usuario toModel(UsuarioRequest usuarioRequest){
-        RolEntidad rolEntidad = rolRepositorio.findById(usuarioRequest.getIdRol()).orElseThrow(()->new RecursoNoExisteException("El id rol no existe"));
+        RolEntidad rolEntidad = rolRepositorio.findById(usuarioRequest.getIdRolUsuario()).orElseThrow(()->new RecursoNoExisteException("El id rol no existe"));
 
         RolUsuarioEnum rolUsuarioEnum = rolEntidad.getRol();
 
         return Usuario.builder()
-                .rolUsuario(rolUsuarioEnum)
+                .idRolUsuario(rolUsuarioEnum)
                 .apellido(usuarioRequest.getApellido())
                 .telefono(usuarioRequest.getTelefono())
                 .email(usuarioRequest.getEmail())
@@ -58,7 +57,7 @@ public class UsuarioMapper {
 
     public UsuarioEntidad toEntidad(Usuario usuario){
 
-        RolEntidad rolEntidad= rolRepositorio.findByRol(usuario.getRolUsuario());
+        RolEntidad rolEntidad= rolRepositorio.findByRol(usuario.getIdRolUsuario());
 
         //creamos primero las credenciales
         CredencialesEntidad credencialesEntidad =

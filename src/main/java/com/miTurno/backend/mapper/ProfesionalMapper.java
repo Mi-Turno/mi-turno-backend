@@ -1,7 +1,6 @@
 package com.miTurno.backend.mapper;
 
 import com.miTurno.backend.DTO.Profesional;
-import com.miTurno.backend.DTO.Turno;
 import com.miTurno.backend.entidad.CredencialesEntidad;
 import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.entidad.ProfesionalEntidad;
@@ -16,7 +15,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class ProfesionalMapper {
@@ -41,7 +39,7 @@ public class ProfesionalMapper {
     public ProfesionalEntidad toEntidad(Long idNegocio,ProfesionalRequest profesionalRequest){
 
         NegocioEntidad negocioEntidad= negocioRepositorio.findById(idNegocio).orElseThrow(()->new RecursoNoExisteException("id negocio"));
-        RolEntidad rolEntidad = rolRepositorio.findById(profesionalRequest.getIdRol()).orElseThrow(()->new RecursoNoExisteException("id rol"));
+        RolEntidad rolEntidad = rolRepositorio.findById(profesionalRequest.getIdRolUsuario()).orElseThrow(()->new RecursoNoExisteException("id rol"));
 
         CredencialesEntidad credencialesEntidad = CredencialesEntidad.builder()
                 .email(profesionalRequest.getEmail())
@@ -72,7 +70,7 @@ public class ProfesionalMapper {
                 .nombre(profesionalEntidad.getNombre())
                 .estado(profesionalEntidad.getCredenciales().getEstado())
                 .telefono(profesionalEntidad.getCredenciales().getTelefono())
-                .rolUsuario(profesionalEntidad.getCredenciales().getRolEntidad().getRol())
+                .idRolUsuario(profesionalEntidad.getCredenciales().getRolEntidad().getRol())
                 .password(profesionalEntidad.getCredenciales().getPassword())
                 .fechaNacimiento(profesionalEntidad.getFechaNacimiento())
                 .idNegocio(profesionalEntidad.getNegocioEntidad().getIdUsuario())
@@ -99,7 +97,7 @@ public class ProfesionalMapper {
 
     public Profesional toModel(ProfesionalRequest profesionalRequest){
 
-        RolUsuarioEnum rolUsuarioEnum = rolRepositorio.findById(profesionalRequest.getIdRol()).get().getRol();
+        RolUsuarioEnum rolUsuarioEnum = rolRepositorio.findById(profesionalRequest.getIdRolUsuario()).get().getRol();
 
         return Profesional.builder()
                 .email(profesionalRequest.getEmail())
@@ -107,7 +105,7 @@ public class ProfesionalMapper {
                 .nombre(profesionalRequest.getNombre())
                 .estado(true)
                 .telefono(profesionalRequest.getTelefono())
-                .rolUsuario(rolUsuarioEnum)
+                .idRolUsuario(rolUsuarioEnum)
                 .password(profesionalRequest.getPassword())
                 .fechaNacimiento(profesionalRequest.getFechaNacimiento())
 //                .idNegocio(profesionalRequest.getIdNegocio()), lo comento porque el idNegocio viene por variable global en negocio controller

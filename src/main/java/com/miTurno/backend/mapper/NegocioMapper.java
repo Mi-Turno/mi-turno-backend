@@ -1,6 +1,5 @@
 package com.miTurno.backend.mapper;
 
-import com.miTurno.backend.DTO.Usuario;
 import com.miTurno.backend.entidad.CredencialesEntidad;
 import com.miTurno.backend.entidad.RolEntidad;
 import com.miTurno.backend.repositorio.RolRepositorio;
@@ -38,14 +37,14 @@ public class NegocioMapper {
 
     //request a negocio
     public Negocio toModel(NegocioRequest negocioRequest){
-        RolUsuarioEnum rolUsuarioEnum = rolRepositorio.findById(negocioRequest.getIdRol()).get().getRol();
+        RolUsuarioEnum rolUsuarioEnum = rolRepositorio.findById(negocioRequest.getIdRolUsuario()).get().getRol();
 
         return Negocio.builder()
                 .email(negocioRequest.getEmail())
                 .estado(true)
                 .nombre(negocioRequest.getNombre())
                 .apellido(negocioRequest.getApellido())
-                .rolUsuario(rolUsuarioEnum)
+                .idRolUsuario(rolUsuarioEnum)
                 .password(negocioRequest.getPassword())
                 .telefono(negocioRequest.getTelefono())
                 .fechaNacimiento(negocioRequest.getFechaNacimiento())
@@ -59,7 +58,7 @@ public class NegocioMapper {
     //negocio a Entidad
     public NegocioEntidad toEntidad(Negocio negocio){
 
-        RolEntidad rolEntidad = rolRepositorio.findByRol(negocio.getRolUsuario());
+        RolEntidad rolEntidad = rolRepositorio.findByRol(negocio.getIdRolUsuario());
 
         CredencialesEntidad credencialesEntidad = CredencialesEntidad.builder()
                 .rolEntidad(rolEntidad)
@@ -90,7 +89,7 @@ public class NegocioMapper {
                .email(negocioEntidad.getCredenciales().getEmail())
                .password(negocioEntidad.getCredenciales().getPassword())
                .telefono(negocioEntidad.getCredenciales().getTelefono())
-               .rolUsuario(negocioEntidad.getCredenciales().getRolEntidad().getRol())
+               .idRolUsuario(negocioEntidad.getCredenciales().getRolEntidad().getRol())
                .estado(negocioEntidad.getCredenciales().getEstado())
 
                .nombre(negocioEntidad.getNombre())

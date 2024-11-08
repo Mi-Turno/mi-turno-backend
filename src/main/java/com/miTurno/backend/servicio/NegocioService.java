@@ -1,17 +1,13 @@
 package com.miTurno.backend.servicio;
 
-import com.miTurno.backend.DTO.Profesional;
-import com.miTurno.backend.DTO.Usuario;
 import com.miTurno.backend.excepcion.*;
 import com.miTurno.backend.mapper.ProfesionalMapper;
 import com.miTurno.backend.mapper.UsuarioMapper;
 import com.miTurno.backend.repositorio.*;
 import com.miTurno.backend.request.NegocioRequest;
 import com.miTurno.backend.entidad.NegocioEntidad;
-import com.miTurno.backend.entidad.ProfesionalEntidad;
 import com.miTurno.backend.mapper.NegocioMapper;
 import com.miTurno.backend.DTO.Negocio;
-import com.miTurno.backend.request.UsuarioRequest;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -70,7 +66,7 @@ public class NegocioService {
             throws NombreNegocioYaExisteException, RolIncorrectoException {
 
         String nombreNegocio = negocioRequest.getNombre();
-        RolUsuarioEnum rolUsuarioEnum = rolRepositorio.findById(negocioRequest.getIdRol())
+        RolUsuarioEnum rolUsuarioEnum = rolRepositorio.findById(negocioRequest.getIdRolUsuario())
                 .orElseThrow(()->new RecursoNoExisteException("No existe ese rol"))
                 .getRol();
 
