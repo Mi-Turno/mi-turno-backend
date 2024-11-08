@@ -70,27 +70,24 @@ public class ServicioService {
     public Boolean eliminarUnServicio(Long idNegocio,Long idServicioAEliminar) throws ServicioNoExisteException{
         Boolean rta = true;
 
-        ServicioEntidad servicioEntidad = servicioRepositorio.findById(idServicioAEliminar).orElseThrow(()-> new ServicioNoExisteException((idServicioAEliminar)));
-
+        ServicioEntidad servicioEntidad = servicioRepositorio.findByIdServicioAndNegocioEntidad_IdUsuario(idServicioAEliminar, idNegocio);
         //si se encuntra el servicio
         servicioEntidad.setEstado(false);
         servicioRepositorio.save(servicioEntidad);
-
         return rta;
     }
 
     //UPDATE
-   /* public Servicio actualizarUnServicio(Long idNegocio,Long idServicioAActualizar,Servicio nuevoServicio) throws ServicioNoExisteException{
-        ServicioEntidad servicioEntidad= servicioRepositorio.findByIdNegocioAndIdServicio(idNegocio,idServicioAActualizar);
 
+   public Servicio actualizarUnServicio(Long idNegocio,Long idServicioAActualizar,Servicio nuevoServicio) throws ServicioNoExisteException{
+        ServicioEntidad servicioEntidad= servicioRepositorio.findByIdServicioAndNegocioEntidad_IdUsuario(idServicioAActualizar,idNegocio);
         servicioEntidad.setDuracion(nuevoServicio.getDuracion());
-        //todo: El precio no debería estar aca sinó que depende de cada profesional
-        //servicioEntidad.setPrecio(nuevoServicio.getPrecio());
+        servicioEntidad.setPrecio(nuevoServicio.getPrecio());
         //servicioEntidad.setEstado(nuevoServicio.getEstado());
         servicioEntidad.setNombre(nuevoServicio.getNombre());
 
         servicioRepositorio.save(servicioEntidad);
 
         return servicioMapper.toModel(servicioEntidad);
-    }*/
+    }
 }
