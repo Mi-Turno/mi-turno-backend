@@ -66,18 +66,22 @@ public class UsuarioControlador {
     //GET
     //TODO, ESTE POST DEBERIA APUNTAR AL REPOSITORIO DE CREDENCIALES
     /**Se utiliza POST para no enviar la contraseña por URL eso hace que sea mas seguro el proceso*/
-   /* @PostMapping("/login")
+    @PostMapping("/login")
     @Operation(summary = "Obtener un usuario por email y contraseña")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "El usuario con los datos solicitados fue devuelto"),
             @ApiResponse(responseCode = "400", description = "Parámetros inválidos")
     })
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<UsuarioEntidad> obtenerUsuariosByEmailAndPassword(@RequestBody UsuarioLoginRequest usuarioLoginRequest) {
-            UsuarioEntidad usuario = usuarioService.obtenerUsuariosByEmailAndPassword(usuarioLoginRequest.getEmail(), usuarioLoginRequest.getPassword());
-            return ResponseEntity.ok(usuario);//200
+    public ResponseEntity<Usuario> obtenerUsuariosByEmailAndPassword(@RequestBody UsuarioLoginRequest usuarioLoginRequest) {
+        Usuario usuario = usuarioService.obtenerUsuariosByEmailAndPassword(usuarioLoginRequest.getEmail(), usuarioLoginRequest.getPassword());
+        if (usuario != null) {
+            return ResponseEntity.ok(usuario); // 200 OK con usuario y credenciales
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
-*/
+
 
    @Operation(summary = "Obtener un usuario por ROL")
     @ApiResponses(value = {

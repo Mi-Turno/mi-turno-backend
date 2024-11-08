@@ -33,6 +33,6 @@ public interface UsuarioRepositorio extends JpaRepository<UsuarioEntidad,Long> {
 
 
     /**uso Optional para poder lanzar la exception ya que es un email*/
-  //  Optional<UsuarioEntidad> findByEmailAndPassword(@Email String email, String password);
+    UsuarioEntidad findByCredencialesEmailAndCredencialesPassword(String email, String password);
 
 }

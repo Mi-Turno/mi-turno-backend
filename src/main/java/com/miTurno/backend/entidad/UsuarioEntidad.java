@@ -3,6 +3,7 @@ package com.miTurno.backend.entidad;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,9 +47,10 @@ public class UsuarioEntidad {
     @Column(insertable = true,updatable = true,columnDefinition ="DATE")
     private LocalDate fechaNacimiento;//(YYYY-MM-DD)
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "id_credenciales", nullable = false) // Clave foránea a CredencialesEntidad
-    @JsonIgnore
+    //@JsonIgnore
+    @JsonManagedReference
     private CredencialesEntidad credenciales; // Relación con Credenciales
 
 
