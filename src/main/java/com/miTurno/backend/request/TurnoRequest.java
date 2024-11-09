@@ -24,7 +24,10 @@ public class TurnoRequest {
     private Long idNegocio; // ID del negocio relacionado
 
     @Schema(description = "Horario del profesional con los datos requeridos")
-    private HorarioProfesionalRequest horarioProfesional;
+    private Long idHorarioProfesional;
+
+    @Schema(description = "ID profesional con los datos requeridos")
+    private Long idProfesional;
 
     @Schema(description = "Fecha de inicio que tendra el turno")
     private LocalDate fechaInicio;
@@ -33,12 +36,13 @@ public class TurnoRequest {
     // Constructor vacío
     public TurnoRequest() {}
 
-    public TurnoRequest(Long idServicio, Long idMetodoDePago, Long idCliente, Long idNegocio, HorarioProfesionalRequest horarioProfesional,LocalDate fechaInicio) {
+    public TurnoRequest(Long idServicio, Long idMetodoDePago, Long idCliente, Long idNegocio, Long idHorarioProfesional, Long idProfesional, LocalDate fechaInicio) {
         this.idServicio = idServicio;
         this.idMetodoDePago = idMetodoDePago;
         this.idCliente = idCliente;
         this.idNegocio = idNegocio;
-        this.horarioProfesional = horarioProfesional;
+        this.idHorarioProfesional = idHorarioProfesional;
+        this.idProfesional = idProfesional;
         this.fechaInicio = fechaInicio;
     }
 }

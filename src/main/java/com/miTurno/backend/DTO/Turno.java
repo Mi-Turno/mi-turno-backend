@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -21,24 +20,26 @@ public class Turno {
 
     private MetodosDePagoEnum metodosDePagoEnum;
     private LocalDate fechaInicio;
-    private HorarioProfesional horarioProfesional;
-
+    private Long idHorarioProfesional;
+    private Long idProfesional;
     private Boolean estado;
 
     //constructor
+
 
     public Turno(){
 
     }
 
-    public Turno(Long idTurno, Long idServicio, Long idCliente, Long idNegocio, MetodosDePagoEnum metodosDePagoEnum, LocalDate fechaInicio, HorarioProfesional horarioProfesional, Boolean estado) {
+    public Turno(Long idTurno, Long idServicio, Long idCliente, Long idNegocio, MetodosDePagoEnum metodosDePagoEnum, LocalDate fechaInicio, Long idHorarioProfesional, Long idProfesional, Boolean estado) {
         this.idTurno = idTurno;
         this.idServicio = idServicio;
         this.idCliente = idCliente;
         this.idNegocio = idNegocio;
         this.metodosDePagoEnum = metodosDePagoEnum;
         this.fechaInicio = fechaInicio;
-        this.horarioProfesional = horarioProfesional;
+        this.idHorarioProfesional = idHorarioProfesional;
+        this.idProfesional = idProfesional;
         this.estado = estado;
     }
 
@@ -51,7 +52,8 @@ public class Turno {
                 ", idNegocio=" + idNegocio +
                 ", metodosDePagoEnum=" + metodosDePagoEnum +
                 ", fechaInicio=" + fechaInicio +
-                ", horarioProfesional=" + horarioProfesional +
+                ", idHorarioProfesional=" + idHorarioProfesional +
+                ", idProfesional=" + idProfesional +
                 ", estado=" + estado +
                 '}';
     }
