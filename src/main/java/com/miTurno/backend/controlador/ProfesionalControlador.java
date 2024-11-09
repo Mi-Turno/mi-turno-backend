@@ -126,6 +126,15 @@ public class ProfesionalControlador {
 
     //DELETE un profesional x id ("/{idProfesional}")
 
-
+    //DELETE
+    @Operation(summary = "Eliminar un Profesional por id")
+    @DeleteMapping("/{idProfesional}")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",description = "El Profesional fue borrado con exito"),
+            @ApiResponse(responseCode = "404",description = "El Profesional no fue encontrado")
+    })
+    public Boolean eliminarProfesional(@PathVariable Long idNegocio,@PathVariable Long idProfesional) throws ServicioNoExisteException {
+        return profesionalService.eliminarUnProfesional(idNegocio,idProfesional);
+    }
 
 }
