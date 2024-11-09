@@ -3,7 +3,6 @@ package com.miTurno.backend.manejador;
 
 import com.miTurno.backend.excepcion.*;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -35,8 +34,8 @@ public class ManejadorGlobalExcepciones {
         return new ResponseEntity<>(errores, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(CelularYaExisteException.class)
-    public ResponseEntity<Map<String,String>> CelularYaExisteException(CelularYaExisteException ex){
+    @ExceptionHandler(TelefonoYaExisteException.class)
+    public ResponseEntity<Map<String,String>> CelularYaExisteException(TelefonoYaExisteException ex){
         Map<String, String> errores = new HashMap<>();
         errores.put("celular", ex.getNroCelular());
         return new ResponseEntity<>(errores, HttpStatus.CONFLICT);

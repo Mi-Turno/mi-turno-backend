@@ -46,9 +46,11 @@ public class NegocioService {
     //metodos
 
     //GET all negocios
-    public List<NegocioEntidad> listarTodosLosNegocios(){
-        return negocioRepositorio.findAll();
+    public List<Negocio> listarTodosLosNegocios(){
+        return negocioMapper.toModelList(negocioRepositorio.findAll()) ;
     }
+
+
 
     //GET negocio x id
     public Negocio obtenerNegocioPorId(Long idNegocio){
@@ -63,7 +65,7 @@ public class NegocioService {
 
     //POST negocio
     public Negocio crearUnNegocio(NegocioRequest negocioRequest)
-            throws NombreNegocioYaExisteException, RolIncorrectoException {
+            throws NombreNegocioYaExisteException, RolIncorrectoException,EmailYaExisteException, TelefonoYaExisteException {
 
         String nombreNegocio = negocioRequest.getNombre();
         RolUsuarioEnum rolUsuarioEnum = rolRepositorio.findById(negocioRequest.getIdRolUsuario())
@@ -74,10 +76,15 @@ public class NegocioService {
             throw new RolIncorrectoException(RolUsuarioEnum.NEGOCIO, rolUsuarioEnum);
         }
 
-        if (credencialesRepositorio.existsByRolEntidad_RolAndUsuario_Nombre(rolUsuarioEnum,nombreNegocio)) {
+        if (negocioRepositorio.existsByNombreAndCredenciales_RolEntidad_Rol(nombreNegocio,rolUsuarioEnum)) {
             throw new NombreNegocioYaExisteException(nombreNegocio);
         }
-
+        if(negocioRepositorio.existsByCredenciales_Email(negocioRequest.getEmail())){
+            throw new EmailYaExisteException(negocioRequest.getEmail());
+        }
+        if(negocioRepositorio.existsByCredenciales_Telefono(negocioRequest.getTelefono())){
+            throw new TelefonoYaExisteException(negocioRequest.getTelefono());
+        }
         Negocio negocio= negocioMapper.toModel(negocioRequest);
 
         return negocioMapper.toModel(negocioRepositorio.save(negocioMapper.toEntidad(negocio)));

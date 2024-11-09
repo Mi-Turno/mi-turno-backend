@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface ProfesionalRepositorio extends JpaRepository<ProfesionalEntidad,Long> {
     List<ProfesionalEntidad> findAllByNegocioEntidad_IdUsuario(Long idNegocio);
+    ProfesionalEntidad findByIdUsuarioAndNegocioEntidad_IdUsuario( Long idProfesional,Long idNegocio);
 
 }

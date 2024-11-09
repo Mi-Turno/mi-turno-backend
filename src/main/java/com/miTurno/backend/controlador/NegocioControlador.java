@@ -66,7 +66,7 @@ public class NegocioControlador {
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
     @GetMapping
-    public List<NegocioEntidad> listarNegocios(){
+    public List<Negocio> listarNegocios(){
         return negocioService.listarTodosLosNegocios();
     }
 

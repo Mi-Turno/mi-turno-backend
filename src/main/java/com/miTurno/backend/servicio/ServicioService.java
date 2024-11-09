@@ -66,6 +66,11 @@ public class ServicioService {
     }
 
 
+    public List<Servicio> obtenerServiciosPorIdNegocioYEstado(Long idNegocio, Boolean estado) {
+
+        return servicioMapper.toModelList(servicioRepositorio.findByNegocioEntidad_IdUsuarioAndEstado(idNegocio, estado));
+    }
+
     //DELETE
     public Boolean eliminarUnServicio(Long idNegocio,Long idServicioAEliminar) throws ServicioNoExisteException{
         Boolean rta = true;
