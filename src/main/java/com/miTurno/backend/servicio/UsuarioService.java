@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -75,7 +74,7 @@ public class UsuarioService {
 //    }
 
     //POST usuario
-   public Usuario crearUnUsuario(Usuario usuario) throws EmailYaExisteException, CelularYaExisteException {
+   public Usuario crearUnUsuario(Usuario usuario) throws EmailYaExisteException, TelefonoYaExisteException {
 
         //verificamos en el repo de credenciales
         //verificar si ya existe un mail, si es asi tira excepcion
@@ -85,7 +84,7 @@ public class UsuarioService {
 
         //verificar si ya existe un celular, si es asi tira excepcion
         if (credencialesRepositorio.findByTelefono(usuario.getTelefono()).isPresent()){
-            throw new CelularYaExisteException(usuario.getTelefono());
+            throw new TelefonoYaExisteException(usuario.getTelefono());
         }
 
         UsuarioEntidad usuarioEntidad= usuarioMapper.toEntidad(usuario);

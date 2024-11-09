@@ -9,6 +9,9 @@ import com.miTurno.backend.DTO.Negocio;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import org.springframework.stereotype.Component;
 
+import java.util.Collections;
+import java.util.List;
+
 @Component
 public class NegocioMapper {
 
@@ -106,5 +109,14 @@ public class NegocioMapper {
                .clientes(negocioEntidad.getClientes())
                .build();
     }
+    public List<Negocio> toModelList(List<NegocioEntidad> listaNegociosEntidad) {
+        // Si la lista es null, retorna una lista vacía en lugar de null
+        if (listaNegociosEntidad == null) {
+            return Collections.emptyList();
+        }
 
+        return listaNegociosEntidad.stream()
+                .map(this::toModel)
+                .toList();
+    }
 }

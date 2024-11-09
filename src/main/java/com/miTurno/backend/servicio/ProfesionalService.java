@@ -14,7 +14,6 @@ import com.miTurno.backend.request.ProfesionalRequest;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -63,8 +62,10 @@ public class ProfesionalService {
         }
 
         //verificar si ya existe un celular, si es asi tira excepcion
-        if (credencialesRepositorio.findByTelefono(profesionalRequest.getTelefono()).isPresent()) {
-            throw new CelularYaExisteException(profesionalRequest.getTelefono());
+
+        if (credencialesRepositorio.findByTelefono(profesionalRequest.getTelefono()).isPresent()){
+            throw new TelefonoYaExisteException(profesionalRequest.getTelefono());
+
         }
 
         //si el negocio que quiero asignar al profesional no existe, tiro excepcion

@@ -1,8 +1,8 @@
 package com.miTurno.backend.excepcion;
 
-public class CelularYaExisteException extends RuntimeException{
+public class TelefonoYaExisteException extends RuntimeException{
     private final String nroCelular;
-    public CelularYaExisteException(String nroCelular) {
+    public TelefonoYaExisteException(String nroCelular) {
         super("El usuario con el celular:"+nroCelular+" ya existe.");
         this.nroCelular = nroCelular;
     }
