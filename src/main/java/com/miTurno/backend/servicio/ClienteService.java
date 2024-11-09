@@ -49,8 +49,41 @@ public class ClienteService {
 // Obtener todos los clientes de un negocio
 
 // Obtener un cliente por ID
-    public Cliente buscarUsuario(Long id){
+    public Cliente buscarCliente(Long id){
         return clienteMapper.toModel(clienteRepositorio.findById(id).orElseThrow(()->new UsuarioNoExistenteException(id)));
     }
+
+    //Put Cliente
+    public Cliente actualizarClientePorId(Long id, Cliente actualizado) throws UsuarioNoExistenteException {
+
+        ClienteEntidad clienteEntidad = clienteRepositorio.findById(id).orElseThrow(()-> new UsuarioNoExistenteException(id));
+
+        clienteEntidad.setNombre(actualizado.getNombre());
+        clienteEntidad.setApellido(actualizado.getApellido());
+
+        //Actualizar credenciales
+        clienteEntidad.getCredenciales().setEmail(actualizado.getEmail());
+        clienteEntidad.getCredenciales().setPassword((actualizado.getPassword()));
+        clienteEntidad.getCredenciales().setTelefono(actualizado.getTelefono());
+
+        clienteEntidad= clienteRepositorio.save(clienteEntidad);
+
+        return clienteMapper.toModel(clienteEntidad);
+    }
+
+    //Delete Cliente
+    public Boolean eliminarClientePorId(Long id){
+        Boolean rta = false;//
+        if(clienteRepositorio.existsById(id)){
+            ClienteEntidad clienteEntidad= clienteRepositorio.findById(id).orElseThrow(()-> new UsuarioNoExistenteException(id));
+
+            clienteEntidad.getCredenciales().setEstado(false);
+
+            clienteRepositorio.save(clienteEntidad);
+            rta = true;
+        }
+        return rta;
+    }
+
 
 }

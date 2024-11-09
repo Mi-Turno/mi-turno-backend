@@ -28,8 +28,8 @@ public class TurnoMapper {
         MetodosDePagoEnum metodosDePagoEnum= metodosDePagoRepositorio.findById(turnoEntidad.getMetodoDePagoEntidad().getId_metodo_de_pago()).get().getMetodosDePago();
 
         return Turno.builder()
-                .idServicio(turnoEntidad.getIdServicio().getIdServicio())
                 .idTurno(turnoEntidad.getIdTurno())
+                .idServicio(turnoEntidad.getIdServicio().getIdServicio())
                 .metodosDePagoEnum(metodosDePagoEnum)
                 .idCliente(turnoEntidad.getIdTurno())
                 .idNegocio(turnoEntidad.getNegocioEntidad().getIdUsuario())
