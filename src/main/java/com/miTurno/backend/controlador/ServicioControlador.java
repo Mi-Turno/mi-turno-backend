@@ -1,5 +1,6 @@
 package com.miTurno.backend.controlador;
 
+import com.miTurno.backend.DTO.Profesional;
 import com.miTurno.backend.DTO.Servicio;
 import com.miTurno.backend.request.ServicioRequest;
 import com.miTurno.backend.entidad.ServicioEntidad;
@@ -85,6 +86,17 @@ public class ServicioControlador {
         return servicioService.obtenerListadoDeServiciosPorIdNegocio(idNegocio);
     }
 
+    //GET listado de profesionales x ID servicio
+
+    @Operation(summary = "Obtener servicio por id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Listado de profesionales que dan el servicio obtenida exitosamente"),
+            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
+    })
+    @GetMapping("/{idServicio}/listado-profesionales")
+    public List<Profesional> obtenerListadoDeProfesionalesPorIdServicioYIdNegocio(@PathVariable Long idNegocio, @PathVariable Long idServicio){
+        return servicioService.obtenerListadoDeProfesionalesPorIdServicioYIdNegocio(idServicio,idNegocio);
+    }
 
     //todo Hay que ver bien el tema de la ruta
 
