@@ -37,6 +37,7 @@ public class TurnoMapper {
                 .idNegocio(turnoEntidad.getNegocioEntidad().getIdUsuario())
                 .horarioProfesional(horarioProfesional)
                 .estado(turnoEntidad.getEstado())
+                .fechaInicio(turnoEntidad.getFechaInicio())
                 .build();
     }
     public List<Turno> toModelList(List<TurnoEntidad> listaTurnoEntidad) {
@@ -63,6 +64,7 @@ public class TurnoMapper {
                 .metodosDePagoEnum(metodosDePagoEnum)
                 .idCliente(turnoRequest.getIdCliente())
                 .idNegocio(turnoRequest.getIdNegocio())
+                .fechaInicio(turnoRequest.getFechaInicio())
                 .build();
     }
 

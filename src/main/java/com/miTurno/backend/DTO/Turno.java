@@ -18,6 +18,7 @@ public class Turno {
     private Long idServicio;
     private Long idCliente;
     private Long idNegocio;
+
     private MetodosDePagoEnum metodosDePagoEnum;
     private LocalDate fechaInicio;
     private HorarioProfesional horarioProfesional;

@@ -2,6 +2,8 @@ package com.miTurno.backend.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Builder
@@ -17,21 +19,26 @@ public class TurnoRequest {
     @Schema(description = "ID del cliente relacionado", example = "4")
     private Long idCliente; // ID del cliente relacionado
 
+
     @Schema(description = "ID del negocio relacionado", example = "5")
     private Long idNegocio; // ID del negocio relacionado
 
     @Schema(description = "Horario del profesional con los datos requeridos")
     private HorarioProfesionalRequest horarioProfesional;
 
+    @Schema(description = "Fecha de inicio que tendra el turno")
+    private LocalDate fechaInicio;
+
 
     // Constructor vacío
     public TurnoRequest() {}
 
-    public TurnoRequest(Long idServicio, Long idMetodoDePago, Long idCliente, Long idNegocio, HorarioProfesionalRequest horarioProfesional) {
+    public TurnoRequest(Long idServicio, Long idMetodoDePago, Long idCliente, Long idNegocio, HorarioProfesionalRequest horarioProfesional,LocalDate fechaInicio) {
         this.idServicio = idServicio;
         this.idMetodoDePago = idMetodoDePago;
         this.idCliente = idCliente;
         this.idNegocio = idNegocio;
         this.horarioProfesional = horarioProfesional;
+        this.fechaInicio = fechaInicio;
     }
 }
