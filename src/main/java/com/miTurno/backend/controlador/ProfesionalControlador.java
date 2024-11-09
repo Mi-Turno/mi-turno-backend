@@ -54,7 +54,7 @@ public class ProfesionalControlador {
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
     @GetMapping("/{idProfesional}")
-    public Profesional obtenerProfesionalPorId(@PathVariable Long idProfesional){
+    public Profesional obtenerProfesionalPorId(@PathVariable Long idNegocio,@PathVariable Long idProfesional){
         return profesionalService.obtenerUnProfesional(idProfesional);
     }
     //GET listado de turnos agendados del profesional ("/{idProfesional}/turnos")

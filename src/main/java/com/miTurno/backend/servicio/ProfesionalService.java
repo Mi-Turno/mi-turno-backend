@@ -79,7 +79,10 @@ public class ProfesionalService {
 
     //GET profesionales de negocio x id
     public List<Profesional> obtenerProfesionalesPorIdNegocio(Long idNegocio) {
-        return profesionalMapper.toModelList(negocioRepositorio.getNegocioEntidadByIdUsuario(idNegocio).getProfesionales());
+
+        NegocioEntidad negocioEntidad = negocioRepositorio.findById(idNegocio).orElseThrow(()->new UsuarioNoExistenteException(idNegocio));
+
+        return profesionalMapper.toModelList(negocioEntidad.getProfesionales());
     }
 
     //GET profesional x id
