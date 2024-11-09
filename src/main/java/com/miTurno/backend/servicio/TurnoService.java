@@ -72,12 +72,14 @@ public class TurnoService {
         HorarioProfesionalEntidad nuevoHorario = horarioProfesionalRepositorio.findById(nuevoTurno.getHorarioProfesional().getIdHorario()).orElseThrow(()->new RecursoNoExisteException("horario"));
         turnoEntidad.setHorarioProfesionalEntidad(nuevoHorario);
 
-        turnoEntidad.setFechaInicio(nuevoTurno.getFechaInicio());
 
-        turnoEntidad.setEstado(true);
-
+        //busco el metodo de pago
         MetodoDePagoEntidad nuevoMetodoDePago = metodosDePagoRepositorio.findBymetodosDePago(nuevoTurno.getMetodosDePagoEnum());
         turnoEntidad.setMetodoDePagoEntidad(nuevoMetodoDePago);
+
+        //setteo los demas datos
+        turnoEntidad.setFechaInicio(nuevoTurno.getFechaInicio());
+        turnoEntidad.setEstado(true);
 
 
         turnoEntidad = turnoRepositorio.save(turnoEntidad);
