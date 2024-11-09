@@ -26,4 +26,15 @@ public class HorarioProfesional {
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
     }
+
+    @Override
+    public String toString() {
+        return "HorarioProfesional{" +
+                "idHorario=" + idHorario +
+                ", idProfesional=" + idProfesional +
+                ", dia=" + dia +
+                ", horaInicio=" + horaInicio +
+                ", horaFin=" + horaFin +
+                '}';
+    }
 }

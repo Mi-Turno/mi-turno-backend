@@ -41,4 +41,18 @@ public class Turno {
         this.horarioProfesional = horarioProfesional;
         this.estado = estado;
     }
+
+    @Override
+    public String toString() {
+        return "Turno{" +
+                "idTurno=" + idTurno +
+                ", idServicio=" + idServicio +
+                ", idCliente=" + idCliente +
+                ", idNegocio=" + idNegocio +
+                ", metodosDePagoEnum=" + metodosDePagoEnum +
+                ", fechaInicio=" + fechaInicio +
+                ", horarioProfesional=" + horarioProfesional +
+                ", estado=" + estado +
+                '}';
+    }
 }

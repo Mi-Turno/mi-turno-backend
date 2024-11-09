@@ -51,34 +51,48 @@ public class TurnoService {
 
     public Turno crearUnTurno(Turno nuevoTurno){
         TurnoEntidad turnoEntidad = new TurnoEntidad();
-
+        System.out.println(nuevoTurno);
+        //todo si el turno se efectua, se lo tengo que agregar al cliente a su lista para el historial
         //busco si existe el cliente
         ClienteEntidad nuevoCliente = clienteRepositorio.findById(nuevoTurno.getIdCliente()).orElseThrow(()->new UsuarioNoExistenteException(nuevoTurno.getIdCliente()));
+        System.out.println("CLIENTE");//esta bien
+        System.out.println(nuevoCliente);
         turnoEntidad.setClienteEntidad(nuevoCliente);
 
         //busco si existe el servicio
         ServicioEntidad nuevoServicio = servicioRepositorio.findById(nuevoTurno.getIdServicio()).orElseThrow(()->new ServicioNoExisteException(nuevoTurno.getIdServicio()));
         turnoEntidad.setIdServicio(nuevoServicio);
-
+        System.out.println("SERVICIO");//esta bien
+        System.out.println(nuevoServicio);
         //busco si existe el profesional
+
         ProfesionalEntidad nuevoProfesional = profesionalRepositorio.findById(nuevoTurno.getHorarioProfesional().getIdProfesional()).orElseThrow(()->new UsuarioNoExistenteException(nuevoTurno.getHorarioProfesional().getIdProfesional()));
         turnoEntidad.setProfesionalEntidad(nuevoProfesional);
+        System.out.println("PROFESIONAL");//devuelve null
+        System.out.println(nuevoProfesional);
 
         //busco si existe el negocio
         NegocioEntidad nuevoNegocio = negocioRepositorio.findById(nuevoTurno.getIdNegocio()).orElseThrow(()-> new UsuarioNoExistenteException(nuevoTurno.getIdNegocio()));
         turnoEntidad.setNegocioEntidad(nuevoNegocio);
+        System.out.println("NEGOCIO");
+        System.out.println(nuevoNegocio);
 
         //busco el horario profesional entidad
         HorarioProfesionalEntidad nuevoHorario = horarioProfesionalRepositorio.findById(nuevoTurno.getHorarioProfesional().getIdHorario()).orElseThrow(()->new RecursoNoExisteException("horario"));
         turnoEntidad.setHorarioProfesionalEntidad(nuevoHorario);
-
+        System.out.println("HORARIO");//devuelve null
+        System.out.println(nuevoHorario);
 
         //busco el metodo de pago
         MetodoDePagoEntidad nuevoMetodoDePago = metodosDePagoRepositorio.findBymetodosDePago(nuevoTurno.getMetodosDePagoEnum());
         turnoEntidad.setMetodoDePagoEntidad(nuevoMetodoDePago);
+        System.out.println("PAGO");
+        System.out.println(nuevoMetodoDePago);
 
-        //setteo los demas datos
+        //setteo los demas dato
         turnoEntidad.setFechaInicio(nuevoTurno.getFechaInicio());
+        System.out.println("FECHA");
+        System.out.println(nuevoTurno.getFechaInicio());
         turnoEntidad.setEstado(true);
 
 
