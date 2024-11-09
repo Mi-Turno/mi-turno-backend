@@ -2,9 +2,11 @@ package com.miTurno.backend.servicio;
 
 import com.miTurno.backend.DTO.Profesional;
 import com.miTurno.backend.DTO.Servicio;
+import com.miTurno.backend.DTO.Turno;
 import com.miTurno.backend.entidad.*;
 import com.miTurno.backend.excepcion.*;
 import com.miTurno.backend.mapper.ProfesionalMapper;
+import com.miTurno.backend.mapper.TurnoMapper;
 import com.miTurno.backend.mapper.UsuarioMapper;
 import com.miTurno.backend.repositorio.*;
 import com.miTurno.backend.request.ProfesionalRequest;
@@ -25,10 +27,11 @@ public class ProfesionalService {
     private final CredencialesRepositorio credencialesRepositorio;
 
     private final ServicioRepositorio servicioRepositorio;
+    private final TurnoMapper turnoMapper;
 
     public ProfesionalService(ProfesionalRepositorio profesionalRepositorio, RolRepositorio rolRepositorio, UsuarioService usuarioService, UsuarioMapper usuarioMapper,
                               NegocioRepositorio negocioRepositorio, ProfesionalMapper profesionalMapper, UsuarioRepositorio usuarioRepositorio, CredencialesRepositorio credencialesRepositorio,
-                              ServicioRepositorio servicioRepositorio) {
+                              ServicioRepositorio servicioRepositorio, TurnoMapper turnoMapper) {
         this.profesionalRepositorio = profesionalRepositorio;
         this.rolRepositorio = rolRepositorio;
         this.usuarioService = usuarioService;
@@ -38,6 +41,7 @@ public class ProfesionalService {
         this.usuarioRepositorio = usuarioRepositorio;
         this.credencialesRepositorio = credencialesRepositorio;
         this.servicioRepositorio = servicioRepositorio;
+        this.turnoMapper = turnoMapper;
     }
 
 
@@ -87,6 +91,22 @@ public class ProfesionalService {
         return profesionalMapper.toModel(profesionalRepositorio.findById(idProfesional).orElseThrow(() -> new UsuarioNoExistenteException(idProfesional)));
     }
 
+    //GET listado de turnos agendados del profesional ("/{idProfesional}/turnos")
+    public List<Turno> obtenerTurnosProfesionalPorIdNegocioYIdProfesional(Long idNegocio,Long idProfesional) {
+
+        if (!negocioRepositorio.existsById(idNegocio)){
+            throw new UsuarioNoExistenteException(idNegocio);
+        }
+
+        if (!profesionalRepositorio.existsById(idProfesional)){
+            throw new UsuarioNoExistenteException(idProfesional);
+        }
+
+
+        ProfesionalEntidad profesionalEntidad= profesionalRepositorio.findByIdUsuarioAndNegocioEntidad_IdUsuario(idProfesional,idNegocio);
+
+        return turnoMapper.toModelList(profesionalEntidad.getTurnosAgendados());
+    }
 
     //PUT profesional X id
 

@@ -61,6 +61,7 @@ public class TurnoControlador {
     @ResponseStatus(HttpStatus.CREATED)
     public Turno crearUnTurno(@Parameter(description = "Datos del turno")
                                            @Valid @RequestBody TurnoRequest turnoRequest){
+        //@Pathvariable idNegocio
         return turnoService.crearUnTurno(turnoMapper.toModel(turnoRequest));
     }
 

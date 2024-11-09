@@ -31,7 +31,7 @@ public class TurnoMapper {
                 .idTurno(turnoEntidad.getIdTurno())
                 .idServicio(turnoEntidad.getIdServicio().getIdServicio())
                 .metodosDePagoEnum(metodosDePagoEnum)
-                .idCliente(turnoEntidad.getIdTurno())
+                .idCliente(turnoEntidad.getClienteEntidad().getIdUsuario())
                 .idNegocio(turnoEntidad.getNegocioEntidad().getIdUsuario())
                 .idHorarioProfesional(turnoEntidad.getHorarioProfesionalEntidad().getIdHorario())
                 .idProfesional(turnoEntidad.getProfesionalEntidad().getIdUsuario())

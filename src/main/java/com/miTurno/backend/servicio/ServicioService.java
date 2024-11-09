@@ -1,8 +1,10 @@
 package com.miTurno.backend.servicio;
 
+import com.miTurno.backend.DTO.Profesional;
 import com.miTurno.backend.DTO.Servicio;
 import com.miTurno.backend.entidad.ServicioEntidad;
 import com.miTurno.backend.excepcion.ServicioNoExisteException;
+import com.miTurno.backend.mapper.ProfesionalMapper;
 import com.miTurno.backend.mapper.ServicioMapper;
 import com.miTurno.backend.repositorio.NegocioRepositorio;
 import com.miTurno.backend.repositorio.ServicioRepositorio;
@@ -20,12 +22,14 @@ public class ServicioService {
     private final ServicioMapper servicioMapper;
 
     private final NegocioRepositorio negocioRepositorio;
+    private final ProfesionalMapper profesionalMapper;
+
     @Autowired
-    public ServicioService(ServicioRepositorio servicioRepositorio, ServicioMapper servicioMapper,NegocioRepositorio negocioRepositorio) {
+    public ServicioService(ServicioRepositorio servicioRepositorio, ServicioMapper servicioMapper, NegocioRepositorio negocioRepositorio, ProfesionalMapper profesionalMapper) {
         this.servicioRepositorio = servicioRepositorio;
         this.servicioMapper= servicioMapper;
         this.negocioRepositorio = negocioRepositorio;
-
+        this.profesionalMapper = profesionalMapper;
     }
 
     //GET all
@@ -58,7 +62,12 @@ public class ServicioService {
         return servicioMapper.toModelList(servicioRepositorio.findAllByNegocioEntidad_IdUsuario(idNegocio));
     }
 
+    //GET listado profesionales que dan el servicio x IdServicio
 
+    public List<Profesional> obtenerListadoDeProfesionalesPorIdServicioYIdNegocio(Long idServicio,Long idNegocio){
+        ServicioEntidad servicioEntidad = servicioRepositorio.getServicioEntidadByNegocioEntidad_IdUsuarioAndIdServicio(idNegocio,idServicio);
+        return profesionalMapper.toModelList(servicioEntidad.getProfesionales());
+    }
     //POST
     public Servicio crearUnServicio(Long idNegocio,ServicioRequest nuevoServicio){
 

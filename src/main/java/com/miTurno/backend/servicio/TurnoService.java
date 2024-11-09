@@ -92,8 +92,12 @@ public class TurnoService {
         System.out.println(nuevoTurno.getFechaInicio());
         turnoEntidad.setEstado(true);
 
-
         turnoEntidad = turnoRepositorio.save(turnoEntidad);
+
+        nuevoProfesional.getTurnosAgendados().add(turnoEntidad);
+
+        profesionalRepositorio.save(nuevoProfesional);
+
         return turnoMapper.toModel(turnoEntidad);
     }
     /*public Boolean eliminarTurnoPorId(Long idNegocio,Long id){

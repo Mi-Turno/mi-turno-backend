@@ -2,6 +2,7 @@ package com.miTurno.backend.controlador;
 
 import com.miTurno.backend.DTO.Profesional;
 import com.miTurno.backend.DTO.Servicio;
+import com.miTurno.backend.DTO.Turno;
 import com.miTurno.backend.DTO.Usuario;
 import com.miTurno.backend.entidad.ProfesionalEntidad;
 import com.miTurno.backend.excepcion.ServicioNoExisteException;
@@ -58,6 +59,16 @@ public class ProfesionalControlador {
         return profesionalService.obtenerUnProfesional(idProfesional);
     }
     //GET listado de turnos agendados del profesional ("/{idProfesional}/turnos")
+
+    @Operation(summary = "Obtener turnos de profesional por id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Profesional obtenido con exito"),
+            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
+    })
+    @GetMapping("/{idProfesional}/turnos")
+    public List<Turno> obtenerTurnosProfesionalPorId(@PathVariable Long idNegocio, @PathVariable Long idProfesional){
+        return profesionalService.obtenerTurnosProfesionalPorIdNegocioYIdProfesional(idNegocio,idProfesional);
+    }
 
     //GET listado de horarios del profesional ("/{idProfesional}/horarios")
 
