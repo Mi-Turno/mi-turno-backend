@@ -44,7 +44,7 @@ public class HorarioProfesionalMapper {
     public HorarioProfesional toModel(HorarioProfesionalRequest horarioProfesionalRequest){
 
         return HorarioProfesional.builder()
-//                .idProfesional(horarioProfesionalRequest.getIdProfesional())
+                .idProfesional(horarioProfesionalRequest.getIdProfesional())
                 .dia(horarioProfesionalRequest.getDia())
                 .horaInicio(horarioProfesionalRequest.getHoraInicio())
 //                .horaFin(horarioProfesionalRequest.getHoraFin())
