@@ -59,4 +59,5 @@ public class UsuarioRequest {
         this.fechaNacimiento = fechaNacimiento;
         this.idRolUsuario = idRolUsuario;
     }
+
 }

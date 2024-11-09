@@ -36,7 +36,7 @@ public class ProfesionalEntidad extends UsuarioEntidad{
 
     // listado de horarios DISPONIBLES
    // @OneToMany(mappedBy = "profesional", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_profesional")
     @JsonManagedReference
     private List<HorarioProfesionalEntidad> horariosDisponibles;
