@@ -1,5 +1,6 @@
 package com.miTurno.backend.entidad;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.miTurno.backend.DTO.HorarioProfesional;
 import jakarta.persistence.*;
 import lombok.Builder;

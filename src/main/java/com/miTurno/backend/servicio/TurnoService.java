@@ -4,15 +4,12 @@ package com.miTurno.backend.servicio;
 import com.miTurno.backend.entidad.*;
 import com.miTurno.backend.excepcion.RecursoNoExisteException;
 import com.miTurno.backend.excepcion.ServicioNoExisteException;
-import com.miTurno.backend.excepcion.TurnoNoExistenteException;
 import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import com.miTurno.backend.mapper.TurnoMapper;
 import com.miTurno.backend.DTO.Turno;
 import com.miTurno.backend.repositorio.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class TurnoService {
@@ -66,7 +63,7 @@ public class TurnoService {
         System.out.println(nuevoServicio);
         //busco si existe el profesional
 
-        ProfesionalEntidad nuevoProfesional = profesionalRepositorio.findById(nuevoTurno.getHorarioProfesional().getIdProfesional()).orElseThrow(()->new UsuarioNoExistenteException(nuevoTurno.getHorarioProfesional().getIdProfesional()));
+        ProfesionalEntidad nuevoProfesional = profesionalRepositorio.findById(nuevoTurno.getIdProfesional()).orElseThrow(()->new UsuarioNoExistenteException(nuevoTurno.getIdProfesional()));
         turnoEntidad.setProfesionalEntidad(nuevoProfesional);
         System.out.println("PROFESIONAL");//devuelve null
         System.out.println(nuevoProfesional);
@@ -78,7 +75,7 @@ public class TurnoService {
         System.out.println(nuevoNegocio);
 
         //busco el horario profesional entidad
-        HorarioProfesionalEntidad nuevoHorario = horarioProfesionalRepositorio.findById(nuevoTurno.getHorarioProfesional().getIdHorario()).orElseThrow(()->new RecursoNoExisteException("horario"));
+        HorarioProfesionalEntidad nuevoHorario = horarioProfesionalRepositorio.findById(nuevoTurno.getIdHorarioProfesional()).orElseThrow(()->new RecursoNoExisteException("horario"));
         turnoEntidad.setHorarioProfesionalEntidad(nuevoHorario);
         System.out.println("HORARIO");//devuelve null
         System.out.println(nuevoHorario);

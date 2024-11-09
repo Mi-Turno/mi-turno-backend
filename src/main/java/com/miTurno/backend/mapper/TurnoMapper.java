@@ -1,8 +1,6 @@
 package com.miTurno.backend.mapper;
 
 import com.miTurno.backend.DTO.HorarioProfesional;
-import com.miTurno.backend.DTO.Profesional;
-import com.miTurno.backend.entidad.ProfesionalEntidad;
 import com.miTurno.backend.repositorio.MetodosDePagoRepositorio;
 import com.miTurno.backend.request.TurnoRequest;
 import com.miTurno.backend.entidad.TurnoEntidad;
@@ -28,14 +26,15 @@ public class TurnoMapper {
     public Turno toModel(TurnoEntidad turnoEntidad){
 
         MetodosDePagoEnum metodosDePagoEnum= metodosDePagoRepositorio.findById(turnoEntidad.getMetodoDePagoEntidad().getId_metodo_de_pago()).get().getMetodosDePago();
-        HorarioProfesional horarioProfesional= horarioProfesionalMapper.toModel(turnoEntidad.getHorarioProfesionalEntidad());
+
         return Turno.builder()
                 .idServicio(turnoEntidad.getIdServicio().getIdServicio())
                 .idTurno(turnoEntidad.getIdTurno())
                 .metodosDePagoEnum(metodosDePagoEnum)
                 .idCliente(turnoEntidad.getIdTurno())
                 .idNegocio(turnoEntidad.getNegocioEntidad().getIdUsuario())
-                .horarioProfesional(horarioProfesional)
+                .idHorarioProfesional(turnoEntidad.getHorarioProfesionalEntidad().getIdHorario())
+                .idProfesional(turnoEntidad.getProfesionalEntidad().getIdUsuario())
                 .estado(turnoEntidad.getEstado())
                 .fechaInicio(turnoEntidad.getFechaInicio())
                 .build();
@@ -55,11 +54,12 @@ public class TurnoMapper {
     //request a turno
     public Turno toModel(TurnoRequest turnoRequest){
 
-        HorarioProfesional horarioProfesional= horarioProfesionalMapper.toModel(turnoRequest.getHorarioProfesional());
+
         MetodosDePagoEnum metodosDePagoEnum= metodosDePagoRepositorio.findById(turnoRequest.getIdMetodoDePago()).get().getMetodosDePago();
 
         return Turno.builder()
-                .horarioProfesional(horarioProfesional)
+                .idHorarioProfesional(turnoRequest.getIdHorarioProfesional())
+                .idProfesional(turnoRequest.getIdProfesional())
                 .idServicio(turnoRequest.getIdServicio())
                 .metodosDePagoEnum(metodosDePagoEnum)
                 .idCliente(turnoRequest.getIdCliente())
