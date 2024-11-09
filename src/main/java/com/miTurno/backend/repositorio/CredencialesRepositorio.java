@@ -1,6 +1,7 @@
 package com.miTurno.backend.repositorio;
 
 import com.miTurno.backend.entidad.CredencialesEntidad;
+import com.miTurno.backend.entidad.ServicioEntidad;
 import com.miTurno.backend.entidad.UsuarioEntidad;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import jakarta.validation.constraints.Email;
@@ -17,7 +18,9 @@ public interface CredencialesRepositorio extends JpaRepository<CredencialesEntid
 
     boolean existsByEmailAndTelefono(@Email String email, String telefono);
 
-    
+
+
+
     List <CredencialesEntidad> findAllByRolEntidad_RolAndEstado (RolUsuarioEnum rol, Boolean estado);
     List<CredencialesEntidad>findAllByEstado(Boolean estado);
 }

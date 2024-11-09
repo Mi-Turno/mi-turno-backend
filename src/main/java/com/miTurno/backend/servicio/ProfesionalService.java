@@ -2,10 +2,7 @@ package com.miTurno.backend.servicio;
 
 import com.miTurno.backend.DTO.Profesional;
 import com.miTurno.backend.DTO.Servicio;
-import com.miTurno.backend.entidad.CredencialesEntidad;
-import com.miTurno.backend.entidad.NegocioEntidad;
-import com.miTurno.backend.entidad.ProfesionalEntidad;
-import com.miTurno.backend.entidad.ServicioEntidad;
+import com.miTurno.backend.entidad.*;
 import com.miTurno.backend.excepcion.*;
 import com.miTurno.backend.mapper.ProfesionalMapper;
 import com.miTurno.backend.mapper.UsuarioMapper;
@@ -135,5 +132,20 @@ public class ProfesionalService {
         return profesionalMapper.toModel(profesionalRepositorio.save(profesionalEntidad));
     }
 
+
+    public Boolean eliminarUnProfesional(Long idNegocio,Long idProfesionalAEliminar) throws ServicioNoExisteException{
+        Boolean rta = true;
+
+        // Busca la entidad de credenciales por ID
+        CredencialesEntidad profesionalEntidad = credencialesRepositorio.findById(idProfesionalAEliminar)
+                .orElseThrow(() -> new ServicioNoExisteException(idProfesionalAEliminar));
+
+        // Cambia el estado a false para desactivarlo
+        profesionalEntidad.setEstado(false);
+
+        // Guarda los cambios
+        credencialesRepositorio.save(profesionalEntidad);
+        return rta;
+    }
 
 }
