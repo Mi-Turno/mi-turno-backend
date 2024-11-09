@@ -2,8 +2,10 @@ package com.miTurno.backend.controlador;
 
 
 import com.miTurno.backend.DTO.Cliente;
+import com.miTurno.backend.DTO.Usuario;
 import com.miTurno.backend.entidad.ClienteEntidad;
 import com.miTurno.backend.mapper.ClienteMapper;
+import com.miTurno.backend.request.UsuarioLoginRequest;
 import com.miTurno.backend.request.UsuarioRequest;
 import com.miTurno.backend.servicio.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -48,6 +50,23 @@ public class ClienteControlador {
 
         return clienteService.crearUnCliente(usuarioRequest);
     }
+    //POST QUE FUNCIONA COMO GET PARA EL LOGIN
+    @PostMapping("/login")
+    @Operation(summary = "Obtener un cliente por email y contraseña")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "El cliente con los datos solicitados fue devuelto"),
+            @ApiResponse(responseCode = "400", description = "Parámetros inválidos")
+    })
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Cliente> obtenerClienteByEmailAndPassword(@RequestBody UsuarioLoginRequest usuarioLoginRequest) {
+        Cliente cliente = clienteService.obtenerClienteByEmailAndPassword(usuarioLoginRequest.getEmail(), usuarioLoginRequest.getPassword());
+        if (cliente != null) {
+            return ResponseEntity.ok(cliente); // 200 OK con usuario y credenciales
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    }
+
     //GET by ID
     @Operation(summary = "Obtener un cliente por ID")
     @ApiResponses(value = {

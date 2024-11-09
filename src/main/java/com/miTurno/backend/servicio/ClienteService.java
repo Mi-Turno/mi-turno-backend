@@ -1,6 +1,7 @@
 package com.miTurno.backend.servicio;
 
 import com.miTurno.backend.DTO.Cliente;
+import com.miTurno.backend.DTO.Usuario;
 import com.miTurno.backend.entidad.ClienteEntidad;
 import com.miTurno.backend.excepcion.*;
 import com.miTurno.backend.mapper.ClienteMapper;
@@ -46,7 +47,10 @@ public class ClienteService {
         ClienteEntidad clienteEntidad = clienteMapper.toEntidad(usuarioRequest);
         return clienteMapper.toModel(clienteRepositorio.save(clienteEntidad)) ;
     }
-// Obtener todos los clientes de un negocio
+// Obtener cliente by email and password para el login
+public Cliente obtenerClienteByEmailAndPassword(String email, String password)throws UsuarioNoExistenteException{
+    return clienteMapper.toModel(clienteRepositorio.findByCredenciales_EmailAndCredenciales_Password(email,password));
+}
 
 // Obtener un cliente por ID
     public Cliente buscarCliente(Long id){
