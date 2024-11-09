@@ -36,7 +36,8 @@ public class HorarioProfesionalRequest {
     public HorarioProfesionalRequest() {
     }
 
-    public HorarioProfesionalRequest(DiasEnum dia, LocalTime horaInicio) {
+    public HorarioProfesionalRequest(Long idProfesional, DiasEnum dia, LocalTime horaInicio) {
+        this.idProfesional = idProfesional;
         this.dia = dia;
         this.horaInicio = horaInicio;
     }
