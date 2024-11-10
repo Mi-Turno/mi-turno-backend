@@ -11,5 +11,4 @@ public interface ProfesionalRepositorio extends JpaRepository<ProfesionalEntidad
     List<ProfesionalEntidad> findAllByNegocioEntidad_IdUsuario(Long idNegocio);
     ProfesionalEntidad findByIdUsuarioAndNegocioEntidad_IdUsuario( Long idProfesional,Long idNegocio);
     List<ProfesionalEntidad> findAllByNegocioEntidad_IdUsuarioAndCredenciales_Estado(Long idNegocio, Boolean estado);
-
 }

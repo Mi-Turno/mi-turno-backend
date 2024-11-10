@@ -1,15 +1,19 @@
 package com.miTurno.backend.servicio;
 
 import com.miTurno.backend.DTO.Cliente;
+import com.miTurno.backend.DTO.Turno;
 import com.miTurno.backend.DTO.Usuario;
 import com.miTurno.backend.entidad.ClienteEntidad;
 import com.miTurno.backend.excepcion.*;
 import com.miTurno.backend.mapper.ClienteMapper;
+import com.miTurno.backend.mapper.TurnoMapper;
 import com.miTurno.backend.repositorio.*;
 import com.miTurno.backend.request.UsuarioRequest;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ClienteService {
@@ -18,16 +22,24 @@ public class ClienteService {
     private final RolRepositorio rolRepositorio;
     private final CredencialesRepositorio credencialesRepositorio;
     private final ClienteMapper clienteMapper;
+    private final TurnoMapper turnoMapper;
 
     @Autowired
-    public ClienteService(ClienteRepositorio clienteRepositorio, RolRepositorio rolRepositorio, CredencialesRepositorio credencialesRepositorio, ClienteMapper clienteMapper) {
+    public ClienteService(ClienteRepositorio clienteRepositorio, RolRepositorio rolRepositorio, CredencialesRepositorio credencialesRepositorio, ClienteMapper clienteMapper, TurnoMapper turnoMapper) {
         this.clienteRepositorio = clienteRepositorio;
         this.rolRepositorio = rolRepositorio;
         this.credencialesRepositorio = credencialesRepositorio;
         this.clienteMapper = clienteMapper;
+        this.turnoMapper = turnoMapper;
     }
 
 
+    //get listado de turnos del cliente
+    public List<Turno> obtenerListadoDeTurnosPorId(Long idCliente){
+        ClienteEntidad clienteEntidad = clienteRepositorio.findById(idCliente).orElseThrow(()->new UsuarioNoExistenteException(idCliente));
+
+        return turnoMapper.toModelList(clienteEntidad.getListadoDeTurnos());
+    }
 
     //Crear un cliente
     public Cliente crearUnCliente(UsuarioRequest usuarioRequest) throws RolIncorrectoException, RecursoNoExisteException {

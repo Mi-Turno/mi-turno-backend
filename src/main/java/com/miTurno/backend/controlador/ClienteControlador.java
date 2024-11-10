@@ -2,6 +2,7 @@ package com.miTurno.backend.controlador;
 
 
 import com.miTurno.backend.DTO.Cliente;
+import com.miTurno.backend.DTO.Turno;
 import com.miTurno.backend.DTO.Usuario;
 import com.miTurno.backend.entidad.ClienteEntidad;
 import com.miTurno.backend.mapper.ClienteMapper;
@@ -21,6 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -35,6 +37,7 @@ public class ClienteControlador {
         this.clienteService = clienteService;
         this.clienteMapper = clienteMapper;
     }
+
     //POST cliente
     @Operation(summary = "Crear un nuevo cliente")
     @ApiResponses(value = {
@@ -65,6 +68,20 @@ public class ClienteControlador {
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+    }
+
+    //GET listado de turnos por cliente ID
+
+    @Operation(summary = "Obtener un listado de turnos del cliente por ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "El listado de turnos del cliente enviado con exito"),
+            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
+    })
+    @GetMapping("/{id}/turnos")
+    public ResponseEntity<List<Turno>> obtenerListadoDeTurnosDelClientePorId(@Parameter(description = "ID del cliente",example = "1")
+                                                       @PathVariable Long id){
+        List<Turno> listadoDeturnos= clienteService.obtenerListadoDeTurnosPorId(id);
+        return ResponseEntity.ok(listadoDeturnos);//200
     }
 
     //GET by ID

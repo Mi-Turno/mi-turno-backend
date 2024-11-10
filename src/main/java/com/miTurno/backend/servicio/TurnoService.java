@@ -96,8 +96,11 @@ public class TurnoService {
         turnoEntidad = turnoRepositorio.save(turnoEntidad);
 
         nuevoProfesional.getTurnosAgendados().add(turnoEntidad);
-
         profesionalRepositorio.save(nuevoProfesional);
+
+        nuevoCliente.getListadoDeTurnos().add(turnoEntidad);
+        clienteRepositorio.save(nuevoCliente);
+
 
         return turnoMapper.toModel(turnoEntidad);
     }
