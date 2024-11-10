@@ -97,6 +97,7 @@ public class ProfesionalService {
         return profesionalMapper.toModel(profesionalRepositorio.findById(idProfesional).orElseThrow(() -> new UsuarioNoExistenteException(idProfesional)));
     }
 
+
     //GET listado de turnos agendados del profesional ("/{idProfesional}/turnos")
     public List<Turno> obtenerTurnosProfesionalPorIdNegocioYIdProfesional(Long idNegocio,Long idProfesional) {
 
@@ -146,11 +147,17 @@ public class ProfesionalService {
 
         //los matcheo
         if (!listaServicios.contains(servicioEntidad)) {
-            listaServicios.add(servicioEntidad); // Agrego el servicio al profesional
+            listaServicios.add(servicioEntidad);
+            // Agrego el servicio al profesional
+        } else {
+            // Elimino el servicio del profesional
+            listaServicios.remove(servicioEntidad);
         }
 
         if (!listaProfesionales.contains(profesionalEntidad)) {
             listaProfesionales.add(profesionalEntidad); // Agrego el profesional al servicio
+        } else {
+            listaProfesionales.remove(profesionalEntidad);
         }
 
         //los guardo
