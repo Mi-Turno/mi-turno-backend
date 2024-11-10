@@ -70,6 +70,20 @@ public class ProfesionalControlador {
         return profesionalService.obtenerTurnosProfesionalPorIdNegocioYIdProfesional(idNegocio,idProfesional);
     }
 
+    // GET todos los profesionales por id negocio y estado
+    @Operation(summary = "Obtener profesionales por id de negocio y estado")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "profesionales obtenidos con éxito"),
+            @ApiResponse(responseCode = "400", description = "Parámetros inválidos"),
+            @ApiResponse(responseCode = "404", description = "No se encontraron profesionales para el negocio y estado especificados")
+    })
+    @GetMapping("/estado/{estado}")
+    public List<Profesional> obtenerProfesionalesPorIdNegocioYEstado(@PathVariable Long idNegocio, @PathVariable String estado) {
+        Boolean estadoBooleano = Boolean.valueOf(estado);  // Convierte "true" o "false" a Boolean
+
+        return profesionalService.obtenerServiciosPorIdNegocioYEstado(idNegocio, estadoBooleano);
+    }
+
     //GET listado de horarios del profesional ("/{idProfesional}/horarios")
 
     //GET listado de servicios que ofrece un profesional ("/{idProfesional}/servicios")
