@@ -1,6 +1,9 @@
 package com.miTurno.backend.mapper;
 
 import com.miTurno.backend.DTO.HorarioProfesional;
+import com.miTurno.backend.entidad.HorarioProfesionalEntidad;
+import com.miTurno.backend.excepcion.RecursoNoExisteException;
+import com.miTurno.backend.repositorio.HorarioProfesionalRepositorio;
 import com.miTurno.backend.repositorio.MetodosDePagoRepositorio;
 import com.miTurno.backend.request.TurnoRequest;
 import com.miTurno.backend.entidad.TurnoEntidad;
@@ -16,10 +19,12 @@ public class TurnoMapper {
 
     private final MetodosDePagoRepositorio metodosDePagoRepositorio;
     private final HorarioProfesionalMapper horarioProfesionalMapper;
+    private final HorarioProfesionalRepositorio horarioProfesionalRepositorio;
 
-    public TurnoMapper(MetodosDePagoRepositorio metodosDePagoRepositorio, HorarioProfesionalMapper horarioProfesionalMapper) {
+    public TurnoMapper(MetodosDePagoRepositorio metodosDePagoRepositorio, HorarioProfesionalMapper horarioProfesionalMapper, HorarioProfesionalRepositorio horarioProfesionalRepositorio) {
         this.metodosDePagoRepositorio = metodosDePagoRepositorio;
         this.horarioProfesionalMapper = horarioProfesionalMapper;
+        this.horarioProfesionalRepositorio = horarioProfesionalRepositorio;
     }
 
     //entidad a turno
@@ -33,11 +38,12 @@ public class TurnoMapper {
                 .metodosDePagoEnum(metodosDePagoEnum)
                 .idCliente(turnoEntidad.getClienteEntidad().getIdUsuario())
                 .idNegocio(turnoEntidad.getNegocioEntidad().getIdUsuario())
-                .idHorarioProfesional(turnoEntidad.getHorarioProfesionalEntidad().getIdHorario())
+                .horarioProfesional(horarioProfesionalMapper.toModel(turnoEntidad.getHorarioProfesionalEntidad()))
                 .idProfesional(turnoEntidad.getProfesionalEntidad().getIdUsuario())
                 .estado(turnoEntidad.getEstado())
                 .fechaInicio(turnoEntidad.getFechaInicio())
                 .build();
+
     }
     public List<Turno> toModelList(List<TurnoEntidad> listaTurnoEntidad) {
         // Si la lista es null, retorna una lista vacía en lugar de null
@@ -55,13 +61,15 @@ public class TurnoMapper {
     public Turno toModel(TurnoRequest turnoRequest){
 
 
-        MetodosDePagoEnum metodosDePagoEnum= metodosDePagoRepositorio.findById(turnoRequest.getIdMetodoDePago()).get().getMetodosDePago();
+        System.out.println("ID HORARIO PROFESONAL"+turnoRequest.getIdHorarioProfesional());
+        HorarioProfesionalEntidad horarioProfesionalEntidad= horarioProfesionalRepositorio.findById(turnoRequest.getIdHorarioProfesional()).orElseThrow(()-> new RecursoNoExisteException("id horario"));
+
 
         return Turno.builder()
-                .idHorarioProfesional(turnoRequest.getIdHorarioProfesional())
+                .horarioProfesional(horarioProfesionalMapper.toModel(horarioProfesionalEntidad))
                 .idProfesional(turnoRequest.getIdProfesional())
                 .idServicio(turnoRequest.getIdServicio())
-                .metodosDePagoEnum(metodosDePagoEnum)
+                .metodosDePagoEnum(turnoRequest.getMetodosDePagoEnum())
                 .idCliente(turnoRequest.getIdCliente())
                 .idNegocio(turnoRequest.getIdNegocio())
                 .fechaInicio(turnoRequest.getFechaInicio())

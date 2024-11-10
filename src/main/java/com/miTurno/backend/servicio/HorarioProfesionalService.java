@@ -66,11 +66,21 @@ public class HorarioProfesionalService {
     public List<HorarioProfesionalEntidad> obtenerHorariosPorProfesionalYDia(Long idNegocio,Long idProfesional, Long idDia) {
         NegocioEntidad negocioEntidad=negocioRepositorio.findById(idNegocio).orElseThrow(()-> new RecursoNoExisteException("Id negocio"));
         ProfesionalEntidad profesionalEntidad= profesionalRepositorio.findById(idProfesional).orElseThrow(()-> new RecursoNoExisteException("Id profesional"));
-        DiaEntidad diaEntidad = diaRepositorio.findById(idDia).orElseThrow(()-> new RecursoNoExisteException("Id dia"));
 
-        return horarioProfesionalRepositorio.findByProfesionalEntidad_IdUsuarioAndDiaEntidad_Dia(idProfesional, diaEntidad.getDia());
+
+        //DiaEntidad diaEntidad = diaRepositorio.findById(idDia).orElseThrow(()-> new RecursoNoExisteException("Id dia"));
+        DiasEnum diaEnum = DiasEnum.fromOrdinal(Math.toIntExact(idDia));
+
+        return horarioProfesionalRepositorio.findByProfesionalEntidad_IdUsuarioAndDiaEntidad_Dia(idProfesional, diaEnum);
     }
 
+    public HorarioProfesionalEntidad obtenerHorarioProfesionalPorId(Long idNegocio,Long idProfesional, Long idHorarioProfesional){
+        NegocioEntidad negocioEntidad=negocioRepositorio.findById(idNegocio).orElseThrow(()-> new RecursoNoExisteException("Id negocio"));
+        ProfesionalEntidad profesionalEntidad= profesionalRepositorio.findById(idProfesional).orElseThrow(()-> new RecursoNoExisteException("Id profesional"));
+
+        return  horarioProfesionalRepositorio.findById(idHorarioProfesional).orElseThrow(()->new RecursoNoExisteException("Id Horario Profesional"));
+
+    }
 
 //    public boolean eliminarHorarioPorProfesional(Long idHorarioPorProfesional) {
 //        boolean rta = false;

@@ -20,7 +20,7 @@ public class Turno {
 
     private MetodosDePagoEnum metodosDePagoEnum;
     private LocalDate fechaInicio;
-    private Long idHorarioProfesional;
+    private HorarioProfesional horarioProfesional;
     private Long idProfesional;
     private Boolean estado;
 
@@ -31,14 +31,14 @@ public class Turno {
 
     }
 
-    public Turno(Long idTurno, Long idServicio, Long idCliente, Long idNegocio, MetodosDePagoEnum metodosDePagoEnum, LocalDate fechaInicio, Long idHorarioProfesional, Long idProfesional, Boolean estado) {
+    public Turno(Long idTurno, Long idServicio, Long idCliente, Long idNegocio, MetodosDePagoEnum metodosDePagoEnum, LocalDate fechaInicio, HorarioProfesional horarioProfesional, Long idProfesional, Boolean estado) {
         this.idTurno = idTurno;
         this.idServicio = idServicio;
         this.idCliente = idCliente;
         this.idNegocio = idNegocio;
         this.metodosDePagoEnum = metodosDePagoEnum;
         this.fechaInicio = fechaInicio;
-        this.idHorarioProfesional = idHorarioProfesional;
+        this.horarioProfesional = horarioProfesional;
         this.idProfesional = idProfesional;
         this.estado = estado;
     }
@@ -46,15 +46,15 @@ public class Turno {
     @Override
     public String toString() {
         return "Turno{" +
-                "idTurno=" + idTurno +
+                "estado=" + estado +
+                ", idTurno=" + idTurno +
                 ", idServicio=" + idServicio +
                 ", idCliente=" + idCliente +
                 ", idNegocio=" + idNegocio +
                 ", metodosDePagoEnum=" + metodosDePagoEnum +
                 ", fechaInicio=" + fechaInicio +
-                ", idHorarioProfesional=" + idHorarioProfesional +
+                ", horarioProfesional=" + horarioProfesional +
                 ", idProfesional=" + idProfesional +
-                ", estado=" + estado +
                 '}';
     }
 }

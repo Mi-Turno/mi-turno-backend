@@ -7,5 +7,12 @@ public enum DiasEnum {
     MIERCOLES,
     JUEVES,
     VIERNES,
-    SABADO
+    SABADO;
+
+    public static DiasEnum fromOrdinal(int ordinal) {
+        if (ordinal < 0 || ordinal >= values().length) {
+            throw new IllegalArgumentException("El número no corresponde a ningún día de la semana");
+        }
+        return values()[ordinal];
+    }
 }
