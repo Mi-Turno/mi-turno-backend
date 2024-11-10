@@ -15,26 +15,25 @@ public class HorarioProfesional {
     private Long idProfesional;
     private DiasEnum dia;
     private LocalTime horaInicio;
-    private LocalTime horaFin;
+
 
     public HorarioProfesional() {}
 
-    public HorarioProfesional(Long idHorario, Long idProfesional, DiasEnum dia, LocalTime horaInicio, LocalTime horaFin) {
+    public HorarioProfesional(Long idHorario, Long idProfesional, DiasEnum dia, LocalTime horaInicio) {
         this.idHorario = idHorario;
         this.idProfesional = idProfesional;
         this.dia = dia;
         this.horaInicio = horaInicio;
-        this.horaFin = horaFin;
+
     }
 
     @Override
     public String toString() {
         return "HorarioProfesional{" +
-                "idHorario=" + idHorario +
-                ", idProfesional=" + idProfesional +
-                ", dia=" + dia +
+                "dia=" + dia +
                 ", horaInicio=" + horaInicio +
-                ", horaFin=" + horaFin +
+                ", idHorario=" + idHorario +
+                ", idProfesional=" + idProfesional +
                 '}';
     }
 }

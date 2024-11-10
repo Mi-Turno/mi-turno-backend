@@ -8,6 +8,7 @@ import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import com.miTurno.backend.mapper.TurnoMapper;
 import com.miTurno.backend.DTO.Turno;
 import com.miTurno.backend.repositorio.*;
+import com.miTurno.backend.tipos.MetodosDePagoEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -75,7 +76,7 @@ public class TurnoService {
         System.out.println(nuevoNegocio);
 
         //busco el horario profesional entidad
-        HorarioProfesionalEntidad nuevoHorario = horarioProfesionalRepositorio.findById(nuevoTurno.getIdHorarioProfesional()).orElseThrow(()->new RecursoNoExisteException("horario"));
+        HorarioProfesionalEntidad nuevoHorario = horarioProfesionalRepositorio.findById(nuevoTurno.getHorarioProfesional().getIdHorario()).orElseThrow(()->new RecursoNoExisteException("horario"));
         turnoEntidad.setHorarioProfesionalEntidad(nuevoHorario);
         System.out.println("HORARIO");//devuelve null
         System.out.println(nuevoHorario);

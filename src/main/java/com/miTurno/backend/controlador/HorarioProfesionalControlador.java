@@ -34,6 +34,7 @@ public class HorarioProfesionalControlador {
         this.horarioProfesionalMapper = horarioProfesionalMapper;
     }
 
+    //todo este post esta indocumentado
     @Operation(summary = "Crear un nuevo horario para un profesional")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "horario creado con éxito"),
@@ -81,7 +82,22 @@ public class HorarioProfesionalControlador {
         return ResponseEntity.ok(horarios);
     }
 
+    //GET un horarioProfesional por id
+    @GetMapping("/{idHorarioProfesional}")
+    @Operation(summary = "Obtener listado de horarios de un profesional por dia")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Horarios del profesional obtenido con exito"),
+            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
+    })
+    public ResponseEntity<HorarioProfesional> obtenerHorarioProfesionalPorId(
+            @PathVariable Long idProfesional,
+            @PathVariable Long idNegocio,
+            @PathVariable Long idHorarioProfesional) {
 
+
+        HorarioProfesional horarioProfesional = horarioProfesionalMapper.toModel(horarioProfesionalService.obtenerHorarioProfesionalPorId(idNegocio,idProfesional,idHorarioProfesional));
+        return ResponseEntity.ok(horarioProfesional);
+    }
 
 
     /*@Operation(summary = "Eliminar un horario por ID")

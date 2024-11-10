@@ -1,4 +1,5 @@
 package com.miTurno.backend.request;
+import com.miTurno.backend.tipos.MetodosDePagoEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -10,23 +11,23 @@ import java.time.LocalDate;
 public class TurnoRequest {
 
 
-    @Schema(description = "ID del servicio relacionado", example = "2")
+    @Schema(description = "ID del servicio relacionado", example = "1")
     private Long idServicio; // ID del servicio relacionado
 
-    @Schema(description = "ID del método de pago relacionado", example = "3")
-    private Long idMetodoDePago; // ID del método de pago relacionado
+    @Schema(description = "Enum metodo de pago relacionado", example = "TARJETA_CREDITO")
+    private MetodosDePagoEnum metodosDePagoEnum; // ID del método de pago relacionado
 
-    @Schema(description = "ID del cliente relacionado", example = "4")
+    @Schema(description = "ID del cliente relacionado", example = "3")
     private Long idCliente; // ID del cliente relacionado
 
 
-    @Schema(description = "ID del negocio relacionado", example = "5")
+    @Schema(description = "ID del negocio relacionado", example = "1")
     private Long idNegocio; // ID del negocio relacionado
 
-    @Schema(description = "ID profesional con los datos requeridos")
+    @Schema(description = "ID profesional con los datos requeridos",example = "2")
     private Long idProfesional;
 
-    @Schema(description = "Horario del profesional con los datos requeridos")
+    @Schema(description = "Horario del profesional con los datos requeridos",example = "3")
     private Long idHorarioProfesional;
 
 
@@ -37,9 +38,9 @@ public class TurnoRequest {
     // Constructor vacío
     public TurnoRequest() {}
 
-    public TurnoRequest(Long idServicio, Long idMetodoDePago, Long idCliente, Long idNegocio, Long idProfesional, Long idHorarioProfesional, LocalDate fechaInicio) {
+    public TurnoRequest(Long idServicio, MetodosDePagoEnum metodosDePagoEnum, Long idCliente, Long idNegocio, Long idProfesional, Long idHorarioProfesional, LocalDate fechaInicio) {
         this.idServicio = idServicio;
-        this.idMetodoDePago = idMetodoDePago;
+        this.metodosDePagoEnum = metodosDePagoEnum;
         this.idCliente = idCliente;
         this.idNegocio = idNegocio;
         this.idProfesional = idProfesional;
