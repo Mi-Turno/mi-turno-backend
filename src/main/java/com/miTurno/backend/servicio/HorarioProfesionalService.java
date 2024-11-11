@@ -30,6 +30,7 @@ public class HorarioProfesionalService {
     private final ProfesionalRepositorio profesionalRepositorio;
     private final NegocioRepositorio negocioRepositorio;
 
+
     //constructores
     @Autowired
     public HorarioProfesionalService(HorarioProfesionalRepositorio horarioProfesionalRepositorio, HorarioProfesionalMapper horarioProfesionalMapper, DiaRepositorio diaRepositorio, ProfesionalRepositorio profesionalRepositorio, NegocioRepositorio negocioRepositorio) {
@@ -82,13 +83,13 @@ public class HorarioProfesionalService {
 
     }
 
-//    public boolean eliminarHorarioPorProfesional(Long idHorarioPorProfesional) {
-//        boolean rta = false;
-//        if(horarioXProfesionalRepositorio.existsById(idHorarioPorProfesional)) {
-//            horarioXProfesionalRepositorio.deleteById(idHorarioPorProfesional);
-//            rta = true;
-//        }
-//        return rta;
-//    }
+    public boolean eliminarHorarioPorProfesional(Long idHorarioPorProfesional) {
+        boolean rta = false;
+        if(horarioProfesionalRepositorio.existsById(idHorarioPorProfesional)) {
+            horarioProfesionalRepositorio.deleteById(idHorarioPorProfesional);
+            rta = true;
+        }
+        return rta;
+    }
 
 }

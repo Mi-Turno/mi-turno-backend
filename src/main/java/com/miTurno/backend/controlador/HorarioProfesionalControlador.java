@@ -100,20 +100,20 @@ public class HorarioProfesionalControlador {
     }
 
 
-    /*@Operation(summary = "Eliminar un horario por ID")
+    @Operation(summary = "Eliminar un horario por ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204",description = "El horario fue borrado con exito"),
             @ApiResponse(responseCode = "404",description = "El horario no fue encontrado")
     })
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarHorarioPorId(@PathVariable Long id){
-        Boolean respuesta = horarioProfesionalService.eliminarHorarioPorProfesional(id);
+    @DeleteMapping("/{idHorario}")
+    public ResponseEntity<Void> eliminarHorarioPorId(@PathVariable Long idHorario){
+        Boolean respuesta = horarioProfesionalService.eliminarHorarioPorProfesional(idHorario);
         if(respuesta){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);//204
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);//404
         }
-    }*/
+    }
 
 
 }
