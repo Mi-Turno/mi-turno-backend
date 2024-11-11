@@ -42,7 +42,7 @@ public class EnviarCorreoService {
                         "Gracias por elegirnos.\n" +
                         "Saludos,\n" +
                         "%s",
-                emailRequest.getNombreProfesional(),
+                emailRequest.getEmail(),
                 emailRequest.getServicio(),
                 emailRequest.getNombreProfesional(),
                 emailRequest.getPrecio(),
