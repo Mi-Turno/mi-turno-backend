@@ -52,21 +52,20 @@ public class DbInicializador {
     }
 
     public void initAdmin(){
-
-
-        Usuario admin = Usuario.builder()
-                .nombre("MiTurnoAdmin")
-                .estado(true)
-                .password("flf")
-                .email("miturno.flf@gmail.com")
-                .apellido("MiTurnoAdmin")
-                .idRolUsuario(RolUsuarioEnum.ADMIN)
-                .telefono("11111111")
-                .fechaNacimiento(LocalDate.of(2024,10,8))
-                .build();
-
-        usuarioRepositorio.save(usuarioMapper.toEntidad(admin));
-
+    //validacion por si ya existe en la base de datos
+       if(!usuarioRepositorio.existsById(1L)){
+           Usuario admin = Usuario.builder()
+                   .nombre("MiTurnoAdmin")
+                   .estado(true)
+                   .password("flf")
+                   .email("miturno.flf@gmail.com")
+                   .apellido("MiTurnoAdmin")
+                   .idRolUsuario(RolUsuarioEnum.ADMIN)
+                   .telefono("11111111")
+                   .fechaNacimiento(LocalDate.of(2024,10,8))
+                   .build();
+           usuarioRepositorio.save(usuarioMapper.toEntidad(admin));
+       }
 
 
     }
