@@ -1,17 +1,26 @@
 package com.miTurno.backend.configuracion.dbInicializador;
 
+import com.miTurno.backend.DTO.Usuario;
 import com.miTurno.backend.entidad.DiaEntidad;
 import com.miTurno.backend.entidad.MetodoDePagoEntidad;
 import com.miTurno.backend.entidad.RolEntidad;
+import com.miTurno.backend.entidad.UsuarioEntidad;
+import com.miTurno.backend.mapper.UsuarioMapper;
 import com.miTurno.backend.repositorio.DiaRepositorio;
 import com.miTurno.backend.repositorio.MetodosDePagoRepositorio;
 import com.miTurno.backend.repositorio.RolRepositorio;
+import com.miTurno.backend.repositorio.UsuarioRepositorio;
+import com.miTurno.backend.servicio.UsuarioService;
 import com.miTurno.backend.tipos.DiasEnum;
 import com.miTurno.backend.tipos.MetodosDePagoEnum;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
+import java.util.Date;
 
 @Component
 public class DbInicializador {
@@ -19,22 +28,47 @@ public class DbInicializador {
     private final RolRepositorio rolRepositorio;
     private final DiaRepositorio diaRepositorio;
     private final MetodosDePagoRepositorio metodosDePagoRepositorio;
+    private final UsuarioRepositorio usuarioRepositorio;
+    private final UsuarioService usuarioService;
+    private final UsuarioMapper usuarioMapper;
+
     @Autowired
-    public DbInicializador(RolRepositorio rolRepositorio, DiaRepositorio diaRepositorio,MetodosDePagoRepositorio metodosDePagoRepositorio) {
+    public DbInicializador(RolRepositorio rolRepositorio, DiaRepositorio diaRepositorio, MetodosDePagoRepositorio metodosDePagoRepositorio, UsuarioRepositorio usuarioRepositorio, UsuarioService usuarioService, UsuarioMapper usuarioMapper) {
         //todo inicializar todos los repos
         this.rolRepositorio = rolRepositorio;
         this.diaRepositorio = diaRepositorio;
         this.metodosDePagoRepositorio = metodosDePagoRepositorio;
-
+        this.usuarioRepositorio = usuarioRepositorio;
+        this.usuarioService = usuarioService;
+        this.usuarioMapper = usuarioMapper;
     }
     @PostConstruct
     public void init(){
 
-        //todo init metodos de pago
-        //todo init dias
         initRoles();
         initDias();
         initMetodoDePagos();
+        initAdmin();
+    }
+
+    public void initAdmin(){
+
+
+        Usuario admin = Usuario.builder()
+                .nombre("MiTurnoAdmin")
+                .estado(true)
+                .password("flf")
+                .email("miturno.flf@gmail.com")
+                .apellido("MiTurnoAdmin")
+                .idRolUsuario(RolUsuarioEnum.ADMIN)
+                .telefono("11111111")
+                .fechaNacimiento(LocalDate.of(2024,10,8))
+                .build();
+
+        usuarioRepositorio.save(usuarioMapper.toEntidad(admin));
+
+
+
     }
 
 
