@@ -66,7 +66,7 @@ public class TurnoControlador {
     }
 
     //DELETE
-   /* @Operation(summary = "Eliminar un Turno por ID")
+@Operation(summary = "Eliminar un Turno por ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204",description = "El turno fue borrado con exito"),
             @ApiResponse(responseCode = "404",description = "El turno no fue encontrado")
@@ -79,7 +79,7 @@ public class TurnoControlador {
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-    }*/
+    }
 
 
 

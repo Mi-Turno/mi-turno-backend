@@ -113,10 +113,12 @@ public class TurnoService {
 
         return turnoMapper.toModel(turnoEntidad);
     }
-    /*public Boolean eliminarTurnoPorId(Long idNegocio,Long id){
+
+
+    public Boolean eliminarTurnoPorId(Long idNegocio,Long id){
         Boolean rta = false;
         if(turnoRepositorio.existsById(id)){
-            TurnoEntidad turnoEntidad = turnoRepositorio.findByNegocioEntidad_IdAndTurnoId(idNegocio, id);
+            TurnoEntidad turnoEntidad = turnoRepositorio.findByNegocioEntidad_IdUsuarioAndTurno_Id(idNegocio, id);
             turnoEntidad.setEstado(false);
             turnoRepositorio.save(turnoEntidad);
             rta=true;
@@ -124,6 +126,6 @@ public class TurnoService {
 
         return rta;
     }
-*/
+
 
 }
