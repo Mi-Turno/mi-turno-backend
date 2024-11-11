@@ -12,6 +12,8 @@ import com.miTurno.backend.tipos.MetodosDePagoEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class TurnoService {
     private final TurnoRepositorio turnoRepositorio;
@@ -37,15 +39,22 @@ public class TurnoService {
         this.metodosDePagoRepositorio = metodosDePagoRepositorio;
     }
     //GET
-   /* public List<TurnoEntidad> obtenerTodosLosTurnosPorNegocio(Long idNegocio){
-        return turnoRepositorio.findByNegocioEntidad_Id(idNegocio);
+    public List<Turno> obtenerTodosLosTurnosPorNegocio(Long idNegocio){
+
+
+        return turnoMapper.toModelList(turnoRepositorio.findAllByNegocioEntidad_IdUsuario(idNegocio));
     }
-*/
+
     //todo agregar comportamiento para esto en el repo
     /*public List<Turno> obtenerListadoPorProfesional(Long idProfesional){
         return turnoRepositorio.findAll().stream().map(turnoMapper::toModel).toList();
     }*/
+    //GET
+
+
     //POST
+
+
 
     public Turno crearUnTurno(Turno nuevoTurno){
         TurnoEntidad turnoEntidad = new TurnoEntidad();

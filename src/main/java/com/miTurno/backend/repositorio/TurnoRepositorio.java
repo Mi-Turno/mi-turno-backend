@@ -10,5 +10,6 @@ import java.util.List;
 public interface TurnoRepositorio extends JpaRepository<TurnoEntidad,Long> {
    /* List<TurnoEntidad> findByNegocioEntidad_Id(Long idNegocio);
     TurnoEntidad findByNegocioEntidad_IdAndTurnoId(Long idNegocio,Long idTurno);*/
+   List<TurnoEntidad>findAllByNegocioEntidad_IdUsuario(Long idNegocio);
 
 }
