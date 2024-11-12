@@ -12,5 +12,7 @@ public interface TurnoRepositorio extends JpaRepository<TurnoEntidad,Long> {
     TurnoEntidad findByNegocioEntidad_IdAndTurno_Id(Long idNegocio,Long idTurno);*/
    List<TurnoEntidad>findAllByNegocioEntidad_IdUsuario(Long idNegocio);
 
-   TurnoEntidad findByNegocioEntidad_IdUsuarioAndTurno_Id(Long idNegocio, Long idTurno);
+   //TurnoEntidad findByNegocioEntidad_IdUsuarioAndTurno_Id(Long idNegocio, Long idTurno);
+
+   TurnoEntidad findByNegocioEntidad_IdUsuarioAndIdTurno(Long idNegocio, Long idTurno);
 }

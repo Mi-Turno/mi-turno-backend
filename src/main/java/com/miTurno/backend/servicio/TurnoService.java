@@ -118,7 +118,7 @@ public class TurnoService {
     public Boolean eliminarTurnoPorId(Long idNegocio,Long id){
         Boolean rta = false;
         if(turnoRepositorio.existsById(id)){
-            TurnoEntidad turnoEntidad = turnoRepositorio.findByNegocioEntidad_IdUsuarioAndTurno_Id(idNegocio, id);
+            TurnoEntidad turnoEntidad = turnoRepositorio.findByNegocioEntidad_IdUsuarioAndIdTurno(idNegocio, id);
             turnoEntidad.setEstado(false);
             turnoRepositorio.save(turnoEntidad);
             rta=true;

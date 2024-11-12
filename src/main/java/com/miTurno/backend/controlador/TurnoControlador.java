@@ -74,7 +74,7 @@ public class TurnoControlador {
     @DeleteMapping("/{idTurno}")
     public ResponseEntity<Void> eliminarTurnoPorId(@PathVariable Long idNegocio,@PathVariable Long idTurno){
         Boolean respuesta = turnoService.eliminarTurnoPorId(idNegocio,idTurno);
-        if(respuesta){
+        if(respuesta != null){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }else{
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
