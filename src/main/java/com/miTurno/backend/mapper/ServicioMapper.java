@@ -1,8 +1,6 @@
 package com.miTurno.backend.mapper;
 
-import com.miTurno.backend.DTO.Profesional;
 import com.miTurno.backend.entidad.NegocioEntidad;
-import com.miTurno.backend.entidad.ProfesionalEntidad;
 import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import com.miTurno.backend.repositorio.NegocioRepositorio;
 import com.miTurno.backend.request.ServicioRequest;
@@ -25,8 +23,8 @@ public class ServicioMapper {
     //entidad a servicio
     public Servicio toModel(ServicioEntidad servicioEntidad){
         return  Servicio.builder()
-                .idServicio(servicioEntidad.getIdServicio())
-                .idNegocio(servicioEntidad.getNegocioEntidad().getIdUsuario())
+                .idServicio(servicioEntidad.getId())
+                .idNegocio(servicioEntidad.getNegocioEntidad().getId())
                 .duracion(servicioEntidad.getDuracion())
                 .estado(servicioEntidad.getEstado())
                 .precio(servicioEntidad.getPrecio())

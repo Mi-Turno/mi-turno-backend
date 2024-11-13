@@ -23,7 +23,7 @@ public class UsuarioMapper {
     //entidad a usuario
     public Usuario toModel(UsuarioEntidad usuarioEntidad){
         return Usuario.builder()
-                .idUsuario(usuarioEntidad.getIdUsuario())
+                .idUsuario(usuarioEntidad.getId())
                 .idRolUsuario(usuarioEntidad.getCredenciales().getRolEntidad().getRol())
                 .apellido(usuarioEntidad.getApellido())
                 .telefono(usuarioEntidad.getCredenciales().getTelefono())

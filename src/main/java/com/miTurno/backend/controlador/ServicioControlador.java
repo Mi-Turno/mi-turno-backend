@@ -93,7 +93,7 @@ public class ServicioControlador {
             @ApiResponse(responseCode = "200",description = "Listado de profesionales que dan el servicio obtenida exitosamente"),
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
-    @GetMapping("/{idServicio}/listado-profesionales")
+    @GetMapping("/{idServicio}/profesionales")
     public List<Profesional> obtenerListadoDeProfesionalesPorIdServicioYIdNegocio(@PathVariable Long idNegocio, @PathVariable Long idServicio){
         return servicioService.obtenerListadoDeProfesionalesPorIdServicioYIdNegocio(idServicio,idNegocio);
     }

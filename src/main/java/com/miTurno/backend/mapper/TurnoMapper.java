@@ -1,6 +1,5 @@
 package com.miTurno.backend.mapper;
 
-import com.miTurno.backend.DTO.HorarioProfesional;
 import com.miTurno.backend.entidad.HorarioProfesionalEntidad;
 import com.miTurno.backend.excepcion.RecursoNoExisteException;
 import com.miTurno.backend.repositorio.HorarioProfesionalRepositorio;
@@ -30,16 +29,16 @@ public class TurnoMapper {
     //entidad a turno
     public Turno toModel(TurnoEntidad turnoEntidad){
 
-        MetodosDePagoEnum metodosDePagoEnum= metodosDePagoRepositorio.findById(turnoEntidad.getMetodoDePagoEntidad().getId_metodo_de_pago()).get().getMetodosDePago();
+        MetodosDePagoEnum metodosDePagoEnum= metodosDePagoRepositorio.findById(turnoEntidad.getMetodoDePagoEntidad().getId()).get().getMetodosDePago();
 
         return Turno.builder()
-                .idTurno(turnoEntidad.getIdTurno())
-                .idServicio(turnoEntidad.getIdServicio().getIdServicio())
+                .idTurno(turnoEntidad.getId())
+                .idServicio(turnoEntidad.getIdServicio().getId())
                 .metodosDePagoEnum(metodosDePagoEnum)
-                .idCliente(turnoEntidad.getClienteEntidad().getIdUsuario())
-                .idNegocio(turnoEntidad.getNegocioEntidad().getIdUsuario())
+                .idCliente(turnoEntidad.getClienteEntidad().getId())
+                .idNegocio(turnoEntidad.getNegocioEntidad().getId())
                 .horarioProfesional(horarioProfesionalMapper.toModel(turnoEntidad.getHorarioProfesionalEntidad()))
-                .idProfesional(turnoEntidad.getProfesionalEntidad().getIdUsuario())
+                .idProfesional(turnoEntidad.getProfesionalEntidad().getId())
                 .estado(turnoEntidad.getEstado())
                 .fechaInicio(turnoEntidad.getFechaInicio())
                 .build();

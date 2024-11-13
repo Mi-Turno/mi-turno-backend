@@ -21,30 +21,28 @@ public class ProfesionalEntidad extends UsuarioEntidad{
 
     // negocio al que esta relacionado
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_negocio", nullable = false) // Clave foránea hacia Negocio
-    @JsonBackReference
+    @JoinColumn(nullable = false) // Clave foránea hacia Negocio
     private NegocioEntidad negocioEntidad;
 
     // Servicios específicos que ofrece el profesional
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
             name = "profesional_servicio",
-            joinColumns = @JoinColumn(name = "id_profesional"),
-            inverseJoinColumns = @JoinColumn(name = "id_servicio")
+            joinColumns = @JoinColumn,
+            inverseJoinColumns = @JoinColumn
     )
     private List<ServicioEntidad> listaServiciosEntidad;
 
     // listado de horarios DISPONIBLES
    // @OneToMany(mappedBy = "profesional", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_profesional")
-    @JsonManagedReference
+    @JoinColumn
     private List<HorarioProfesionalEntidad> horariosDisponibles;
 
     //lista de turnos AGENDADOS
     //@OneToMany(mappedBy = "profesional", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_turno")
+    @JoinColumn
     private List<TurnoEntidad> turnosAgendados;
 
 

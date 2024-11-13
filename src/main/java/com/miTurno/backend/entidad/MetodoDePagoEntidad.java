@@ -16,7 +16,7 @@ public class MetodoDePagoEntidad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_metodo_de_pago;
+    private Long id;
 
     @Column(name = "metodo_de_pago",unique = true,nullable = false)
     @Enumerated(EnumType.STRING)
@@ -31,8 +31,8 @@ public class MetodoDePagoEntidad {
         this.metodosDePago = metodosDePago;
     }
 
-    public MetodoDePagoEntidad(Long id_metodo_de_pago, MetodosDePagoEnum metodosDePago) {
-        this.id_metodo_de_pago = id_metodo_de_pago;
+    public MetodoDePagoEntidad(Long id, MetodosDePagoEnum metodosDePago) {
+        this.id = id;
         this.metodosDePago = metodosDePago;
     }
 

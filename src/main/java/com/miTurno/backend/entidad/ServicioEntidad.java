@@ -18,9 +18,7 @@ public class ServicioEntidad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonBackReference
-    @Column(name = "id_servicio")
-    private Long idServicio;
+    private Long id;
 
 
     @Size(min = 3, max = 50)
@@ -45,7 +43,7 @@ public class ServicioEntidad {
 
     //relacion con el negocio
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_negocio", nullable = false) // Clave foránea hacia Negocio
+    @JoinColumn(nullable = false) // Clave foránea hacia Negocio
     @JsonBackReference
     private NegocioEntidad negocioEntidad;
 
@@ -54,8 +52,8 @@ public class ServicioEntidad {
     public ServicioEntidad() {
     }
 
-    public ServicioEntidad(Long idServicio, String nombre, Integer duracion, Double precio, Boolean estado, List<ProfesionalEntidad> profesionales, NegocioEntidad negocioEntidad) {
-        this.idServicio = idServicio;
+    public ServicioEntidad(Long id, String nombre, Integer duracion, Double precio, Boolean estado, List<ProfesionalEntidad> profesionales, NegocioEntidad negocioEntidad) {
+        this.id = id;
         this.nombre = nombre;
         this.duracion = duracion;
         this.precio = precio;

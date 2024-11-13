@@ -88,7 +88,7 @@ public class NegocioMapper {
     //entidad a modelo
     public Negocio toModel(NegocioEntidad negocioEntidad){
        return Negocio.builder()
-               .idUsuario(negocioEntidad.getIdUsuario())
+               .idUsuario(negocioEntidad.getId())
                .email(negocioEntidad.getCredenciales().getEmail())
                .password(negocioEntidad.getCredenciales().getPassword())
                .telefono(negocioEntidad.getCredenciales().getTelefono())

@@ -36,20 +36,17 @@ public class NegocioEntidad extends UsuarioEntidad{
 
     //profesionales del negocio
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_negocio")
-    @JsonManagedReference
+    @JoinColumn
     private List<ProfesionalEntidad> profesionales;
 
     //servicios que ofrece el negocio
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_negocio")
-    @JsonManagedReference
+    @JoinColumn
     private List<ServicioEntidad> servicios;
 
     //listado de clientes
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_negocio")
-    @JsonManagedReference
+    @JoinColumn
     private List<ClienteEntidad> clientes;
 
 

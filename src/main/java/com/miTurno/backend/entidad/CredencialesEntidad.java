@@ -16,7 +16,6 @@ public class CredencialesEntidad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_credenciales")
     private Long id;
 
     @Column(unique = true, nullable = false)
@@ -29,13 +28,11 @@ public class CredencialesEntidad {
     private String telefono;
 
     @OneToOne
-    @JoinColumn(name = "id_usuario")
-   //@JsonIgnore // Para evitar el ciclo en serialización/deserialización
-    @JsonBackReference
+    @JoinColumn
     private UsuarioEntidad usuario;
 
     @ManyToOne(fetch = FetchType.EAGER) // EAGER para cargar el rol junto con el usuario
-    @JoinColumn(name = "id_rol", nullable = false) // Define la clave foránea a RolEntidad
+    @JoinColumn(nullable = false) // Define la clave foránea a RolEntidad
     private RolEntidad rolEntidad;
 
     @Column(name = "estado", nullable = false)

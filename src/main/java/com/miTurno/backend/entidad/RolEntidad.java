@@ -18,8 +18,7 @@ public class RolEntidad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_rol")
-    private Long id_rol;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "nombre", unique = true, nullable = false)
@@ -46,13 +45,13 @@ public class RolEntidad {
         super();
     }
 
-    public RolEntidad(Long id_rol, RolUsuarioEnum rol) {
-        this.id_rol = id_rol;
+    public RolEntidad(Long id, RolUsuarioEnum rol) {
+        this.id = id;
         this.rol = rol;
     }
 
-    public RolEntidad(Long id_rol, RolUsuarioEnum rol, List<UsuarioEntidad> usuarios) {
-        this.id_rol = id_rol;
+    public RolEntidad(Long id, RolUsuarioEnum rol, List<UsuarioEntidad> usuarios) {
+        this.id = id;
         this.rol = rol;
         this.usuarios = usuarios;
     }

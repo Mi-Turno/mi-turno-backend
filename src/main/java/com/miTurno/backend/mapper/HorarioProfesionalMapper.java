@@ -2,9 +2,7 @@ package com.miTurno.backend.mapper;
 
 
 import com.miTurno.backend.DTO.HorarioProfesional;
-import com.miTurno.backend.DTO.Servicio;
 import com.miTurno.backend.entidad.HorarioProfesionalEntidad;
-import com.miTurno.backend.entidad.ServicioEntidad;
 import com.miTurno.backend.request.HorarioProfesionalRequest;
 
 import org.springframework.stereotype.Component;
@@ -22,7 +20,7 @@ public class HorarioProfesionalMapper {
 
         return HorarioProfesional.builder()
                 .idHorario(horarioProfesionalEntidad.getIdHorario())
-                .idProfesional(horarioProfesionalEntidad.getProfesionalEntidad().getIdUsuario())
+                .idProfesional(horarioProfesionalEntidad.getProfesionalEntidad().getId())
                 .dia(horarioProfesionalEntidad.getDiaEntidad().getDia())
                 .horaInicio(horarioProfesionalEntidad.getHoraInicio())
 //                .horaFin(horarioProfesionalEntidad.getHoraFin())

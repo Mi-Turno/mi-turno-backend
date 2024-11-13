@@ -23,12 +23,11 @@ public class HorarioProfesionalEntidad {
 
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_profesional", nullable = false)
-    @JsonBackReference
+    @JoinColumn(nullable = false)
     private ProfesionalEntidad profesionalEntidad;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_dia")
+    @JoinColumn
     private DiaEntidad diaEntidad;
 
     @Column(name = "hora_inicio", nullable = false)

@@ -95,7 +95,7 @@ public class NegocioService {
     public Long obtenerIdNegocioPorNombreNegocio(String nombreNegocio){
 
         NegocioEntidad negocioEntidad= negocioRepositorio.getNegocioEntidadByNombreIgnoreCase(nombreNegocio).orElseThrow(()-> new NombreNoExisteException("Nombre negocio"));
-        return negocioEntidad.getIdUsuario();
+        return negocioEntidad.getId();
     }
 
     //GET listado de negocios x nombre parecido

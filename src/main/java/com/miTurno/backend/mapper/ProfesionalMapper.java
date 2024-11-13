@@ -64,7 +64,7 @@ public class ProfesionalMapper {
     //entidad a modelo
     public Profesional toModel(ProfesionalEntidad profesionalEntidad){
         return Profesional.builder()
-                .idUsuario(profesionalEntidad.getIdUsuario())
+                .idUsuario(profesionalEntidad.getId())
                 .email(profesionalEntidad.getCredenciales().getEmail())
                 .apellido(profesionalEntidad.getApellido())
                 .nombre(profesionalEntidad.getNombre())
@@ -73,7 +73,7 @@ public class ProfesionalMapper {
                 .idRolUsuario(profesionalEntidad.getCredenciales().getRolEntidad().getRol())
                 .password(profesionalEntidad.getCredenciales().getPassword())
                 .fechaNacimiento(profesionalEntidad.getFechaNacimiento())
-                .idNegocio(profesionalEntidad.getNegocioEntidad().getIdUsuario())
+                .idNegocio(profesionalEntidad.getNegocioEntidad().getId())
                 .listaServicios(servicioMapper.toModelList(profesionalEntidad.getListaServiciosEntidad()))
                 .horariosDisponibles(profesionalMapper.toModelList(profesionalEntidad.getHorariosDisponibles()))
                 .turnosAgendados(turnoMapper.toModelList(profesionalEntidad.getTurnosAgendados()))

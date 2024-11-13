@@ -1,11 +1,9 @@
 package com.miTurno.backend.mapper;
 
 import com.miTurno.backend.DTO.Cliente;
-import com.miTurno.backend.DTO.Turno;
 import com.miTurno.backend.entidad.*;
 import com.miTurno.backend.excepcion.RecursoNoExisteException;
 import com.miTurno.backend.repositorio.RolRepositorio;
-import com.miTurno.backend.request.ProfesionalRequest;
 import com.miTurno.backend.request.UsuarioRequest;
 import org.springframework.stereotype.Component;
 
@@ -45,7 +43,7 @@ public class ClienteMapper {
     public Cliente toModel(ClienteEntidad clienteEntidad){
 
         return Cliente.builder()
-                .idUsuario(clienteEntidad.getIdUsuario())
+                .idUsuario(clienteEntidad.getId())
                 .email(clienteEntidad.getCredenciales().getEmail())
                 .apellido(clienteEntidad.getApellido())
                 .nombre(clienteEntidad.getNombre())
