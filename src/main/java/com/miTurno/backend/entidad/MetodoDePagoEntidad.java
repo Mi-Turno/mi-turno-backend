@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -18,14 +20,21 @@ public class MetodoDePagoEntidad {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "metodo_de_pago",unique = true,nullable = false)
-    @Enumerated(EnumType.STRING)
-    private MetodosDePagoEnum metodosDePago;
+
+
 
     @JsonValue
     public String getNombre() {
         return metodosDePago.name();
     }
+
+
+    @Column(name = "metodo_de_pago",unique = true,nullable = false)
+    @Enumerated(EnumType.STRING)
+    private MetodosDePagoEnum metodosDePago;
+
+    @OneToMany(mappedBy = "metodo_de_pago_id")
+    private List<TurnoEntidad> listaTurnos;
 
     public MetodoDePagoEntidad(MetodosDePagoEnum metodosDePago) {
         this.metodosDePago = metodosDePago;
