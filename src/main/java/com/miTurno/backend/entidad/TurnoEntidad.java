@@ -22,34 +22,34 @@ public class TurnoEntidad {
 
     // Relación con Servicio
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
+    @JoinColumn(name ="servicio_id" ,nullable = false)
     private ServicioEntidad idServicio;
 
     // Relación con MetodoDePago
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "metodo_de_pago_id",nullable = false)
     private MetodoDePagoEntidad metodoDePagoEntidad;
 
     //relacion con cliente muchos a uno
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "cliente_id",nullable = false)
     private ClienteEntidad clienteEntidad;
 
 
     //relacion con negocio muchos a uno
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "negocio_id",nullable = false)
     private NegocioEntidad negocioEntidad;
 
 
     //relacion con profesional muchos a uno
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "profesional_id",nullable = false)
     private ProfesionalEntidad profesionalEntidad;
 
     //hora de inicio del turno
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false)
+    @JoinColumn(name = "horario_id",nullable = false)
     private HorarioProfesionalEntidad horarioProfesionalEntidad;
 
     //fecha de inicio del turno

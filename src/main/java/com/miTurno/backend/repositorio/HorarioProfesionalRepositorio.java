@@ -10,9 +10,5 @@ public interface HorarioProfesionalRepositorio extends JpaRepository<HorarioProf
     // Obtener horarios por ID del profesional
     List<HorarioProfesionalEntidad> findByProfesionalEntidad_IdUsuario(Long idProfesional);
 
-    // Obtener horarios por nombre del día
-//    List<HorarioProfesionalEntidad> findByDiaEntidad_Nombre(DiasEnum nombreDia);
-
-    // Obtener horarios por ID del profesional y nombre del día
     List<HorarioProfesionalEntidad> findByProfesionalEntidad_IdUsuarioAndDiaEntidad_Dia(Long idProfesional, DiasEnum diaEnum);
 }

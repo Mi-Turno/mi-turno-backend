@@ -19,7 +19,7 @@ public class DiaEntidad {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "nombre_dias",unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     @Enumerated(EnumType.STRING)
     private DiasEnum dia;
 

@@ -21,12 +21,12 @@ public class RolEntidad {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "nombre", unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     private RolUsuarioEnum rol;
 
     //@OneToMany(mappedBy = "rol", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_rol")
+    @JoinColumn(name = "usuario_id")
     private List<UsuarioEntidad> usuarios; // Lista de usuarios que tienen este rol
 
     public RolEntidad(RolUsuarioEnum rolUsuarioEnum) {

@@ -24,18 +24,17 @@ public class CredencialesEntidad {
     @Column(nullable = false)
     private String password;
 
-    @Column(name = "telefono",unique = true)
+    @Column(unique = true)
     private String telefono;
 
-    @OneToOne
-    @JoinColumn
+    @OneToOne(mappedBy = "credencial_id")
     private UsuarioEntidad usuario;
 
     @ManyToOne(fetch = FetchType.EAGER) // EAGER para cargar el rol junto con el usuario
-    @JoinColumn(nullable = false) // Define la clave foránea a RolEntidad
+    @JoinColumn(name = "rol_id",nullable = false) // Define la clave foránea a RolEntidad
     private RolEntidad rolEntidad;
 
-    @Column(name = "estado", nullable = false)
+    @Column(nullable = false)
     private Boolean estado;
 
     public CredencialesEntidad() {

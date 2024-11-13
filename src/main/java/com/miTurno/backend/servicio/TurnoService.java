@@ -91,7 +91,7 @@ public class TurnoService {
         System.out.println(nuevoHorario);
 
         //busco el metodo de pago
-        MetodoDePagoEntidad nuevoMetodoDePago = metodosDePagoRepositorio.findBymetodosDePago(nuevoTurno.getMetodosDePagoEnum());
+        MetodoDePagoEntidad nuevoMetodoDePago = metodosDePagoRepositorio.findByMetodosDePago(nuevoTurno.getMetodosDePagoEnum());
         turnoEntidad.setMetodoDePagoEntidad(nuevoMetodoDePago);
         System.out.println("PAGO");
         System.out.println(nuevoMetodoDePago);

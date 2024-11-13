@@ -43,10 +43,11 @@ public class ServicioEntidad {
 
     //relacion con el negocio
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(nullable = false) // Clave foránea hacia Negocio
-    @JsonBackReference
+    @JoinColumn(name = "usuario_id",nullable = false) // Clave foránea hacia Negocio
     private NegocioEntidad negocioEntidad;
 
+    @OneToMany(mappedBy = "servicio_id" ,fetch = FetchType.LAZY)
+    private List<TurnoEntidad> turnos;
 
     //constructores
     public ServicioEntidad() {

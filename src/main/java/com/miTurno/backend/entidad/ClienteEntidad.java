@@ -17,7 +17,7 @@ public class ClienteEntidad extends UsuarioEntidad{
 
     //listado de turnos
 
-    @OneToMany(mappedBy = "clienteEntidad", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "cliente_id", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TurnoEntidad>listadoDeTurnos;
 
     public ClienteEntidad() {

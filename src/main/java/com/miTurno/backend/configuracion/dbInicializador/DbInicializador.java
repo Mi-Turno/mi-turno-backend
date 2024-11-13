@@ -45,9 +45,9 @@ public class DbInicializador {
     @PostConstruct
     public void init(){
 
-        initRoles();
-        initDias();
-        initMetodoDePagos();
+       // initRoles();
+        //initDias();
+        //initMetodoDePagos();
         initAdmin();
     }
 
@@ -72,7 +72,7 @@ public class DbInicializador {
 
 
 
-    public void initRoles() {
+   /* public void initRoles() {
         if (rolRepositorio.findByRol(RolUsuarioEnum.ADMIN) == null) {
             rolRepositorio.save(new RolEntidad(RolUsuarioEnum.ADMIN));
         }
@@ -85,9 +85,9 @@ public class DbInicializador {
         if (rolRepositorio.findByRol(RolUsuarioEnum.NEGOCIO) == null) {
             rolRepositorio.save(new RolEntidad(RolUsuarioEnum.NEGOCIO));
         }
-    }
+    }*/
 
-    public void initDias(){
+    /*public void initDias(){
         if(diaRepositorio.findByDia(DiasEnum.LUNES)==null){
             diaRepositorio.save(new DiaEntidad(DiasEnum.LUNES));
         }
@@ -109,8 +109,8 @@ public class DbInicializador {
         if(diaRepositorio.findByDia(DiasEnum.DOMINGO)==null){
             diaRepositorio.save(new DiaEntidad(DiasEnum.DOMINGO));
         }
-    }
-    public void initMetodoDePagos(){
+    }*/
+    /*public void initMetodoDePagos(){
         if(metodosDePagoRepositorio.findBymetodosDePago(MetodosDePagoEnum.EFECTIVO)==null){
             metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.EFECTIVO));
         }
@@ -126,6 +126,6 @@ public class DbInicializador {
         if(metodosDePagoRepositorio.findBymetodosDePago(MetodosDePagoEnum.TARJETA_CREDITO)==null){
             metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.TARJETA_CREDITO));
         }
-    }
+    }*/
 
 }

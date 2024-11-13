@@ -36,8 +36,7 @@ public class UsuarioEntidad {
     @Column(insertable = true,updatable = true,columnDefinition ="DATE")
     private LocalDate fechaNacimiento;//(YYYY-MM-DD)
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn( nullable = false) // Clave foránea a CredencialesEntidad
+    @OneToOne(mappedBy = "credencial_id",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private CredencialesEntidad credenciales; // Relación con Credenciales
 
     //constructores

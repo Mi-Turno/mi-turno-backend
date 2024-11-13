@@ -19,7 +19,7 @@ public class HorarioProfesionalMapper {
 
 
         return HorarioProfesional.builder()
-                .idHorario(horarioProfesionalEntidad.getIdHorario())
+                .idHorario(horarioProfesionalEntidad.getId())
                 .idProfesional(horarioProfesionalEntidad.getProfesionalEntidad().getId())
                 .dia(horarioProfesionalEntidad.getDiaEntidad().getDia())
                 .horaInicio(horarioProfesionalEntidad.getHoraInicio())
