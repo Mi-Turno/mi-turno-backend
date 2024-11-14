@@ -14,25 +14,6 @@ import java.util.Optional;
 public interface UsuarioRepositorio extends JpaRepository<UsuarioEntidad,Long> {
 
 
-
-
-    //
-
-   //
-
-  //
-
-  //  Optional<UsuarioEntidad> findByRolEntidad_RolAndIdUsuario(RolUsuarioEnum rolEntidad_rol, Long idUsuario);
-
-  //  Optional<UsuarioEntidad> findByRolEntidad_RolAndNombre(RolUsuarioEnum rolEntidad_rol, String nombre);
-
-
-
-
-
-
-
-    /**uso Optional para poder lanzar la exception ya que es un email*/
     UsuarioEntidad findByCredencialesEmailAndCredencialesPassword(String email, String password);
 
 }

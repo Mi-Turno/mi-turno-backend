@@ -41,7 +41,7 @@ public class ProfesionalEntidad extends UsuarioEntidad{
 
     //lista de turnos AGENDADOS
     //@OneToMany(mappedBy = "profesional", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @OneToMany(mappedBy = "profesional_id",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "profesionalEntidad",fetch = FetchType.LAZY)
     private List<TurnoEntidad> turnosAgendados;
 
 

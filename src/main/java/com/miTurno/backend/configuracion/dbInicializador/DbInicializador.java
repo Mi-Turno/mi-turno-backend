@@ -1,10 +1,7 @@
 package com.miTurno.backend.configuracion.dbInicializador;
 
 import com.miTurno.backend.DTO.Usuario;
-import com.miTurno.backend.entidad.DiaEntidad;
-import com.miTurno.backend.entidad.MetodoDePagoEntidad;
-import com.miTurno.backend.entidad.RolEntidad;
-import com.miTurno.backend.entidad.UsuarioEntidad;
+import com.miTurno.backend.entidad.*;
 import com.miTurno.backend.mapper.UsuarioMapper;
 import com.miTurno.backend.repositorio.DiaRepositorio;
 import com.miTurno.backend.repositorio.MetodosDePagoRepositorio;
@@ -45,16 +42,20 @@ public class DbInicializador {
     @PostConstruct
     public void init(){
 
-       // initRoles();
-        //initDias();
-        //initMetodoDePagos();
+        initRoles();
+        initDias();
+        initMetodoDePagos();
         initAdmin();
     }
 
     public void initAdmin(){
     //validacion por si ya existe en la base de datos
        if(!usuarioRepositorio.existsById(1L)){
+
+
+
            Usuario admin = Usuario.builder()
+                   .idUsuario(1L)
                    .nombre("MiTurnoAdmin")
                    .estado(true)
                    .password("flf")
@@ -65,6 +66,8 @@ public class DbInicializador {
                    .fechaNacimiento(LocalDate.of(2024,10,8))
                    .build();
            usuarioRepositorio.save(usuarioMapper.toEntidad(admin));
+       }else {
+           System.out.println(usuarioRepositorio.findById(1L));
        }
 
 
@@ -72,7 +75,7 @@ public class DbInicializador {
 
 
 
-   /* public void initRoles() {
+    public void initRoles() {
         if (rolRepositorio.findByRol(RolUsuarioEnum.ADMIN) == null) {
             rolRepositorio.save(new RolEntidad(RolUsuarioEnum.ADMIN));
         }
@@ -85,9 +88,9 @@ public class DbInicializador {
         if (rolRepositorio.findByRol(RolUsuarioEnum.NEGOCIO) == null) {
             rolRepositorio.save(new RolEntidad(RolUsuarioEnum.NEGOCIO));
         }
-    }*/
+    }
 
-    /*public void initDias(){
+    public void initDias(){
         if(diaRepositorio.findByDia(DiasEnum.LUNES)==null){
             diaRepositorio.save(new DiaEntidad(DiasEnum.LUNES));
         }
@@ -109,23 +112,22 @@ public class DbInicializador {
         if(diaRepositorio.findByDia(DiasEnum.DOMINGO)==null){
             diaRepositorio.save(new DiaEntidad(DiasEnum.DOMINGO));
         }
-    }*/
-    /*public void initMetodoDePagos(){
-        if(metodosDePagoRepositorio.findBymetodosDePago(MetodosDePagoEnum.EFECTIVO)==null){
+    }
+    public void initMetodoDePagos(){
+        if(metodosDePagoRepositorio.findByMetodosDePago(MetodosDePagoEnum.EFECTIVO)==null){
             metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.EFECTIVO));
         }
-        if(metodosDePagoRepositorio.findBymetodosDePago(MetodosDePagoEnum.TRANSFERENCIA)==null){
+        if(metodosDePagoRepositorio.findByMetodosDePago(MetodosDePagoEnum.TRANSFERENCIA)==null){
             metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.TRANSFERENCIA));
         }
-        if(metodosDePagoRepositorio.findBymetodosDePago(MetodosDePagoEnum.MERCADO_PAGO)==null){
+        if(metodosDePagoRepositorio.findByMetodosDePago(MetodosDePagoEnum.MERCADO_PAGO)==null){
             metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.MERCADO_PAGO));
         }
-        if(metodosDePagoRepositorio.findBymetodosDePago(MetodosDePagoEnum.TARJETA_DEBITO)==null){
+        if(metodosDePagoRepositorio.findByMetodosDePago(MetodosDePagoEnum.TARJETA_DEBITO)==null){
             metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.TARJETA_DEBITO));
         }
-        if(metodosDePagoRepositorio.findBymetodosDePago(MetodosDePagoEnum.TARJETA_CREDITO)==null){
+        if(metodosDePagoRepositorio.findByMetodosDePago(MetodosDePagoEnum.TARJETA_CREDITO)==null){
             metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.TARJETA_CREDITO));
         }
-    }*/
-
+    }
 }

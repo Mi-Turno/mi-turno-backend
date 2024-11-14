@@ -4,9 +4,7 @@ package com.miTurno.backend.mapper;
 import com.miTurno.backend.DTO.HorarioProfesional;
 import com.miTurno.backend.entidad.HorarioProfesionalEntidad;
 import com.miTurno.backend.request.HorarioProfesionalRequest;
-
 import org.springframework.stereotype.Component;
-
 import java.util.Collections;
 import java.util.List;
 

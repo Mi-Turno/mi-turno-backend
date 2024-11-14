@@ -1,17 +1,13 @@
 package com.miTurno.backend.servicio;
 
-import com.miTurno.backend.DTO.HorarioProfesional;
 import com.miTurno.backend.entidad.DiaEntidad;
 import com.miTurno.backend.entidad.HorarioProfesionalEntidad;
 import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.entidad.ProfesionalEntidad;
-
 import com.miTurno.backend.excepcion.RecursoNoExisteException;
-import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import com.miTurno.backend.mapper.HorarioProfesionalMapper;
 import com.miTurno.backend.repositorio.DiaRepositorio;
 import com.miTurno.backend.repositorio.HorarioProfesionalRepositorio;
-
 import com.miTurno.backend.repositorio.NegocioRepositorio;
 import com.miTurno.backend.repositorio.ProfesionalRepositorio;
 import com.miTurno.backend.request.HorarioProfesionalRequest;
@@ -61,7 +57,7 @@ public class HorarioProfesionalService {
         NegocioEntidad negocioEntidad=negocioRepositorio.findById(idNegocio).orElseThrow(()-> new RecursoNoExisteException("Id negocio"));
         ProfesionalEntidad profesionalEntidad= profesionalRepositorio.findById(idProfesional).orElseThrow(()-> new RecursoNoExisteException("Id profesional"));
 
-        return horarioProfesionalRepositorio.findByProfesionalEntidad_IdUsuario(idProfesional);
+        return horarioProfesionalRepositorio.findByProfesionalEntidadId(idProfesional);
     }
 
     public List<HorarioProfesionalEntidad> obtenerHorariosPorProfesionalYDia(Long idNegocio,Long idProfesional, Long idDia) {
@@ -72,7 +68,7 @@ public class HorarioProfesionalService {
         //DiaEntidad diaEntidad = diaRepositorio.findById(idDia).orElseThrow(()-> new RecursoNoExisteException("Id dia"));
         DiasEnum diaEnum = DiasEnum.fromOrdinal(Math.toIntExact(idDia));
 
-        return horarioProfesionalRepositorio.findByProfesionalEntidad_IdUsuarioAndDiaEntidad_Dia(idProfesional, diaEnum);
+        return horarioProfesionalRepositorio.findByProfesionalEntidadIdAndDiaEntidad(idProfesional, diaEnum);
     }
 
     public HorarioProfesionalEntidad obtenerHorarioProfesionalPorId(Long idNegocio,Long idProfesional, Long idHorarioProfesional){

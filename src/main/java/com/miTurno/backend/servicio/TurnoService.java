@@ -8,7 +8,6 @@ import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import com.miTurno.backend.mapper.TurnoMapper;
 import com.miTurno.backend.DTO.Turno;
 import com.miTurno.backend.repositorio.*;
-import com.miTurno.backend.tipos.MetodosDePagoEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +41,7 @@ public class TurnoService {
     public List<Turno> obtenerTodosLosTurnosPorNegocio(Long idNegocio){
 
 
-        return turnoMapper.toModelList(turnoRepositorio.findAllByNegocioEntidad_IdUsuario(idNegocio));
+        return turnoMapper.toModelList(turnoRepositorio.findAllByNegocioEntidadId(idNegocio));
     }
 
     //todo agregar comportamiento para esto en el repo
@@ -118,7 +117,7 @@ public class TurnoService {
     public Boolean eliminarTurnoPorId(Long idNegocio,Long id){
         Boolean rta = false;
         if(turnoRepositorio.existsById(id)){
-            TurnoEntidad turnoEntidad = turnoRepositorio.findByNegocioEntidad_IdUsuarioAndIdTurno(idNegocio, id);
+            TurnoEntidad turnoEntidad = turnoRepositorio.findByNegocioEntidadIdAndId(idNegocio, id);
             turnoEntidad.setEstado(false);
             turnoRepositorio.save(turnoEntidad);
             rta=true;

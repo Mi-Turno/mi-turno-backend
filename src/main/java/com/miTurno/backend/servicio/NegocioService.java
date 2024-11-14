@@ -76,7 +76,7 @@ public class NegocioService {
             throw new RolIncorrectoException(RolUsuarioEnum.NEGOCIO, rolUsuarioEnum);
         }
 
-        if (negocioRepositorio.existsByNombreAndCredenciales_RolEntidad_Rol(nombreNegocio,rolUsuarioEnum)) {
+        if (negocioRepositorio.existsByNombreAndCredencialesRolEntidad(nombreNegocio,rolUsuarioEnum)) {
             throw new NombreNegocioYaExisteException(nombreNegocio);
         }
         if(negocioRepositorio.existsByCredenciales_Email(negocioRequest.getEmail())){
@@ -104,25 +104,6 @@ public class NegocioService {
         List<NegocioEntidad> listaNegocioEntidad= negocioRepositorio.getNegocioEntidadsByNombreLikeIgnoreCase(nombreNegocio);
         return listaNegocioEntidad;
     }
-
-
-    //todo todas estos metodos van en los servicios correspondientes
-
-    //GET todos los profesionales x id negocio
-
-
-    //POST profesionales de negocio x id
-
-    //GET servicios de negocio x id
-
-
-    //POST servicios de negocio x id
-
-    //GET clientes de negocio x id
-
-    //POST clientes de negocio x id
-
-
 
 
 }

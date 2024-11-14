@@ -8,7 +8,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ProfesionalRepositorio extends JpaRepository<ProfesionalEntidad,Long> {
-    List<ProfesionalEntidad> findAllByNegocioEntidad_IdUsuario(Long idNegocio);
-    ProfesionalEntidad findByIdUsuarioAndNegocioEntidad_IdUsuario( Long idProfesional,Long idNegocio);
-    List<ProfesionalEntidad> findAllByNegocioEntidad_IdUsuarioAndCredenciales_Estado(Long idNegocio, Boolean estado);
+
+    List<ProfesionalEntidad> findAllByNegocioEntidadIdAndCredenciales_Estado(Long idNegocio, Boolean estado);
+
+    ProfesionalEntidad findByIdAndNegocioEntidadId(Long idProfesional,Long idNegocio);
+
 }

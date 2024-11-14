@@ -1,7 +1,6 @@
 package com.miTurno.backend.servicio;
 
 import com.miTurno.backend.DTO.Profesional;
-import com.miTurno.backend.DTO.Servicio;
 import com.miTurno.backend.DTO.Turno;
 import com.miTurno.backend.entidad.*;
 import com.miTurno.backend.excepcion.*;
@@ -89,7 +88,7 @@ public class ProfesionalService {
     //GET profesionales de negocio x id y estado
 
     public List<Profesional> obtenerServiciosPorIdNegocioYEstado(Long idNegocio, Boolean estado) {
-        return profesionalMapper.toModelList(profesionalRepositorio.findAllByNegocioEntidad_IdUsuarioAndCredenciales_Estado(idNegocio, estado));
+        return profesionalMapper.toModelList(profesionalRepositorio.findAllByNegocioEntidadIdAndCredenciales_Estado(idNegocio, estado));
     }
 
     //GET profesional x id
@@ -110,7 +109,7 @@ public class ProfesionalService {
         }
 
 
-        ProfesionalEntidad profesionalEntidad= profesionalRepositorio.findByIdUsuarioAndNegocioEntidad_IdUsuario(idProfesional,idNegocio);
+        ProfesionalEntidad profesionalEntidad= profesionalRepositorio.findByIdAndNegocioEntidadId(idProfesional,idNegocio);
 
         return turnoMapper.toModelList(profesionalEntidad.getTurnosAgendados());
     }
@@ -120,7 +119,7 @@ public class ProfesionalService {
     public Profesional actualizarProfesional(Long idNegocio, Long idProfesionalAActualizar, Profesional nuevoProfesional) throws ServicioNoExisteException {
 
 
-        ProfesionalEntidad profesionalEntidad = profesionalRepositorio.findByIdUsuarioAndNegocioEntidad_IdUsuario(idProfesionalAActualizar, idNegocio);
+        ProfesionalEntidad profesionalEntidad = profesionalRepositorio.findByIdAndNegocioEntidadId(idProfesionalAActualizar, idNegocio);
 
         CredencialesEntidad credencialesEntidad = profesionalEntidad.getCredenciales();
         credencialesEntidad.setEmail(nuevoProfesional.getEmail());

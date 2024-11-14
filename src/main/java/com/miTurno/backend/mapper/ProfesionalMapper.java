@@ -112,9 +112,5 @@ public class ProfesionalMapper {
                 .build();
     }
 
-    /*public List<Profesional> toModel(List<ProfesionalEntidad> profesionalList) {
-        return profesionalList.stream()
-                .map(this::toModel) // Usa el método toModel(ProfesionalEntidad) para cada entidad en la lista
-                .collect(Collectors.toList());
-    }*/
+
 }

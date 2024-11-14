@@ -21,8 +21,6 @@ public class MetodoDePagoEntidad {
     private Long id;
 
 
-
-
     @JsonValue
     public String getNombre() {
         return metodosDePago.name();
@@ -33,18 +31,20 @@ public class MetodoDePagoEntidad {
     @Enumerated(EnumType.STRING)
     private MetodosDePagoEnum metodosDePago;
 
-    @OneToMany(mappedBy = "metodo_de_pago_id")
+    @OneToMany(mappedBy = "metodoDePagoEntidad")
     private List<TurnoEntidad> listaTurnos;
 
-    public MetodoDePagoEntidad(MetodosDePagoEnum metodosDePago) {
-        this.metodosDePago = metodosDePago;
-    }
-
-    public MetodoDePagoEntidad(Long id, MetodosDePagoEnum metodosDePago) {
+    public MetodoDePagoEntidad(Long id, MetodosDePagoEnum metodosDePago, List<TurnoEntidad> listaTurnos) {
         this.id = id;
         this.metodosDePago = metodosDePago;
+        this.listaTurnos = listaTurnos;
     }
 
     public MetodoDePagoEntidad() {
+
+    }
+
+    public MetodoDePagoEntidad(MetodosDePagoEnum metodosDePago) {
+        this.metodosDePago = metodosDePago;
     }
 }

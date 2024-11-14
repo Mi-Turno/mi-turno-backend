@@ -16,11 +16,4 @@ public interface CredencialesRepositorio extends JpaRepository<CredencialesEntid
     Optional<CredencialesEntidad>findByEmail(String email);
     List<CredencialesEntidad>findAllByRolEntidad_Rol(RolUsuarioEnum rolUsuarioEnum);
 
-    boolean existsByEmailAndTelefono(@Email String email, String telefono);
-
-
-
-
-    List <CredencialesEntidad> findAllByRolEntidad_RolAndEstado (RolUsuarioEnum rol, Boolean estado);
-    List<CredencialesEntidad>findAllByEstado(Boolean estado);
 }

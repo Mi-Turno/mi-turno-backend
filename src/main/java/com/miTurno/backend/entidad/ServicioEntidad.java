@@ -46,14 +46,12 @@ public class ServicioEntidad {
     @JoinColumn(name = "usuario_id",nullable = false) // Clave foránea hacia Negocio
     private NegocioEntidad negocioEntidad;
 
-    @OneToMany(mappedBy = "servicio_id" ,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idServicio" ,fetch = FetchType.LAZY)
     private List<TurnoEntidad> turnos;
 
     //constructores
-    public ServicioEntidad() {
-    }
 
-    public ServicioEntidad(Long id, String nombre, Integer duracion, Double precio, Boolean estado, List<ProfesionalEntidad> profesionales, NegocioEntidad negocioEntidad) {
+    public ServicioEntidad(Long id, String nombre, Integer duracion, Double precio, Boolean estado, List<ProfesionalEntidad> profesionales, NegocioEntidad negocioEntidad, List<TurnoEntidad> turnos) {
         this.id = id;
         this.nombre = nombre;
         this.duracion = duracion;
@@ -61,5 +59,10 @@ public class ServicioEntidad {
         this.estado = estado;
         this.profesionales = profesionales;
         this.negocioEntidad = negocioEntidad;
+        this.turnos = turnos;
+    }
+
+    public ServicioEntidad() {
+
     }
 }

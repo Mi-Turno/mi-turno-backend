@@ -24,19 +24,15 @@ public class RolEntidad {
     @Column(unique = true, nullable = false)
     private RolUsuarioEnum rol;
 
-    //@OneToMany(mappedBy = "rol", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id")
+    @JoinColumn(name = "rolEntidad")
     private List<UsuarioEntidad> usuarios; // Lista de usuarios que tienen este rol
 
     public RolEntidad(RolUsuarioEnum rolUsuarioEnum) {
         rol=rolUsuarioEnum;
     }
 
-    @JsonValue
-    public String getNombre() {
-        return rol.name();
-    }
 
     //constructores
 

@@ -19,19 +19,15 @@ import java.util.List;
 public class UsuarioService {
     private final UsuarioRepositorio usuarioRepositorio;
     private final UsuarioMapper usuarioMapper;
-    private final RolRepositorio rolRepositorio;
-   // private final NegocioService negocioService;
+
 
     private final CredencialesRepositorio credencialesRepositorio;
 
 
     @Autowired
-    public UsuarioService(UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, RolRepositorio rolRepositorio, CredencialesRepositorio credencialesRepositorio) {
+    public UsuarioService(UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, CredencialesRepositorio credencialesRepositorio) {
         this.usuarioRepositorio = usuarioRepositorio;
         this.usuarioMapper = usuarioMapper;
-        this.rolRepositorio = rolRepositorio;
-        //this.negocioService = negocioService;
-
         this.credencialesRepositorio = credencialesRepositorio;
     }
 

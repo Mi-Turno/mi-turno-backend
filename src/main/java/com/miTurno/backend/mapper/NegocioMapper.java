@@ -25,17 +25,6 @@ public class NegocioMapper {
         this.servicioMapper = servicioMapper;
     }
 
-    //entidad a Negocio
-    /*public Negocio toModel(NegocioEntidad negocioEntidad){
-
-        return Negocio.builder()
-                .idUsuario(negocioEntidad.getIdUsuario())
-                .rubro(negocioEntidad.getRubro())
-                .calle(negocioEntidad.getCalle())
-                .altura(negocioEntidad.getAltura())
-                .detalle(negocioEntidad.getDetalle())
-                .build();
-    }*/
 
 
     //request a negocio

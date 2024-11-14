@@ -16,8 +16,6 @@ import java.time.LocalDate;
 @Schema(description = "Requisitos para la creacion de un usuario ")
 public class UsuarioRequest {
 
-//    @Schema(description = "Identificador único del usuario", example = "1")
-//    private Long idUsuario;
 
     @Schema(description = "El nombre del usuario", example = "Juan")
     //@Size(min = 3, max = 50)

@@ -69,17 +69,7 @@ public class ServicioMapper {
         return servicioEntidad;
     }
 
-    //Entidad to modelo
-   /* public Servicio toModel(ServicioEntidad servicioEntidad){
-        return Servicio.builder()
-                .idNegocio(servicioEntidad.getIdServicio())
-                .idServicio(servicioEntidad.getIdServicio())
-                .nombre(servicioEntidad.getNombre())
-                .duracion(servicioEntidad.getDuracion())
-                .precio(servicioEntidad.getPrecio())
-                .estado(servicioEntidad.getEstado())
-                .build();
-    }*/
+
 
 
 }

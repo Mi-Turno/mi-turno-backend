@@ -13,8 +13,6 @@ import lombok.Setter;
 @Builder
 public class ServicioRequest {
 
-//    @Schema(description = "ID del negocio al que pertenece",example = "1")
-//    private Long idNegocio; lo comento porque el id negocio viene por pathvariable
 
     @Schema(description = "Nombre del servicio que se ofrece", example = "Corte con maquina", requiredMode = Schema.RequiredMode.REQUIRED)
     private String nombre;

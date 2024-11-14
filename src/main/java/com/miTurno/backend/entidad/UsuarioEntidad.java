@@ -1,13 +1,9 @@
 package com.miTurno.backend.entidad;
 
-
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-
-
 import java.time.LocalDate;
 
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -36,7 +32,7 @@ public class UsuarioEntidad {
     @Column(insertable = true,updatable = true,columnDefinition ="DATE")
     private LocalDate fechaNacimiento;//(YYYY-MM-DD)
 
-    @OneToOne(mappedBy = "credencial_id",cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private CredencialesEntidad credenciales; // Relación con Credenciales
 
     //constructores
@@ -44,5 +40,14 @@ public class UsuarioEntidad {
     super();
     }
 
-
+    @Override
+    public String toString() {
+        return "UsuarioEntidad{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", apellido='" + apellido + '\'' +
+                ", fechaNacimiento=" + fechaNacimiento +
+                ", credenciales=" + credenciales +
+                '}';
+    }
 }
