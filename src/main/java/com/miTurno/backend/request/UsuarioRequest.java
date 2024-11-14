@@ -1,6 +1,7 @@
 package com.miTurno.backend.request;
 
 
+import com.miTurno.backend.tipos.RolUsuarioEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import lombok.Getter;
@@ -40,7 +41,7 @@ public class UsuarioRequest {
     private LocalDate fechaNacimiento;//(YYYY-MM-DD)
 
     @Schema(description = "ID del rol del usuario", example = "2")//"CLIENTE", "ADMIN", "PROFESIONAL", "NEGOCIO"
-    private Long idRolUsuario;
+    private RolUsuarioEnum rolUsuario;
 
 
 
@@ -48,14 +49,14 @@ public class UsuarioRequest {
     super();
     }
 
-    public UsuarioRequest(String nombre, String apellido, String email, String password, String telefono, LocalDate fechaNacimiento, Long idRolUsuario) {
+    public UsuarioRequest(String nombre, String apellido, String email, String password, String telefono, LocalDate fechaNacimiento, RolUsuarioEnum rolUsuario) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.password = password;
         this.telefono = telefono;
         this.fechaNacimiento = fechaNacimiento;
-        this.idRolUsuario = idRolUsuario;
+        this.rolUsuario = rolUsuario;
     }
 
 }

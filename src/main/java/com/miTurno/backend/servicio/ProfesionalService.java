@@ -48,11 +48,8 @@ public class ProfesionalService {
 
     public Profesional crearUnprofesional(Long idNegocio, ProfesionalRequest profesionalRequest) throws RolIncorrectoException, RecursoNoExisteException {
 
-
-        RolUsuarioEnum rolUsuarioEnum = rolRepositorio.findById(profesionalRequest.getIdRolUsuario()).get().getRol();
-
-        if (rolUsuarioEnum != RolUsuarioEnum.PROFESIONAL) {
-            throw new RolIncorrectoException(RolUsuarioEnum.PROFESIONAL, rolUsuarioEnum);
+        if (profesionalRequest.getRolUsuario() != RolUsuarioEnum.PROFESIONAL) {
+            throw new RolIncorrectoException(RolUsuarioEnum.PROFESIONAL, profesionalRequest.getRolUsuario());
         }
 
         //todo: falta verificacion de email ver como poder anexarlo con crear un usuario de usuario Service

@@ -27,7 +27,7 @@ public class CredencialesEntidad {
     @Column(unique = true)
     private String telefono;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario_id",nullable = false) // Define la clave foránea a UsuarioEntidad
     private UsuarioEntidad usuario;
 
@@ -59,7 +59,6 @@ public class CredencialesEntidad {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", telefono='" + telefono + '\'' +
-                ", usuario=" + usuario +
                 ", rolEntidad=" + rolEntidad +
                 ", estado=" + estado +
                 '}';

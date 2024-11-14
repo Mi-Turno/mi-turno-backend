@@ -68,15 +68,12 @@ public class NegocioService {
             throws NombreNegocioYaExisteException, RolIncorrectoException,EmailYaExisteException, TelefonoYaExisteException {
 
         String nombreNegocio = negocioRequest.getNombre();
-        RolUsuarioEnum rolUsuarioEnum = rolRepositorio.findById(negocioRequest.getIdRolUsuario())
-                .orElseThrow(()->new RecursoNoExisteException("No existe ese rol"))
-                .getRol();
 
-        if (rolUsuarioEnum != RolUsuarioEnum.NEGOCIO) {
-            throw new RolIncorrectoException(RolUsuarioEnum.NEGOCIO, rolUsuarioEnum);
+        if (negocioRequest.getRolUsuario() != RolUsuarioEnum.NEGOCIO) {
+            throw new RolIncorrectoException(RolUsuarioEnum.NEGOCIO, negocioRequest.getRolUsuario());
         }
 
-        if (negocioRepositorio.existsByNombreAndCredencialesRolEntidad(nombreNegocio,rolUsuarioEnum)) {
+        if (negocioRepositorio.existsByNombreAndCredencialesRolEntidad(nombreNegocio,negocioRequest.getRolUsuario())) {
             throw new NombreNegocioYaExisteException(nombreNegocio);
         }
         if(negocioRepositorio.existsByCredenciales_Email(negocioRequest.getEmail())){

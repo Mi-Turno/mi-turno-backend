@@ -24,7 +24,7 @@ public class UsuarioMapper {
     public Usuario toModel(UsuarioEntidad usuarioEntidad){
         return Usuario.builder()
                 .idUsuario(usuarioEntidad.getId())
-                .idRolUsuario(usuarioEntidad.getCredenciales().getRolEntidad().getRol())
+                .rolUsuario(usuarioEntidad.getCredenciales().getRolEntidad().getRol())
                 .apellido(usuarioEntidad.getApellido())
                 .telefono(usuarioEntidad.getCredenciales().getTelefono())
                 .password(usuarioEntidad.getCredenciales().getPassword())
@@ -37,12 +37,9 @@ public class UsuarioMapper {
 
     //request a usuario
     public Usuario toModel(UsuarioRequest usuarioRequest){
-        RolEntidad rolEntidad = rolRepositorio.findById(usuarioRequest.getIdRolUsuario()).orElseThrow(()->new RecursoNoExisteException("El id rol no existe"));
-
-        RolUsuarioEnum rolUsuarioEnum = rolEntidad.getRol();
 
         return Usuario.builder()
-                .idRolUsuario(rolUsuarioEnum)
+                .rolUsuario(usuarioRequest.getRolUsuario())
                 .apellido(usuarioRequest.getApellido())
                 .telefono(usuarioRequest.getTelefono())
                 .email(usuarioRequest.getEmail())
@@ -57,11 +54,12 @@ public class UsuarioMapper {
 
     public UsuarioEntidad toEntidad(Usuario usuario){
 
-        RolEntidad rolEntidad= rolRepositorio.findByRol(usuario.getIdRolUsuario());
+        RolEntidad rolEntidad= rolRepositorio.findByRol(usuario.getRolUsuario());
 
         //creamos primero las credenciales
         CredencialesEntidad credencialesEntidad =
                 CredencialesEntidad.builder()
+                        .id(usuario.getIdUsuario())
                         .rolEntidad(rolEntidad)
                         .email(usuario.getEmail())
                         .password(usuario.getPassword())
@@ -69,9 +67,10 @@ public class UsuarioMapper {
                         .estado(usuario.getEstado())
                         .build();
 
-
+        System.out.println(credencialesEntidad);
         //luego la entidad
         return UsuarioEntidad.builder()
+                        .id(usuario.getIdUsuario())
                         .credenciales(credencialesEntidad)
                         .nombre(usuario.getNombre())
                         .apellido(usuario.getApellido())

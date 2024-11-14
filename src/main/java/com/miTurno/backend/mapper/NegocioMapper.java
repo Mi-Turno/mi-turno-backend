@@ -29,14 +29,13 @@ public class NegocioMapper {
 
     //request a negocio
     public Negocio toModel(NegocioRequest negocioRequest){
-        RolUsuarioEnum rolUsuarioEnum = rolRepositorio.findById(negocioRequest.getIdRolUsuario()).get().getRol();
 
         return Negocio.builder()
                 .email(negocioRequest.getEmail())
                 .estado(true)
                 .nombre(negocioRequest.getNombre())
                 .apellido(negocioRequest.getApellido())
-                .idRolUsuario(rolUsuarioEnum)
+                .rolUsuario(negocioRequest.getRolUsuario())
                 .password(negocioRequest.getPassword())
                 .telefono(negocioRequest.getTelefono())
                 .fechaNacimiento(negocioRequest.getFechaNacimiento())
@@ -50,7 +49,7 @@ public class NegocioMapper {
     //negocio a Entidad
     public NegocioEntidad toEntidad(Negocio negocio){
 
-        RolEntidad rolEntidad = rolRepositorio.findByRol(negocio.getIdRolUsuario());
+        RolEntidad rolEntidad = rolRepositorio.findByRol(negocio.getRolUsuario());
 
         CredencialesEntidad credencialesEntidad = CredencialesEntidad.builder()
                 .rolEntidad(rolEntidad)
@@ -81,7 +80,7 @@ public class NegocioMapper {
                .email(negocioEntidad.getCredenciales().getEmail())
                .password(negocioEntidad.getCredenciales().getPassword())
                .telefono(negocioEntidad.getCredenciales().getTelefono())
-               .idRolUsuario(negocioEntidad.getCredenciales().getRolEntidad().getRol())
+               .rolUsuario(negocioEntidad.getCredenciales().getRolEntidad().getRol())
                .estado(negocioEntidad.getCredenciales().getEstado())
 
                .nombre(negocioEntidad.getNombre())

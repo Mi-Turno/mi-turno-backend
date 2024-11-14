@@ -13,11 +13,9 @@ import com.miTurno.backend.tipos.MetodosDePagoEnum;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Component
 public class DbInicializador {
@@ -45,15 +43,12 @@ public class DbInicializador {
         initRoles();
         initDias();
         initMetodoDePagos();
-        initAdmin();
+        //initAdmin();
     }
 
     public void initAdmin(){
     //validacion por si ya existe en la base de datos
        if(!usuarioRepositorio.existsById(1L)){
-
-
-
            Usuario admin = Usuario.builder()
                    .idUsuario(1L)
                    .nombre("MiTurnoAdmin")
@@ -61,10 +56,11 @@ public class DbInicializador {
                    .password("flf")
                    .email("miturno.flf@gmail.com")
                    .apellido("MiTurnoAdmin")
-                   .idRolUsuario(RolUsuarioEnum.ADMIN)
+                   .rolUsuario(RolUsuarioEnum.ADMIN)
                    .telefono("11111111")
                    .fechaNacimiento(LocalDate.of(2024,10,8))
                    .build();
+           System.out.println(usuarioMapper.toEntidad(admin));
            usuarioRepositorio.save(usuarioMapper.toEntidad(admin));
        }else {
            System.out.println(usuarioRepositorio.findById(1L));

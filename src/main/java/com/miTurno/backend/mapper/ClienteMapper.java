@@ -20,7 +20,7 @@ public class ClienteMapper {
     //request a entidad
     public ClienteEntidad toEntidad(UsuarioRequest usuarioRequest){
 
-        RolEntidad rolEntidad = rolRepositorio.findById(usuarioRequest.getIdRolUsuario()).orElseThrow(()->new RecursoNoExisteException("id rol"));
+        RolEntidad rolEntidad = rolRepositorio.findByRol(usuarioRequest.getRolUsuario());
 
         CredencialesEntidad credencialesEntidad = CredencialesEntidad.builder()
                 .email(usuarioRequest.getEmail())
@@ -49,7 +49,7 @@ public class ClienteMapper {
                 .nombre(clienteEntidad.getNombre())
                 .estado(clienteEntidad.getCredenciales().getEstado())
                 .telefono(clienteEntidad.getCredenciales().getTelefono())
-                .idRolUsuario(clienteEntidad.getCredenciales().getRolEntidad().getRol())
+                .rolUsuario(clienteEntidad.getCredenciales().getRolEntidad().getRol())
                 .password(clienteEntidad.getCredenciales().getPassword())
                 .fechaNacimiento(clienteEntidad.getFechaNacimiento())
                 .turnos(turnoMapper.toModelList(clienteEntidad.getListadoDeTurnos()))

@@ -39,7 +39,7 @@ public class ProfesionalMapper {
     public ProfesionalEntidad toEntidad(Long idNegocio,ProfesionalRequest profesionalRequest){
 
         NegocioEntidad negocioEntidad= negocioRepositorio.findById(idNegocio).orElseThrow(()->new RecursoNoExisteException("id negocio"));
-        RolEntidad rolEntidad = rolRepositorio.findById(profesionalRequest.getIdRolUsuario()).orElseThrow(()->new RecursoNoExisteException("id rol"));
+        RolEntidad rolEntidad = rolRepositorio.findByRol(profesionalRequest.getRolUsuario());
 
         CredencialesEntidad credencialesEntidad = CredencialesEntidad.builder()
                 .email(profesionalRequest.getEmail())
@@ -70,7 +70,7 @@ public class ProfesionalMapper {
                 .nombre(profesionalEntidad.getNombre())
                 .estado(profesionalEntidad.getCredenciales().getEstado())
                 .telefono(profesionalEntidad.getCredenciales().getTelefono())
-                .idRolUsuario(profesionalEntidad.getCredenciales().getRolEntidad().getRol())
+                .rolUsuario(profesionalEntidad.getCredenciales().getRolEntidad().getRol())
                 .password(profesionalEntidad.getCredenciales().getPassword())
                 .fechaNacimiento(profesionalEntidad.getFechaNacimiento())
                 .idNegocio(profesionalEntidad.getNegocioEntidad().getId())
@@ -97,7 +97,6 @@ public class ProfesionalMapper {
 
     public Profesional toModel(ProfesionalRequest profesionalRequest){
 
-        RolUsuarioEnum rolUsuarioEnum = rolRepositorio.findById(profesionalRequest.getIdRolUsuario()).get().getRol();
 
         return Profesional.builder()
                 .email(profesionalRequest.getEmail())
@@ -105,7 +104,7 @@ public class ProfesionalMapper {
                 .nombre(profesionalRequest.getNombre())
                 .estado(true)
                 .telefono(profesionalRequest.getTelefono())
-                .idRolUsuario(rolUsuarioEnum)
+                .rolUsuario(profesionalRequest.getRolUsuario())
                 .password(profesionalRequest.getPassword())
                 .fechaNacimiento(profesionalRequest.getFechaNacimiento())
 //                .idNegocio(profesionalRequest.getIdNegocio()), lo comento porque el idNegocio viene por variable global en negocio controller

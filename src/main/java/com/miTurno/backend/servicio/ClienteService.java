@@ -43,10 +43,9 @@ public class ClienteService {
     //Crear un cliente
     public Cliente crearUnCliente(UsuarioRequest usuarioRequest) throws RolIncorrectoException, RecursoNoExisteException {
 
-        RolUsuarioEnum rolUsuarioEnum = rolRepositorio.findById(usuarioRequest.getIdRolUsuario()).get().getRol();
 
-        if (rolUsuarioEnum != RolUsuarioEnum.CLIENTE) {
-            throw new RolIncorrectoException(RolUsuarioEnum.CLIENTE, rolUsuarioEnum);
+        if (usuarioRequest.getRolUsuario() != RolUsuarioEnum.CLIENTE) {
+            throw new RolIncorrectoException(RolUsuarioEnum.CLIENTE, usuarioRequest.getRolUsuario());
         }
         if (credencialesRepositorio.findByEmail(usuarioRequest.getEmail()).isPresent()) {
             throw new EmailYaExisteException(usuarioRequest.getEmail());

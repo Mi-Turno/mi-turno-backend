@@ -51,4 +51,12 @@ public class RolEntidad {
         this.rol = rol;
         this.usuarios = usuarios;
     }
+
+    @Override
+    public String toString() {
+        return "RolEntidad{" +
+                "id=" + id +
+                ", rol=" + rol +
+                '}';
+    }
 }
