@@ -1,6 +1,7 @@
 package com.miTurno.backend.repositorio;
 
 import com.miTurno.backend.entidad.NegocioEntidad;
+import com.miTurno.backend.entidad.RolEntidad;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import jakarta.validation.constraints.Email;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,7 +16,7 @@ public interface NegocioRepositorio extends JpaRepository<NegocioEntidad,Long> {
 
     List<NegocioEntidad> getNegocioEntidadsByNombreLikeIgnoreCase(String nombreNegocio);
 
-    boolean existsByNombreAndCredencialesRolEntidad(String nombreNegocio,RolUsuarioEnum rolUsuarioEnum);
+    boolean existsByNombreAndCredencialesRolEntidad(String nombreNegocio, RolEntidad rolUsuarioEnum);
 
     boolean existsByCredenciales_Telefono(String telefono);
 

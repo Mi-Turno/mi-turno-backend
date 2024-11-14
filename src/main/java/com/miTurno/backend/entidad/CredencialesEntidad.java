@@ -8,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name="crendenciales")
+@Table(name="credenciales")
 @Setter
 @Getter
 @Builder

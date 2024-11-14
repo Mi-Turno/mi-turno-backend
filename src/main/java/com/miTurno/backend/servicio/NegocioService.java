@@ -67,13 +67,17 @@ public class NegocioService {
     public Negocio crearUnNegocio(NegocioRequest negocioRequest)
             throws NombreNegocioYaExisteException, RolIncorrectoException,EmailYaExisteException, TelefonoYaExisteException {
 
+        System.out.println(negocioRequest.getRolUsuario());
+        System.out.println(negocioRequest.getTelefono());
+
+
         String nombreNegocio = negocioRequest.getNombre();
 
         if (negocioRequest.getRolUsuario() != RolUsuarioEnum.NEGOCIO) {
             throw new RolIncorrectoException(RolUsuarioEnum.NEGOCIO, negocioRequest.getRolUsuario());
         }
-
-        if (negocioRepositorio.existsByNombreAndCredencialesRolEntidad(nombreNegocio,negocioRequest.getRolUsuario())) {
+        //todo: antes había un negocioRequest.getRolUsuario() - En caso de que solucionen algo y esto les de problema 
+        if (negocioRepositorio.existsByNombreAndCredencialesRolEntidad(nombreNegocio,rolRepositorio.findByRol(negocioRequest.getRolUsuario()))) {
             throw new NombreNegocioYaExisteException(nombreNegocio);
         }
         if(negocioRepositorio.existsByCredenciales_Email(negocioRequest.getEmail())){
@@ -82,6 +86,8 @@ public class NegocioService {
         if(negocioRepositorio.existsByCredenciales_Telefono(negocioRequest.getTelefono())){
             throw new TelefonoYaExisteException(negocioRequest.getTelefono());
         }
+
+        System.out.println("Paso todas las verificaciones ");
         Negocio negocio= negocioMapper.toModel(negocioRequest);
 
         return negocioMapper.toModel(negocioRepositorio.save(negocioMapper.toEntidad(negocio)));
