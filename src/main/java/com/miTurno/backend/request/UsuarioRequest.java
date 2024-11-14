@@ -40,7 +40,7 @@ public class UsuarioRequest {
     @Schema(description = "La fecha del usuario", example = "2004-10-10")
     private LocalDate fechaNacimiento;//(YYYY-MM-DD)
 
-    @Schema(description = "ID del rol del usuario", example = "2")//"CLIENTE", "ADMIN", "PROFESIONAL", "NEGOCIO"
+    @Schema(description = "ID del rol del usuario", example = "CLIENTE")//"CLIENTE", "ADMIN", "PROFESIONAL", "NEGOCIO"
     private RolUsuarioEnum rolUsuario;
 
 
