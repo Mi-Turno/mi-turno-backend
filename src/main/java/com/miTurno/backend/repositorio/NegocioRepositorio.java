@@ -16,7 +16,7 @@ public interface NegocioRepositorio extends JpaRepository<NegocioEntidad,Long> {
 
     List<NegocioEntidad> getNegocioEntidadsByNombreLikeIgnoreCase(String nombreNegocio);
 
-    boolean existsByNombreAndCredencialesRolEntidad(String nombreNegocio, RolEntidad rolUsuarioEnum);
+    boolean existsByNombreAndCredencialesRolEntidad(String nombreNegocio, RolUsuarioEnum rolUsuarioEnum);
 
     boolean existsByCredenciales_Telefono(String telefono);
 

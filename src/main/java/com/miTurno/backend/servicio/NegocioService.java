@@ -76,8 +76,8 @@ public class NegocioService {
         if (negocioRequest.getRolUsuario() != RolUsuarioEnum.NEGOCIO) {
             throw new RolIncorrectoException(RolUsuarioEnum.NEGOCIO, negocioRequest.getRolUsuario());
         }
-        //todo: antes había un negocioRequest.getRolUsuario() - En caso de que solucionen algo y esto les de problema 
-        if (negocioRepositorio.existsByNombreAndCredencialesRolEntidad(nombreNegocio,rolRepositorio.findByRol(negocioRequest.getRolUsuario()))) {
+        //todo: antes había un negocioRequest.getRolUsuario() - En caso de que solucionen algo y esto les de problema
+        if (negocioRepositorio.existsByNombreAndCredencialesRolEntidad(nombreNegocio,negocioRequest.getRolUsuario())) {
             throw new NombreNegocioYaExisteException(nombreNegocio);
         }
         if(negocioRepositorio.existsByCredenciales_Email(negocioRequest.getEmail())){
