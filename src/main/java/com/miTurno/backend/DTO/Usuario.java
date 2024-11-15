@@ -17,7 +17,7 @@ public class Usuario {
     private String apellido;
     private LocalDate fechaNacimiento;
     private Credencial credencial;
-
+    private RolUsuarioEnum rolUsuario;
     //constructor
 
     public Usuario() {}

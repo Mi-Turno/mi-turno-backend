@@ -1,6 +1,7 @@
 package com.miTurno.backend.request;
 
 
+import com.miTurno.backend.tipos.RolUsuarioEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,23 +31,8 @@ public class UsuarioRequest {
     @Schema(description = "Credenciales necesarias para la creacion del usuario")
     private CredencialRequest crendeciales;
 
-
-
-//    @Schema(description = "El Email del usuario", example = "Juan@example.com")
-//    @Email
-//    private String email;
-//
-//    //@Size(min = 6, max = 10)
-//    @Schema(description = "La contraseña del usuario", example = "example1")
-//    private String password;
-//
-//    @Schema(description = "El telefono del usuario", example = "12345678")
-//    private String telefono;
-//
-//
-//    @Schema(description = "ID del rol del usuario", example = "CLIENTE")//"CLIENTE", "ADMIN", "PROFESIONAL", "NEGOCIO"
-//    private RolUsuarioEnum rolUsuario;
-
+    @Schema(description = "Rol del usuario", example = "CLIENTE")//"CLIENTE", "ADMIN", "PROFESIONAL", "NEGOCIO"
+    private RolUsuarioEnum rolUsuarioEnum;
 
 
     public UsuarioRequest() {

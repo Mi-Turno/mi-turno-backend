@@ -69,22 +69,22 @@ public class UsuarioService {
 //    }
 
     //POST usuario
-   public Usuario crearUnUsuario(Usuario usuario) throws EmailYaExisteException, TelefonoYaExisteException {
+    public Usuario crearUnUsuario(Usuario usuario) throws EmailYaExisteException, TelefonoYaExisteException {
 
         //verificamos en el repo de credenciales
         //verificar si ya existe un mail, si es asi tira excepcion
-        if (credencialesRepositorio.findByEmail(usuario.getEmail()).isPresent()){
-            throw new EmailYaExisteException(usuario.getEmail());
+        if (credencialesRepositorio.findByEmail(usuario.getCredencial().getEmail()).isPresent()){
+            throw new EmailYaExisteException(usuario.getCredencial().getEmail());
         }
 
         //verificar si ya existe un celular, si es asi tira excepcion
-        if (credencialesRepositorio.findByTelefono(usuario.getTelefono()).isPresent()){
-            throw new TelefonoYaExisteException(usuario.getTelefono());
+        if (credencialesRepositorio.findByTelefono(usuario.getCredencial().getTelefono()).isPresent()){
+            throw new TelefonoYaExisteException(usuario.getCredencial().getTelefono());
         }
 
         //setteamos el estado del usuario en true
-
         usuario.getCredencial().setEstado(true);
+
         UsuarioEntidad usuarioEntidad= usuarioMapper.toEntidad(usuario);
 
         usuarioEntidad = usuarioRepositorio.save(usuarioEntidad);

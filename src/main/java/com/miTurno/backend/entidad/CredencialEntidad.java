@@ -29,35 +29,32 @@ public class CredencialEntidad {
     @OneToOne(mappedBy = "credencial")
     private UsuarioEntidad usuario;
 
-    @ManyToOne(fetch = FetchType.EAGER) // EAGER para cargar el rol junto con el usuario
-    @JoinColumn(name = "rol_id",nullable = false) // Define la clave foránea a RolEntidad
-    private RolEntidad rolEntidad;
-
     @Column(nullable = false)
     private Boolean estado;
+
+
 
     public CredencialEntidad() {
 
     }
 
-    public CredencialEntidad(Long id, String email, String password, String telefono, UsuarioEntidad usuario, RolEntidad rolEntidad, Boolean estado) {
+    public CredencialEntidad(Long id, String email, String password, String telefono, UsuarioEntidad usuario, Boolean estado) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.telefono = telefono;
         this.usuario = usuario;
-        this.rolEntidad = rolEntidad;
         this.estado = estado;
     }
 
     @Override
     public String toString() {
-        return "CredencialesEntidad{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
+        return "CredencialEntidad{" +
+                "email='" + email + '\'' +
+                ", id=" + id +
                 ", password='" + password + '\'' +
                 ", telefono='" + telefono + '\'' +
-                ", rolEntidad=" + rolEntidad +
+                ", usuario=" + usuario +
                 ", estado=" + estado +
                 '}';
     }

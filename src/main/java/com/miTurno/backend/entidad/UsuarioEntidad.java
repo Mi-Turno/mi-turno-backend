@@ -33,8 +33,12 @@ public class UsuarioEntidad {
     private LocalDate fechaNacimiento;//(YYYY-MM-DD)
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "credencial_id", referencedColumnName = "id") //el name es el nombre de la columna que yo le voy a poner
+    @JoinColumn(name = "credencial_id") //el name es el nombre de la columna que yo le voy a poner
     private CredencialEntidad credencial; // Relación con Credenciales
+
+    @ManyToOne(fetch = FetchType.EAGER) // EAGER para cargar el rol junto con el usuario
+    @JoinColumn(name = "rol", nullable = false) // Define la clave foránea a RolEntidad
+    private RolEntidad rolEntidad;
 
     //constructores
     public UsuarioEntidad(){

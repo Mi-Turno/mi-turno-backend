@@ -1,5 +1,6 @@
 package com.miTurno.backend.mapper;
 
+import com.miTurno.backend.DTO.Credencial;
 import com.miTurno.backend.entidad.CredencialEntidad;
 import com.miTurno.backend.entidad.RolEntidad;
 import com.miTurno.backend.repositorio.RolRepositorio;
@@ -17,11 +18,13 @@ public class NegocioMapper {
     private final RolRepositorio rolRepositorio;
     private final ProfesionalMapper profesionalMapper;
     private final ServicioMapper servicioMapper;
+    private final CredencialMapper credencialMapper;
 
-    public NegocioMapper(RolRepositorio rolRepositorio,ProfesionalMapper profesionalMapper,ServicioMapper servicioMapper) {
+    public NegocioMapper(RolRepositorio rolRepositorio, ProfesionalMapper profesionalMapper, ServicioMapper servicioMapper, CredencialMapper credencialMapper) {
         this.rolRepositorio = rolRepositorio;
         this.profesionalMapper = profesionalMapper;
         this.servicioMapper = servicioMapper;
+        this.credencialMapper = credencialMapper;
     }
 
 
@@ -29,14 +32,14 @@ public class NegocioMapper {
     //request a negocio
     public Negocio toModel(NegocioRequest negocioRequest){
 
+        Credencial credencial= credencialMapper.toModel(negocioRequest.getCrendeciales());
+
         return Negocio.builder()
-                .email(negocioRequest.getEmail())
-                .estado(true)
+                .credencial(credencial)
+
                 .nombre(negocioRequest.getNombre())
                 .apellido(negocioRequest.getApellido())
-                .rolUsuario(negocioRequest.getRolUsuario())
-                .password(negocioRequest.getPassword())
-                .telefono(negocioRequest.getTelefono())
+                .rolUsuario(negocioRequest.getRolUsuarioEnum())
                 .fechaNacimiento(negocioRequest.getFechaNacimiento())
                 .rubro(negocioRequest.getRubro())
                 .calle(negocioRequest.getCalle())
@@ -48,18 +51,17 @@ public class NegocioMapper {
     //negocio a Entidad
     public NegocioEntidad toEntidad(Negocio negocio){
 
-        RolEntidad rolEntidad = rolRepositorio.findByRol(negocio.getRolUsuario());
-
-        CredencialEntidad credencialEntidad = CredencialEntidad.builder()
-                .rolEntidad(rolEntidad)
-                .telefono(negocio.getTelefono())
-                .estado(negocio.getEstado())
-                .password(negocio.getPassword())
-                .email(negocio.getEmail())
+        RolEntidad rolEntidad = RolEntidad.builder()
+                .rol(negocio.getRolUsuario())
                 .build();
+
+        CredencialEntidad credencialEntidad = credencialMapper.toEntidad(negocio.getCredencial());
 
 
         NegocioEntidad negocioEntidad = new NegocioEntidad();
+
+        negocioEntidad.setRolEntidad(rolEntidad);
+
         negocioEntidad.setRubro(negocio.getRubro());
         negocioEntidad.setNombre(negocio.getNombre());
         negocioEntidad.setApellido(negocio.getApellido());
@@ -74,6 +76,7 @@ public class NegocioMapper {
     }
     //entidad a modelo
     public Negocio toModel(NegocioEntidad negocioEntidad){
+
        return Negocio.builder()
                .idUsuario(negocioEntidad.getId())
                .email(negocioEntidad.getCredencial().getEmail())

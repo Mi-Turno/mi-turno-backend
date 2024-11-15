@@ -1,6 +1,7 @@
 package com.miTurno.backend.mapper;
 
 import com.miTurno.backend.entidad.CredencialEntidad;
+import com.miTurno.backend.entidad.RolEntidad;
 import com.miTurno.backend.request.UsuarioRequest;
 import com.miTurno.backend.entidad.UsuarioEntidad;
 import com.miTurno.backend.DTO.Usuario;
@@ -22,6 +23,7 @@ public class UsuarioMapper {
 
         return Usuario.builder()
                 .idUsuario(usuarioEntidad.getId())
+                .rolUsuario(usuarioEntidad.getRolEntidad().getRol())
                 .apellido(usuarioEntidad.getApellido())
                 .fechaNacimiento(usuarioEntidad.getFechaNacimiento())
                 .nombre(usuarioEntidad.getNombre())
@@ -33,6 +35,7 @@ public class UsuarioMapper {
     public Usuario toModel(UsuarioRequest usuarioRequest){
 
         return Usuario.builder()
+                .rolUsuario(usuarioRequest.getRolUsuarioEnum())
                 .apellido(usuarioRequest.getApellido())
                 .fechaNacimiento(usuarioRequest.getFechaNacimiento())
                 .nombre(usuarioRequest.getNombre())
@@ -44,14 +47,19 @@ public class UsuarioMapper {
 
     public UsuarioEntidad toEntidad(Usuario usuario){
 
-
         //creamos las credenciales
         CredencialEntidad credencialEntidad = credencialMapper.toEntidad(usuario.getCredencial());
+
+        //rol
+        RolEntidad rolEntidad= RolEntidad.builder()
+                .rol(usuario.getRolUsuario())
+                .build();
 
         //luego la entidad
         UsuarioEntidad usuarioEntidad= UsuarioEntidad.builder()
                         .id(usuario.getIdUsuario())
-                        .credenciales(credencialEntidad)
+                        .credencial(credencialEntidad)
+                        .rolEntidad(rolEntidad)
                         .nombre(usuario.getNombre())
                         .apellido(usuario.getApellido())
                         .fechaNacimiento(usuario.getFechaNacimiento())

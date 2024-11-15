@@ -13,7 +13,6 @@ public class Credencial {
     private String email;
     private String password;
     private String telefono;
-    private RolUsuarioEnum rolUsuario;
     private Boolean estado;
 
     public Credencial() {

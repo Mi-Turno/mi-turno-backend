@@ -25,9 +25,9 @@ public class RolEntidad {
     private RolUsuarioEnum rol;
 
 
-//    @OneToMany(mappedBy = "rolEntidad",fetch = FetchType.LAZY)
-////    @JoinColumn(name = "rolEntidad") esta mal porque el rol esta en las credenciales, hay que mover el rol de credenciales a usuario
-//    private List<UsuarioEntidad> usuarios; // Lista de usuarios que tienen este rol
+    @OneToMany(mappedBy = "rolEntidad",fetch = FetchType.LAZY)
+//    @JoinColumn(name = "rolEntidad") esta mal porque el rol esta en las credenciales, hay que mover el rol de credenciales a usuario
+    private List<UsuarioEntidad> usuarios; // Lista de usuarios que tienen este rol
 
     public RolEntidad(RolUsuarioEnum rolUsuarioEnum) {
         rol=rolUsuarioEnum;
