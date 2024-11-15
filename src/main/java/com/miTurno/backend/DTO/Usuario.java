@@ -19,7 +19,7 @@ public class Usuario {
     private String password;
     private String telefono;
     private LocalDate fechaNacimiento;
-    private RolUsuarioEnum rolUsuario;//Un id no tiene que ser si o si un Long si no que tambien puede ser un String y se parsea a lo que yo quiera
+    private RolUsuarioEnum rolUsuario;
     private Boolean estado;
 
 

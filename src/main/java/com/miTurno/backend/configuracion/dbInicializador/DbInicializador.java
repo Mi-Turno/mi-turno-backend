@@ -43,7 +43,7 @@ public class DbInicializador {
         initRoles();
         initDias();
         initMetodoDePagos();
-        //initAdmin();
+        initAdmin();
     }
 
     public void initAdmin(){

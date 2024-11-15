@@ -27,8 +27,8 @@ public class CredencialesEntidad {
     @Column(unique = true)
     private String telefono;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "usuario_id",nullable = false) // Define la clave foránea a UsuarioEntidad
+
+    @OneToOne(mappedBy = "credenciales")
     private UsuarioEntidad usuario;
 
     @ManyToOne(fetch = FetchType.EAGER) // EAGER para cargar el rol junto con el usuario
