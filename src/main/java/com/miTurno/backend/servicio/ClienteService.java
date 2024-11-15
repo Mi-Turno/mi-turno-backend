@@ -76,9 +76,9 @@ public Cliente obtenerClienteByEmailAndPassword(String email, String password)th
         clienteEntidad.setApellido(actualizado.getApellido());
 
         //Actualizar credenciales
-        clienteEntidad.getCredenciales().setEmail(actualizado.getEmail());
-        clienteEntidad.getCredenciales().setPassword((actualizado.getPassword()));
-        clienteEntidad.getCredenciales().setTelefono(actualizado.getTelefono());
+        clienteEntidad.getCredencial().setEmail(actualizado.getEmail());
+        clienteEntidad.getCredencial().setPassword((actualizado.getPassword()));
+        clienteEntidad.getCredencial().setTelefono(actualizado.getTelefono());
 
         clienteEntidad= clienteRepositorio.save(clienteEntidad);
 
@@ -91,7 +91,7 @@ public Cliente obtenerClienteByEmailAndPassword(String email, String password)th
         if(clienteRepositorio.existsById(id)){
             ClienteEntidad clienteEntidad= clienteRepositorio.findById(id).orElseThrow(()-> new UsuarioNoExistenteException(id));
 
-            clienteEntidad.getCredenciales().setEstado(false);
+            clienteEntidad.getCredencial().setEstado(false);
 
             clienteRepositorio.save(clienteEntidad);
             rta = true;

@@ -33,8 +33,8 @@ public class UsuarioEntidad {
     private LocalDate fechaNacimiento;//(YYYY-MM-DD)
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "credenciales", referencedColumnName = "id")
-    private CredencialesEntidad credenciales; // Relación con Credenciales
+    @JoinColumn(name = "credencial_id", referencedColumnName = "id") //el name es el nombre de la columna que yo le voy a poner
+    private CredencialEntidad credencial; // Relación con Credenciales
 
     //constructores
     public UsuarioEntidad(){
@@ -48,7 +48,7 @@ public class UsuarioEntidad {
                 ", nombre='" + nombre + '\'' +
                 ", apellido='" + apellido + '\'' +
                 ", fechaNacimiento=" + fechaNacimiento +
-                ", credenciales=" + credenciales +
+                ", credenciales=" + credencial +
                 '}';
     }
 }

@@ -1,5 +1,6 @@
 package com.miTurno.backend.configuracion.dbInicializador;
 
+import com.miTurno.backend.DTO.Credencial;
 import com.miTurno.backend.DTO.Usuario;
 import com.miTurno.backend.entidad.*;
 import com.miTurno.backend.mapper.UsuarioMapper;
@@ -49,16 +50,21 @@ public class DbInicializador {
     public void initAdmin(){
     //validacion por si ya existe en la base de datos
        if(!usuarioRepositorio.existsById(1L)){
-           Usuario admin = Usuario.builder()
-                   .idUsuario(1L)
-                   .nombre("MiTurnoAdmin")
+
+           Credencial credencial = Credencial.builder()
                    .estado(true)
                    .password("flf")
                    .email("miturno.flf@gmail.com")
-                   .apellido("MiTurnoAdmin")
                    .rolUsuario(RolUsuarioEnum.ADMIN)
                    .telefono("11111111")
+                   .build();
+
+           Usuario admin = Usuario.builder()
+                   .idUsuario(1L)
+                   .nombre("MiTurnoAdmin")
+                   .apellido("MiTurnoAdmin")
                    .fechaNacimiento(LocalDate.of(2024,10,8))
+                   .credencial(credencial)
                    .build();
            System.out.println(usuarioMapper.toEntidad(admin));
            usuarioRepositorio.save(usuarioMapper.toEntidad(admin));

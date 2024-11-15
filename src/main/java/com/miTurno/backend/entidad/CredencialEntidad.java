@@ -1,7 +1,5 @@
 package com.miTurno.backend.entidad;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,7 +10,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @Builder
-public class CredencialesEntidad {
+public class CredencialEntidad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +26,7 @@ public class CredencialesEntidad {
     private String telefono;
 
 
-    @OneToOne(mappedBy = "credenciales")
+    @OneToOne(mappedBy = "credencial")
     private UsuarioEntidad usuario;
 
     @ManyToOne(fetch = FetchType.EAGER) // EAGER para cargar el rol junto con el usuario
@@ -38,11 +36,11 @@ public class CredencialesEntidad {
     @Column(nullable = false)
     private Boolean estado;
 
-    public CredencialesEntidad() {
+    public CredencialEntidad() {
 
     }
 
-    public CredencialesEntidad(Long id, String email, String password, String telefono, UsuarioEntidad usuario, RolEntidad rolEntidad, Boolean estado) {
+    public CredencialEntidad(Long id, String email, String password, String telefono, UsuarioEntidad usuario, RolEntidad rolEntidad, Boolean estado) {
         this.id = id;
         this.email = email;
         this.password = password;

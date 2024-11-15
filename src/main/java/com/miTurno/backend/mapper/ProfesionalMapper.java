@@ -1,7 +1,7 @@
 package com.miTurno.backend.mapper;
 
 import com.miTurno.backend.DTO.Profesional;
-import com.miTurno.backend.entidad.CredencialesEntidad;
+import com.miTurno.backend.entidad.CredencialEntidad;
 import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.entidad.ProfesionalEntidad;
 import com.miTurno.backend.entidad.RolEntidad;
@@ -10,7 +10,6 @@ import com.miTurno.backend.repositorio.NegocioRepositorio;
 import com.miTurno.backend.repositorio.RolRepositorio;
 import com.miTurno.backend.repositorio.ServicioRepositorio;
 import com.miTurno.backend.request.ProfesionalRequest;
-import com.miTurno.backend.tipos.RolUsuarioEnum;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -41,7 +40,7 @@ public class ProfesionalMapper {
         NegocioEntidad negocioEntidad= negocioRepositorio.findById(idNegocio).orElseThrow(()->new RecursoNoExisteException("id negocio"));
         RolEntidad rolEntidad = rolRepositorio.findByRol(profesionalRequest.getRolUsuario());
 
-        CredencialesEntidad credencialesEntidad = CredencialesEntidad.builder()
+        CredencialEntidad credencialEntidad = CredencialEntidad.builder()
                 .email(profesionalRequest.getEmail())
                 .password(profesionalRequest.getPassword())
                 .rolEntidad(rolEntidad)
@@ -55,7 +54,7 @@ public class ProfesionalMapper {
                 .nombre(profesionalRequest.getNombre())
                 .apellido(profesionalRequest.getApellido())
                 .fechaNacimiento(profesionalRequest.getFechaNacimiento())
-                .credenciales(credencialesEntidad)
+                .credenciales(credencialEntidad)
                 .build();
         negocioEntidad.getProfesionales().add(profesionalEntidad);
         return profesionalEntidad;
@@ -65,13 +64,13 @@ public class ProfesionalMapper {
     public Profesional toModel(ProfesionalEntidad profesionalEntidad){
         return Profesional.builder()
                 .idUsuario(profesionalEntidad.getId())
-                .email(profesionalEntidad.getCredenciales().getEmail())
+                .email(profesionalEntidad.getCredencial().getEmail())
                 .apellido(profesionalEntidad.getApellido())
                 .nombre(profesionalEntidad.getNombre())
-                .estado(profesionalEntidad.getCredenciales().getEstado())
-                .telefono(profesionalEntidad.getCredenciales().getTelefono())
-                .rolUsuario(profesionalEntidad.getCredenciales().getRolEntidad().getRol())
-                .password(profesionalEntidad.getCredenciales().getPassword())
+                .estado(profesionalEntidad.getCredencial().getEstado())
+                .telefono(profesionalEntidad.getCredencial().getTelefono())
+                .rolUsuario(profesionalEntidad.getCredencial().getRolEntidad().getRol())
+                .password(profesionalEntidad.getCredencial().getPassword())
                 .fechaNacimiento(profesionalEntidad.getFechaNacimiento())
                 .idNegocio(profesionalEntidad.getNegocioEntidad().getId())
                 .listaServicios(servicioMapper.toModelList(profesionalEntidad.getListaServiciosEntidad()))

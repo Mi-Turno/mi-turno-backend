@@ -15,13 +15,8 @@ public class Usuario {
     private Long idUsuario;
     private String nombre;
     private String apellido;
-    private String email;
-    private String password;
-    private String telefono;
     private LocalDate fechaNacimiento;
-    private RolUsuarioEnum rolUsuario;
-    private Boolean estado;
-
+    private Credencial credencial;
 
     //constructor
 

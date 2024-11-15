@@ -1,12 +1,11 @@
 package com.miTurno.backend.servicio;
 
-import com.miTurno.backend.entidad.CredencialesEntidad;
+import com.miTurno.backend.entidad.CredencialEntidad;
 import com.miTurno.backend.repositorio.CredencialesRepositorio;
 import com.miTurno.backend.entidad.UsuarioEntidad;
 import com.miTurno.backend.excepcion.*;
 import com.miTurno.backend.mapper.UsuarioMapper;
 import com.miTurno.backend.DTO.Usuario;
-import com.miTurno.backend.repositorio.RolRepositorio;
 import com.miTurno.backend.repositorio.UsuarioRepositorio;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,10 +49,10 @@ public class UsuarioService {
     //get x rol
     public List<UsuarioEntidad> obtenerUsuariosPorRol(RolUsuarioEnum rol) {
 
-        List<CredencialesEntidad> credencialesEntidadList= credencialesRepositorio.findAllByRolEntidad_Rol(rol);
+        List<CredencialEntidad> credencialEntidadList = credencialesRepositorio.findAllByRolEntidad_Rol(rol);
         List<UsuarioEntidad> usuarioEntidadList = new ArrayList<>();
 
-        for (CredencialesEntidad unaCredencial:credencialesEntidadList){
+        for (CredencialEntidad unaCredencial: credencialEntidadList){
             usuarioEntidadList.add(usuarioRepositorio.findById(unaCredencial.getId()).orElseThrow(()->new RecursoNoExisteException("No existe un id")));
         }
 
@@ -83,6 +82,9 @@ public class UsuarioService {
             throw new TelefonoYaExisteException(usuario.getTelefono());
         }
 
+        //setteamos el estado del usuario en true
+
+        usuario.getCredencial().setEstado(true);
         UsuarioEntidad usuarioEntidad= usuarioMapper.toEntidad(usuario);
 
         usuarioEntidad = usuarioRepositorio.save(usuarioEntidad);
@@ -110,9 +112,9 @@ public class UsuarioService {
 
         //  Actualizar credenciales
         //    actualizarCredenciales(usuarioEntidad, actualizado);
-        usuarioEntidad.getCredenciales().setEmail(actualizado.getEmail());
-        usuarioEntidad.getCredenciales().setPassword((actualizado.getPassword()));
-        usuarioEntidad.getCredenciales().setTelefono(actualizado.getTelefono());
+        usuarioEntidad.getCredencial().setEmail(actualizado.getEmail());
+        usuarioEntidad.getCredencial().setPassword((actualizado.getPassword()));
+        usuarioEntidad.getCredencial().setTelefono(actualizado.getTelefono());
 
 
         //usuarioEntidad.getCredenciales().setRolEntidad(rolRepositorio.findByRol(actualizado.getRolUsuario()));
@@ -129,7 +131,7 @@ public class UsuarioService {
         if(usuarioRepositorio.existsById(id)){
            UsuarioEntidad usuarioEntidad= usuarioRepositorio.findById(id).orElseThrow(()-> new UsuarioNoExistenteException(id));
 
-            usuarioEntidad.getCredenciales().setEstado(false);
+            usuarioEntidad.getCredencial().setEstado(false);
 
             usuarioRepositorio.save(usuarioEntidad);
             rta = true;

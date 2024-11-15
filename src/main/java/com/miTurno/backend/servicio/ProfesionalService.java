@@ -118,12 +118,12 @@ public class ProfesionalService {
 
         ProfesionalEntidad profesionalEntidad = profesionalRepositorio.findByIdAndNegocioEntidadId(idProfesionalAActualizar, idNegocio);
 
-        CredencialesEntidad credencialesEntidad = profesionalEntidad.getCredenciales();
-        credencialesEntidad.setEmail(nuevoProfesional.getEmail());
-        credencialesEntidad.setTelefono(nuevoProfesional.getTelefono());
+        CredencialEntidad credencialEntidad = profesionalEntidad.getCredencial();
+        credencialEntidad.setEmail(nuevoProfesional.getEmail());
+        credencialEntidad.setTelefono(nuevoProfesional.getTelefono());
         profesionalEntidad.setNombre(nuevoProfesional.getNombre());
         profesionalEntidad.setApellido(nuevoProfesional.getApellido());
-        profesionalEntidad.setCredenciales(credencialesEntidad);
+        profesionalEntidad.setCredencial(credencialEntidad);
         //servicioEntidad.setEstado(nuevoServicio.getEstado());
 
         profesionalRepositorio.save(profesionalEntidad);
@@ -166,7 +166,7 @@ public class ProfesionalService {
         Boolean rta = true;
 
         // Busca la entidad de credenciales por ID
-        CredencialesEntidad profesionalEntidad = credencialesRepositorio.findById(idProfesionalAEliminar)
+        CredencialEntidad profesionalEntidad = credencialesRepositorio.findById(idProfesionalAEliminar)
                 .orElseThrow(() -> new ServicioNoExisteException(idProfesionalAEliminar));
 
         // Cambia el estado a false para desactivarlo

@@ -1,12 +1,11 @@
 package com.miTurno.backend.mapper;
 
-import com.miTurno.backend.entidad.CredencialesEntidad;
+import com.miTurno.backend.entidad.CredencialEntidad;
 import com.miTurno.backend.entidad.RolEntidad;
 import com.miTurno.backend.repositorio.RolRepositorio;
 import com.miTurno.backend.request.NegocioRequest;
 import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.DTO.Negocio;
-import com.miTurno.backend.tipos.RolUsuarioEnum;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -51,7 +50,7 @@ public class NegocioMapper {
 
         RolEntidad rolEntidad = rolRepositorio.findByRol(negocio.getRolUsuario());
 
-        CredencialesEntidad credencialesEntidad = CredencialesEntidad.builder()
+        CredencialEntidad credencialEntidad = CredencialEntidad.builder()
                 .rolEntidad(rolEntidad)
                 .telefono(negocio.getTelefono())
                 .estado(negocio.getEstado())
@@ -68,7 +67,7 @@ public class NegocioMapper {
         negocioEntidad.setAltura(negocio.getAltura());
         negocioEntidad.setDetalle(negocio.getDetalle());
         negocioEntidad.setFechaNacimiento(negocio.getFechaNacimiento());
-        negocioEntidad.setCredenciales(credencialesEntidad);
+        negocioEntidad.setCredencial(credencialEntidad);
 
 
         return negocioEntidad;
@@ -77,11 +76,11 @@ public class NegocioMapper {
     public Negocio toModel(NegocioEntidad negocioEntidad){
        return Negocio.builder()
                .idUsuario(negocioEntidad.getId())
-               .email(negocioEntidad.getCredenciales().getEmail())
-               .password(negocioEntidad.getCredenciales().getPassword())
-               .telefono(negocioEntidad.getCredenciales().getTelefono())
-               .rolUsuario(negocioEntidad.getCredenciales().getRolEntidad().getRol())
-               .estado(negocioEntidad.getCredenciales().getEstado())
+               .email(negocioEntidad.getCredencial().getEmail())
+               .password(negocioEntidad.getCredencial().getPassword())
+               .telefono(negocioEntidad.getCredencial().getTelefono())
+               .rolUsuario(negocioEntidad.getCredencial().getRolEntidad().getRol())
+               .estado(negocioEntidad.getCredencial().getEstado())
 
                .nombre(negocioEntidad.getNombre())
                .apellido(negocioEntidad.getApellido())
