@@ -34,9 +34,8 @@ public class ProfesionalEntidad extends UsuarioEntidad{
     private List<ServicioEntidad> listaServiciosEntidad;
 
     // listado de horarios DISPONIBLES
-   // @OneToMany(mappedBy = "profesional", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "horario_id")
+   // @OneToMany(mappedBy = "profesional", , fetch = FetchType.EAGER)
+    @OneToMany( mappedBy = "profesionalEntidad",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<HorarioProfesionalEntidad> horariosDisponibles;
 
     //lista de turnos AGENDADOS

@@ -57,27 +57,27 @@ public class HorarioProfesionalControlador {
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
     @GetMapping
-    public List<HorarioProfesionalEntidad> obtenerListadoDeHorariosDeUnProfesional(@PathVariable Long idNegocio,@PathVariable Long idProfesional){
+    public List<HorarioProfesional> obtenerListadoDeHorariosDeUnProfesional(@PathVariable Long idNegocio,@PathVariable Long idProfesional){
 
 
-        return horarioProfesionalService.obtenerListadoDeHorariosDeUnProfesional(idNegocio,idProfesional);
+        return horarioProfesionalMapper.toModelList(horarioProfesionalService.obtenerListadoDeHorariosDeUnProfesional(idNegocio,idProfesional));
     }
 
 
     //GET horarios del profesional por dia
-    @GetMapping("/dia")
+    @GetMapping("/dia/{idDia}")
     @Operation(summary = "Obtener listado de horarios de un profesional por dia")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "Horarios del profesional obtenido con exito"),
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
-    public ResponseEntity<List<HorarioProfesionalEntidad>> obtenerHorariosPorProfesionalYDia(
+    public ResponseEntity<List<HorarioProfesional>> obtenerHorariosPorProfesionalYDia(
             @PathVariable Long idProfesional,
             @PathVariable Long idNegocio,
-            @RequestParam Long idDia) {
+            @PathVariable Long idDia) {
 
 
-        List<HorarioProfesionalEntidad> horarios = horarioProfesionalService.obtenerHorariosPorProfesionalYDia(idNegocio,idProfesional,idDia);
+        List<HorarioProfesional> horarios = horarioProfesionalMapper.toModelList(horarioProfesionalService.obtenerHorariosPorProfesionalYDia(idNegocio,idProfesional,idDia));
         return ResponseEntity.ok(horarios);
     }
 
