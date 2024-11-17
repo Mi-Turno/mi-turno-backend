@@ -6,7 +6,7 @@ import com.miTurno.backend.repositorio.*;
 import com.miTurno.backend.request.NegocioRequest;
 import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.mapper.NegocioMapper;
-import com.miTurno.backend.DTO.Negocio;
+import com.miTurno.backend.model.Negocio;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

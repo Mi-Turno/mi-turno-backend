@@ -1,11 +1,8 @@
 package com.miTurno.backend.controlador;
 
 
-import com.miTurno.backend.DTO.Cliente;
-import com.miTurno.backend.DTO.Turno;
-import com.miTurno.backend.DTO.Usuario;
-import com.miTurno.backend.entidad.ClienteEntidad;
-import com.miTurno.backend.mapper.ClienteMapper;
+import com.miTurno.backend.model.Cliente;
+import com.miTurno.backend.model.Turno;
 import com.miTurno.backend.request.UsuarioLoginRequest;
 import com.miTurno.backend.request.UsuarioRequest;
 import com.miTurno.backend.servicio.ClienteService;
@@ -30,12 +27,11 @@ import java.util.Map;
 public class ClienteControlador {
 
     private final ClienteService clienteService;
-    private final ClienteMapper clienteMapper;
+
 
     @Autowired
-    public ClienteControlador(ClienteService clienteService,ClienteMapper clienteMapper) {
+    public ClienteControlador(ClienteService clienteService) {
         this.clienteService = clienteService;
-        this.clienteMapper = clienteMapper;
     }
 
     //POST cliente

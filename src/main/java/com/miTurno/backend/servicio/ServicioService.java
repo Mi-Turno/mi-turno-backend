@@ -1,7 +1,7 @@
 package com.miTurno.backend.servicio;
 
-import com.miTurno.backend.DTO.Profesional;
-import com.miTurno.backend.DTO.Servicio;
+import com.miTurno.backend.model.Profesional;
+import com.miTurno.backend.model.Servicio;
 import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.entidad.ServicioEntidad;
 import com.miTurno.backend.excepcion.ServicioNoExisteException;
@@ -84,8 +84,9 @@ public class ServicioService {
 
     //UPDATE
 
-   public Servicio actualizarUnServicio(Long idNegocio,Long idServicioAActualizar,Servicio nuevoServicio) throws ServicioNoExisteException{
+   public Servicio actualizarUnServicio(Long idNegocio,Long idServicioAActualizar,ServicioRequest nuevoServicio) throws ServicioNoExisteException{
         ServicioEntidad servicioEntidad= servicioRepositorio.findByIdAndNegocioEntidadId(idServicioAActualizar,idNegocio);
+
         servicioEntidad.setDuracion(nuevoServicio.getDuracion());
         servicioEntidad.setPrecio(nuevoServicio.getPrecio());
         //servicioEntidad.setEstado(nuevoServicio.getEstado());

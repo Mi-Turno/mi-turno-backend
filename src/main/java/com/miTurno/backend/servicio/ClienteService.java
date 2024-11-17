@@ -1,7 +1,7 @@
 package com.miTurno.backend.servicio;
 
-import com.miTurno.backend.DTO.Cliente;
-import com.miTurno.backend.DTO.Turno;
+import com.miTurno.backend.model.Cliente;
+import com.miTurno.backend.model.Turno;
 import com.miTurno.backend.entidad.ClienteEntidad;
 import com.miTurno.backend.entidad.RolEntidad;
 import com.miTurno.backend.excepcion.*;

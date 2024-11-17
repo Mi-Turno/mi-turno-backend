@@ -1,7 +1,7 @@
 package com.miTurno.backend.configuracion.dbInicializador;
 
-import com.miTurno.backend.DTO.Credencial;
-import com.miTurno.backend.DTO.Usuario;
+import com.miTurno.backend.model.Credencial;
+import com.miTurno.backend.model.Usuario;
 import com.miTurno.backend.entidad.*;
 import com.miTurno.backend.mapper.UsuarioMapper;
 import com.miTurno.backend.repositorio.DiaRepositorio;

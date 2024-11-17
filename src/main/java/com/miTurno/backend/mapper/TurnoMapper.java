@@ -1,11 +1,8 @@
 package com.miTurno.backend.mapper;
 
-import com.miTurno.backend.entidad.HorarioProfesionalEntidad;
-import com.miTurno.backend.excepcion.RecursoNoExisteException;
-import com.miTurno.backend.repositorio.HorarioProfesionalRepositorio;
 import com.miTurno.backend.request.TurnoRequest;
 import com.miTurno.backend.entidad.TurnoEntidad;
-import com.miTurno.backend.DTO.Turno;
+import com.miTurno.backend.model.Turno;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -49,7 +46,7 @@ public class TurnoMapper {
 
 
     //request a turno
-    public Turno toModel(TurnoRequest turnoRequest){
+    public Turno toModel(TurnoRequest turnoRequest,Long idNegocio){
 
 
         return Turno.builder()
@@ -58,7 +55,7 @@ public class TurnoMapper {
                 .idServicio(turnoRequest.getIdServicio())
                 .metodosDePagoEnum(turnoRequest.getMetodosDePagoEnum())
                 .idCliente(turnoRequest.getIdCliente())
-                .idNegocio(turnoRequest.getIdNegocio())
+                .idNegocio(idNegocio)
                 .fechaInicio(turnoRequest.getFechaInicio())
                 .build();
     }

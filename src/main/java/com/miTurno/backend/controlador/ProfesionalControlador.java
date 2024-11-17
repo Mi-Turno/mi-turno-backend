@@ -1,14 +1,10 @@
 package com.miTurno.backend.controlador;
 
-import com.miTurno.backend.DTO.Profesional;
-import com.miTurno.backend.DTO.Servicio;
-import com.miTurno.backend.DTO.Turno;
-import com.miTurno.backend.DTO.Usuario;
-import com.miTurno.backend.entidad.ProfesionalEntidad;
+import com.miTurno.backend.model.Profesional;
+import com.miTurno.backend.model.Turno;
 import com.miTurno.backend.excepcion.ServicioNoExisteException;
 import com.miTurno.backend.mapper.ProfesionalMapper;
 import com.miTurno.backend.request.ProfesionalRequest;
-import com.miTurno.backend.request.ServicioRequest;
 import com.miTurno.backend.servicio.ProfesionalService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -84,11 +80,6 @@ public class ProfesionalControlador {
         return profesionalService.obtenerServiciosPorIdNegocioYEstado(idNegocio, estadoBooleano);
     }
 
-    //GET listado de horarios del profesional ("/{idProfesional}/horarios")
-
-    //GET listado de servicios que ofrece un profesional ("/{idProfesional}/servicios")
-
-    //POST un profesional
 
     //POST profesional por negocio
     @Operation(summary = "Crear un nuevo profesional")
@@ -122,16 +113,6 @@ public class ProfesionalControlador {
         return ResponseEntity.ok(profesionalService.asignarUnServicio(idProfesional,idServicio));
      }
 
-
-
-
-    //POST nuevo turno a un profesional ("/{idProfesional}/turnos")
-
-    //POST nuevo servicio a un profesional ("/{idProfesional}/servicios") (el servicio debe encontrarse en el negocio en el que esta el profesional)
-
-    //POST nuevo horario que ofrece un profesional ("/{idProfesional}/horarios")
-
-    //UPDATE un profesional x id ("/{idProfesional}")
 
     //UPDATE - PUT
     @Operation(summary = "Actualiza un profesional por id")

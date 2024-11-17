@@ -1,7 +1,7 @@
 package com.miTurno.backend.servicio;
 
-import com.miTurno.backend.DTO.Profesional;
-import com.miTurno.backend.DTO.Turno;
+import com.miTurno.backend.model.Profesional;
+import com.miTurno.backend.model.Turno;
 import com.miTurno.backend.entidad.*;
 import com.miTurno.backend.excepcion.*;
 import com.miTurno.backend.mapper.ProfesionalMapper;

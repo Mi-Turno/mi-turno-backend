@@ -1,7 +1,6 @@
 package com.miTurno.backend.mapper;
 
-import com.miTurno.backend.DTO.Cliente;
-import com.miTurno.backend.DTO.Credencial;
+import com.miTurno.backend.model.Cliente;
 import com.miTurno.backend.entidad.*;
 import com.miTurno.backend.request.UsuarioRequest;
 import org.springframework.stereotype.Component;

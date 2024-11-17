@@ -1,10 +1,8 @@
 package com.miTurno.backend.mapper;
 
-import com.miTurno.backend.DTO.Credencial;
+import com.miTurno.backend.model.Credencial;
 import com.miTurno.backend.entidad.CredencialEntidad;
-import com.miTurno.backend.entidad.RolEntidad;
 import com.miTurno.backend.request.CredencialRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component

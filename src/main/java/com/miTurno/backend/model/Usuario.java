@@ -1,4 +1,4 @@
-package com.miTurno.backend.DTO;
+package com.miTurno.backend.model;
 
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import lombok.Getter;

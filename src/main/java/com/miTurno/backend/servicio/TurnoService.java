@@ -6,8 +6,9 @@ import com.miTurno.backend.excepcion.RecursoNoExisteException;
 import com.miTurno.backend.excepcion.ServicioNoExisteException;
 import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import com.miTurno.backend.mapper.TurnoMapper;
-import com.miTurno.backend.DTO.Turno;
+import com.miTurno.backend.model.Turno;
 import com.miTurno.backend.repositorio.*;
+import com.miTurno.backend.request.TurnoRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -55,9 +56,11 @@ public class TurnoService {
 
 
 
-    public Turno crearUnTurno(Turno nuevoTurno){
+    public Turno crearUnTurno(TurnoRequest nuevoTurno, Long idNegocio){
         TurnoEntidad turnoEntidad = new TurnoEntidad();
-        System.out.println(nuevoTurno);
+
+
+
         //todo si el turno se efectua, se lo tengo que agregar al cliente a su lista para el historial
         //busco si existe el cliente
         ClienteEntidad nuevoCliente = clienteRepositorio.findById(nuevoTurno.getIdCliente()).orElseThrow(()->new UsuarioNoExistenteException(nuevoTurno.getIdCliente()));
@@ -78,7 +81,7 @@ public class TurnoService {
         System.out.println(nuevoProfesional);
 
         //busco si existe el negocio
-        NegocioEntidad nuevoNegocio = negocioRepositorio.findById(nuevoTurno.getIdNegocio()).orElseThrow(()-> new UsuarioNoExistenteException(nuevoTurno.getIdNegocio()));
+        NegocioEntidad nuevoNegocio = negocioRepositorio.findById(idNegocio).orElseThrow(()-> new UsuarioNoExistenteException(idNegocio));
         turnoEntidad.setNegocioEntidad(nuevoNegocio);
         System.out.println("NEGOCIO");
         System.out.println(nuevoNegocio);

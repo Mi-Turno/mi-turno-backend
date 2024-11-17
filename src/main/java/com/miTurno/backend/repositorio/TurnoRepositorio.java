@@ -1,6 +1,5 @@
 package com.miTurno.backend.repositorio;
 
-import com.miTurno.backend.DTO.Turno;
 import com.miTurno.backend.entidad.TurnoEntidad;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

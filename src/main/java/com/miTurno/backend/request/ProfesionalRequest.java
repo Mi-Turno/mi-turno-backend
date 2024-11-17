@@ -13,9 +13,10 @@ public class ProfesionalRequest extends UsuarioRequest{
 
     //datos profesional
 
-    @Schema(description = "ID del negocio al que pertenece el profesional", example = "1")
+//    @Schema(description = "ID del negocio al que pertenece el profesional", example = "1")
 //    @NotNull
-    private Long idNegocio;
+//    private Long idNegocio;
+
 
     public ProfesionalRequest() {
     super();

@@ -1,11 +1,9 @@
 package com.miTurno.backend.mapper;
 
 import com.miTurno.backend.entidad.NegocioEntidad;
-import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
-import com.miTurno.backend.repositorio.NegocioRepositorio;
 import com.miTurno.backend.request.ServicioRequest;
 import com.miTurno.backend.entidad.ServicioEntidad;
-import com.miTurno.backend.DTO.Servicio;
+import com.miTurno.backend.model.Servicio;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;

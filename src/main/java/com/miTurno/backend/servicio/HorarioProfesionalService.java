@@ -1,5 +1,6 @@
 package com.miTurno.backend.servicio;
 
+import com.miTurno.backend.model.HorarioProfesional;
 import com.miTurno.backend.entidad.DiaEntidad;
 import com.miTurno.backend.entidad.HorarioProfesionalEntidad;
 import com.miTurno.backend.entidad.NegocioEntidad;
@@ -37,7 +38,7 @@ public class HorarioProfesionalService {
         this.negocioRepositorio = negocioRepositorio;
     }
 
-    public HorarioProfesionalEntidad crearUnHorarioXProfesional(Long idNegocio, Long idProfesional, HorarioProfesionalRequest nuevoHP){
+    public HorarioProfesional crearUnHorarioXProfesional(Long idNegocio, Long idProfesional, HorarioProfesionalRequest nuevoHP){
 
         NegocioEntidad negocioEntidad=negocioRepositorio.findById(idNegocio).orElseThrow(()-> new RecursoNoExisteException("Id negocio"));
         ProfesionalEntidad profesionalEntidad= profesionalRepositorio.findById(idProfesional).orElseThrow(()-> new RecursoNoExisteException("Id profesional"));
@@ -50,7 +51,9 @@ public class HorarioProfesionalService {
                 .estado(true)
                 .build();
 
-        return horarioProfesionalRepositorio.save(horarioProfesionalEntidad);
+
+
+        return horarioProfesionalMapper.toModel(horarioProfesionalRepositorio.save(horarioProfesionalEntidad));
     }
 
     public List<HorarioProfesionalEntidad> obtenerListadoDeHorariosDeUnProfesional(Long idNegocio, Long idProfesional){

@@ -1,11 +1,11 @@
 package com.miTurno.backend.mapper;
 
-import com.miTurno.backend.DTO.Credencial;
+import com.miTurno.backend.model.Credencial;
 import com.miTurno.backend.entidad.CredencialEntidad;
 import com.miTurno.backend.entidad.RolEntidad;
 import com.miTurno.backend.request.NegocioRequest;
 import com.miTurno.backend.entidad.NegocioEntidad;
-import com.miTurno.backend.DTO.Negocio;
+import com.miTurno.backend.model.Negocio;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;

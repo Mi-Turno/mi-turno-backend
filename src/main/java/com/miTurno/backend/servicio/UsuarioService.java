@@ -1,19 +1,17 @@
 package com.miTurno.backend.servicio;
 
-import com.miTurno.backend.entidad.CredencialEntidad;
 import com.miTurno.backend.entidad.RolEntidad;
 import com.miTurno.backend.repositorio.CredencialesRepositorio;
 import com.miTurno.backend.entidad.UsuarioEntidad;
 import com.miTurno.backend.excepcion.*;
 import com.miTurno.backend.mapper.UsuarioMapper;
-import com.miTurno.backend.DTO.Usuario;
+import com.miTurno.backend.model.Usuario;
 import com.miTurno.backend.repositorio.RolRepositorio;
 import com.miTurno.backend.repositorio.UsuarioRepositorio;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

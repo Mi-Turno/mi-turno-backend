@@ -1,12 +1,10 @@
 package com.miTurno.backend.controlador;
 
-import com.miTurno.backend.DTO.HorarioProfesional;
+import com.miTurno.backend.model.HorarioProfesional;
 import com.miTurno.backend.entidad.HorarioProfesionalEntidad;
-import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.mapper.HorarioProfesionalMapper;
 import com.miTurno.backend.request.HorarioProfesionalRequest;
 import com.miTurno.backend.servicio.HorarioProfesionalService;
-import com.miTurno.backend.tipos.DiasEnum;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -43,12 +41,13 @@ public class HorarioProfesionalControlador {
     })
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<HorarioProfesionalEntidad> crearUnHorario(@Parameter(description = "Datos del horario")
+    public ResponseEntity<HorarioProfesional> crearUnHorario(@Parameter(description = "Datos del horario")
                                               @Valid @RequestBody HorarioProfesionalRequest horarioXProfesionalRequest,
                                                              @PathVariable Long idNegocio,
                                                              @PathVariable Long idProfesional) {
-        HorarioProfesionalEntidad horarioProfesionalEntidad=horarioProfesionalService.crearUnHorarioXProfesional(idNegocio,idProfesional,horarioXProfesionalRequest);
-        return ResponseEntity.ok(horarioProfesionalEntidad);
+
+        HorarioProfesional horarioProfesional=horarioProfesionalService.crearUnHorarioXProfesional(idNegocio,idProfesional,horarioXProfesionalRequest);
+        return ResponseEntity.ok(horarioProfesional);
     }
 
 
