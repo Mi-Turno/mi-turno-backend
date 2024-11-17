@@ -24,9 +24,10 @@ public class HorarioProfesionalMapper {
                 .idProfesional(horarioProfesionalEntidad.getProfesionalEntidad().getId())
                 .dia(horarioProfesionalEntidad.getDiaEntidad().getDia())
                 .horaInicio(horarioProfesionalEntidad.getHoraInicio())
-//                .horaFin(horarioProfesionalEntidad.getHoraFin())
+                .estado(horarioProfesionalEntidad.getEstado())
                 .build();
     }
+
     //lista de entidad a lista horario
     public List<HorarioProfesional> toModelList(List<HorarioProfesionalEntidad> listaHorarioProfesionalEntidad) {
         // Si la lista es null, retorna una lista vacía en lugar de null
@@ -46,7 +47,7 @@ public class HorarioProfesionalMapper {
                 .idProfesional(idProfesional)
                 .dia(horarioProfesionalRequest.getDia())
                 .horaInicio(horarioProfesionalRequest.getHoraInicio())
-//                .horaFin(horarioProfesionalRequest.getHoraFin())
+                .estado(true)
                 .build();
     }
 

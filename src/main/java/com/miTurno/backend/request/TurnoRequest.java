@@ -1,4 +1,5 @@
 package com.miTurno.backend.request;
+import com.miTurno.backend.model.HorarioProfesional;
 import com.miTurno.backend.tipos.MetodosDePagoEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
@@ -28,7 +29,7 @@ public class TurnoRequest {
     private Long idProfesional;
 
     @Schema(description = "Horario del profesional con los datos requeridos",example = "3")
-    private Long idHorarioProfesional;
+    private HorarioProfesional horarioProfesional;
 
 
     @Schema(description = "Fecha de inicio que tendra el turno")
@@ -38,12 +39,12 @@ public class TurnoRequest {
     // Constructor vacío
     public TurnoRequest() {}
 
-    public TurnoRequest(Long idServicio, MetodosDePagoEnum metodosDePagoEnum, Long idCliente, Long idProfesional, Long idHorarioProfesional, LocalDate fechaInicio) {
+    public TurnoRequest(Long idServicio, MetodosDePagoEnum metodosDePagoEnum, Long idCliente, Long idProfesional, HorarioProfesional horarioProfesional, LocalDate fechaInicio) {
         this.idServicio = idServicio;
         this.metodosDePagoEnum = metodosDePagoEnum;
         this.idCliente = idCliente;
         this.idProfesional = idProfesional;
-        this.idHorarioProfesional = idHorarioProfesional;
+        this.horarioProfesional = horarioProfesional;
         this.fechaInicio = fechaInicio;
     }
 }

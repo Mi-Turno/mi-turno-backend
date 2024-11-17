@@ -12,9 +12,10 @@ import java.util.List;
 public class TurnoMapper {
 
 
+    private final HorarioProfesionalMapper horarioProfesionalMapper;
 
-    public TurnoMapper() {
-
+    public TurnoMapper(HorarioProfesionalMapper horarioProfesionalMapper) {
+        this.horarioProfesionalMapper = horarioProfesionalMapper;
     }
 
     //entidad a turno
@@ -26,7 +27,7 @@ public class TurnoMapper {
                 .metodosDePagoEnum(turnoEntidad.getMetodoDePagoEntidad().getMetodoDePago())
                 .idCliente(turnoEntidad.getClienteEntidad().getId())
                 .idNegocio(turnoEntidad.getNegocioEntidad().getId())
-                .idHorarioProfesional(turnoEntidad.getHorarioProfesionalEntidad().getId())
+                .horarioProfesional(horarioProfesionalMapper.toModel(turnoEntidad.getHorarioProfesionalEntidad()))
                 .idProfesional(turnoEntidad.getProfesionalEntidad().getId())
                 .estado(turnoEntidad.getEstado())
                 .fechaInicio(turnoEntidad.getFechaInicio())
@@ -50,7 +51,7 @@ public class TurnoMapper {
 
 
         return Turno.builder()
-                .idHorarioProfesional(turnoRequest.getIdHorarioProfesional())
+                .horarioProfesional(turnoRequest.getHorarioProfesional())
                 .idProfesional(turnoRequest.getIdProfesional())
                 .idServicio(turnoRequest.getIdServicio())
                 .metodosDePagoEnum(turnoRequest.getMetodosDePagoEnum())
