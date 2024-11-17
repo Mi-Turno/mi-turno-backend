@@ -1,19 +1,18 @@
 package com.miTurno.backend.mapper;
 
 
-import com.miTurno.backend.DTO.HorarioProfesional;
-import com.miTurno.backend.DTO.Servicio;
+import com.miTurno.backend.model.HorarioProfesional;
 import com.miTurno.backend.entidad.HorarioProfesionalEntidad;
-import com.miTurno.backend.entidad.ServicioEntidad;
 import com.miTurno.backend.request.HorarioProfesionalRequest;
-
 import org.springframework.stereotype.Component;
-
 import java.util.Collections;
 import java.util.List;
 
 @Component
 public class HorarioProfesionalMapper {
+
+    public HorarioProfesionalMapper() {
+    }
 
     //entidad a HorarioProfesional
     public HorarioProfesional toModel(HorarioProfesionalEntidad horarioProfesionalEntidad){
@@ -21,8 +20,8 @@ public class HorarioProfesionalMapper {
 
 
         return HorarioProfesional.builder()
-                .idHorario(horarioProfesionalEntidad.getIdHorario())
-                .idProfesional(horarioProfesionalEntidad.getProfesionalEntidad().getIdUsuario())
+                .idHorario(horarioProfesionalEntidad.getId())
+                .idProfesional(horarioProfesionalEntidad.getProfesionalEntidad().getId())
                 .dia(horarioProfesionalEntidad.getDiaEntidad().getDia())
                 .horaInicio(horarioProfesionalEntidad.getHoraInicio())
 //                .horaFin(horarioProfesionalEntidad.getHoraFin())
@@ -41,10 +40,10 @@ public class HorarioProfesionalMapper {
     }
 
     //request a HorarioXProfesional
-    public HorarioProfesional toModel(HorarioProfesionalRequest horarioProfesionalRequest){
+    public HorarioProfesional toModel(HorarioProfesionalRequest horarioProfesionalRequest, Long idProfesional){
 
         return HorarioProfesional.builder()
-                .idProfesional(horarioProfesionalRequest.getIdProfesional())
+                .idProfesional(idProfesional)
                 .dia(horarioProfesionalRequest.getDia())
                 .horaInicio(horarioProfesionalRequest.getHoraInicio())
 //                .horaFin(horarioProfesionalRequest.getHoraFin())

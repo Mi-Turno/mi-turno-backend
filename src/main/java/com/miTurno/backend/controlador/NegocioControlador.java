@@ -2,12 +2,8 @@ package com.miTurno.backend.controlador;
 
 import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.request.NegocioRequest;
-import com.miTurno.backend.entidad.UsuarioEntidad;
-import com.miTurno.backend.mapper.UsuarioMapper;
-import com.miTurno.backend.DTO.Negocio;
-import com.miTurno.backend.DTO.Usuario;
+import com.miTurno.backend.model.Negocio;
 import com.miTurno.backend.servicio.NegocioService;
-import com.miTurno.backend.servicio.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -28,16 +24,12 @@ import java.util.Map;
 public class NegocioControlador {
     //atributos
 
-    private final UsuarioService usuarioService;
-    private final UsuarioMapper usuarioMapper;
     private final NegocioService negocioService;
 
 
     //constructores
     @Autowired
-    public NegocioControlador(UsuarioService usuarioService, UsuarioMapper usuarioMapper, NegocioService negocioService) {
-        this.usuarioService = usuarioService;
-        this.usuarioMapper = usuarioMapper;
+    public NegocioControlador( NegocioService negocioService) {
         this.negocioService = negocioService;
     }
 
@@ -120,13 +112,6 @@ public class NegocioControlador {
 
         return negocioService.obtenerListadoDeNegociosConNombreAproximado(nombreNegocio);
     }
-
-
-    //GET profesional especifico x id x negocio
-
-    //GET servicio especifico x id x negocio
-
-
 
 
 }

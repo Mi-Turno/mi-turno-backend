@@ -1,38 +1,35 @@
 package com.miTurno.backend.servicio;
 
-import com.miTurno.backend.entidad.CredencialesEntidad;
+import com.miTurno.backend.entidad.RolEntidad;
 import com.miTurno.backend.repositorio.CredencialesRepositorio;
 import com.miTurno.backend.entidad.UsuarioEntidad;
 import com.miTurno.backend.excepcion.*;
 import com.miTurno.backend.mapper.UsuarioMapper;
-import com.miTurno.backend.DTO.Usuario;
+import com.miTurno.backend.model.Usuario;
 import com.miTurno.backend.repositorio.RolRepositorio;
 import com.miTurno.backend.repositorio.UsuarioRepositorio;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class UsuarioService {
     private final UsuarioRepositorio usuarioRepositorio;
     private final UsuarioMapper usuarioMapper;
-    private final RolRepositorio rolRepositorio;
-   // private final NegocioService negocioService;
+
 
     private final CredencialesRepositorio credencialesRepositorio;
+    private final RolRepositorio rolRepositorio;
 
 
     @Autowired
-    public UsuarioService(UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, RolRepositorio rolRepositorio, CredencialesRepositorio credencialesRepositorio) {
+    public UsuarioService(UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, CredencialesRepositorio credencialesRepositorio, RolRepositorio rolRepositorio) {
         this.usuarioRepositorio = usuarioRepositorio;
         this.usuarioMapper = usuarioMapper;
-        this.rolRepositorio = rolRepositorio;
-        //this.negocioService = negocioService;
-
         this.credencialesRepositorio = credencialesRepositorio;
+        this.rolRepositorio = rolRepositorio;
     }
 
     //get
@@ -48,20 +45,15 @@ public class UsuarioService {
 
     //get x email y contra
    public Usuario obtenerUsuariosByEmailAndPassword(String email,String password)throws UsuarioNoExistenteException{
-        return usuarioMapper.toModel(usuarioRepositorio.findByCredencialesEmailAndCredencialesPassword(email,password));
+        return usuarioMapper.toModel(usuarioRepositorio.findByCredencialEmailAndCredencialPassword(email,password));
    }
 
     //get x rol
-    public List<UsuarioEntidad> obtenerUsuariosPorRol(RolUsuarioEnum rol) {
+    public List<Usuario> obtenerUsuariosPorRol(RolUsuarioEnum rol) {
 
-        List<CredencialesEntidad> credencialesEntidadList= credencialesRepositorio.findAllByRolEntidad_Rol(rol);
-        List<UsuarioEntidad> usuarioEntidadList = new ArrayList<>();
+        List<UsuarioEntidad> listadoDeUsuariosEntidad = usuarioRepositorio.findAllByRolEntidad_Rol(rol);
 
-        for (CredencialesEntidad unaCredencial:credencialesEntidadList){
-            usuarioEntidadList.add(usuarioRepositorio.findById(unaCredencial.getId()).orElseThrow(()->new RecursoNoExisteException("No existe un id")));
-        }
-
-        return usuarioEntidadList;
+        return usuarioMapper.toModelList(listadoDeUsuariosEntidad);
     }
 
     //get x estado
@@ -74,20 +66,25 @@ public class UsuarioService {
 //    }
 
     //POST usuario
-   public Usuario crearUnUsuario(Usuario usuario) throws EmailYaExisteException, TelefonoYaExisteException {
+    public Usuario crearUnUsuario(Usuario usuario) throws EmailYaExisteException, TelefonoYaExisteException {
 
         //verificamos en el repo de credenciales
         //verificar si ya existe un mail, si es asi tira excepcion
-        if (credencialesRepositorio.findByEmail(usuario.getEmail()).isPresent()){
-            throw new EmailYaExisteException(usuario.getEmail());
+        if (credencialesRepositorio.findByEmail(usuario.getCredencial().getEmail()).isPresent()){
+            throw new EmailYaExisteException(usuario.getCredencial().getEmail());
         }
 
         //verificar si ya existe un celular, si es asi tira excepcion
-        if (credencialesRepositorio.findByTelefono(usuario.getTelefono()).isPresent()){
-            throw new TelefonoYaExisteException(usuario.getTelefono());
+        if (credencialesRepositorio.findByTelefono(usuario.getCredencial().getTelefono()).isPresent()){
+            throw new TelefonoYaExisteException(usuario.getCredencial().getTelefono());
         }
 
-        UsuarioEntidad usuarioEntidad= usuarioMapper.toEntidad(usuario);
+        //setteamos el estado del usuario en true
+        usuario.getCredencial().setEstado(true);
+
+        RolEntidad rolEntidad = rolRepositorio.findByRol(usuario.getRolUsuario());
+
+        UsuarioEntidad usuarioEntidad= usuarioMapper.toEntidad(usuario,rolEntidad);
 
         usuarioEntidad = usuarioRepositorio.save(usuarioEntidad);
         return usuarioMapper.toModel(usuarioEntidad);
@@ -114,9 +111,9 @@ public class UsuarioService {
 
         //  Actualizar credenciales
         //    actualizarCredenciales(usuarioEntidad, actualizado);
-        usuarioEntidad.getCredenciales().setEmail(actualizado.getEmail());
-        usuarioEntidad.getCredenciales().setPassword((actualizado.getPassword()));
-        usuarioEntidad.getCredenciales().setTelefono(actualizado.getTelefono());
+        usuarioEntidad.getCredencial().setEmail(actualizado.getCredencial().getEmail());
+        usuarioEntidad.getCredencial().setPassword((actualizado.getCredencial().getPassword()));
+        usuarioEntidad.getCredencial().setTelefono(actualizado.getCredencial().getTelefono());
 
 
         //usuarioEntidad.getCredenciales().setRolEntidad(rolRepositorio.findByRol(actualizado.getRolUsuario()));
@@ -133,7 +130,7 @@ public class UsuarioService {
         if(usuarioRepositorio.existsById(id)){
            UsuarioEntidad usuarioEntidad= usuarioRepositorio.findById(id).orElseThrow(()-> new UsuarioNoExistenteException(id));
 
-            usuarioEntidad.getCredenciales().setEstado(false);
+            usuarioEntidad.getCredencial().setEstado(false);
 
             usuarioRepositorio.save(usuarioEntidad);
             rta = true;

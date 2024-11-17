@@ -18,26 +18,21 @@ public class RolEntidad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_rol")
-    private Long id_rol;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "nombre", unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     private RolUsuarioEnum rol;
 
-    //@OneToMany(mappedBy = "rol", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_rol")
+
+    @OneToMany(mappedBy = "rolEntidad",fetch = FetchType.LAZY)
+//    @JoinColumn(name = "rolEntidad") esta mal porque el rol esta en las credenciales, hay que mover el rol de credenciales a usuario
     private List<UsuarioEntidad> usuarios; // Lista de usuarios que tienen este rol
 
     public RolEntidad(RolUsuarioEnum rolUsuarioEnum) {
         rol=rolUsuarioEnum;
     }
 
-    @JsonValue
-    public String getNombre() {
-        return rol.name();
-    }
 
     //constructores
 
@@ -46,14 +41,22 @@ public class RolEntidad {
         super();
     }
 
-    public RolEntidad(Long id_rol, RolUsuarioEnum rol) {
-        this.id_rol = id_rol;
+    public RolEntidad(Long id, RolUsuarioEnum rol) {
+        this.id = id;
         this.rol = rol;
     }
 
-    public RolEntidad(Long id_rol, RolUsuarioEnum rol, List<UsuarioEntidad> usuarios) {
-        this.id_rol = id_rol;
+    public RolEntidad(Long id, RolUsuarioEnum rol, List<UsuarioEntidad> usuarios) {
+        this.id = id;
         this.rol = rol;
         this.usuarios = usuarios;
+    }
+
+    @Override
+    public String toString() {
+        return "RolEntidad{" +
+                "id=" + id +
+                ", rol=" + rol +
+                '}';
     }
 }

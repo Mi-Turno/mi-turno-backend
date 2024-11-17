@@ -1,8 +1,6 @@
 package com.miTurno.backend.entidad;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,33 +17,29 @@ public class HorarioProfesionalEntidad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idHorario;
+    private Long id;
 
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_profesional", nullable = false)
-    @JsonBackReference
+    @JoinColumn(name = "usuario_id",nullable = false)
     private ProfesionalEntidad profesionalEntidad;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id_dia")
+    @JoinColumn(name = "dia_id")
     private DiaEntidad diaEntidad;
 
-    @Column(name = "hora_inicio", nullable = false)
+    @Column(nullable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm")
     private LocalTime horaInicio;
 
 
-//    @Column(name = "hora_fin", nullable = false)
-//    private LocalTime horaFin;
-
-    @Column(name = "estado")
+    @Column
     private Boolean estado;
 
     public HorarioProfesionalEntidad() {}
 
-    public HorarioProfesionalEntidad(Long idHorario, ProfesionalEntidad profesionalEntidad, DiaEntidad diaEntidad, LocalTime horaInicio, Boolean estado) {
-        this.idHorario = idHorario;
+    public HorarioProfesionalEntidad(Long id, ProfesionalEntidad profesionalEntidad, DiaEntidad diaEntidad, LocalTime horaInicio, Boolean estado) {
+        this.id = id;
         this.profesionalEntidad = profesionalEntidad;
         this.diaEntidad = diaEntidad;
         this.horaInicio = horaInicio;

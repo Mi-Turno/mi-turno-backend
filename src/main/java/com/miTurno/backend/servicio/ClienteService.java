@@ -1,9 +1,9 @@
 package com.miTurno.backend.servicio;
 
-import com.miTurno.backend.DTO.Cliente;
-import com.miTurno.backend.DTO.Turno;
-import com.miTurno.backend.DTO.Usuario;
+import com.miTurno.backend.model.Cliente;
+import com.miTurno.backend.model.Turno;
 import com.miTurno.backend.entidad.ClienteEntidad;
+import com.miTurno.backend.entidad.RolEntidad;
 import com.miTurno.backend.excepcion.*;
 import com.miTurno.backend.mapper.ClienteMapper;
 import com.miTurno.backend.mapper.TurnoMapper;
@@ -44,24 +44,28 @@ public class ClienteService {
     //Crear un cliente
     public Cliente crearUnCliente(UsuarioRequest usuarioRequest) throws RolIncorrectoException, RecursoNoExisteException {
 
-        RolUsuarioEnum rolUsuarioEnum = rolRepositorio.findById(usuarioRequest.getIdRolUsuario()).get().getRol();
 
-        if (rolUsuarioEnum != RolUsuarioEnum.CLIENTE) {
-            throw new RolIncorrectoException(RolUsuarioEnum.CLIENTE, rolUsuarioEnum);
+        if (usuarioRequest.getRolUsuario() != RolUsuarioEnum.CLIENTE) {
+            throw new RolIncorrectoException(RolUsuarioEnum.CLIENTE, usuarioRequest.getRolUsuario());
         }
-        if (credencialesRepositorio.findByEmail(usuarioRequest.getEmail()).isPresent()) {
-            throw new EmailYaExisteException(usuarioRequest.getEmail());
+        if (credencialesRepositorio.findByEmail(usuarioRequest.getCredencial().getEmail()).isPresent()) {
+            throw new EmailYaExisteException(usuarioRequest.getCredencial().getEmail());
         }
-        if (credencialesRepositorio.findByTelefono(usuarioRequest.getTelefono()).isPresent()) {
-            throw new TelefonoYaExisteException(usuarioRequest.getTelefono());
+        if (credencialesRepositorio.findByTelefono(usuarioRequest.getCredencial().getTelefono()).isPresent()) {
+            throw new TelefonoYaExisteException(usuarioRequest.getCredencial().getTelefono());
         }
+
+        //buscamos el rol en el repositorio de roles
+
+        RolEntidad rolEntidad = rolRepositorio.findByRol(usuarioRequest.getRolUsuario());
+
         // Crear el cliente
-        ClienteEntidad clienteEntidad = clienteMapper.toEntidad(usuarioRequest);
+        ClienteEntidad clienteEntidad = clienteMapper.toEntidad(usuarioRequest,rolEntidad);
         return clienteMapper.toModel(clienteRepositorio.save(clienteEntidad)) ;
     }
 // Obtener cliente by email and password para el login
-public Cliente obtenerClienteByEmailAndPassword(String email, String password)throws UsuarioNoExistenteException{
-    return clienteMapper.toModel(clienteRepositorio.findByCredenciales_EmailAndCredenciales_Password(email,password));
+public Cliente obtenerClienteByEmailAndPassword(String email, String password) throws UsuarioNoExistenteException{
+    return clienteMapper.toModel(clienteRepositorio.findByCredencial_EmailAndCredencial_Password(email,password));
 }
 
 // Obtener un cliente por ID
@@ -70,17 +74,21 @@ public Cliente obtenerClienteByEmailAndPassword(String email, String password)th
     }
 
     //Put Cliente
-    public Cliente actualizarClientePorId(Long id, Cliente actualizado) throws UsuarioNoExistenteException {
+    public Cliente actualizarClientePorId(Long id, UsuarioRequest clienteActualizado) throws UsuarioNoExistenteException {
 
+        //obtengo el cliente del repositorio
         ClienteEntidad clienteEntidad = clienteRepositorio.findById(id).orElseThrow(()-> new UsuarioNoExistenteException(id));
 
-        clienteEntidad.setNombre(actualizado.getNombre());
-        clienteEntidad.setApellido(actualizado.getApellido());
+
+
+
+        clienteEntidad.setNombre(clienteActualizado.getNombre());
+        clienteEntidad.setApellido(clienteActualizado.getApellido());
 
         //Actualizar credenciales
-        clienteEntidad.getCredenciales().setEmail(actualizado.getEmail());
-        clienteEntidad.getCredenciales().setPassword((actualizado.getPassword()));
-        clienteEntidad.getCredenciales().setTelefono(actualizado.getTelefono());
+        clienteEntidad.getCredencial().setEmail(clienteActualizado.getCredencial().getEmail());
+        clienteEntidad.getCredencial().setPassword((clienteActualizado.getCredencial().getPassword()));
+        clienteEntidad.getCredencial().setTelefono(clienteActualizado.getCredencial().getTelefono());
 
         clienteEntidad= clienteRepositorio.save(clienteEntidad);
 
@@ -93,7 +101,7 @@ public Cliente obtenerClienteByEmailAndPassword(String email, String password)th
         if(clienteRepositorio.existsById(id)){
             ClienteEntidad clienteEntidad= clienteRepositorio.findById(id).orElseThrow(()-> new UsuarioNoExistenteException(id));
 
-            clienteEntidad.getCredenciales().setEstado(false);
+            clienteEntidad.getCredencial().setEstado(false);
 
             clienteRepositorio.save(clienteEntidad);
             rta = true;

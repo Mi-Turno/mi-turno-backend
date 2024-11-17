@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -16,26 +18,33 @@ public class MetodoDePagoEntidad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_metodo_de_pago;
+    private Long id;
 
-    @Column(name = "metodo_de_pago",unique = true,nullable = false)
-    @Enumerated(EnumType.STRING)
-    private MetodosDePagoEnum metodosDePago;
 
     @JsonValue
     public String getNombre() {
-        return metodosDePago.name();
+        return metodoDePago.name();
     }
 
-    public MetodoDePagoEntidad(MetodosDePagoEnum metodosDePago) {
-        this.metodosDePago = metodosDePago;
-    }
 
-    public MetodoDePagoEntidad(Long id_metodo_de_pago, MetodosDePagoEnum metodosDePago) {
-        this.id_metodo_de_pago = id_metodo_de_pago;
-        this.metodosDePago = metodosDePago;
+    @Column(name = "metodo_de_pago",unique = true,nullable = false)
+    @Enumerated(EnumType.STRING)
+    private MetodosDePagoEnum metodoDePago;
+
+    @OneToMany(mappedBy = "metodoDePagoEntidad")
+    private List<TurnoEntidad> listaTurnos;
+
+    public MetodoDePagoEntidad(Long id, MetodosDePagoEnum metodoDePago, List<TurnoEntidad> listaTurnos) {
+        this.id = id;
+        this.metodoDePago = metodoDePago;
+        this.listaTurnos = listaTurnos;
     }
 
     public MetodoDePagoEntidad() {
+
+    }
+
+    public MetodoDePagoEntidad(MetodosDePagoEnum metodoDePago) {
+        this.metodoDePago = metodoDePago;
     }
 }

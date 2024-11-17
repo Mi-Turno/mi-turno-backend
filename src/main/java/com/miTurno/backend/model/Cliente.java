@@ -1,6 +1,6 @@
-package com.miTurno.backend.DTO;
+package com.miTurno.backend.model;
 
-import lombok.Builder;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;

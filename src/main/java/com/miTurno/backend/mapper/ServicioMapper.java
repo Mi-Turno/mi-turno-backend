@@ -1,13 +1,9 @@
 package com.miTurno.backend.mapper;
 
-import com.miTurno.backend.DTO.Profesional;
 import com.miTurno.backend.entidad.NegocioEntidad;
-import com.miTurno.backend.entidad.ProfesionalEntidad;
-import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
-import com.miTurno.backend.repositorio.NegocioRepositorio;
 import com.miTurno.backend.request.ServicioRequest;
 import com.miTurno.backend.entidad.ServicioEntidad;
-import com.miTurno.backend.DTO.Servicio;
+import com.miTurno.backend.model.Servicio;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -16,17 +12,16 @@ import java.util.List;
 @Component
 public class ServicioMapper {
 
-    private final NegocioRepositorio negocioRepositorio;
 
-    public ServicioMapper(NegocioRepositorio negocioRepositorio) {
-        this.negocioRepositorio = negocioRepositorio;
+
+    public ServicioMapper() {
     }
 
     //entidad a servicio
     public Servicio toModel(ServicioEntidad servicioEntidad){
         return  Servicio.builder()
-                .idServicio(servicioEntidad.getIdServicio())
-                .idNegocio(servicioEntidad.getNegocioEntidad().getIdUsuario())
+                .idServicio(servicioEntidad.getId())
+                .idNegocio(servicioEntidad.getNegocioEntidad().getId())
                 .duracion(servicioEntidad.getDuracion())
                 .estado(servicioEntidad.getEstado())
                 .precio(servicioEntidad.getPrecio())
@@ -54,14 +49,12 @@ public class ServicioMapper {
     }
 
     //request a entidad
-    public ServicioEntidad toEntidad(Long idNegocio,ServicioRequest servicioRequest) {
+    public ServicioEntidad toEntidad(NegocioEntidad negocioEntidad,ServicioRequest servicioRequest) {
         ServicioEntidad servicioEntidad= new ServicioEntidad();
 
-        NegocioEntidad negocioEntidad = negocioRepositorio.findById(idNegocio).orElseThrow(()->new UsuarioNoExistenteException(idNegocio));
         servicioEntidad.setNegocioEntidad(negocioEntidad);
 
-        // Agregar el servicio a la lista de servicios del negocio
-        negocioEntidad.getServicios().add(servicioEntidad);
+
 
         servicioEntidad.setDuracion(servicioRequest.getDuracion());
         servicioEntidad.setNombre(servicioRequest.getNombre());
@@ -71,17 +64,7 @@ public class ServicioMapper {
         return servicioEntidad;
     }
 
-    //Entidad to modelo
-   /* public Servicio toModel(ServicioEntidad servicioEntidad){
-        return Servicio.builder()
-                .idNegocio(servicioEntidad.getIdServicio())
-                .idServicio(servicioEntidad.getIdServicio())
-                .nombre(servicioEntidad.getNombre())
-                .duracion(servicioEntidad.getDuracion())
-                .precio(servicioEntidad.getPrecio())
-                .estado(servicioEntidad.getEstado())
-                .build();
-    }*/
+
 
 
 }

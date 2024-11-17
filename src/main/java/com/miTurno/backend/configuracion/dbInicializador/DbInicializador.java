@@ -1,10 +1,8 @@
 package com.miTurno.backend.configuracion.dbInicializador;
 
-import com.miTurno.backend.DTO.Usuario;
-import com.miTurno.backend.entidad.DiaEntidad;
-import com.miTurno.backend.entidad.MetodoDePagoEntidad;
-import com.miTurno.backend.entidad.RolEntidad;
-import com.miTurno.backend.entidad.UsuarioEntidad;
+import com.miTurno.backend.model.Credencial;
+import com.miTurno.backend.model.Usuario;
+import com.miTurno.backend.entidad.*;
 import com.miTurno.backend.mapper.UsuarioMapper;
 import com.miTurno.backend.repositorio.DiaRepositorio;
 import com.miTurno.backend.repositorio.MetodosDePagoRepositorio;
@@ -16,11 +14,9 @@ import com.miTurno.backend.tipos.MetodosDePagoEnum;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Component
 public class DbInicializador {
@@ -54,17 +50,27 @@ public class DbInicializador {
     public void initAdmin(){
     //validacion por si ya existe en la base de datos
        if(!usuarioRepositorio.existsById(1L)){
-           Usuario admin = Usuario.builder()
-                   .nombre("MiTurnoAdmin")
+
+           Credencial credencial = Credencial.builder()
                    .estado(true)
                    .password("flf")
                    .email("miturno.flf@gmail.com")
-                   .apellido("MiTurnoAdmin")
-                   .idRolUsuario(RolUsuarioEnum.ADMIN)
                    .telefono("11111111")
-                   .fechaNacimiento(LocalDate.of(2024,10,8))
                    .build();
-           usuarioRepositorio.save(usuarioMapper.toEntidad(admin));
+
+           Usuario admin = Usuario.builder()
+                   .idUsuario(1L)
+                   .nombre("MiTurnoAdmin")
+                   .apellido("MiTurnoAdmin")
+                   .fechaNacimiento(LocalDate.of(2024,10,8))
+                   .credencial(credencial)
+                   .rolUsuario(RolUsuarioEnum.ADMIN)
+                   .build();
+
+           RolEntidad rolEntidad= rolRepositorio.findByRol(RolUsuarioEnum.ADMIN);
+           usuarioRepositorio.save(usuarioMapper.toEntidad(admin,rolEntidad));
+       }else {
+           System.out.println(usuarioRepositorio.findById(1L));
        }
 
 
@@ -111,21 +117,20 @@ public class DbInicializador {
         }
     }
     public void initMetodoDePagos(){
-        if(metodosDePagoRepositorio.findBymetodosDePago(MetodosDePagoEnum.EFECTIVO)==null){
+        if(metodosDePagoRepositorio.findByMetodoDePago(MetodosDePagoEnum.EFECTIVO)==null){
             metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.EFECTIVO));
         }
-        if(metodosDePagoRepositorio.findBymetodosDePago(MetodosDePagoEnum.TRANSFERENCIA)==null){
+        if(metodosDePagoRepositorio.findByMetodoDePago(MetodosDePagoEnum.TRANSFERENCIA)==null){
             metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.TRANSFERENCIA));
         }
-        if(metodosDePagoRepositorio.findBymetodosDePago(MetodosDePagoEnum.MERCADO_PAGO)==null){
+        if(metodosDePagoRepositorio.findByMetodoDePago(MetodosDePagoEnum.MERCADO_PAGO)==null){
             metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.MERCADO_PAGO));
         }
-        if(metodosDePagoRepositorio.findBymetodosDePago(MetodosDePagoEnum.TARJETA_DEBITO)==null){
+        if(metodosDePagoRepositorio.findByMetodoDePago(MetodosDePagoEnum.TARJETA_DEBITO)==null){
             metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.TARJETA_DEBITO));
         }
-        if(metodosDePagoRepositorio.findBymetodosDePago(MetodosDePagoEnum.TARJETA_CREDITO)==null){
+        if(metodosDePagoRepositorio.findByMetodoDePago(MetodosDePagoEnum.TARJETA_CREDITO)==null){
             metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.TARJETA_CREDITO));
         }
     }
-
 }

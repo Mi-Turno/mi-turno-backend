@@ -2,9 +2,7 @@ package com.miTurno.backend.controlador;
 
 
 import com.miTurno.backend.request.TurnoRequest;
-import com.miTurno.backend.entidad.TurnoEntidad;
-import com.miTurno.backend.mapper.TurnoMapper;
-import com.miTurno.backend.DTO.Turno;
+import com.miTurno.backend.model.Turno;
 import com.miTurno.backend.servicio.TurnoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -29,12 +27,11 @@ public class TurnoControlador {
 
 
     private final TurnoService turnoService;
-    private final TurnoMapper turnoMapper;
+
 
     @Autowired
-    public TurnoControlador(TurnoService turnoService, TurnoMapper turnoMapper) {
+    public TurnoControlador(TurnoService turnoService) {
         this.turnoService = turnoService;
-        this.turnoMapper = turnoMapper;
     }
 
 
@@ -60,9 +57,10 @@ public class TurnoControlador {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Turno crearUnTurno(@Parameter(description = "Datos del turno")
-                                           @Valid @RequestBody TurnoRequest turnoRequest){
-        //@Pathvariable idNegocio
-        return turnoService.crearUnTurno(turnoMapper.toModel(turnoRequest));
+                                           @Valid @RequestBody TurnoRequest turnoRequest,
+                              @PathVariable Long idNegocio){
+
+        return turnoService.crearUnTurno(turnoRequest,idNegocio);
     }
 
     //DELETE

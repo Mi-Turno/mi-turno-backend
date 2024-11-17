@@ -6,9 +6,9 @@ import com.miTurno.backend.excepcion.RecursoNoExisteException;
 import com.miTurno.backend.excepcion.ServicioNoExisteException;
 import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import com.miTurno.backend.mapper.TurnoMapper;
-import com.miTurno.backend.DTO.Turno;
+import com.miTurno.backend.model.Turno;
 import com.miTurno.backend.repositorio.*;
-import com.miTurno.backend.tipos.MetodosDePagoEnum;
+import com.miTurno.backend.request.TurnoRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +42,7 @@ public class TurnoService {
     public List<Turno> obtenerTodosLosTurnosPorNegocio(Long idNegocio){
 
 
-        return turnoMapper.toModelList(turnoRepositorio.findAllByNegocioEntidad_IdUsuario(idNegocio));
+        return turnoMapper.toModelList(turnoRepositorio.findAllByNegocioEntidadId(idNegocio));
     }
 
     //todo agregar comportamiento para esto en el repo
@@ -56,9 +56,11 @@ public class TurnoService {
 
 
 
-    public Turno crearUnTurno(Turno nuevoTurno){
+    public Turno crearUnTurno(TurnoRequest nuevoTurno, Long idNegocio){
         TurnoEntidad turnoEntidad = new TurnoEntidad();
-        System.out.println(nuevoTurno);
+
+
+
         //todo si el turno se efectua, se lo tengo que agregar al cliente a su lista para el historial
         //busco si existe el cliente
         ClienteEntidad nuevoCliente = clienteRepositorio.findById(nuevoTurno.getIdCliente()).orElseThrow(()->new UsuarioNoExistenteException(nuevoTurno.getIdCliente()));
@@ -79,19 +81,19 @@ public class TurnoService {
         System.out.println(nuevoProfesional);
 
         //busco si existe el negocio
-        NegocioEntidad nuevoNegocio = negocioRepositorio.findById(nuevoTurno.getIdNegocio()).orElseThrow(()-> new UsuarioNoExistenteException(nuevoTurno.getIdNegocio()));
+        NegocioEntidad nuevoNegocio = negocioRepositorio.findById(idNegocio).orElseThrow(()-> new UsuarioNoExistenteException(idNegocio));
         turnoEntidad.setNegocioEntidad(nuevoNegocio);
         System.out.println("NEGOCIO");
         System.out.println(nuevoNegocio);
 
         //busco el horario profesional entidad
-        HorarioProfesionalEntidad nuevoHorario = horarioProfesionalRepositorio.findById(nuevoTurno.getHorarioProfesional().getIdHorario()).orElseThrow(()->new RecursoNoExisteException("horario"));
+        HorarioProfesionalEntidad nuevoHorario = horarioProfesionalRepositorio.findById(nuevoTurno.getIdHorarioProfesional()).orElseThrow(()->new RecursoNoExisteException("horario"));
         turnoEntidad.setHorarioProfesionalEntidad(nuevoHorario);
         System.out.println("HORARIO");//devuelve null
         System.out.println(nuevoHorario);
 
         //busco el metodo de pago
-        MetodoDePagoEntidad nuevoMetodoDePago = metodosDePagoRepositorio.findBymetodosDePago(nuevoTurno.getMetodosDePagoEnum());
+        MetodoDePagoEntidad nuevoMetodoDePago = metodosDePagoRepositorio.findByMetodoDePago(nuevoTurno.getMetodosDePagoEnum());
         turnoEntidad.setMetodoDePagoEntidad(nuevoMetodoDePago);
         System.out.println("PAGO");
         System.out.println(nuevoMetodoDePago);
@@ -118,7 +120,7 @@ public class TurnoService {
     public Boolean eliminarTurnoPorId(Long idNegocio,Long id){
         Boolean rta = false;
         if(turnoRepositorio.existsById(id)){
-            TurnoEntidad turnoEntidad = turnoRepositorio.findByNegocioEntidad_IdUsuarioAndIdTurno(idNegocio, id);
+            TurnoEntidad turnoEntidad = turnoRepositorio.findByNegocioEntidadIdAndId(idNegocio, id);
             turnoEntidad.setEstado(false);
             turnoRepositorio.save(turnoEntidad);
             rta=true;

@@ -1,11 +1,7 @@
-package com.miTurno.backend.DTO;
+package com.miTurno.backend.model;
 
 
 import com.miTurno.backend.entidad.ClienteEntidad;
-import com.miTurno.backend.entidad.ProfesionalEntidad;
-import com.miTurno.backend.entidad.ServicioEntidad;
-import com.miTurno.backend.mapper.ProfesionalMapper;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;

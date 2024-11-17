@@ -1,58 +1,60 @@
 package com.miTurno.backend.mapper;
 
-import com.miTurno.backend.DTO.Cliente;
-import com.miTurno.backend.DTO.Turno;
+import com.miTurno.backend.model.Cliente;
 import com.miTurno.backend.entidad.*;
-import com.miTurno.backend.excepcion.RecursoNoExisteException;
-import com.miTurno.backend.repositorio.RolRepositorio;
-import com.miTurno.backend.request.ProfesionalRequest;
 import com.miTurno.backend.request.UsuarioRequest;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+
 @Component
 public class ClienteMapper {
-    private final RolRepositorio rolRepositorio;
     private final TurnoMapper turnoMapper;
+    private final CredencialMapper credencialMapper;
 
-    public ClienteMapper(RolRepositorio rolRepositorio, TurnoMapper turnoMapper) {
-        this.rolRepositorio = rolRepositorio;
+    public ClienteMapper( TurnoMapper turnoMapper, CredencialMapper credencialMapper) {
         this.turnoMapper = turnoMapper;
+
+        this.credencialMapper = credencialMapper;
     }
 
     //request a entidad
-    public ClienteEntidad toEntidad(UsuarioRequest usuarioRequest){
+    public ClienteEntidad toEntidad(UsuarioRequest usuarioRequest,RolEntidad rolEntidad){
 
-        RolEntidad rolEntidad = rolRepositorio.findById(usuarioRequest.getIdRolUsuario()).orElseThrow(()->new RecursoNoExisteException("id rol"));
 
-        CredencialesEntidad credencialesEntidad = CredencialesEntidad.builder()
-                .email(usuarioRequest.getEmail())
-                .password(usuarioRequest.getPassword())
+        CredencialEntidad unaCredencial= credencialMapper.toEntidad(credencialMapper.toModel(usuarioRequest.getCredencial()));
+
+
+        return ClienteEntidad.builder()
                 .rolEntidad(rolEntidad)
-                .telefono(usuarioRequest.getTelefono())
-                .estado(true)
+                .credencial(unaCredencial)
+                .nombre(usuarioRequest.getNombre())
+                .apellido(usuarioRequest.getApellido())
+                .fechaNacimiento(usuarioRequest.getFechaNacimiento())
+                .listadoDeTurnos(new ArrayList<>())
                 .build();
-
-        ClienteEntidad clienteEntidad = new ClienteEntidad();
-        clienteEntidad.setCredenciales(credencialesEntidad);
-        clienteEntidad.setNombre(usuarioRequest.getNombre());
-        clienteEntidad.setApellido(usuarioRequest.getApellido());
-        clienteEntidad.setFechaNacimiento(usuarioRequest.getFechaNacimiento());
-
-        return clienteEntidad;
     }
+
+    //request a modelo
+    public Cliente toModel(UsuarioRequest usuarioRequest){
+
+        return Cliente.builder()
+                .credencial(credencialMapper.toModel(usuarioRequest.getCredencial()))
+                .nombre(usuarioRequest.getNombre())
+                .apellido(usuarioRequest.getApellido())
+                .fechaNacimiento(usuarioRequest.getFechaNacimiento())
+                .turnos(new ArrayList<>())
+                .build();
+    }
+
 
     //Entidad a modelo
     public Cliente toModel(ClienteEntidad clienteEntidad){
 
         return Cliente.builder()
-                .idUsuario(clienteEntidad.getIdUsuario())
-                .email(clienteEntidad.getCredenciales().getEmail())
+                .idUsuario(clienteEntidad.getId())
                 .apellido(clienteEntidad.getApellido())
                 .nombre(clienteEntidad.getNombre())
-                .estado(clienteEntidad.getCredenciales().getEstado())
-                .telefono(clienteEntidad.getCredenciales().getTelefono())
-                .idRolUsuario(clienteEntidad.getCredenciales().getRolEntidad().getRol())
-                .password(clienteEntidad.getCredenciales().getPassword())
                 .fechaNacimiento(clienteEntidad.getFechaNacimiento())
                 .turnos(turnoMapper.toModelList(clienteEntidad.getListadoDeTurnos()))
                 .build();

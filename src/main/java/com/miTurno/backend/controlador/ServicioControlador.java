@@ -1,11 +1,9 @@
 package com.miTurno.backend.controlador;
 
-import com.miTurno.backend.DTO.Profesional;
-import com.miTurno.backend.DTO.Servicio;
+import com.miTurno.backend.model.Profesional;
+import com.miTurno.backend.model.Servicio;
 import com.miTurno.backend.request.ServicioRequest;
-import com.miTurno.backend.entidad.ServicioEntidad;
 import com.miTurno.backend.excepcion.ServicioNoExisteException;
-import com.miTurno.backend.mapper.ServicioMapper;
 import com.miTurno.backend.servicio.ServicioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -25,44 +23,12 @@ import java.util.Map;
 @RequestMapping("/negocios/{idNegocio}/servicios")
 public class ServicioControlador {
     private final ServicioService servicioService;
-    private final ServicioMapper servicioMapper;
 
     @Autowired
-    public ServicioControlador(ServicioService servicioService, ServicioMapper servicioMapper) {
+    public ServicioControlador(ServicioService servicioService) {
         this.servicioService = servicioService;
-        this.servicioMapper = servicioMapper;
     }
 
-    //GET todos los servicios
-
-   /* @Operation(summary = "Obtener todos los servicios")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",description = "Lista de servicios obtenida exitosamente"),
-            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
-    })
-    @GetMapping("/negocios/{idNegocio}")
-    public List<ServicioEntidad> listarTodosLosServicios(@PathVariable Long idNegocio){
-        return servicioService.obtenerListadoTodosLosServiciosPorNegocio(idNegocio);
-    }*/
-
-    //POST servicio por negocio /negocios/{idNegocio}/servicios
-
-    //GET servicios x criterio
-//    @Operation(summary = "Obtener servicios por un criterio especifico(nombreServicio,precio o duracion)")
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200",description = "Lista de servicios obtenida exitosamente"),
-//            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
-//    })
-//    @GetMapping
-//    public List<Servicio> listarServicios(
-//            @Parameter(description = "Filtro opcional para buscar servicios por nombre", example = "corte con maquina")
-//            @RequestParam(required = false) String nombreServicio,
-//            @Parameter(description = "Filtro opcional para buscar servicios por precio", example = "2500")
-//            @RequestParam(required = false) Boolean estado
-//
-//    ){
-//        return servicioService.obtenerListadoServicios(nombreServicio, estado);
-//    }
 
 //GET x id
     @Operation(summary = "Obtener servicio por id y por negocio")
@@ -93,7 +59,7 @@ public class ServicioControlador {
             @ApiResponse(responseCode = "200",description = "Listado de profesionales que dan el servicio obtenida exitosamente"),
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
-    @GetMapping("/{idServicio}/listado-profesionales")
+    @GetMapping("/{idServicio}/profesionales")
     public List<Profesional> obtenerListadoDeProfesionalesPorIdServicioYIdNegocio(@PathVariable Long idNegocio, @PathVariable Long idServicio){
         return servicioService.obtenerListadoDeProfesionalesPorIdServicioYIdNegocio(idServicio,idNegocio);
     }
@@ -160,6 +126,6 @@ public class ServicioControlador {
             @PathVariable Long idServicio,
             @RequestBody ServicioRequest servicioRequest) throws ServicioNoExisteException{
 
-        return servicioService.actualizarUnServicio(idNegocio,idServicio,servicioMapper.toModel(servicioRequest));
+        return servicioService.actualizarUnServicio(idNegocio,idServicio,servicioRequest);
     }
 }

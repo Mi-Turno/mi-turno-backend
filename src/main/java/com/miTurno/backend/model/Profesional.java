@@ -1,11 +1,6 @@
-package com.miTurno.backend.DTO;
-import com.miTurno.backend.entidad.HorarioProfesionalEntidad;
-import com.miTurno.backend.entidad.ServicioEntidad;
-import com.miTurno.backend.entidad.TurnoEntidad;
-import com.miTurno.backend.request.HorarioProfesionalRequest;
-import com.miTurno.backend.request.ServicioRequest;
-import com.miTurno.backend.request.TurnoRequest;
-import lombok.Builder;
+package com.miTurno.backend.model;
+
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;

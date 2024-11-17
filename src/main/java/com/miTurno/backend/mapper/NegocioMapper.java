@@ -1,12 +1,11 @@
 package com.miTurno.backend.mapper;
 
-import com.miTurno.backend.entidad.CredencialesEntidad;
+import com.miTurno.backend.model.Credencial;
+import com.miTurno.backend.entidad.CredencialEntidad;
 import com.miTurno.backend.entidad.RolEntidad;
-import com.miTurno.backend.repositorio.RolRepositorio;
 import com.miTurno.backend.request.NegocioRequest;
 import com.miTurno.backend.entidad.NegocioEntidad;
-import com.miTurno.backend.DTO.Negocio;
-import com.miTurno.backend.tipos.RolUsuarioEnum;
+import com.miTurno.backend.model.Negocio;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -15,41 +14,30 @@ import java.util.List;
 @Component
 public class NegocioMapper {
 
-    private final RolRepositorio rolRepositorio;
+
     private final ProfesionalMapper profesionalMapper;
     private final ServicioMapper servicioMapper;
+    private final CredencialMapper credencialMapper;
 
-    public NegocioMapper(RolRepositorio rolRepositorio,ProfesionalMapper profesionalMapper,ServicioMapper servicioMapper) {
-        this.rolRepositorio = rolRepositorio;
+    public NegocioMapper(ProfesionalMapper profesionalMapper, ServicioMapper servicioMapper, CredencialMapper credencialMapper) {
         this.profesionalMapper = profesionalMapper;
         this.servicioMapper = servicioMapper;
+        this.credencialMapper = credencialMapper;
     }
 
-    //entidad a Negocio
-    /*public Negocio toModel(NegocioEntidad negocioEntidad){
-
-        return Negocio.builder()
-                .idUsuario(negocioEntidad.getIdUsuario())
-                .rubro(negocioEntidad.getRubro())
-                .calle(negocioEntidad.getCalle())
-                .altura(negocioEntidad.getAltura())
-                .detalle(negocioEntidad.getDetalle())
-                .build();
-    }*/
 
 
     //request a negocio
     public Negocio toModel(NegocioRequest negocioRequest){
-        RolUsuarioEnum rolUsuarioEnum = rolRepositorio.findById(negocioRequest.getIdRolUsuario()).get().getRol();
+
+        Credencial credencial= credencialMapper.toModel(negocioRequest.getCredencial());
 
         return Negocio.builder()
-                .email(negocioRequest.getEmail())
-                .estado(true)
+                .credencial(credencial)
+
                 .nombre(negocioRequest.getNombre())
                 .apellido(negocioRequest.getApellido())
-                .idRolUsuario(rolUsuarioEnum)
-                .password(negocioRequest.getPassword())
-                .telefono(negocioRequest.getTelefono())
+                .rolUsuario(negocioRequest.getRolUsuario())
                 .fechaNacimiento(negocioRequest.getFechaNacimiento())
                 .rubro(negocioRequest.getRubro())
                 .calle(negocioRequest.getCalle())
@@ -59,42 +47,42 @@ public class NegocioMapper {
     }
 
     //negocio a Entidad
-    public NegocioEntidad toEntidad(Negocio negocio){
+    public NegocioEntidad toEntidad(Negocio negocio,RolEntidad rolEntidad){
 
-        RolEntidad rolEntidad = rolRepositorio.findByRol(negocio.getIdRolUsuario());
 
-        CredencialesEntidad credencialesEntidad = CredencialesEntidad.builder()
+
+        CredencialEntidad credencialEntidad = credencialMapper.toEntidad(negocio.getCredencial());
+
+
+        return NegocioEntidad.builder()
                 .rolEntidad(rolEntidad)
-                .telefono(negocio.getTelefono())
-                .estado(negocio.getEstado())
-                .password(negocio.getPassword())
-                .email(negocio.getEmail())
+                .rubro(negocio.getRubro())
+                .nombre(negocio.getNombre())
+                .apellido(negocio.getApellido())
+                .calle(negocio.getCalle())
+                .altura(negocio.getAltura())
+                .detalle(negocio.getDetalle())
+                .fechaNacimiento(negocio.getFechaNacimiento())
+                .credencial(credencialEntidad)
                 .build();
 
-
-        NegocioEntidad negocioEntidad = new NegocioEntidad();
-        negocioEntidad.setRubro(negocio.getRubro());
-        negocioEntidad.setNombre(negocio.getNombre());
-        negocioEntidad.setApellido(negocio.getApellido());
-        negocioEntidad.setCalle(negocio.getCalle());
-        negocioEntidad.setAltura(negocio.getAltura());
-        negocioEntidad.setDetalle(negocio.getDetalle());
-        negocioEntidad.setFechaNacimiento(negocio.getFechaNacimiento());
-        negocioEntidad.setCredenciales(credencialesEntidad);
-
-
-        return negocioEntidad;
     }
     //entidad a modelo
     public Negocio toModel(NegocioEntidad negocioEntidad){
-       return Negocio.builder()
-               .idUsuario(negocioEntidad.getIdUsuario())
-               .email(negocioEntidad.getCredenciales().getEmail())
-               .password(negocioEntidad.getCredenciales().getPassword())
-               .telefono(negocioEntidad.getCredenciales().getTelefono())
-               .idRolUsuario(negocioEntidad.getCredenciales().getRolEntidad().getRol())
-               .estado(negocioEntidad.getCredenciales().getEstado())
 
+        Credencial unaCredencial = Credencial.builder()
+                .estado(negocioEntidad.getCredencial().getEstado())
+                .email(negocioEntidad.getCredencial().getEmail())
+                .idCredencial(negocioEntidad.getCredencial().getId())
+                .telefono(negocioEntidad.getCredencial().getTelefono())
+                .password(negocioEntidad.getCredencial().getPassword())
+                .build();
+
+       return Negocio.builder()
+               .credencial(unaCredencial)
+
+               .rolUsuario(negocioEntidad.getRolEntidad().getRol())
+               .idUsuario(negocioEntidad.getId())
                .nombre(negocioEntidad.getNombre())
                .apellido(negocioEntidad.getApellido())
                .fechaNacimiento(negocioEntidad.getFechaNacimiento())

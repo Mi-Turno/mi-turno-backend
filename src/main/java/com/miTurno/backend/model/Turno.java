@@ -1,4 +1,4 @@
-package com.miTurno.backend.DTO;
+package com.miTurno.backend.model;
 
 
 import com.miTurno.backend.tipos.MetodosDePagoEnum;
@@ -17,11 +17,11 @@ public class Turno {
     private Long idServicio;
     private Long idCliente;
     private Long idNegocio;
+    private Long idHorarioProfesional;
+    private Long idProfesional;
 
     private MetodosDePagoEnum metodosDePagoEnum;
     private LocalDate fechaInicio;
-    private HorarioProfesional horarioProfesional;
-    private Long idProfesional;
     private Boolean estado;
 
     //constructor
@@ -31,15 +31,15 @@ public class Turno {
 
     }
 
-    public Turno(Long idTurno, Long idServicio, Long idCliente, Long idNegocio, MetodosDePagoEnum metodosDePagoEnum, LocalDate fechaInicio, HorarioProfesional horarioProfesional, Long idProfesional, Boolean estado) {
+    public Turno(Long idTurno, Long idServicio, Long idCliente, Long idNegocio, Long idHorarioProfesional, Long idProfesional, MetodosDePagoEnum metodosDePagoEnum, LocalDate fechaInicio, Boolean estado) {
         this.idTurno = idTurno;
         this.idServicio = idServicio;
         this.idCliente = idCliente;
         this.idNegocio = idNegocio;
+        this.idHorarioProfesional = idHorarioProfesional;
+        this.idProfesional = idProfesional;
         this.metodosDePagoEnum = metodosDePagoEnum;
         this.fechaInicio = fechaInicio;
-        this.horarioProfesional = horarioProfesional;
-        this.idProfesional = idProfesional;
         this.estado = estado;
     }
 
@@ -53,7 +53,7 @@ public class Turno {
                 ", idNegocio=" + idNegocio +
                 ", metodosDePagoEnum=" + metodosDePagoEnum +
                 ", fechaInicio=" + fechaInicio +
-                ", horarioProfesional=" + horarioProfesional +
+                ", horarioProfesional=" + idHorarioProfesional +
                 ", idProfesional=" + idProfesional +
                 '}';
     }
