@@ -14,10 +14,9 @@ import java.util.List;
 @Component
 public class ServicioMapper {
 
-    private final NegocioRepositorio negocioRepositorio;
 
-    public ServicioMapper(NegocioRepositorio negocioRepositorio) {
-        this.negocioRepositorio = negocioRepositorio;
+
+    public ServicioMapper() {
     }
 
     //entidad a servicio
@@ -52,14 +51,12 @@ public class ServicioMapper {
     }
 
     //request a entidad
-    public ServicioEntidad toEntidad(Long idNegocio,ServicioRequest servicioRequest) {
+    public ServicioEntidad toEntidad(NegocioEntidad negocioEntidad,ServicioRequest servicioRequest) {
         ServicioEntidad servicioEntidad= new ServicioEntidad();
 
-        NegocioEntidad negocioEntidad = negocioRepositorio.findById(idNegocio).orElseThrow(()->new UsuarioNoExistenteException(idNegocio));
         servicioEntidad.setNegocioEntidad(negocioEntidad);
 
-        // Agregar el servicio a la lista de servicios del negocio
-        negocioEntidad.getServicios().add(servicioEntidad);
+
 
         servicioEntidad.setDuracion(servicioRequest.getDuracion());
         servicioEntidad.setNombre(servicioRequest.getNombre());

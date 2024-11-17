@@ -11,6 +11,9 @@ import java.util.List;
 @Component
 public class HorarioProfesionalMapper {
 
+    public HorarioProfesionalMapper() {
+    }
+
     //entidad a HorarioProfesional
     public HorarioProfesional toModel(HorarioProfesionalEntidad horarioProfesionalEntidad){
 

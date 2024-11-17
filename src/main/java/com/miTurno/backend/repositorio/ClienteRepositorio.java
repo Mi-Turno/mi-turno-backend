@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ClienteRepositorio extends JpaRepository<ClienteEntidad,Long> {
-    ClienteEntidad findByCredenciales_EmailAndCredenciales_Password(String email, String password);
+    ClienteEntidad findByCredencial_EmailAndCredencial_Password(String email, String password);
 
 }

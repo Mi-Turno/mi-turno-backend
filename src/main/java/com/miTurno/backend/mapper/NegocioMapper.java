@@ -15,13 +15,12 @@ import java.util.List;
 @Component
 public class NegocioMapper {
 
-    private final RolRepositorio rolRepositorio;
+
     private final ProfesionalMapper profesionalMapper;
     private final ServicioMapper servicioMapper;
     private final CredencialMapper credencialMapper;
 
-    public NegocioMapper(RolRepositorio rolRepositorio, ProfesionalMapper profesionalMapper, ServicioMapper servicioMapper, CredencialMapper credencialMapper) {
-        this.rolRepositorio = rolRepositorio;
+    public NegocioMapper(ProfesionalMapper profesionalMapper, ServicioMapper servicioMapper, CredencialMapper credencialMapper) {
         this.profesionalMapper = profesionalMapper;
         this.servicioMapper = servicioMapper;
         this.credencialMapper = credencialMapper;
@@ -32,7 +31,7 @@ public class NegocioMapper {
     //request a negocio
     public Negocio toModel(NegocioRequest negocioRequest){
 
-        Credencial credencial= credencialMapper.toModel(negocioRequest.getCrendeciales());
+        Credencial credencial= credencialMapper.toModel(negocioRequest.getCredencial());
 
         return Negocio.builder()
                 .credencial(credencial)
@@ -77,14 +76,19 @@ public class NegocioMapper {
     //entidad a modelo
     public Negocio toModel(NegocioEntidad negocioEntidad){
 
-       return Negocio.builder()
-               .idUsuario(negocioEntidad.getId())
-               .email(negocioEntidad.getCredencial().getEmail())
-               .password(negocioEntidad.getCredencial().getPassword())
-               .telefono(negocioEntidad.getCredencial().getTelefono())
-               .rolUsuario(negocioEntidad.getCredencial().getRolEntidad().getRol())
-               .estado(negocioEntidad.getCredencial().getEstado())
+        Credencial unaCredencial = Credencial.builder()
+                .estado(negocioEntidad.getCredencial().getEstado())
+                .email(negocioEntidad.getCredencial().getEmail())
+                .idCredencial(negocioEntidad.getCredencial().getId())
+                .telefono(negocioEntidad.getCredencial().getTelefono())
+                .password(negocioEntidad.getCredencial().getPassword())
+                .build();
 
+       return Negocio.builder()
+               .credencial(unaCredencial)
+
+               .rolUsuario(negocioEntidad.getRolEntidad().getRol())
+               .idUsuario(negocioEntidad.getId())
                .nombre(negocioEntidad.getNombre())
                .apellido(negocioEntidad.getApellido())
                .fechaNacimiento(negocioEntidad.getFechaNacimiento())

@@ -55,7 +55,6 @@ public class DbInicializador {
                    .estado(true)
                    .password("flf")
                    .email("miturno.flf@gmail.com")
-                   .rolUsuario(RolUsuarioEnum.ADMIN)
                    .telefono("11111111")
                    .build();
 
@@ -65,9 +64,11 @@ public class DbInicializador {
                    .apellido("MiTurnoAdmin")
                    .fechaNacimiento(LocalDate.of(2024,10,8))
                    .credencial(credencial)
+                   .rolUsuario(RolUsuarioEnum.ADMIN)
                    .build();
-           System.out.println(usuarioMapper.toEntidad(admin));
-           usuarioRepositorio.save(usuarioMapper.toEntidad(admin));
+
+           RolEntidad rolEntidad= rolRepositorio.findByRol(RolUsuarioEnum.ADMIN);
+           usuarioRepositorio.save(usuarioMapper.toEntidad(admin,rolEntidad));
        }else {
            System.out.println(usuarioRepositorio.findById(1L));
        }
@@ -116,19 +117,19 @@ public class DbInicializador {
         }
     }
     public void initMetodoDePagos(){
-        if(metodosDePagoRepositorio.findByMetodosDePago(MetodosDePagoEnum.EFECTIVO)==null){
+        if(metodosDePagoRepositorio.findByMetodoDePago(MetodosDePagoEnum.EFECTIVO)==null){
             metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.EFECTIVO));
         }
-        if(metodosDePagoRepositorio.findByMetodosDePago(MetodosDePagoEnum.TRANSFERENCIA)==null){
+        if(metodosDePagoRepositorio.findByMetodoDePago(MetodosDePagoEnum.TRANSFERENCIA)==null){
             metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.TRANSFERENCIA));
         }
-        if(metodosDePagoRepositorio.findByMetodosDePago(MetodosDePagoEnum.MERCADO_PAGO)==null){
+        if(metodosDePagoRepositorio.findByMetodoDePago(MetodosDePagoEnum.MERCADO_PAGO)==null){
             metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.MERCADO_PAGO));
         }
-        if(metodosDePagoRepositorio.findByMetodosDePago(MetodosDePagoEnum.TARJETA_DEBITO)==null){
+        if(metodosDePagoRepositorio.findByMetodoDePago(MetodosDePagoEnum.TARJETA_DEBITO)==null){
             metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.TARJETA_DEBITO));
         }
-        if(metodosDePagoRepositorio.findByMetodosDePago(MetodosDePagoEnum.TARJETA_CREDITO)==null){
+        if(metodosDePagoRepositorio.findByMetodoDePago(MetodosDePagoEnum.TARJETA_CREDITO)==null){
             metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.TARJETA_CREDITO));
         }
     }

@@ -84,13 +84,13 @@ public class TurnoService {
         System.out.println(nuevoNegocio);
 
         //busco el horario profesional entidad
-        HorarioProfesionalEntidad nuevoHorario = horarioProfesionalRepositorio.findById(nuevoTurno.getHorarioProfesional().getIdHorario()).orElseThrow(()->new RecursoNoExisteException("horario"));
+        HorarioProfesionalEntidad nuevoHorario = horarioProfesionalRepositorio.findById(nuevoTurno.getIdHorarioProfesional()).orElseThrow(()->new RecursoNoExisteException("horario"));
         turnoEntidad.setHorarioProfesionalEntidad(nuevoHorario);
         System.out.println("HORARIO");//devuelve null
         System.out.println(nuevoHorario);
 
         //busco el metodo de pago
-        MetodoDePagoEntidad nuevoMetodoDePago = metodosDePagoRepositorio.findByMetodosDePago(nuevoTurno.getMetodosDePagoEnum());
+        MetodoDePagoEntidad nuevoMetodoDePago = metodosDePagoRepositorio.findByMetodoDePago(nuevoTurno.getMetodosDePagoEnum());
         turnoEntidad.setMetodoDePagoEntidad(nuevoMetodoDePago);
         System.out.println("PAGO");
         System.out.println(nuevoMetodoDePago);

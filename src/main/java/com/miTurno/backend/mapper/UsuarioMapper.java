@@ -1,12 +1,17 @@
 package com.miTurno.backend.mapper;
 
+import com.miTurno.backend.DTO.Turno;
 import com.miTurno.backend.entidad.CredencialEntidad;
 import com.miTurno.backend.entidad.RolEntidad;
+import com.miTurno.backend.entidad.TurnoEntidad;
 import com.miTurno.backend.request.UsuarioRequest;
 import com.miTurno.backend.entidad.UsuarioEntidad;
 import com.miTurno.backend.DTO.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.Collections;
+import java.util.List;
 
 @Component
 public class UsuarioMapper {
@@ -39,21 +44,18 @@ public class UsuarioMapper {
                 .apellido(usuarioRequest.getApellido())
                 .fechaNacimiento(usuarioRequest.getFechaNacimiento())
                 .nombre(usuarioRequest.getNombre())
-                .credencial(credencialMapper.toModel(usuarioRequest.getCrendeciales()))
+                .credencial(credencialMapper.toModel(usuarioRequest.getCredencial()))
                 .build();
     }
 
     //usuario a entidad
 
-    public UsuarioEntidad toEntidad(Usuario usuario){
+    public UsuarioEntidad toEntidad(Usuario usuario,RolEntidad rolEntidad){
 
         //creamos las credenciales
         CredencialEntidad credencialEntidad = credencialMapper.toEntidad(usuario.getCredencial());
 
         //rol
-        RolEntidad rolEntidad= RolEntidad.builder()
-                .rol(usuario.getRolUsuario())
-                .build();
 
         //luego la entidad
         UsuarioEntidad usuarioEntidad= UsuarioEntidad.builder()
@@ -69,6 +71,17 @@ public class UsuarioMapper {
         usuarioEntidad.setCredencial(credencialEntidad);
 
         return usuarioEntidad;
+    }
+
+    public List<Usuario> toModelList(List<UsuarioEntidad> listaUsuarioEntidad) {
+        // Si la lista es null, retorna una lista vacía en lugar de null
+        if (listaUsuarioEntidad == null) {
+            return Collections.emptyList();
+        }
+
+        return listaUsuarioEntidad.stream()
+                .map(this::toModel)
+                .toList();
     }
 
 }

@@ -10,5 +10,7 @@ public interface HorarioProfesionalRepositorio extends JpaRepository<HorarioProf
 
     List<HorarioProfesionalEntidad> findByProfesionalEntidadId(Long idProfesional);
 
-    List<HorarioProfesionalEntidad> findByProfesionalEntidadIdAndDiaEntidad(Long idProfesional, DiasEnum diaEnum);
+    List<HorarioProfesionalEntidad> findByProfesionalEntidadIdAndDiaEntidad_Dia(Long idProfesional, DiasEnum diaEnum);
+
+
 }

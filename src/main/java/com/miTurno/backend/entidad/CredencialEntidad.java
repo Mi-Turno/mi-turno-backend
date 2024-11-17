@@ -47,17 +47,6 @@ public class CredencialEntidad {
         this.estado = estado;
     }
 
-    @Override
-    public String toString() {
-        return "CredencialEntidad{" +
-                "email='" + email + '\'' +
-                ", id=" + id +
-                ", password='" + password + '\'' +
-                ", telefono='" + telefono + '\'' +
-                ", usuario=" + usuario +
-                ", estado=" + estado +
-                '}';
-    }
 }
 
 

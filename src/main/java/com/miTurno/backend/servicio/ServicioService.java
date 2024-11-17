@@ -2,8 +2,10 @@ package com.miTurno.backend.servicio;
 
 import com.miTurno.backend.DTO.Profesional;
 import com.miTurno.backend.DTO.Servicio;
+import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.entidad.ServicioEntidad;
 import com.miTurno.backend.excepcion.ServicioNoExisteException;
+import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
 import com.miTurno.backend.mapper.ProfesionalMapper;
 import com.miTurno.backend.mapper.ServicioMapper;
 import com.miTurno.backend.repositorio.NegocioRepositorio;
@@ -53,7 +55,14 @@ public class ServicioService {
     //POST
     public Servicio crearUnServicio(Long idNegocio,ServicioRequest nuevoServicio){
 
-        return servicioMapper.toModel(servicioRepositorio.save(servicioMapper.toEntidad(idNegocio,nuevoServicio)));
+        //todo buscar el negocioEntidad aca idNegocio
+        NegocioEntidad negocioEntidad=negocioRepositorio.findById(idNegocio).orElseThrow(()-> new UsuarioNoExistenteException(idNegocio));
+        ServicioEntidad servicioEntidad =servicioMapper.toEntidad(negocioEntidad,nuevoServicio);
+
+
+        // Agregar el servicio a la lista de servicios del negocio
+        negocioEntidad.getServicios().add(servicioEntidad);
+        return servicioMapper.toModel(servicioRepositorio.save(servicioEntidad));
     }
 
 

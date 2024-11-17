@@ -48,20 +48,19 @@ public class ProfesionalService {
 
     public Profesional crearUnprofesional(Long idNegocio, ProfesionalRequest profesionalRequest) throws RolIncorrectoException, RecursoNoExisteException {
 
-        if (profesionalRequest.getRolUsuario() != RolUsuarioEnum.PROFESIONAL) {
-            throw new RolIncorrectoException(RolUsuarioEnum.PROFESIONAL, profesionalRequest.getRolUsuario());
+        if (profesionalRequest.getRolUsuarioEnum() != RolUsuarioEnum.PROFESIONAL) {
+            throw new RolIncorrectoException(RolUsuarioEnum.PROFESIONAL, profesionalRequest.getRolUsuarioEnum());
         }
 
-        //todo: falta verificacion de email ver como poder anexarlo con crear un usuario de usuario Service
 
-        if (credencialesRepositorio.findByEmail(profesionalRequest.getEmail()).isPresent()) {
-            throw new EmailYaExisteException(profesionalRequest.getEmail());
+        if (credencialesRepositorio.findByEmail(profesionalRequest.getCredencial().getEmail()).isPresent()) {
+            throw new EmailYaExisteException(profesionalRequest.getCredencial().getEmail());
         }
 
         //verificar si ya existe un celular, si es asi tira excepcion
 
-        if (credencialesRepositorio.findByTelefono(profesionalRequest.getTelefono()).isPresent()){
-            throw new TelefonoYaExisteException(profesionalRequest.getTelefono());
+        if (credencialesRepositorio.findByTelefono(profesionalRequest.getCredencial().getTelefono()).isPresent()){
+            throw new TelefonoYaExisteException(profesionalRequest.getCredencial().getTelefono());
 
         }
 
@@ -69,7 +68,10 @@ public class ProfesionalService {
         NegocioEntidad negocioEntidad = negocioRepositorio.findById(idNegocio).orElseThrow(() -> new RecursoNoExisteException("Id negocio"));
 
         // Crear el usuario
-        ProfesionalEntidad profesionalEntidad = profesionalMapper.toEntidad(idNegocio, profesionalRequest);
+        ProfesionalEntidad profesionalEntidad = profesionalMapper.toEntidad(profesionalRequest,negocioEntidad);
+
+        //agrego el profesional al listado del negocio
+        negocioEntidad.getProfesionales().add(profesionalEntidad);
 
         return profesionalMapper.toModel(profesionalRepositorio.save(profesionalEntidad));
     }
@@ -85,7 +87,7 @@ public class ProfesionalService {
     //GET profesionales de negocio x id y estado
 
     public List<Profesional> obtenerServiciosPorIdNegocioYEstado(Long idNegocio, Boolean estado) {
-        return profesionalMapper.toModelList(profesionalRepositorio.findAllByNegocioEntidadIdAndCredenciales_Estado(idNegocio, estado));
+        return profesionalMapper.toModelList(profesionalRepositorio.findAllByNegocioEntidadIdAndCredencial_Estado(idNegocio, estado));
     }
 
     //GET profesional x id
@@ -119,12 +121,11 @@ public class ProfesionalService {
         ProfesionalEntidad profesionalEntidad = profesionalRepositorio.findByIdAndNegocioEntidadId(idProfesionalAActualizar, idNegocio);
 
         CredencialEntidad credencialEntidad = profesionalEntidad.getCredencial();
-        credencialEntidad.setEmail(nuevoProfesional.getEmail());
-        credencialEntidad.setTelefono(nuevoProfesional.getTelefono());
+        credencialEntidad.setEmail(nuevoProfesional.getCredencial().getEmail());
+        credencialEntidad.setTelefono(nuevoProfesional.getCredencial().getTelefono());
         profesionalEntidad.setNombre(nuevoProfesional.getNombre());
         profesionalEntidad.setApellido(nuevoProfesional.getApellido());
         profesionalEntidad.setCredencial(credencialEntidad);
-        //servicioEntidad.setEstado(nuevoServicio.getEstado());
 
         profesionalRepositorio.save(profesionalEntidad);
 
@@ -136,15 +137,15 @@ public class ProfesionalService {
         //Busco los recursos
         ProfesionalEntidad profesionalEntidad = profesionalRepositorio.findById(idProfesional).orElseThrow(() -> new RecursoNoExisteException("Profesional con ID " + idProfesional + " no existe"));
         ServicioEntidad servicioEntidad = servicioRepositorio.findById(idServicio).orElseThrow(() -> new RecursoNoExisteException("Servicio con ID " + idServicio + " no existe"));
-        //Obtengo los servicios del profesional y los profesionales del servicio
 
+        //Obtengo los servicios del profesional y los profesionales del servicio
         List<ServicioEntidad> listaServicios = profesionalEntidad.getListaServiciosEntidad();
         List<ProfesionalEntidad> listaProfesionales = servicioEntidad.getProfesionales();
 
         //los matcheo
         if (!listaServicios.contains(servicioEntidad)) {
-            listaServicios.add(servicioEntidad);
             // Agrego el servicio al profesional
+            listaServicios.add(servicioEntidad);
         } else {
             // Elimino el servicio del profesional
             listaServicios.remove(servicioEntidad);

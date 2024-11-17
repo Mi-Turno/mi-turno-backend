@@ -21,7 +21,7 @@ public class CredencialMapper {
                 .email(credencialRequest.getEmail())
                 .password(credencialRequest.getPassword())
                 .telefono(credencialRequest.getTelefono())
-                .rolUsuario(credencialRequest.getRolUsuarioEnum())
+//                .rolUsuario(credencialRequest.getRolUsuarioEnum())
                 .estado(true)
                 .build();
 
@@ -36,7 +36,7 @@ public class CredencialMapper {
                 .email(credencialEntidad.getEmail())
                 .password(credencialEntidad.getPassword())
                 .telefono(credencialEntidad.getTelefono())
-                .rolUsuario(credencialEntidad.getRolEntidad().getRol())
+//                .rolUsuario(credencialEntidad.getRolEntidad().getRol())
                 .estado(credencialEntidad.getEstado())
                 .build();
 
@@ -45,16 +45,14 @@ public class CredencialMapper {
     public CredencialEntidad toEntidad(Credencial credencial){
 
         //creamos el rol Entidad
-        RolEntidad rolEntidad= RolEntidad.builder()
-                .rol(credencial.getRolUsuario())
-                .build();
+
 
         return CredencialEntidad.builder()
-                .rolEntidad(rolEntidad)
                 .email(credencial.getEmail())
                 .password(credencial.getPassword())
-                .estado(credencial.getEstado()) //el estado del usuario se settea por fuera del mapper
                 .telefono(credencial.getTelefono())
+                .estado(credencial.getEstado()) //el estado del usuario se settea por fuera del mapper
+
                 .build();
 
     }

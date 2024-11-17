@@ -1,11 +1,13 @@
 package com.miTurno.backend.servicio;
 
 import com.miTurno.backend.entidad.CredencialEntidad;
+import com.miTurno.backend.entidad.RolEntidad;
 import com.miTurno.backend.repositorio.CredencialesRepositorio;
 import com.miTurno.backend.entidad.UsuarioEntidad;
 import com.miTurno.backend.excepcion.*;
 import com.miTurno.backend.mapper.UsuarioMapper;
 import com.miTurno.backend.DTO.Usuario;
+import com.miTurno.backend.repositorio.RolRepositorio;
 import com.miTurno.backend.repositorio.UsuarioRepositorio;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,13 +23,15 @@ public class UsuarioService {
 
 
     private final CredencialesRepositorio credencialesRepositorio;
+    private final RolRepositorio rolRepositorio;
 
 
     @Autowired
-    public UsuarioService(UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, CredencialesRepositorio credencialesRepositorio) {
+    public UsuarioService(UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, CredencialesRepositorio credencialesRepositorio, RolRepositorio rolRepositorio) {
         this.usuarioRepositorio = usuarioRepositorio;
         this.usuarioMapper = usuarioMapper;
         this.credencialesRepositorio = credencialesRepositorio;
+        this.rolRepositorio = rolRepositorio;
     }
 
     //get
@@ -43,20 +47,15 @@ public class UsuarioService {
 
     //get x email y contra
    public Usuario obtenerUsuariosByEmailAndPassword(String email,String password)throws UsuarioNoExistenteException{
-        return usuarioMapper.toModel(usuarioRepositorio.findByCredencialesEmailAndCredencialesPassword(email,password));
+        return usuarioMapper.toModel(usuarioRepositorio.findByCredencialEmailAndCredencialPassword(email,password));
    }
 
     //get x rol
-    public List<UsuarioEntidad> obtenerUsuariosPorRol(RolUsuarioEnum rol) {
+    public List<Usuario> obtenerUsuariosPorRol(RolUsuarioEnum rol) {
 
-        List<CredencialEntidad> credencialEntidadList = credencialesRepositorio.findAllByRolEntidad_Rol(rol);
-        List<UsuarioEntidad> usuarioEntidadList = new ArrayList<>();
+        List<UsuarioEntidad> listadoDeUsuariosEntidad = usuarioRepositorio.findAllByRolEntidad_Rol(rol);
 
-        for (CredencialEntidad unaCredencial: credencialEntidadList){
-            usuarioEntidadList.add(usuarioRepositorio.findById(unaCredencial.getId()).orElseThrow(()->new RecursoNoExisteException("No existe un id")));
-        }
-
-        return usuarioEntidadList;
+        return usuarioMapper.toModelList(listadoDeUsuariosEntidad);
     }
 
     //get x estado
@@ -85,7 +84,9 @@ public class UsuarioService {
         //setteamos el estado del usuario en true
         usuario.getCredencial().setEstado(true);
 
-        UsuarioEntidad usuarioEntidad= usuarioMapper.toEntidad(usuario);
+        RolEntidad rolEntidad = rolRepositorio.findByRol(usuario.getRolUsuario());
+
+        UsuarioEntidad usuarioEntidad= usuarioMapper.toEntidad(usuario,rolEntidad);
 
         usuarioEntidad = usuarioRepositorio.save(usuarioEntidad);
         return usuarioMapper.toModel(usuarioEntidad);
@@ -112,9 +113,9 @@ public class UsuarioService {
 
         //  Actualizar credenciales
         //    actualizarCredenciales(usuarioEntidad, actualizado);
-        usuarioEntidad.getCredencial().setEmail(actualizado.getEmail());
-        usuarioEntidad.getCredencial().setPassword((actualizado.getPassword()));
-        usuarioEntidad.getCredencial().setTelefono(actualizado.getTelefono());
+        usuarioEntidad.getCredencial().setEmail(actualizado.getCredencial().getEmail());
+        usuarioEntidad.getCredencial().setPassword((actualizado.getCredencial().getPassword()));
+        usuarioEntidad.getCredencial().setTelefono(actualizado.getCredencial().getTelefono());
 
 
         //usuarioEntidad.getCredenciales().setRolEntidad(rolRepositorio.findByRol(actualizado.getRolUsuario()));

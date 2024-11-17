@@ -1,5 +1,4 @@
 package com.miTurno.backend.DTO;
-import com.miTurno.backend.tipos.RolUsuarioEnum;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,5 +15,13 @@ public class Credencial {
     private Boolean estado;
 
     public Credencial() {
+    }
+
+    public Credencial(Long idCredencial, String email, String password, String telefono, Boolean estado) {
+        this.idCredencial = idCredencial;
+        this.email = email;
+        this.password = password;
+        this.telefono = telefono;
+        this.estado = estado;
     }
 }

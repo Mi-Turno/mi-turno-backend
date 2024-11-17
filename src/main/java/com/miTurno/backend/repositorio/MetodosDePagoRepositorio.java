@@ -8,7 +8,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MetodosDePagoRepositorio extends JpaRepository<MetodoDePagoEntidad,Long> {
-    MetodoDePagoEntidad findByMetodosDePago(MetodosDePagoEnum MetodosDePagoEnum);
+
+
+
+    MetodoDePagoEntidad findByMetodoDePago(MetodosDePagoEnum MetodosDePagoEnum);
 
 
 }

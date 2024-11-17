@@ -29,7 +29,7 @@ public class UsuarioRequest {
     private LocalDate fechaNacimiento;//(YYYY-MM-DD)
 
     @Schema(description = "Credenciales necesarias para la creacion del usuario")
-    private CredencialRequest crendeciales;
+    private CredencialRequest credencial;
 
     @Schema(description = "Rol del usuario", example = "CLIENTE")//"CLIENTE", "ADMIN", "PROFESIONAL", "NEGOCIO"
     private RolUsuarioEnum rolUsuarioEnum;
@@ -39,9 +39,9 @@ public class UsuarioRequest {
     super();
     }
 
-    public UsuarioRequest(String apellido, CredencialRequest crendeciales, LocalDate fechaNacimiento, String nombre) {
+    public UsuarioRequest(String apellido, CredencialRequest credencial, LocalDate fechaNacimiento, String nombre) {
         this.apellido = apellido;
-        this.crendeciales = crendeciales;
+        this.credencial = credencial;
         this.fechaNacimiento = fechaNacimiento;
         this.nombre = nombre;
     }

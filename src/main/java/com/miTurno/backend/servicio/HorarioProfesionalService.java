@@ -68,7 +68,7 @@ public class HorarioProfesionalService {
         //DiaEntidad diaEntidad = diaRepositorio.findById(idDia).orElseThrow(()-> new RecursoNoExisteException("Id dia"));
         DiasEnum diaEnum = DiasEnum.fromOrdinal(Math.toIntExact(idDia));
 
-        return horarioProfesionalRepositorio.findByProfesionalEntidadIdAndDiaEntidad(idProfesional, diaEnum);
+        return horarioProfesionalRepositorio.findByProfesionalEntidadIdAndDiaEntidad_Dia(idProfesional, diaEnum);
     }
 
     public HorarioProfesionalEntidad obtenerHorarioProfesionalPorId(Long idNegocio,Long idProfesional, Long idHorarioProfesional){
