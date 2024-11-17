@@ -17,9 +17,9 @@ public class Turno {
     private Long idServicio;
     private Long idCliente;
     private Long idNegocio;
-    private Long idHorarioProfesional;
     private Long idProfesional;
 
+    private HorarioProfesional horarioProfesional;
     private MetodosDePagoEnum metodosDePagoEnum;
     private LocalDate fechaInicio;
     private Boolean estado;
@@ -31,12 +31,12 @@ public class Turno {
 
     }
 
-    public Turno(Long idTurno, Long idServicio, Long idCliente, Long idNegocio, Long idHorarioProfesional, Long idProfesional, MetodosDePagoEnum metodosDePagoEnum, LocalDate fechaInicio, Boolean estado) {
+    public Turno(Long idTurno, Long idServicio, Long idCliente, Long idNegocio, HorarioProfesional horarioProfesional, Long idProfesional, MetodosDePagoEnum metodosDePagoEnum, LocalDate fechaInicio, Boolean estado) {
         this.idTurno = idTurno;
         this.idServicio = idServicio;
         this.idCliente = idCliente;
         this.idNegocio = idNegocio;
-        this.idHorarioProfesional = idHorarioProfesional;
+        this.horarioProfesional = horarioProfesional;
         this.idProfesional = idProfesional;
         this.metodosDePagoEnum = metodosDePagoEnum;
         this.fechaInicio = fechaInicio;
@@ -53,7 +53,7 @@ public class Turno {
                 ", idNegocio=" + idNegocio +
                 ", metodosDePagoEnum=" + metodosDePagoEnum +
                 ", fechaInicio=" + fechaInicio +
-                ", horarioProfesional=" + idHorarioProfesional +
+                ", horarioProfesional=" + horarioProfesional +
                 ", idProfesional=" + idProfesional +
                 '}';
     }
