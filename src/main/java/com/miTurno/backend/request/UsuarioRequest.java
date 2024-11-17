@@ -32,7 +32,7 @@ public class UsuarioRequest {
     private CredencialRequest credencial;
 
     @Schema(description = "Rol del usuario", example = "CLIENTE")//"CLIENTE", "ADMIN", "PROFESIONAL", "NEGOCIO"
-    private RolUsuarioEnum rolUsuarioEnum;
+    private RolUsuarioEnum rolUsuario;
 
 
     public UsuarioRequest() {

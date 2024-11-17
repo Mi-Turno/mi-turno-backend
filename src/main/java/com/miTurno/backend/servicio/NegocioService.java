@@ -1,5 +1,6 @@
 package com.miTurno.backend.servicio;
 
+import com.miTurno.backend.entidad.RolEntidad;
 import com.miTurno.backend.excepcion.*;
 import com.miTurno.backend.repositorio.*;
 import com.miTurno.backend.request.NegocioRequest;
@@ -18,12 +19,14 @@ public class NegocioService {
     //atributos
     private final NegocioRepositorio negocioRepositorio;
     private final NegocioMapper negocioMapper;
+    private final RolRepositorio rolRepositorio;
 
     //constructores
     @Autowired
-    public NegocioService(NegocioMapper negocioMapper, NegocioRepositorio negocioRepositorio) {
+    public NegocioService(NegocioMapper negocioMapper, NegocioRepositorio negocioRepositorio, RolRepositorio rolRepositorio) {
         this.negocioMapper = negocioMapper;
         this.negocioRepositorio = negocioRepositorio;
+        this.rolRepositorio = rolRepositorio;
     }
 
     //metodos
@@ -53,11 +56,11 @@ public class NegocioService {
 
         String nombreNegocio = negocioRequest.getNombre();
 
-        if (negocioRequest.getRolUsuarioEnum() != RolUsuarioEnum.NEGOCIO) {
-            throw new RolIncorrectoException(RolUsuarioEnum.NEGOCIO, negocioRequest.getRolUsuarioEnum());
+        if (negocioRequest.getRolUsuario() != RolUsuarioEnum.NEGOCIO) {
+            throw new RolIncorrectoException(RolUsuarioEnum.NEGOCIO, negocioRequest.getRolUsuario());
         }
         //todo: antes había un negocioRequest.getRolUsuario() - En caso de que solucionen algo y esto les de problema
-        if (negocioRepositorio.existsByNombreAndRolEntidad_Rol(nombreNegocio,negocioRequest.getRolUsuarioEnum())) {
+        if (negocioRepositorio.existsByNombreAndRolEntidad_Rol(nombreNegocio,negocioRequest.getRolUsuario())) {
             throw new NombreNegocioYaExisteException(nombreNegocio);
         }
         if(negocioRepositorio.existsByCredencial_Email(negocioRequest.getCredencial().getEmail())){
@@ -68,9 +71,12 @@ public class NegocioService {
         }
 
         System.out.println("Paso todas las verificaciones ");
+
+        RolEntidad rolEntidad = rolRepositorio.findByRol(negocioRequest.getRolUsuario());
+
         Negocio negocio= negocioMapper.toModel(negocioRequest);
 
-        return negocioMapper.toModel(negocioRepositorio.save(negocioMapper.toEntidad(negocio)));
+        return negocioMapper.toModel(negocioRepositorio.save(negocioMapper.toEntidad(negocio,rolEntidad)));
     }
 
     //GET id negocio x nombre negocio

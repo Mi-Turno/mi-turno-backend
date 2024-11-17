@@ -48,8 +48,8 @@ public class ProfesionalService {
 
     public Profesional crearUnprofesional(Long idNegocio, ProfesionalRequest profesionalRequest) throws RolIncorrectoException, RecursoNoExisteException {
 
-        if (profesionalRequest.getRolUsuarioEnum() != RolUsuarioEnum.PROFESIONAL) {
-            throw new RolIncorrectoException(RolUsuarioEnum.PROFESIONAL, profesionalRequest.getRolUsuarioEnum());
+        if (profesionalRequest.getRolUsuario() != RolUsuarioEnum.PROFESIONAL) {
+            throw new RolIncorrectoException(RolUsuarioEnum.PROFESIONAL, profesionalRequest.getRolUsuario());
         }
 
 
@@ -67,8 +67,12 @@ public class ProfesionalService {
         //si el negocio que quiero asignar al profesional no existe, tiro excepcion
         NegocioEntidad negocioEntidad = negocioRepositorio.findById(idNegocio).orElseThrow(() -> new RecursoNoExisteException("Id negocio"));
 
+        //buscamos el rol
+        RolEntidad rolEntidad = rolRepositorio.findByRol(profesionalRequest.getRolUsuario());
+
+
         // Crear el usuario
-        ProfesionalEntidad profesionalEntidad = profesionalMapper.toEntidad(profesionalRequest,negocioEntidad);
+        ProfesionalEntidad profesionalEntidad = profesionalMapper.toEntidad(profesionalRequest,negocioEntidad,rolEntidad);
 
         //agrego el profesional al listado del negocio
         negocioEntidad.getProfesionales().add(profesionalEntidad);

@@ -3,7 +3,6 @@ package com.miTurno.backend.mapper;
 import com.miTurno.backend.DTO.Credencial;
 import com.miTurno.backend.entidad.CredencialEntidad;
 import com.miTurno.backend.entidad.RolEntidad;
-import com.miTurno.backend.repositorio.RolRepositorio;
 import com.miTurno.backend.request.NegocioRequest;
 import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.DTO.Negocio;
@@ -38,7 +37,7 @@ public class NegocioMapper {
 
                 .nombre(negocioRequest.getNombre())
                 .apellido(negocioRequest.getApellido())
-                .rolUsuario(negocioRequest.getRolUsuarioEnum())
+                .rolUsuario(negocioRequest.getRolUsuario())
                 .fechaNacimiento(negocioRequest.getFechaNacimiento())
                 .rubro(negocioRequest.getRubro())
                 .calle(negocioRequest.getCalle())
@@ -48,30 +47,25 @@ public class NegocioMapper {
     }
 
     //negocio a Entidad
-    public NegocioEntidad toEntidad(Negocio negocio){
+    public NegocioEntidad toEntidad(Negocio negocio,RolEntidad rolEntidad){
 
-        RolEntidad rolEntidad = RolEntidad.builder()
-                .rol(negocio.getRolUsuario())
-                .build();
+
 
         CredencialEntidad credencialEntidad = credencialMapper.toEntidad(negocio.getCredencial());
 
 
-        NegocioEntidad negocioEntidad = new NegocioEntidad();
+        return NegocioEntidad.builder()
+                .rolEntidad(rolEntidad)
+                .rubro(negocio.getRubro())
+                .nombre(negocio.getNombre())
+                .apellido(negocio.getApellido())
+                .calle(negocio.getCalle())
+                .altura(negocio.getAltura())
+                .detalle(negocio.getDetalle())
+                .fechaNacimiento(negocio.getFechaNacimiento())
+                .credencial(credencialEntidad)
+                .build();
 
-        negocioEntidad.setRolEntidad(rolEntidad);
-
-        negocioEntidad.setRubro(negocio.getRubro());
-        negocioEntidad.setNombre(negocio.getNombre());
-        negocioEntidad.setApellido(negocio.getApellido());
-        negocioEntidad.setCalle(negocio.getCalle());
-        negocioEntidad.setAltura(negocio.getAltura());
-        negocioEntidad.setDetalle(negocio.getDetalle());
-        negocioEntidad.setFechaNacimiento(negocio.getFechaNacimiento());
-        negocioEntidad.setCredencial(credencialEntidad);
-
-
-        return negocioEntidad;
     }
     //entidad a modelo
     public Negocio toModel(NegocioEntidad negocioEntidad){

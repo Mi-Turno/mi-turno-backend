@@ -5,6 +5,7 @@ import com.miTurno.backend.DTO.Profesional;
 import com.miTurno.backend.entidad.CredencialEntidad;
 import com.miTurno.backend.entidad.NegocioEntidad;
 import com.miTurno.backend.entidad.ProfesionalEntidad;
+import com.miTurno.backend.entidad.RolEntidad;
 import com.miTurno.backend.repositorio.NegocioRepositorio;
 import com.miTurno.backend.repositorio.RolRepositorio;
 import com.miTurno.backend.request.ProfesionalRequest;
@@ -34,7 +35,7 @@ public class ProfesionalMapper {
     }
 
     //request a entidad
-    public ProfesionalEntidad toEntidad(ProfesionalRequest profesionalRequest,NegocioEntidad negocioEntidad){
+    public ProfesionalEntidad toEntidad(ProfesionalRequest profesionalRequest, NegocioEntidad negocioEntidad, RolEntidad rolEntidad){
 
 
     //todo esto se puede mejorar, haciendo un mapper de request a entidad
@@ -47,6 +48,7 @@ public class ProfesionalMapper {
                 .apellido(profesionalRequest.getApellido())
                 .fechaNacimiento(profesionalRequest.getFechaNacimiento())
                 .credencial(credencialEntidad)
+                .rolEntidad(rolEntidad)
                 .build();
 
     }

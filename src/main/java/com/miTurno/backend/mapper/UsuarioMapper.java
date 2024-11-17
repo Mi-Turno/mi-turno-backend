@@ -1,9 +1,7 @@
 package com.miTurno.backend.mapper;
 
-import com.miTurno.backend.DTO.Turno;
 import com.miTurno.backend.entidad.CredencialEntidad;
 import com.miTurno.backend.entidad.RolEntidad;
-import com.miTurno.backend.entidad.TurnoEntidad;
 import com.miTurno.backend.request.UsuarioRequest;
 import com.miTurno.backend.entidad.UsuarioEntidad;
 import com.miTurno.backend.DTO.Usuario;
@@ -40,7 +38,7 @@ public class UsuarioMapper {
     public Usuario toModel(UsuarioRequest usuarioRequest){
 
         return Usuario.builder()
-                .rolUsuario(usuarioRequest.getRolUsuarioEnum())
+                .rolUsuario(usuarioRequest.getRolUsuario())
                 .apellido(usuarioRequest.getApellido())
                 .fechaNacimiento(usuarioRequest.getFechaNacimiento())
                 .nombre(usuarioRequest.getNombre())

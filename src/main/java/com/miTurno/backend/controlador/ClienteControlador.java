@@ -96,6 +96,8 @@ public class ClienteControlador {
         Cliente cliente= clienteService.buscarCliente(id);
         return ResponseEntity.ok(cliente);//200
     }
+
+
     //UPDATE cliente
     @Operation(summary = "actualizar usuario por ID")
     @ApiResponses(value = {
@@ -108,9 +110,11 @@ public class ClienteControlador {
             @PathVariable Long id,
             @Parameter(description = "Datos actualizado del cliente")
             @RequestBody UsuarioRequest usuarioRequest){
-        ClienteEntidad clienteEntidad = clienteMapper.toEntidad(usuarioRequest);
-        return clienteService.actualizarClientePorId(id,clienteMapper.toModel(clienteEntidad));
+
+        return clienteService.actualizarClientePorId(id,usuarioRequest);
     }
+
+
     //DELETE logico
     @Operation(summary = "Eliminar un cliente por ID")
     @ApiResponses(value = {

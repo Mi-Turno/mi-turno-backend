@@ -21,9 +21,6 @@ public class CredencialRequest {
     @Schema(description = "El nro de telefono del usuario", example = "22335667889")
     private String telefono;
 
-//    @Schema(description = "El rol del usuario", example = "CLIENTE")
-//    private RolUsuarioEnum rolUsuarioEnum;
-
 
     public CredencialRequest() {
     }

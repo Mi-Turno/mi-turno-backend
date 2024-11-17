@@ -20,11 +20,11 @@ public class ClienteMapper {
     }
 
     //request a entidad
-    public ClienteEntidad toEntidad(UsuarioRequest usuarioRequest){
+    public ClienteEntidad toEntidad(UsuarioRequest usuarioRequest,RolEntidad rolEntidad){
 
 
         CredencialEntidad unaCredencial= credencialMapper.toEntidad(credencialMapper.toModel(usuarioRequest.getCredencial()));
-        RolEntidad rolEntidad = new RolEntidad(usuarioRequest.getRolUsuarioEnum());
+
 
         return ClienteEntidad.builder()
                 .rolEntidad(rolEntidad)
