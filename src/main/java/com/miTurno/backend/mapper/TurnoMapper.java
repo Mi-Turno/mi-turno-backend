@@ -1,5 +1,6 @@
 package com.miTurno.backend.mapper;
 
+import com.miTurno.backend.entidad.EstadoTurnoEntidad;
 import com.miTurno.backend.request.TurnoRequest;
 import com.miTurno.backend.entidad.TurnoEntidad;
 import com.miTurno.backend.model.Turno;
@@ -20,7 +21,7 @@ public class TurnoMapper {
 
     //entidad a turno
     public Turno toModel(TurnoEntidad turnoEntidad){
-
+        EstadoTurnoEntidad estadoTurnoEntidad = turnoEntidad.getEstadoTurno();
         return Turno.builder()
                 .idTurno(turnoEntidad.getId())
                 .idServicio(turnoEntidad.getIdServicio().getId())
@@ -29,7 +30,7 @@ public class TurnoMapper {
                 .idNegocio(turnoEntidad.getNegocioEntidad().getId())
                 .horarioProfesional(horarioProfesionalMapper.toModel(turnoEntidad.getHorarioProfesionalEntidad()))
                 .idProfesional(turnoEntidad.getProfesionalEntidad().getId())
-                .estado(turnoEntidad.getEstado())
+                .estado(estadoTurnoEntidad.getEstadoTurno())
                 .fechaInicio(turnoEntidad.getFechaInicio())
                 .build();
 

@@ -59,8 +59,10 @@ public class TurnoEntidad {
 
 
     //estado del turno
-    @Column(name="estado")
-    private Boolean estado;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "estado_id",nullable = false)
+    private EstadoTurnoEntidad estadoTurno;
 
 
     //constructores
@@ -68,7 +70,7 @@ public class TurnoEntidad {
 
     }
 
-    public TurnoEntidad(Long id, ServicioEntidad idServicio, MetodoDePagoEntidad metodoDePagoEntidad, ClienteEntidad clienteEntidad, NegocioEntidad negocioEntidad, ProfesionalEntidad profesionalEntidad, HorarioProfesionalEntidad horarioProfesionalEntidad, LocalDate fechaInicio, Boolean estado) {
+    public TurnoEntidad(Long id, ServicioEntidad idServicio, MetodoDePagoEntidad metodoDePagoEntidad, ClienteEntidad clienteEntidad, NegocioEntidad negocioEntidad, ProfesionalEntidad profesionalEntidad, HorarioProfesionalEntidad horarioProfesionalEntidad, LocalDate fechaInicio, EstadoTurnoEntidad estado) {
         this.id = id;
         this.idServicio = idServicio;
         this.metodoDePagoEntidad = metodoDePagoEntidad;
@@ -77,6 +79,6 @@ public class TurnoEntidad {
         this.profesionalEntidad = profesionalEntidad;
         this.horarioProfesionalEntidad = horarioProfesionalEntidad;
         this.fechaInicio = fechaInicio;
-        this.estado = estado;
+        this.estadoTurno = estado;
     }
 }
