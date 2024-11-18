@@ -44,8 +44,8 @@ public class UsuarioControlador {
             @ApiResponse(responseCode = "400",description = "Parametros invalidos")
     })
     @GetMapping
-    public ResponseEntity<List<UsuarioEntidad> >listarUsuarios(){
-        List<UsuarioEntidad> usuarioEntidadList= usuarioService.obtenerTodosLosUsuarios();
+    public ResponseEntity<List<Usuario> >listarUsuarios(){
+        List<Usuario> usuarioEntidadList= usuarioService.obtenerTodosLosUsuarios();
         return ResponseEntity.ok(usuarioEntidadList);//200
     }
 

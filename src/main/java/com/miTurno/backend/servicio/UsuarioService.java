@@ -33,8 +33,8 @@ public class UsuarioService {
     }
 
     //get
-    public List<UsuarioEntidad> obtenerTodosLosUsuarios(){
-        return usuarioRepositorio.findAll();
+    public List<Usuario> obtenerTodosLosUsuarios(){
+        return usuarioMapper.toModelList(usuarioRepositorio.findAll());
     }
 
     //get x id
