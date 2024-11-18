@@ -118,11 +118,13 @@ Para ejecutar este proyecto, necesitarás las siguientes herramientas y configur
    git clone https://github.com/Mi-turno/mi-turno-backend.git
 2. cd mi-turno-backend
 3. Configura las variables de entorno, creando un archivo .env en la raíz del proyecto y agregando las credenciales de correo.
-4. Compila el proyecto utilizando Maven:
+4. Crea una Base de datos con el nombre "mi-turno".
+5. Inicializa un servidor de mySql y apache como XAMPP o WAMPP
+6. Compila el proyecto utilizando Maven:
    mvn clean install
-5. Inicia el servidor:
+7. Inicia el servidor:
    mvn spring-boot:run
-6. El backend estará corriendo en http://localhost:8080.
+8. El backend estará corriendo en http://localhost:8080.
 
 ---
 
