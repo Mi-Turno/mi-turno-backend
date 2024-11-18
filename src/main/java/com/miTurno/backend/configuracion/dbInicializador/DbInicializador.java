@@ -4,12 +4,10 @@ import com.miTurno.backend.model.Credencial;
 import com.miTurno.backend.model.Usuario;
 import com.miTurno.backend.entidad.*;
 import com.miTurno.backend.mapper.UsuarioMapper;
-import com.miTurno.backend.repositorio.DiaRepositorio;
-import com.miTurno.backend.repositorio.MetodosDePagoRepositorio;
-import com.miTurno.backend.repositorio.RolRepositorio;
-import com.miTurno.backend.repositorio.UsuarioRepositorio;
+import com.miTurno.backend.repositorio.*;
 import com.miTurno.backend.servicio.UsuarioService;
 import com.miTurno.backend.tipos.DiasEnum;
+import com.miTurno.backend.tipos.EstadoTurnoEnum;
 import com.miTurno.backend.tipos.MetodosDePagoEnum;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import jakarta.annotation.PostConstruct;
@@ -25,25 +23,29 @@ public class DbInicializador {
     private final DiaRepositorio diaRepositorio;
     private final MetodosDePagoRepositorio metodosDePagoRepositorio;
     private final UsuarioRepositorio usuarioRepositorio;
-    private final UsuarioService usuarioService;
     private final UsuarioMapper usuarioMapper;
+    private final EstadoTurnoRepositorio estadoTurnoRepositorio;
+
 
     @Autowired
-    public DbInicializador(RolRepositorio rolRepositorio, DiaRepositorio diaRepositorio, MetodosDePagoRepositorio metodosDePagoRepositorio, UsuarioRepositorio usuarioRepositorio, UsuarioService usuarioService, UsuarioMapper usuarioMapper) {
-        //todo inicializar todos los repos
+    public DbInicializador(RolRepositorio rolRepositorio, DiaRepositorio diaRepositorio, MetodosDePagoRepositorio metodosDePagoRepositorio, UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, EstadoTurnoRepositorio estadoTurnoRepositorio) {
         this.rolRepositorio = rolRepositorio;
         this.diaRepositorio = diaRepositorio;
         this.metodosDePagoRepositorio = metodosDePagoRepositorio;
         this.usuarioRepositorio = usuarioRepositorio;
-        this.usuarioService = usuarioService;
         this.usuarioMapper = usuarioMapper;
+        this.estadoTurnoRepositorio = estadoTurnoRepositorio;
     }
+
+
+
     @PostConstruct
     public void init(){
 
         initRoles();
         initDias();
         initMetodoDePagos();
+        initEstadoTurno();
         initAdmin();
     }
 
@@ -132,5 +134,23 @@ public class DbInicializador {
         if(metodosDePagoRepositorio.findByMetodoDePago(MetodosDePagoEnum.TARJETA_CREDITO)==null){
             metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.TARJETA_CREDITO));
         }
+    }
+    public void initEstadoTurno(){
+        if(estadoTurnoRepositorio.findByEstadoTurno(EstadoTurnoEnum.LIBRE)==null){
+            estadoTurnoRepositorio.save(new EstadoTurnoEntidad(EstadoTurnoEnum.LIBRE));
+        }
+        if(estadoTurnoRepositorio.findByEstadoTurno(EstadoTurnoEnum.RESERVADO)==null){
+            estadoTurnoRepositorio.save(new EstadoTurnoEntidad(EstadoTurnoEnum.RESERVADO));
+        }
+        if(estadoTurnoRepositorio.findByEstadoTurno(EstadoTurnoEnum.EN_CURSO)==null){
+            estadoTurnoRepositorio.save(new EstadoTurnoEntidad(EstadoTurnoEnum.EN_CURSO));
+        }
+        if(estadoTurnoRepositorio.findByEstadoTurno(EstadoTurnoEnum.PAGADO)==null){
+            estadoTurnoRepositorio.save(new EstadoTurnoEntidad(EstadoTurnoEnum.PAGADO));
+        }
+        if(estadoTurnoRepositorio.findByEstadoTurno(EstadoTurnoEnum.CANCELADO)==null){
+            estadoTurnoRepositorio.save(new EstadoTurnoEntidad(EstadoTurnoEnum.CANCELADO));
+        }
+
     }
 }
