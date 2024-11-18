@@ -9,6 +9,7 @@ import com.miTurno.backend.mapper.TurnoMapper;
 import com.miTurno.backend.model.Turno;
 import com.miTurno.backend.repositorio.*;
 import com.miTurno.backend.request.TurnoRequest;
+import com.miTurno.backend.tipos.EstadoTurnoEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,36 +26,28 @@ public class TurnoService {
     private final HorarioProfesionalRepositorio horarioProfesionalRepositorio;
     private final ServicioRepositorio servicioRepositorio;
     private final MetodosDePagoRepositorio metodosDePagoRepositorio;
-
+    private final EstadoTurnoRepositorio estadoTurnoRepositorio;
 
     @Autowired
-    public TurnoService(TurnoRepositorio turnoRepositorio, TurnoMapper turnoMapper, ClienteRepositorio clienteRepositorio,ProfesionalRepositorio profesionalRepositorio,NegocioRepositorio negocioRepositorio,HorarioProfesionalRepositorio horarioProfesionalRepositorio,ServicioRepositorio servicioRepositorio,MetodosDePagoRepositorio metodosDePagoRepositorio) {
+    public TurnoService(TurnoRepositorio turnoRepositorio, TurnoMapper turnoMapper, ClienteRepositorio clienteRepositorio, ProfesionalRepositorio profesionalRepositorio, NegocioRepositorio negocioRepositorio, HorarioProfesionalRepositorio horarioProfesionalRepositorio, ServicioRepositorio servicioRepositorio, MetodosDePagoRepositorio metodosDePagoRepositorio, EstadoTurnoRepositorio estadoTurnoRepositorio) {
         this.turnoRepositorio = turnoRepositorio;
         this.turnoMapper = turnoMapper;
-        this.clienteRepositorio =clienteRepositorio;
+        this.clienteRepositorio = clienteRepositorio;
         this.profesionalRepositorio = profesionalRepositorio;
         this.negocioRepositorio = negocioRepositorio;
         this.horarioProfesionalRepositorio = horarioProfesionalRepositorio;
         this.servicioRepositorio = servicioRepositorio;
         this.metodosDePagoRepositorio = metodosDePagoRepositorio;
+        this.estadoTurnoRepositorio = estadoTurnoRepositorio;
     }
+
+
     //GET
     public List<Turno> obtenerTodosLosTurnosPorNegocio(Long idNegocio){
 
 
         return turnoMapper.toModelList(turnoRepositorio.findAllByNegocioEntidadId(idNegocio));
     }
-
-    //todo agregar comportamiento para esto en el repo
-    /*public List<Turno> obtenerListadoPorProfesional(Long idProfesional){
-        return turnoRepositorio.findAll().stream().map(turnoMapper::toModel).toList();
-    }*/
-    //GET
-
-
-    //POST
-
-
 
     public Turno crearUnTurno(TurnoRequest nuevoTurno, Long idNegocio){
         TurnoEntidad turnoEntidad = new TurnoEntidad();
@@ -102,7 +95,9 @@ public class TurnoService {
         turnoEntidad.setFechaInicio(nuevoTurno.getFechaInicio());
         System.out.println("FECHA");
         System.out.println(nuevoTurno.getFechaInicio());
-        turnoEntidad.setEstado(true);
+
+        EstadoTurnoEntidad estadoTurnoEntidad=  estadoTurnoRepositorio.findByEstadoTurno(EstadoTurnoEnum.RESERVADO);
+        turnoEntidad.setEstadoTurno(estadoTurnoEntidad);
 
         turnoEntidad = turnoRepositorio.save(turnoEntidad);
 
@@ -121,7 +116,8 @@ public class TurnoService {
         Boolean rta = false;
         if(turnoRepositorio.existsById(id)){
             TurnoEntidad turnoEntidad = turnoRepositorio.findByNegocioEntidadIdAndId(idNegocio, id);
-            turnoEntidad.setEstado(false);
+            EstadoTurnoEntidad estadoTurnoEntidad=  estadoTurnoRepositorio.findByEstadoTurno(EstadoTurnoEnum.CANCELADO);
+            turnoEntidad.setEstadoTurno(estadoTurnoEntidad);
             turnoRepositorio.save(turnoEntidad);
             rta=true;
         }

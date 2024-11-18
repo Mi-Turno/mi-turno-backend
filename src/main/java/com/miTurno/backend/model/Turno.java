@@ -1,6 +1,7 @@
 package com.miTurno.backend.model;
 
 
+import com.miTurno.backend.tipos.EstadoTurnoEnum;
 import com.miTurno.backend.tipos.MetodosDePagoEnum;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,7 +23,7 @@ public class Turno {
     private HorarioProfesional horarioProfesional;
     private MetodosDePagoEnum metodosDePagoEnum;
     private LocalDate fechaInicio;
-    private Boolean estado;
+    private EstadoTurnoEnum estado;
 
     //constructor
 
@@ -31,7 +32,7 @@ public class Turno {
 
     }
 
-    public Turno(Long idTurno, Long idServicio, Long idCliente, Long idNegocio, Long idProfesional, HorarioProfesional horarioProfesional, MetodosDePagoEnum metodosDePagoEnum, LocalDate fechaInicio, Boolean estado) {
+    public Turno(Long idTurno, Long idServicio, Long idCliente, Long idNegocio, Long idProfesional, HorarioProfesional horarioProfesional, MetodosDePagoEnum metodosDePagoEnum, LocalDate fechaInicio, EstadoTurnoEnum estado) {
         this.idTurno = idTurno;
         this.idServicio = idServicio;
         this.idCliente = idCliente;
