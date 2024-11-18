@@ -87,7 +87,7 @@ public class TurnoService {
         System.out.println(nuevoNegocio);
 
         //busco el horario profesional entidad
-        HorarioProfesionalEntidad nuevoHorario = horarioProfesionalRepositorio.findById(nuevoTurno.getHorarioProfesional()).orElseThrow(()->new RecursoNoExisteException("horario"));
+        HorarioProfesionalEntidad nuevoHorario = horarioProfesionalRepositorio.findById(nuevoTurno.getHorarioProfesional().getIdHorario()).orElseThrow(()->new RecursoNoExisteException("horario"));
         turnoEntidad.setHorarioProfesionalEntidad(nuevoHorario);
         System.out.println("HORARIO");//devuelve null
         System.out.println(nuevoHorario);

@@ -31,13 +31,13 @@ public class Turno {
 
     }
 
-    public Turno(Long idTurno, Long idServicio, Long idCliente, Long idNegocio, HorarioProfesional horarioProfesional, Long idProfesional, MetodosDePagoEnum metodosDePagoEnum, LocalDate fechaInicio, Boolean estado) {
+    public Turno(Long idTurno, Long idServicio, Long idCliente, Long idNegocio, Long idProfesional, HorarioProfesional horarioProfesional, MetodosDePagoEnum metodosDePagoEnum, LocalDate fechaInicio, Boolean estado) {
         this.idTurno = idTurno;
         this.idServicio = idServicio;
         this.idCliente = idCliente;
         this.idNegocio = idNegocio;
-        this.horarioProfesional = horarioProfesional;
         this.idProfesional = idProfesional;
+        this.horarioProfesional = horarioProfesional;
         this.metodosDePagoEnum = metodosDePagoEnum;
         this.fechaInicio = fechaInicio;
         this.estado = estado;
