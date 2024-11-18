@@ -1,5 +1,6 @@
 package com.miTurno.backend.servicio;
 
+import com.miTurno.backend.request.EmailContactoRequest;
 import com.miTurno.backend.request.EmailRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -58,5 +59,19 @@ public class EnviarCorreoService {
 
                 //envio el correo
                 enviadorMail.send(email);
+    }
+
+    @Async
+    public void EnviarCorreoDeContacto(EmailContactoRequest emailContactoRequest){
+        SimpleMailMessage email = new SimpleMailMessage();
+
+        email.setTo("miturno.flf@gmail.com"); //Mi-turno
+        email.setFrom(emailContactoRequest.getEmail());//Cliente
+
+        email.setSubject(String.format("%s de %s tiene un mensaje para  Mi Turno", emailContactoRequest.getNombre(), emailContactoRequest.getNegocio()));
+        email.setText(emailContactoRequest.getMensaje());
+
+        enviadorMail.send(email);
+
     }
 }

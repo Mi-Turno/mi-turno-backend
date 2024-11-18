@@ -1,5 +1,6 @@
 package com.miTurno.backend.controlador;
 
+import com.miTurno.backend.request.EmailContactoRequest;
 import com.miTurno.backend.request.EmailRequest;
 
 import com.miTurno.backend.servicio.EnviarCorreoService;
@@ -37,4 +38,21 @@ public class EnviarCorreoControlador {
         emailService.EnviarCorreoService(emailRequest);
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
+
+    @Operation(summary = "Enviar correo", description = "Envía un correo electrónico con los detalles proporcionados en la solicitud.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Correo enviado exitosamente", content = @Content(schema = @Schema(implementation = Boolean.class))),
+            @ApiResponse(responseCode = "400", description = "Solicitud incorrecta (Bad Request)", content = @Content(schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(schema = @Schema(implementation = String.class)))
+    })
+    @PostMapping("/contacto")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<?> enviarCorreoContacto(@Valid @RequestBody EmailContactoRequest emailRequest) {
+        // Delegar la lógica de negocio al servicio
+        emailService.EnviarCorreoDeContacto(emailRequest);
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+
+
+
 }
