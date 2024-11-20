@@ -124,43 +124,11 @@ public class TurnoService {
         return rta;
     }
 
-    public Turno actualizarTurnoPorId(Long idNegocio, Long idTurno, TurnoRequest turnoRequest) {
-        TurnoEntidad turnoEntidad = turnoRepositorio.findById(idTurno)
-                .orElseThrow(() -> new RecursoNoExisteException("Turno no encontrado"));
-
-        // Verificar si el negocio es correcto
-        if (!turnoEntidad.getNegocioEntidad().getId().equals(idNegocio)) {
-            throw new UsuarioNoExistenteException(idNegocio);
-        }
-
-        // Actualizar los campos del turno
-        ClienteEntidad clienteEntidad = clienteRepositorio.findById(turnoRequest.getIdCliente())
-                .orElseThrow(() -> new UsuarioNoExistenteException(turnoRequest.getIdCliente()));
-        turnoEntidad.setClienteEntidad(clienteEntidad);
-
-        ServicioEntidad servicioEntidad = servicioRepositorio.findById(turnoRequest.getIdServicio())
-                .orElseThrow(() -> new ServicioNoExisteException(turnoRequest.getIdServicio()));
-        turnoEntidad.setIdServicio(servicioEntidad);
-
-        ProfesionalEntidad profesionalEntidad = profesionalRepositorio.findById(turnoRequest.getIdProfesional())
-                .orElseThrow(() -> new UsuarioNoExistenteException(turnoRequest.getIdProfesional()));
-        turnoEntidad.setProfesionalEntidad(profesionalEntidad);
-
-        HorarioProfesionalEntidad horarioProfesionalEntidad = horarioProfesionalRepositorio.findById(turnoRequest.getHorarioProfesional().getIdHorario())
-                .orElseThrow(() -> new RecursoNoExisteException("Horario no encontrado"));
-        turnoEntidad.setHorarioProfesionalEntidad(horarioProfesionalEntidad);
-
-        MetodoDePagoEntidad metodoDePagoEntidad = metodosDePagoRepositorio.findByMetodoDePago(turnoRequest.getMetodosDePagoEnum());
-        turnoEntidad.setMetodoDePagoEntidad(metodoDePagoEntidad);
-
-        turnoEntidad.setFechaInicio(turnoRequest.getFechaInicio());
-
-        EstadoTurnoEntidad estadoTurnoEntidad = estadoTurnoRepositorio.findByEstadoTurno(turnoRequest.getEstadoTurno());
+    public Turno modificarTurnoPorId(Long idNegocio, Long id, EstadoTurnoEnum estadoTurnoEnum) {
+        TurnoEntidad turnoEntidad = turnoRepositorio.findByNegocioEntidadIdAndId(idNegocio, id);
+        EstadoTurnoEntidad estadoTurnoEntidad = estadoTurnoRepositorio.findByEstadoTurno(estadoTurnoEnum);
         turnoEntidad.setEstadoTurno(estadoTurnoEntidad);
-
-        // Guardar los cambios
-        turnoRepositorio.save(turnoEntidad);
-
-        return turnoMapper.toModel(turnoEntidad);
+        return turnoMapper.toModel(turnoRepositorio.save(turnoEntidad));
     }
+
 }

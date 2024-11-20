@@ -29,7 +29,7 @@ public class TurnoRequest {
     @Schema(description = "ID profesional con los datos requeridos",example = "2")
     private Long idProfesional;
 
-    @Schema(description = "Horario del profesional con los datos requeridos",example = "3")
+    @Schema(description = "Horario del profesional con los datos requeridos")
     private HorarioProfesional horarioProfesional;
 
 

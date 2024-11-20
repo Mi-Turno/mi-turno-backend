@@ -1,15 +1,14 @@
 package com.miTurno.backend.model;
 
 import com.miTurno.backend.tipos.DiasEnum;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalTime;
 
 @Setter
 @Getter
 @Builder
+
 public class HorarioProfesional {
     private Long idHorario;
     private Long idProfesional;
@@ -17,9 +16,10 @@ public class HorarioProfesional {
     private LocalTime horaInicio;
     private Boolean estado;
 
+
     public HorarioProfesional() {}
 
-    public HorarioProfesional(Long idHorario, Long idProfesional, DiasEnum dia, LocalTime horaInicio,Boolean estado) {
+    public HorarioProfesional(Long idHorario, Long idProfesional, DiasEnum dia, LocalTime horaInicio, Boolean estado) {
         this.idHorario = idHorario;
         this.idProfesional = idProfesional;
         this.dia = dia;

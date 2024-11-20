@@ -3,9 +3,7 @@ package com.miTurno.backend.entidad;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalTime;
 
@@ -14,6 +12,8 @@ import java.time.LocalTime;
 @Setter
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class HorarioProfesionalEntidad {
 
     @Id
@@ -37,6 +37,7 @@ public class HorarioProfesionalEntidad {
     @Column
     private Boolean estado;
 
+    /*
     public HorarioProfesionalEntidad() {}
 
     public HorarioProfesionalEntidad(Long id, ProfesionalEntidad profesionalEntidad, DiaEntidad diaEntidad, LocalTime horaInicio, Boolean estado) {
@@ -47,6 +48,8 @@ public class HorarioProfesionalEntidad {
 
         this.estado = estado;
     }
+
+     */
 }
 
 
