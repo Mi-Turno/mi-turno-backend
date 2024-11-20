@@ -4,6 +4,6 @@ public enum EstadoTurnoEnum {
     LIBRE,
     RESERVADO,
     EN_CURSO,
-    PAGADO,
+    COBRADO,
     CANCELADO
 }

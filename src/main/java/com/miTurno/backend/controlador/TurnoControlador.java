@@ -1,9 +1,12 @@
 package com.miTurno.backend.controlador;
 
 
+import com.miTurno.backend.model.Cliente;
 import com.miTurno.backend.request.TurnoRequest;
 import com.miTurno.backend.model.Turno;
+import com.miTurno.backend.request.UsuarioRequest;
 import com.miTurno.backend.servicio.TurnoService;
+import com.miTurno.backend.tipos.EstadoTurnoEnum;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -78,6 +81,23 @@ public class TurnoControlador {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+
+    @Operation(summary = "Modificar un turno por ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "El turno fue modificado con exito"),
+            @ApiResponse(responseCode = "404", description = "El turno no fue encontrado")
+    })
+    @PatchMapping("/{idTurno}/{estadoTurnoEnum}")
+    public ResponseEntity<Turno> modificarTurnoPorId(@PathVariable Long idNegocio, @PathVariable Long idTurno, @PathVariable EstadoTurnoEnum estadoTurnoEnum){
+        Turno turno = turnoService.modificarTurnoPorId(idNegocio,idTurno,estadoTurnoEnum);
+        if(turno != null){
+            return new ResponseEntity<>(turno,HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 
 
 

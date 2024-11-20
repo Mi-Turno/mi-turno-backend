@@ -43,44 +43,43 @@ public class TurnoService {
 
 
     //GET
-    public List<Turno> obtenerTodosLosTurnosPorNegocio(Long idNegocio){
+    public List<Turno> obtenerTodosLosTurnosPorNegocio(Long idNegocio) {
 
 
         return turnoMapper.toModelList(turnoRepositorio.findAllByNegocioEntidadId(idNegocio));
     }
 
-    public Turno crearUnTurno(TurnoRequest nuevoTurno, Long idNegocio){
+    public Turno crearUnTurno(TurnoRequest nuevoTurno, Long idNegocio) {
         TurnoEntidad turnoEntidad = new TurnoEntidad();
-
 
 
         //todo si el turno se efectua, se lo tengo que agregar al cliente a su lista para el historial
         //busco si existe el cliente
-        ClienteEntidad nuevoCliente = clienteRepositorio.findById(nuevoTurno.getIdCliente()).orElseThrow(()->new UsuarioNoExistenteException(nuevoTurno.getIdCliente()));
+        ClienteEntidad nuevoCliente = clienteRepositorio.findById(nuevoTurno.getIdCliente()).orElseThrow(() -> new UsuarioNoExistenteException(nuevoTurno.getIdCliente()));
         System.out.println("CLIENTE");//esta bien
         System.out.println(nuevoCliente);
         turnoEntidad.setClienteEntidad(nuevoCliente);
 
         //busco si existe el servicio
-        ServicioEntidad nuevoServicio = servicioRepositorio.findById(nuevoTurno.getIdServicio()).orElseThrow(()->new ServicioNoExisteException(nuevoTurno.getIdServicio()));
+        ServicioEntidad nuevoServicio = servicioRepositorio.findById(nuevoTurno.getIdServicio()).orElseThrow(() -> new ServicioNoExisteException(nuevoTurno.getIdServicio()));
         turnoEntidad.setIdServicio(nuevoServicio);
         System.out.println("SERVICIO");//esta bien
         System.out.println(nuevoServicio);
         //busco si existe el profesional
 
-        ProfesionalEntidad nuevoProfesional = profesionalRepositorio.findById(nuevoTurno.getIdProfesional()).orElseThrow(()->new UsuarioNoExistenteException(nuevoTurno.getIdProfesional()));
+        ProfesionalEntidad nuevoProfesional = profesionalRepositorio.findById(nuevoTurno.getIdProfesional()).orElseThrow(() -> new UsuarioNoExistenteException(nuevoTurno.getIdProfesional()));
         turnoEntidad.setProfesionalEntidad(nuevoProfesional);
         System.out.println("PROFESIONAL");//devuelve null
         System.out.println(nuevoProfesional);
 
         //busco si existe el negocio
-        NegocioEntidad nuevoNegocio = negocioRepositorio.findById(idNegocio).orElseThrow(()-> new UsuarioNoExistenteException(idNegocio));
+        NegocioEntidad nuevoNegocio = negocioRepositorio.findById(idNegocio).orElseThrow(() -> new UsuarioNoExistenteException(idNegocio));
         turnoEntidad.setNegocioEntidad(nuevoNegocio);
         System.out.println("NEGOCIO");
         System.out.println(nuevoNegocio);
 
         //busco el horario profesional entidad
-        HorarioProfesionalEntidad nuevoHorario = horarioProfesionalRepositorio.findById(nuevoTurno.getHorarioProfesional().getIdHorario()).orElseThrow(()->new RecursoNoExisteException("horario"));
+        HorarioProfesionalEntidad nuevoHorario = horarioProfesionalRepositorio.findById(nuevoTurno.getHorarioProfesional().getIdHorario()).orElseThrow(() -> new RecursoNoExisteException("horario"));
         turnoEntidad.setHorarioProfesionalEntidad(nuevoHorario);
         System.out.println("HORARIO");//devuelve null
         System.out.println(nuevoHorario);
@@ -96,7 +95,7 @@ public class TurnoService {
         System.out.println("FECHA");
         System.out.println(nuevoTurno.getFechaInicio());
 
-        EstadoTurnoEntidad estadoTurnoEntidad=  estadoTurnoRepositorio.findByEstadoTurno(EstadoTurnoEnum.RESERVADO);
+        EstadoTurnoEntidad estadoTurnoEntidad = estadoTurnoRepositorio.findByEstadoTurno(EstadoTurnoEnum.RESERVADO);
         turnoEntidad.setEstadoTurno(estadoTurnoEntidad);
 
         turnoEntidad = turnoRepositorio.save(turnoEntidad);
@@ -112,18 +111,24 @@ public class TurnoService {
     }
 
 
-    public Boolean eliminarTurnoPorId(Long idNegocio,Long id){
+    public Boolean eliminarTurnoPorId(Long idNegocio, Long id) {
         Boolean rta = false;
-        if(turnoRepositorio.existsById(id)){
+        if (turnoRepositorio.existsById(id)) {
             TurnoEntidad turnoEntidad = turnoRepositorio.findByNegocioEntidadIdAndId(idNegocio, id);
-            EstadoTurnoEntidad estadoTurnoEntidad=  estadoTurnoRepositorio.findByEstadoTurno(EstadoTurnoEnum.CANCELADO);
+            EstadoTurnoEntidad estadoTurnoEntidad = estadoTurnoRepositorio.findByEstadoTurno(EstadoTurnoEnum.CANCELADO);
             turnoEntidad.setEstadoTurno(estadoTurnoEntidad);
             turnoRepositorio.save(turnoEntidad);
-            rta=true;
+            rta = true;
         }
 
         return rta;
     }
 
+    public Turno modificarTurnoPorId(Long idNegocio, Long id, EstadoTurnoEnum estadoTurnoEnum) {
+        TurnoEntidad turnoEntidad = turnoRepositorio.findByNegocioEntidadIdAndId(idNegocio, id);
+        EstadoTurnoEntidad estadoTurnoEntidad = estadoTurnoRepositorio.findByEstadoTurno(estadoTurnoEnum);
+        turnoEntidad.setEstadoTurno(estadoTurnoEntidad);
+        return turnoMapper.toModel(turnoRepositorio.save(turnoEntidad));
+    }
 
 }

@@ -69,7 +69,7 @@ public class EnviarCorreoService {
         email.setFrom(emailContactoRequest.getEmail());//Cliente
 
         email.setSubject(String.format("%s de %s tiene un mensaje para  Mi Turno", emailContactoRequest.getNombre(), emailContactoRequest.getNegocio()));
-        email.setText(emailContactoRequest.getMensaje());
+        email.setText(String.format("Email: %s \n\n Mensaje: %s", emailContactoRequest.getEmail(), emailContactoRequest.getMensaje()));
 
         enviadorMail.send(email);
 

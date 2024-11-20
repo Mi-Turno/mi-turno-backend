@@ -145,8 +145,8 @@ public class DbInicializador {
         if(estadoTurnoRepositorio.findByEstadoTurno(EstadoTurnoEnum.EN_CURSO)==null){
             estadoTurnoRepositorio.save(new EstadoTurnoEntidad(EstadoTurnoEnum.EN_CURSO));
         }
-        if(estadoTurnoRepositorio.findByEstadoTurno(EstadoTurnoEnum.PAGADO)==null){
-            estadoTurnoRepositorio.save(new EstadoTurnoEntidad(EstadoTurnoEnum.PAGADO));
+        if(estadoTurnoRepositorio.findByEstadoTurno(EstadoTurnoEnum.COBRADO)==null){
+            estadoTurnoRepositorio.save(new EstadoTurnoEntidad(EstadoTurnoEnum.COBRADO));
         }
         if(estadoTurnoRepositorio.findByEstadoTurno(EstadoTurnoEnum.CANCELADO)==null){
             estadoTurnoRepositorio.save(new EstadoTurnoEntidad(EstadoTurnoEnum.CANCELADO));
