@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UsuarioRepositorio extends JpaRepository<UsuarioEntidad,Long> {
@@ -14,4 +15,6 @@ public interface UsuarioRepositorio extends JpaRepository<UsuarioEntidad,Long> {
 
     UsuarioEntidad findByCredencialEmailAndCredencialPassword(String email, String password);
     List<UsuarioEntidad> findAllByRolEntidad_Rol(RolUsuarioEnum rolUsuarioEnum);
+    //Optional<UsuarioEntidad> findByUsername(String username);
+    Optional<UsuarioEntidad> findByCredencialEmail(String email);
 }
