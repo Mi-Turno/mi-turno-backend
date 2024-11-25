@@ -75,11 +75,8 @@ public class UsuarioControlador {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Usuario> obtenerUsuariosByEmailAndPassword(@RequestBody UsuarioLoginRequest usuarioLoginRequest) {
         Usuario usuario = usuarioService.obtenerUsuariosByEmailAndPassword(usuarioLoginRequest.getEmail(), usuarioLoginRequest.getPassword());
-        if (usuario != null) {
-            return ResponseEntity.ok(usuario); // 200 OK con usuario y credenciales
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
+
+        return ResponseEntity.ok(usuario); // 200 OK con usuario y credenciales
     }
 
 
