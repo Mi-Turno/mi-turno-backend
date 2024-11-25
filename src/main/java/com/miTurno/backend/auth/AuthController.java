@@ -2,6 +2,7 @@ package com.miTurno.backend.auth;
 
 
 import com.miTurno.backend.request.UsuarioLoginRequest;
+import com.miTurno.backend.request.UsuarioRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,8 +22,8 @@ public class AuthController {
         return ResponseEntity.ok(new AuthResponse());
     }
     @PostMapping("/register")
-    public String register(){
-        return "register";
+    public ResponseEntity<AuthResponse> register(@RequestBody UsuarioRequest usuarioRequest){
+        return ResponseEntity.ok(authService.register(usuarioRequest));
     }
 
 }
