@@ -19,7 +19,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody UsuarioLoginRequest usuarioLoginRequest){
-        return ResponseEntity.ok(new AuthResponse());
+        return ResponseEntity.ok(authService.login(usuarioLoginRequest));
     }
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody UsuarioRequest usuarioRequest){
