@@ -11,7 +11,8 @@ public class ConfiguracionWeb implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("http://localhost:4200")  // Permite solicitudes solo desde este origen
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
-                .allowedHeaders("Content-Type", "Authorization") //* esto para permitir todos(es mala practica)
+                .allowedHeaders("Content-Type", "Authorization")//* esto para permitir todos(es mala practica)
+                .allowedOrigins("http://localhost:8080")
                 .allowCredentials(true);  // Permite el uso de credenciales como cookies
     }
 
