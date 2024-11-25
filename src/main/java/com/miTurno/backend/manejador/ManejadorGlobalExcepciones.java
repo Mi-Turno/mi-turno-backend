@@ -37,14 +37,14 @@ public class ManejadorGlobalExcepciones {
     @ExceptionHandler(TelefonoYaExisteException.class)
     public ResponseEntity<Map<String,String>> CelularYaExisteException(TelefonoYaExisteException ex){
         Map<String, String> errores = new HashMap<>();
-        errores.put("celular", ex.getNroCelular());
+        errores.put("telefono", ex.getNroCelular());
         return new ResponseEntity<>(errores, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(NombreNegocioYaExisteException.class)
     public ResponseEntity<Map<String,String>> NombreNegocioYaExisteException(NombreNegocioYaExisteException ex){
         Map<String, String> errores = new HashMap<>();
-        errores.put("nombre Negocio", ex.getMessage());
+        errores.put("nombreNegocio", ex.getMessage());
         return new ResponseEntity<>(errores, HttpStatus.CONFLICT);
     }
 
@@ -66,6 +66,13 @@ public class ManejadorGlobalExcepciones {
     public ResponseEntity<Map<String,String>> RecursoNoExisteException(RecursoNoExisteException ex){
         Map<String, String> errores = new HashMap<>();
         errores.put("recurso ", ex.getMessage());
+        return new ResponseEntity<>(errores, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ContraseniaIncorrectaException.class)
+    public ResponseEntity<Map<String,String>> ContraseniaIncorrectaException(ContraseniaIncorrectaException ex){
+        Map<String, String> errores = new HashMap<>();
+        errores.put("Contraseña ", ex.getMessage());
         return new ResponseEntity<>(errores, HttpStatus.NOT_FOUND);
     }
 

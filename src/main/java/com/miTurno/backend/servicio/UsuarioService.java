@@ -44,8 +44,18 @@ public class UsuarioService {
     }
 
     //get x email y contra
-   public Usuario obtenerUsuariosByEmailAndPassword(String email,String password)throws UsuarioNoExistenteException{
-        return usuarioMapper.toModel(usuarioRepositorio.findByCredencialEmailAndCredencialPassword(email,password));
+   public Usuario obtenerUsuariosByEmailAndPassword(String email,String password)throws RecursoNoExisteException{
+
+        //email no existe
+        if (!usuarioRepositorio.existsByCredencialEmail(email)){
+            throw new EmailNoExistenteException(email);
+        }
+
+        //email existe pero contrasenia incorrecta
+
+        UsuarioEntidad usuarioEntidad= usuarioRepositorio.findByCredencialEmailAndCredencialPassword(email,password).orElseThrow(()-> new ContraseniaIncorrectaException(password));
+
+        return usuarioMapper.toModel(usuarioEntidad);
    }
 
     //get x rol
