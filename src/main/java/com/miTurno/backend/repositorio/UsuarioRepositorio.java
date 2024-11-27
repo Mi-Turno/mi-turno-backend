@@ -17,6 +17,8 @@ public interface UsuarioRepositorio extends JpaRepository<UsuarioEntidad,Long> {
     Optional<UsuarioEntidad> findByCredencialEmailAndCredencialPassword(@Email String email, String password);
     List<UsuarioEntidad> findAllByRolEntidad_Rol(RolUsuarioEnum rolUsuarioEnum);
 
-    Boolean existsByCredencialEmail(@Email String email);
 
+
+    Boolean existsByCredencialEmail(@Email String email);
+    Optional<UsuarioEntidad> findByCredencialEmail(@Email String email);
 }

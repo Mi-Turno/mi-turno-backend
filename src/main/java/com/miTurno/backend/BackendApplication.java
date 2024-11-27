@@ -14,14 +14,9 @@ public class BackendApplication {
 
 		//http://localhost:8080/swagger-ui/index.html |entrar a swagger
 		//http://localhost:8080/h2-console | entrar en H2 bbdd
+		//nombre de usuario por defecto es "user" y la contraseña es generada aleatoriamente en cada inicio de la aplicación.
 
-		//todo poner que el swagger no pida el idUsuario
-		//probar en la bbdd
-		/*INSERT INTO USUARIOS (NOMBRE , APELLIDO , CORREO_ELECTRONICO , CELULAR ,FECHA_NACIMIENTO , ROL ) VALUES
-		('Juan', 'Pérez', 'juan.perez@example.com', '123456789', '1990-05-15', 'CLIENTE'),
-		('María', 'Gómez', 'maria.gomez@example.com', '987654321', '1992-08-20', 'ADMIN'),
-		('Pedro', 'Sánchez', 'pedro.sanchez@example.com', '555123456', '1988-12-01', 'CLIENTE');*/
-		// Cargar el archivo .env
+
 
 		//todo cambiar esto porque es una mala practica, pero funciona por el momento
 		// Pasar las variables del .env al entorno

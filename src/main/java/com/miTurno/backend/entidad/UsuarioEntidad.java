@@ -4,7 +4,12 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
 
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
@@ -12,7 +17,7 @@ import java.time.LocalDate;
 @Setter
 @Getter
 @SuperBuilder
-public class UsuarioEntidad {
+public class UsuarioEntidad implements UserDetails {
 
     //columnas
     @Id
@@ -36,9 +41,23 @@ public class UsuarioEntidad {
     @JoinColumn(name = "credencial_id") //el name es el nombre de la columna que yo le voy a poner
     private CredencialEntidad credencial; // Relación con Credenciales
 
+    //todo Cambiar de rolentidad many to one a many to many
+
+    // @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    //    @JoinTable(
+    //            name = "credenciales_roles",
+    //           joinColumns = @JoinColumn(name = "credencial_id"),
+    //           inverseJoinColumns = @JoinColumn(name = "rol_id")
+    //    )
     @ManyToOne(fetch = FetchType.EAGER) // EAGER para cargar el rol junto con el usuario
     @JoinColumn(name = "rol", nullable = false) // Define la clave foránea a RolEntidad
     private RolEntidad rolEntidad;
+
+
+
+    //public void agregarRol(RolEntity rol) {
+    //        this.roles.add(rol);
+    //    }
 
     //constructores
     public UsuarioEntidad(){
@@ -46,13 +65,37 @@ public class UsuarioEntidad {
     }
 
     @Override
-    public String toString() {
-        return "UsuarioEntidad{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", apellido='" + apellido + '\'' +
-                ", fechaNacimiento=" + fechaNacimiento +
-                ", credenciales=" + credencial +
-                '}';
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of();
+    }
+
+    @Override
+    public String getPassword() {
+        return credencial.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return credencial.getEmail();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

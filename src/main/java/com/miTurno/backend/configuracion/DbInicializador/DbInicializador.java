@@ -1,11 +1,10 @@
-package com.miTurno.backend.configuracion.dbInicializador;
+package com.miTurno.backend.configuracion.DbInicializador;
 
 import com.miTurno.backend.model.Credencial;
 import com.miTurno.backend.model.Usuario;
 import com.miTurno.backend.entidad.*;
 import com.miTurno.backend.mapper.UsuarioMapper;
 import com.miTurno.backend.repositorio.*;
-import com.miTurno.backend.servicio.UsuarioService;
 import com.miTurno.backend.tipos.DiasEnum;
 import com.miTurno.backend.tipos.EstadoTurnoEnum;
 import com.miTurno.backend.tipos.MetodosDePagoEnum;
@@ -25,6 +24,8 @@ public class DbInicializador {
     private final UsuarioRepositorio usuarioRepositorio;
     private final UsuarioMapper usuarioMapper;
     private final EstadoTurnoRepositorio estadoTurnoRepositorio;
+
+
 
 
     @Autowired
@@ -52,6 +53,8 @@ public class DbInicializador {
     public void initAdmin(){
     //validacion por si ya existe en la base de datos
        if(!usuarioRepositorio.existsById(1L)){
+
+
 
            Credencial credencial = Credencial.builder()
                    .estado(true)
