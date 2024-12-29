@@ -24,17 +24,6 @@ public class ManejadorGlobalExcepciones {
                         "timestamp", LocalDateTime.now() ));
     }
 
-
-    @ExceptionHandler(UsuarioNoExistenteException.class)
-    public ResponseEntity<?> manejarUsuarioNoEncontrado(UsuarioNoExistenteException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(Map.of(
-                        "error", "Usuario No Existe",
-                        "mensaje", ex.getMessage(),
-                    "timestamp", LocalDateTime.now()
-                ));
-    }
-
     @ExceptionHandler(ServicioNoExisteException.class)
     public ResponseEntity<Map<String,Long>> manejarServicioNoEncontrado(ServicioNoExisteException ex){
         Map<String, Long> errores = new HashMap<>();

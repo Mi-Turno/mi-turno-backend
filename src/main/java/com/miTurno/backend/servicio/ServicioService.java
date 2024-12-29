@@ -5,7 +5,6 @@ import com.miTurno.backend.data.dtos.model.Servicio;
 import com.miTurno.backend.data.domain.NegocioEntidad;
 import com.miTurno.backend.data.domain.ServicioEntidad;
 import com.miTurno.backend.excepciones.ServicioNoExisteException;
-import com.miTurno.backend.excepciones.UsuarioNoExistenteException;
 import com.miTurno.backend.data.mapper.ProfesionalMapper;
 import com.miTurno.backend.data.mapper.ServicioMapper;
 import com.miTurno.backend.data.repositorio.NegocioRepositorio;
