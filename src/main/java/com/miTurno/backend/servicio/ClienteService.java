@@ -83,7 +83,7 @@ public Cliente obtenerClienteByEmailAndPassword(String email, String password) t
 
         //obtengo el cliente del repositorio
         ClienteEntidad clienteEntidad = clienteRepositorio.findById(id)
-                .orElseThrow(()-> new EntityNotFoundException("Cliente con id: "+ id+" no encontrado.")));
+                .orElseThrow(()-> new EntityNotFoundException("Cliente con id: "+ id+" no encontrado."));
 
 
 
