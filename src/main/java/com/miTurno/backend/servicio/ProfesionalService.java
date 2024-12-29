@@ -9,6 +9,7 @@ import com.miTurno.backend.data.mapper.TurnoMapper;
 import com.miTurno.backend.data.mapper.UsuarioMapper;
 import com.miTurno.backend.data.dtos.request.ProfesionalRequest;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -44,21 +45,19 @@ public class ProfesionalService {
 
     //POST profesional
 
-    public Profesional crearUnprofesional(Long idNegocio, ProfesionalRequest profesionalRequest) throws RolIncorrectoException, EntityNotFoundException {
+    public Profesional crearUnprofesional(Long idNegocio, ProfesionalRequest profesionalRequest)
+            throws RolIncorrectoException, EntityNotFoundException, EntityExistsException {
 
         if (profesionalRequest.getRolUsuario() != RolUsuarioEnum.PROFESIONAL) {
             throw new RolIncorrectoException(RolUsuarioEnum.PROFESIONAL, profesionalRequest.getRolUsuario());
         }
 
-
         if (credencialesRepositorio.findByEmail(profesionalRequest.getCredencial().getEmail()).isPresent()) {
-            throw new EmailYaExisteException(profesionalRequest.getCredencial().getEmail());
+            throw new EntityExistsException("El profesional con el email: "+profesionalRequest.getCredencial().getEmail()+" ya existe.");
         }
 
-        //verificar si ya existe un celular, si es asi tira excepcion
-
         if (credencialesRepositorio.findByTelefono(profesionalRequest.getCredencial().getTelefono()).isPresent()){
-            throw new TelefonoYaExisteException(profesionalRequest.getCredencial().getTelefono());
+            throw new EntityExistsException("El profesional con el telefono: "+profesionalRequest.getCredencial().getTelefono()+" ya existe.");
 
         }
 

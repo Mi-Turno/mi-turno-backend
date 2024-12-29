@@ -12,6 +12,7 @@ import com.miTurno.backend.data.mapper.ClienteMapper;
 import com.miTurno.backend.data.mapper.TurnoMapper;
 import com.miTurno.backend.data.dtos.request.UsuarioRequest;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,17 +47,17 @@ public class ClienteService {
     }
 
     //Crear un cliente
-    public Cliente crearUnCliente(UsuarioRequest usuarioRequest) throws RolIncorrectoException,EmailYaExisteException,TelefonoYaExisteException {
+    public Cliente crearUnCliente(UsuarioRequest usuarioRequest) throws RolIncorrectoException,EntityExistsException {
 
 
         if (usuarioRequest.getRolUsuario() != RolUsuarioEnum.CLIENTE) {
             throw new RolIncorrectoException(RolUsuarioEnum.CLIENTE, usuarioRequest.getRolUsuario());
         }
         if (credencialesRepositorio.findByEmail(usuarioRequest.getCredencial().getEmail()).isPresent()) {
-            throw new EmailYaExisteException(usuarioRequest.getCredencial().getEmail());
+            throw new EntityExistsException("El usuario con el email: "+ usuarioRequest.getCredencial().getEmail() +" ya existe.");
         }
         if (credencialesRepositorio.findByTelefono(usuarioRequest.getCredencial().getTelefono()).isPresent()) {
-            throw new TelefonoYaExisteException(usuarioRequest.getCredencial().getTelefono());
+            throw new EntityExistsException("El usuario con el telefono: "+ usuarioRequest.getCredencial().getTelefono() +" ya existe.");
         }
 
         //buscamos el rol en el repositorio de roles
@@ -67,10 +68,11 @@ public class ClienteService {
         ClienteEntidad clienteEntidad = clienteMapper.toEntidad(usuarioRequest,rolEntidad);
         return clienteMapper.toModel(clienteRepositorio.save(clienteEntidad)) ;
     }
-// Obtener cliente by email and password para el login
-public Cliente obtenerClienteByEmailAndPassword(String email, String password) throws EntityNotFoundException{
-    return clienteMapper.toModel(clienteRepositorio.findByCredencial_EmailAndCredencial_Password(email,password));
-}
+
+    // Obtener cliente by email and password para el login
+    public Cliente obtenerClienteByEmailAndPassword(String email, String password) throws EntityNotFoundException{
+        return clienteMapper.toModel(clienteRepositorio.findByCredencial_EmailAndCredencial_Password(email,password));
+    }
 
 // Obtener un cliente por ID
     public Cliente buscarCliente(Long id){

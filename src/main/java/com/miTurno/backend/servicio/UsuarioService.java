@@ -9,6 +9,7 @@ import com.miTurno.backend.data.dtos.model.Usuario;
 import com.miTurno.backend.data.repositorio.RolRepositorio;
 import com.miTurno.backend.data.repositorio.UsuarioRepositorio;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -82,17 +83,17 @@ public class UsuarioService {
 //    }
 
     //POST usuario
-    public Usuario crearUnUsuario(Usuario usuario) throws EmailYaExisteException, TelefonoYaExisteException {
+    public Usuario crearUnUsuario(Usuario usuario) throws EntityExistsException {
 
         //verificamos en el repo de credenciales
         //verificar si ya existe un mail, si es asi tira excepcion
         if (credencialesRepositorio.findByEmail(usuario.getCredencial().getEmail()).isPresent()){
-            throw new EmailYaExisteException(usuario.getCredencial().getEmail());
+            throw new EntityExistsException("El cliente con el email: "+usuario.getCredencial().getEmail()+" ya existe.");
         }
 
         //verificar si ya existe un celular, si es asi tira excepcion
         if (credencialesRepositorio.findByTelefono(usuario.getCredencial().getTelefono()).isPresent()){
-            throw new TelefonoYaExisteException(usuario.getCredencial().getTelefono());
+            throw new EntityExistsException("El cliente con el telefono: "+usuario.getCredencial().getTelefono()+" ya existe.");
         }
 
         //setteamos el estado del usuario en true

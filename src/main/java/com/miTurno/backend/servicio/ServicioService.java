@@ -4,7 +4,6 @@ import com.miTurno.backend.data.dtos.model.Profesional;
 import com.miTurno.backend.data.dtos.model.Servicio;
 import com.miTurno.backend.data.domain.NegocioEntidad;
 import com.miTurno.backend.data.domain.ServicioEntidad;
-import com.miTurno.backend.excepciones.ServicioNoExisteException;
 import com.miTurno.backend.data.mapper.ProfesionalMapper;
 import com.miTurno.backend.data.mapper.ServicioMapper;
 import com.miTurno.backend.data.repositorio.NegocioRepositorio;
@@ -86,7 +85,7 @@ public class ServicioService {
 
     //UPDATE
 
-   public Servicio actualizarUnServicio(Long idNegocio,Long idServicioAActualizar,ServicioRequest nuevoServicio) throws ServicioNoExisteException{
+   public Servicio actualizarUnServicio(Long idNegocio,Long idServicioAActualizar,ServicioRequest nuevoServicio) throws EntityNotFoundException{
 
         ServicioEntidad servicioEntidad= servicioRepositorio.findByIdAndNegocioEntidadId(idServicioAActualizar,idNegocio)
                 .orElseThrow(() -> new EntityNotFoundException("Servicio con id: "+ idServicioAActualizar +" no encontrado."));

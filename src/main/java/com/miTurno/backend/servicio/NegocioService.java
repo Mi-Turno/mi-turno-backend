@@ -8,6 +8,7 @@ import com.miTurno.backend.data.domain.NegocioEntidad;
 import com.miTurno.backend.data.mapper.NegocioMapper;
 import com.miTurno.backend.data.dtos.model.Negocio;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
+import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,16 +48,16 @@ public class NegocioService {
     }
 
     //obtener negocio x nombre
-    public Negocio obtenerNegocioPorNombre(String nombre) throws NombreNoExisteException {
+    public Negocio obtenerNegocioPorNombre(String nombre) throws EntityNotFoundException {
 
        return negocioMapper.toModel(negocioRepositorio.getNegocioEntidadByNombreIgnoreCase(nombre)
-               .orElseThrow(()->new NombreNoExisteException(nombre)));
+               .orElseThrow(()->new EntityNotFoundException("El negocio con el nombre: "+nombre+" no fue encontrado.")));
     }
 
 
     //POST negocio
     public Negocio crearUnNegocio(NegocioRequest negocioRequest)
-            throws NombreNegocioYaExisteException, RolIncorrectoException,EmailYaExisteException, TelefonoYaExisteException {
+            throws RolIncorrectoException, EntityExistsException {
 
 
         String nombreNegocio = negocioRequest.getNombre();
@@ -65,17 +66,16 @@ public class NegocioService {
             throw new RolIncorrectoException(RolUsuarioEnum.NEGOCIO, negocioRequest.getRolUsuario());
         }
         //todo: antes había un negocioRequest.getRolUsuario() - En caso de que solucionen algo y esto les de problema
+
         if (negocioRepositorio.existsByNombreAndRolEntidad_Rol(nombreNegocio,negocioRequest.getRolUsuario())) {
-            throw new NombreNegocioYaExisteException(nombreNegocio);
+            throw new EntityExistsException("El negocio cono el nombre: "+nombreNegocio+" ya existe.");
         }
         if(negocioRepositorio.existsByCredencial_Email(negocioRequest.getCredencial().getEmail())){
-            throw new EmailYaExisteException(negocioRequest.getCredencial().getEmail());
+            throw new EntityExistsException("El negocio con el email: "+negocioRequest.getCredencial().getEmail()+" ya existe");
         }
         if(negocioRepositorio.existsByCredencial_Telefono(negocioRequest.getCredencial().getTelefono())){
-            throw new TelefonoYaExisteException(negocioRequest.getCredencial().getTelefono());
+            throw new EntityExistsException("El negocio con el telefono: "+negocioRequest.getCredencial().getTelefono()+" ya existe.");
         }
-
-        System.out.println("Paso todas las verificaciones ");
 
         RolEntidad rolEntidad = rolRepositorio.findByRol(negocioRequest.getRolUsuario());
 
@@ -85,10 +85,11 @@ public class NegocioService {
     }
 
     //GET id negocio x nombre negocio
-    public Long obtenerIdNegocioPorNombreNegocio(String nombreNegocio){
+    public Long obtenerIdNegocioPorNombreNegocio(String nombreNegocio) throws EntityNotFoundException{
 
         NegocioEntidad negocioEntidad= negocioRepositorio.getNegocioEntidadByNombreIgnoreCase(nombreNegocio)
-                .orElseThrow(()-> new NombreNoExisteException("Nombre negocio"));
+                .orElseThrow(()-> new EntityNotFoundException("El negocio con el nombre: "+nombreNegocio+" no fue encontrado."));
+
         return negocioEntidad.getId();
     }
 
