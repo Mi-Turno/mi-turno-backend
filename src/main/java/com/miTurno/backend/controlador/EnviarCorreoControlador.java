@@ -1,7 +1,7 @@
 package com.miTurno.backend.controlador;
 
-import com.miTurno.backend.request.EmailContactoRequest;
-import com.miTurno.backend.request.EmailRequest;
+import com.miTurno.backend.data.dtos.request.EmailContactoRequest;
+import com.miTurno.backend.data.dtos.request.EmailRequest;
 
 import com.miTurno.backend.servicio.EnviarCorreoService;
 import io.swagger.v3.oas.annotations.Operation;

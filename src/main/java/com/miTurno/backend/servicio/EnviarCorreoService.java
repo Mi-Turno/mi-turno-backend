@@ -1,7 +1,7 @@
 package com.miTurno.backend.servicio;
 
-import com.miTurno.backend.request.EmailContactoRequest;
-import com.miTurno.backend.request.EmailRequest;
+import com.miTurno.backend.data.dtos.request.EmailContactoRequest;
+import com.miTurno.backend.data.dtos.request.EmailRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;

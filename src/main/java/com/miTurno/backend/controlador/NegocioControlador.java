@@ -1,8 +1,8 @@
 package com.miTurno.backend.controlador;
 
-import com.miTurno.backend.entidad.NegocioEntidad;
-import com.miTurno.backend.request.NegocioRequest;
-import com.miTurno.backend.model.Negocio;
+import com.miTurno.backend.data.domain.NegocioEntidad;
+import com.miTurno.backend.data.dtos.request.NegocioRequest;
+import com.miTurno.backend.data.dtos.response.Negocio;
 import com.miTurno.backend.servicio.NegocioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

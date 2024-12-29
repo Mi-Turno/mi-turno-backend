@@ -1,10 +1,9 @@
 package com.miTurno.backend.controlador;
 
-import com.miTurno.backend.model.Profesional;
-import com.miTurno.backend.model.Turno;
-import com.miTurno.backend.excepcion.ServicioNoExisteException;
-import com.miTurno.backend.mapper.ProfesionalMapper;
-import com.miTurno.backend.request.ProfesionalRequest;
+import com.miTurno.backend.data.dtos.response.Profesional;
+import com.miTurno.backend.data.dtos.response.Turno;
+import com.miTurno.backend.data.mapper.ProfesionalMapper;
+import com.miTurno.backend.data.dtos.request.ProfesionalRequest;
 import com.miTurno.backend.servicio.ProfesionalService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -126,7 +125,7 @@ public class ProfesionalControlador {
             @PathVariable Long idNegocio,
             @Parameter(description = "Datos actualizado del Profesional")
             @PathVariable Long idProfesional,
-            @RequestBody ProfesionalRequest profesionalRequest) throws ServicioNoExisteException {
+            @RequestBody ProfesionalRequest profesionalRequest){
         return profesionalService.actualizarProfesional(idNegocio,idProfesional,profesionalMapper.toModel(profesionalRequest));
     }
 
@@ -139,7 +138,7 @@ public class ProfesionalControlador {
             @ApiResponse(responseCode = "204",description = "El Profesional fue borrado con exito"),
             @ApiResponse(responseCode = "404",description = "El Profesional no fue encontrado")
     })
-    public Boolean eliminarProfesional(@PathVariable Long idNegocio,@PathVariable Long idProfesional) throws ServicioNoExisteException {
+    public Boolean eliminarProfesional(@PathVariable Long idNegocio,@PathVariable Long idProfesional){
         return profesionalService.eliminarUnProfesional(idNegocio,idProfesional);
     }
 

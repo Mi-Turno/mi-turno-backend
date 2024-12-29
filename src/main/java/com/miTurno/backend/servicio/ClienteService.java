@@ -1,15 +1,19 @@
 package com.miTurno.backend.servicio;
 
-import com.miTurno.backend.model.Cliente;
-import com.miTurno.backend.model.Turno;
-import com.miTurno.backend.entidad.ClienteEntidad;
-import com.miTurno.backend.entidad.RolEntidad;
-import com.miTurno.backend.excepcion.*;
-import com.miTurno.backend.mapper.ClienteMapper;
-import com.miTurno.backend.mapper.TurnoMapper;
-import com.miTurno.backend.repositorio.*;
-import com.miTurno.backend.request.UsuarioRequest;
+import com.miTurno.backend.data.repositorio.ClienteRepositorio;
+import com.miTurno.backend.data.repositorio.CredencialesRepositorio;
+import com.miTurno.backend.data.repositorio.RolRepositorio;
+import com.miTurno.backend.data.dtos.response.Cliente;
+import com.miTurno.backend.data.dtos.response.Turno;
+import com.miTurno.backend.data.domain.ClienteEntidad;
+import com.miTurno.backend.data.domain.RolEntidad;
+import com.miTurno.backend.excepciones.*;
+import com.miTurno.backend.data.mapper.ClienteMapper;
+import com.miTurno.backend.data.mapper.TurnoMapper;
+import com.miTurno.backend.data.dtos.request.UsuarioRequest;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,24 +39,25 @@ public class ClienteService {
 
 
     //get listado de turnos del cliente
-    public List<Turno> obtenerListadoDeTurnosPorId(Long idCliente){
-        ClienteEntidad clienteEntidad = clienteRepositorio.findById(idCliente).orElseThrow(()->new UsuarioNoExistenteException(idCliente));
+    public List<Turno> obtenerListadoDeTurnosPorId(Long idCliente) throws EntityNotFoundException {
+        ClienteEntidad clienteEntidad = clienteRepositorio.findById(idCliente)
+                .orElseThrow(()->new EntityNotFoundException("Usuario con id: "+idCliente+" no encontrado."));
 
         return turnoMapper.toModelList(clienteEntidad.getListadoDeTurnos());
     }
 
     //Crear un cliente
-    public Cliente crearUnCliente(UsuarioRequest usuarioRequest) throws RolIncorrectoException, RecursoNoExisteException {
+    public Cliente crearUnCliente(UsuarioRequest usuarioRequest) throws RolIncorrectoException,EntityExistsException {
 
 
         if (usuarioRequest.getRolUsuario() != RolUsuarioEnum.CLIENTE) {
             throw new RolIncorrectoException(RolUsuarioEnum.CLIENTE, usuarioRequest.getRolUsuario());
         }
         if (credencialesRepositorio.findByEmail(usuarioRequest.getCredencial().getEmail()).isPresent()) {
-            throw new EmailYaExisteException(usuarioRequest.getCredencial().getEmail());
+            throw new EntityExistsException("El usuario con el email: "+ usuarioRequest.getCredencial().getEmail() +" ya existe.");
         }
         if (credencialesRepositorio.findByTelefono(usuarioRequest.getCredencial().getTelefono()).isPresent()) {
-            throw new TelefonoYaExisteException(usuarioRequest.getCredencial().getTelefono());
+            throw new EntityExistsException("El usuario con el telefono: "+ usuarioRequest.getCredencial().getTelefono() +" ya existe.");
         }
 
         //buscamos el rol en el repositorio de roles
@@ -63,21 +68,24 @@ public class ClienteService {
         ClienteEntidad clienteEntidad = clienteMapper.toEntidad(usuarioRequest,rolEntidad);
         return clienteMapper.toModel(clienteRepositorio.save(clienteEntidad)) ;
     }
-// Obtener cliente by email and password para el login
-public Cliente obtenerClienteByEmailAndPassword(String email, String password) throws UsuarioNoExistenteException{
-    return clienteMapper.toModel(clienteRepositorio.findByCredencial_EmailAndCredencial_Password(email,password));
-}
+
+    // Obtener cliente by email and password para el login
+    public Cliente obtenerClienteByEmailAndPassword(String email, String password) throws EntityNotFoundException{
+        return clienteMapper.toModel(clienteRepositorio.findByCredencial_EmailAndCredencial_Password(email,password));
+    }
 
 // Obtener un cliente por ID
     public Cliente buscarCliente(Long id){
-        return clienteMapper.toModel(clienteRepositorio.findById(id).orElseThrow(()->new UsuarioNoExistenteException(id)));
+        return clienteMapper.toModel(clienteRepositorio.findById(id)
+                .orElseThrow(()->new EntityNotFoundException("Cliente con id: "+ id+" no encontrado.")));
     }
 
     //Put Cliente
-    public Cliente actualizarClientePorId(Long id, UsuarioRequest clienteActualizado) throws UsuarioNoExistenteException {
+    public Cliente actualizarClientePorId(Long id, UsuarioRequest clienteActualizado) throws EntityNotFoundException {
 
         //obtengo el cliente del repositorio
-        ClienteEntidad clienteEntidad = clienteRepositorio.findById(id).orElseThrow(()-> new UsuarioNoExistenteException(id));
+        ClienteEntidad clienteEntidad = clienteRepositorio.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Cliente con id: "+ id+" no encontrado."));
 
 
 
@@ -99,7 +107,8 @@ public Cliente obtenerClienteByEmailAndPassword(String email, String password) t
     public Boolean eliminarClientePorId(Long id){
         Boolean rta = false;//
         if(clienteRepositorio.existsById(id)){
-            ClienteEntidad clienteEntidad= clienteRepositorio.findById(id).orElseThrow(()-> new UsuarioNoExistenteException(id));
+            ClienteEntidad clienteEntidad= clienteRepositorio.findById(id)
+                    .orElseThrow(()-> new EntityNotFoundException("Cliente con id: "+ id+" no encontrado."));
 
             clienteEntidad.getCredencial().setEstado(false);
 

@@ -1,7 +1,7 @@
 package com.miTurno.backend.controlador;
 
 
-import com.miTurno.backend.entidad.MetodoDePagoEntidad;
+import com.miTurno.backend.data.domain.MetodoDePagoEntidad;
 import com.miTurno.backend.servicio.MetodoDePagoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

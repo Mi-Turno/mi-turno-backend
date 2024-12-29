@@ -1,9 +1,8 @@
 package com.miTurno.backend.controlador;
 
-import com.miTurno.backend.model.Profesional;
-import com.miTurno.backend.model.Servicio;
-import com.miTurno.backend.request.ServicioRequest;
-import com.miTurno.backend.excepcion.ServicioNoExisteException;
+import com.miTurno.backend.data.dtos.response.Profesional;
+import com.miTurno.backend.data.dtos.response.Servicio;
+import com.miTurno.backend.data.dtos.request.ServicioRequest;
 import com.miTurno.backend.servicio.ServicioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -107,7 +106,7 @@ public class ServicioControlador {
             @ApiResponse(responseCode = "204",description = "El servicio fue borrado con exito"),
             @ApiResponse(responseCode = "404",description = "El servicio no fue encontrado")
     })
-    public Boolean eliminarUnServicio(@PathVariable Long idNegocio,@PathVariable Long idServicio) throws ServicioNoExisteException {
+    public Boolean eliminarUnServicio(@PathVariable Long idNegocio,@PathVariable Long idServicio){
         return servicioService.eliminarUnServicio(idNegocio,idServicio);
     }
 
@@ -124,7 +123,7 @@ public class ServicioControlador {
             @PathVariable Long idNegocio,
             @Parameter(description = "Datos actualizado del Servicio")
             @PathVariable Long idServicio,
-            @RequestBody ServicioRequest servicioRequest) throws ServicioNoExisteException{
+            @RequestBody ServicioRequest servicioRequest){
 
         return servicioService.actualizarUnServicio(idNegocio,idServicio,servicioRequest);
     }

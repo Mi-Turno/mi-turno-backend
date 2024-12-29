@@ -1,9 +1,8 @@
 package com.miTurno.backend.controlador;
 
-import com.miTurno.backend.model.HorarioProfesional;
-import com.miTurno.backend.entidad.HorarioProfesionalEntidad;
-import com.miTurno.backend.mapper.HorarioProfesionalMapper;
-import com.miTurno.backend.request.HorarioProfesionalRequest;
+import com.miTurno.backend.data.dtos.response.HorarioProfesional;
+import com.miTurno.backend.data.mapper.HorarioProfesionalMapper;
+import com.miTurno.backend.data.dtos.request.HorarioProfesionalRequest;
 import com.miTurno.backend.servicio.HorarioProfesionalService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

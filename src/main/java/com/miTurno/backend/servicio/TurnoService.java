@@ -1,15 +1,11 @@
 package com.miTurno.backend.servicio;
-
-
-import com.miTurno.backend.entidad.*;
-import com.miTurno.backend.excepcion.RecursoNoExisteException;
-import com.miTurno.backend.excepcion.ServicioNoExisteException;
-import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
-import com.miTurno.backend.mapper.TurnoMapper;
-import com.miTurno.backend.model.Turno;
-import com.miTurno.backend.repositorio.*;
-import com.miTurno.backend.request.TurnoRequest;
+import com.miTurno.backend.data.domain.*;
+import com.miTurno.backend.data.repositorio.*;
+import com.miTurno.backend.data.mapper.TurnoMapper;
+import com.miTurno.backend.data.dtos.response.Turno;
+import com.miTurno.backend.data.dtos.request.TurnoRequest;
 import com.miTurno.backend.tipos.EstadoTurnoEnum;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,37 +45,45 @@ public class TurnoService {
         return turnoMapper.toModelList(turnoRepositorio.findAllByNegocioEntidadId(idNegocio));
     }
 
-    public Turno crearUnTurno(TurnoRequest nuevoTurno, Long idNegocio) {
+    public Turno crearUnTurno(
+            TurnoRequest nuevoTurno,
+            Long idNegocio) throws EntityNotFoundException{
         TurnoEntidad turnoEntidad = new TurnoEntidad();
 
 
         //todo si el turno se efectua, se lo tengo que agregar al cliente a su lista para el historial
         //busco si existe el cliente
-        ClienteEntidad nuevoCliente = clienteRepositorio.findById(nuevoTurno.getIdCliente()).orElseThrow(() -> new UsuarioNoExistenteException(nuevoTurno.getIdCliente()));
+        ClienteEntidad nuevoCliente = clienteRepositorio.findById(nuevoTurno.getIdCliente())
+                .orElseThrow(() -> new EntityNotFoundException("Usuario con id: "+nuevoTurno.getIdCliente() +" no encontrado."));
+
         System.out.println("CLIENTE");//esta bien
         System.out.println(nuevoCliente);
         turnoEntidad.setClienteEntidad(nuevoCliente);
 
         //busco si existe el servicio
-        ServicioEntidad nuevoServicio = servicioRepositorio.findById(nuevoTurno.getIdServicio()).orElseThrow(() -> new ServicioNoExisteException(nuevoTurno.getIdServicio()));
+        ServicioEntidad nuevoServicio = servicioRepositorio.findById(nuevoTurno.getIdServicio())
+                .orElseThrow(() -> new EntityNotFoundException("Servicio con id: "+nuevoTurno.getIdServicio() +" no encontrado."));
         turnoEntidad.setIdServicio(nuevoServicio);
         System.out.println("SERVICIO");//esta bien
         System.out.println(nuevoServicio);
         //busco si existe el profesional
 
-        ProfesionalEntidad nuevoProfesional = profesionalRepositorio.findById(nuevoTurno.getIdProfesional()).orElseThrow(() -> new UsuarioNoExistenteException(nuevoTurno.getIdProfesional()));
+        ProfesionalEntidad nuevoProfesional = profesionalRepositorio.findById(nuevoTurno.getIdProfesional())
+                .orElseThrow(() -> new EntityNotFoundException("Usuario con id: "+nuevoTurno.getIdProfesional() +" no encontrado."));
         turnoEntidad.setProfesionalEntidad(nuevoProfesional);
         System.out.println("PROFESIONAL");//devuelve null
         System.out.println(nuevoProfesional);
 
         //busco si existe el negocio
-        NegocioEntidad nuevoNegocio = negocioRepositorio.findById(idNegocio).orElseThrow(() -> new UsuarioNoExistenteException(idNegocio));
+        NegocioEntidad nuevoNegocio = negocioRepositorio.findById(idNegocio)
+                .orElseThrow(() -> new EntityNotFoundException("Negocio con id: "+ idNegocio +" no encontrado."));
         turnoEntidad.setNegocioEntidad(nuevoNegocio);
         System.out.println("NEGOCIO");
         System.out.println(nuevoNegocio);
 
         //busco el horario profesional entidad
-        HorarioProfesionalEntidad nuevoHorario = horarioProfesionalRepositorio.findById(nuevoTurno.getHorarioProfesional().getIdHorario()).orElseThrow(() -> new RecursoNoExisteException("horario"));
+        HorarioProfesionalEntidad nuevoHorario = horarioProfesionalRepositorio.findById(nuevoTurno.getHorarioProfesional().getIdHorario())
+                .orElseThrow(() -> new EntityNotFoundException("Horario con id:"+ nuevoTurno.getHorarioProfesional().getIdHorario() +" no encontrado."));
         turnoEntidad.setHorarioProfesionalEntidad(nuevoHorario);
         System.out.println("HORARIO");//devuelve null
         System.out.println(nuevoHorario);

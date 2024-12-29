@@ -1,8 +1,8 @@
 package com.miTurno.backend.servicio;
 
 
-import com.miTurno.backend.entidad.MetodoDePagoEntidad;
-import com.miTurno.backend.repositorio.MetodosDePagoRepositorio;
+import com.miTurno.backend.data.domain.MetodoDePagoEntidad;
+import com.miTurno.backend.data.repositorio.MetodosDePagoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
