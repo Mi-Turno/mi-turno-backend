@@ -1,6 +1,6 @@
 package com.miTurno.backend.controlador;
 
-import com.miTurno.backend.data.dtos.model.HorarioProfesional;
+import com.miTurno.backend.data.dtos.response.HorarioProfesional;
 import com.miTurno.backend.data.mapper.HorarioProfesionalMapper;
 import com.miTurno.backend.data.dtos.request.HorarioProfesionalRequest;
 import com.miTurno.backend.servicio.HorarioProfesionalService;

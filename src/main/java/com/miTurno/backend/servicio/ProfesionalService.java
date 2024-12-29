@@ -1,12 +1,11 @@
 package com.miTurno.backend.servicio;
 import com.miTurno.backend.data.domain.*;
 import com.miTurno.backend.data.repositorio.*;
-import com.miTurno.backend.data.dtos.model.Profesional;
-import com.miTurno.backend.data.dtos.model.Turno;
+import com.miTurno.backend.data.dtos.response.Profesional;
+import com.miTurno.backend.data.dtos.response.Turno;
 import com.miTurno.backend.excepciones.*;
 import com.miTurno.backend.data.mapper.ProfesionalMapper;
 import com.miTurno.backend.data.mapper.TurnoMapper;
-import com.miTurno.backend.data.mapper.UsuarioMapper;
 import com.miTurno.backend.data.dtos.request.ProfesionalRequest;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import jakarta.persistence.EntityExistsException;

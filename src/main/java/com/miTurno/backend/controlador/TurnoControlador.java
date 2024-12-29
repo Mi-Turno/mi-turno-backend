@@ -2,7 +2,7 @@ package com.miTurno.backend.controlador;
 
 
 import com.miTurno.backend.data.dtos.request.TurnoRequest;
-import com.miTurno.backend.data.dtos.model.Turno;
+import com.miTurno.backend.data.dtos.response.Turno;
 import com.miTurno.backend.servicio.TurnoService;
 import com.miTurno.backend.tipos.EstadoTurnoEnum;
 import io.swagger.v3.oas.annotations.Operation;

@@ -6,7 +6,7 @@ import com.miTurno.backend.excepciones.*;
 import com.miTurno.backend.data.dtos.request.NegocioRequest;
 import com.miTurno.backend.data.domain.NegocioEntidad;
 import com.miTurno.backend.data.mapper.NegocioMapper;
-import com.miTurno.backend.data.dtos.model.Negocio;
+import com.miTurno.backend.data.dtos.response.Negocio;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;

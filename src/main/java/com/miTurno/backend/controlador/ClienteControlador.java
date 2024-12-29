@@ -1,8 +1,8 @@
 package com.miTurno.backend.controlador;
 
 
-import com.miTurno.backend.data.dtos.model.Cliente;
-import com.miTurno.backend.data.dtos.model.Turno;
+import com.miTurno.backend.data.dtos.response.Cliente;
+import com.miTurno.backend.data.dtos.response.Turno;
 import com.miTurno.backend.data.dtos.request.UsuarioLoginRequest;
 import com.miTurno.backend.data.dtos.request.UsuarioRequest;
 import com.miTurno.backend.servicio.ClienteService;

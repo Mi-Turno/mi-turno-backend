@@ -1,5 +1,5 @@
 package com.miTurno.backend.data.dtos.request;
-import com.miTurno.backend.data.dtos.model.HorarioProfesional;
+import com.miTurno.backend.data.dtos.response.HorarioProfesional;
 import com.miTurno.backend.tipos.EstadoTurnoEnum;
 import com.miTurno.backend.tipos.MetodosDePagoEnum;
 import io.swagger.v3.oas.annotations.media.Schema;

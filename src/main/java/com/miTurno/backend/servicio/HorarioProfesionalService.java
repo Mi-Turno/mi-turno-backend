@@ -1,5 +1,5 @@
 package com.miTurno.backend.servicio;
-import com.miTurno.backend.data.dtos.model.HorarioProfesional;
+import com.miTurno.backend.data.dtos.response.HorarioProfesional;
 import com.miTurno.backend.data.domain.DiaEntidad;
 import com.miTurno.backend.data.domain.HorarioProfesionalEntidad;
 import com.miTurno.backend.data.domain.NegocioEntidad;

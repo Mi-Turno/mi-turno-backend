@@ -2,11 +2,9 @@ package com.miTurno.backend.controlador;
 
 
 import com.miTurno.backend.configuracion.Security.JwtServiceImpl;
-import com.miTurno.backend.data.domain.UsuarioEntidad;
-import com.miTurno.backend.data.dtos.request.UsuarioLoginRequest;
 import com.miTurno.backend.data.dtos.request.UsuarioRequest;
 import com.miTurno.backend.data.mapper.UsuarioMapper;
-import com.miTurno.backend.data.dtos.model.Usuario;
+import com.miTurno.backend.data.dtos.response.Usuario;
 import com.miTurno.backend.servicio.AuthService;
 import com.miTurno.backend.servicio.UsuarioService;
 import com.miTurno.backend.tipos.RolUsuarioEnum;

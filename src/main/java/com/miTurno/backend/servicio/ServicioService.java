@@ -1,7 +1,7 @@
 package com.miTurno.backend.servicio;
 
-import com.miTurno.backend.data.dtos.model.Profesional;
-import com.miTurno.backend.data.dtos.model.Servicio;
+import com.miTurno.backend.data.dtos.response.Profesional;
+import com.miTurno.backend.data.dtos.response.Servicio;
 import com.miTurno.backend.data.domain.NegocioEntidad;
 import com.miTurno.backend.data.domain.ServicioEntidad;
 import com.miTurno.backend.data.mapper.ProfesionalMapper;

@@ -3,7 +3,7 @@ package com.miTurno.backend.data.mapper;
 import com.miTurno.backend.data.domain.EstadoTurnoEntidad;
 import com.miTurno.backend.data.dtos.request.TurnoRequest;
 import com.miTurno.backend.data.domain.TurnoEntidad;
-import com.miTurno.backend.data.dtos.model.Turno;
+import com.miTurno.backend.data.dtos.response.Turno;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;

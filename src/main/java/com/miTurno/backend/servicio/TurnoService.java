@@ -2,7 +2,7 @@ package com.miTurno.backend.servicio;
 import com.miTurno.backend.data.domain.*;
 import com.miTurno.backend.data.repositorio.*;
 import com.miTurno.backend.data.mapper.TurnoMapper;
-import com.miTurno.backend.data.dtos.model.Turno;
+import com.miTurno.backend.data.dtos.response.Turno;
 import com.miTurno.backend.data.dtos.request.TurnoRequest;
 import com.miTurno.backend.tipos.EstadoTurnoEnum;
 import jakarta.persistence.EntityNotFoundException;

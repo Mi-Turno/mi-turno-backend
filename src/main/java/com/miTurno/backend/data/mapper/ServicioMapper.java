@@ -3,7 +3,7 @@ package com.miTurno.backend.data.mapper;
 import com.miTurno.backend.data.domain.NegocioEntidad;
 import com.miTurno.backend.data.dtos.request.ServicioRequest;
 import com.miTurno.backend.data.domain.ServicioEntidad;
-import com.miTurno.backend.data.dtos.model.Servicio;
+import com.miTurno.backend.data.dtos.response.Servicio;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;

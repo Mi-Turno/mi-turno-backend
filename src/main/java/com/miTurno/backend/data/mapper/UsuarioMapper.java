@@ -4,7 +4,7 @@ import com.miTurno.backend.data.domain.CredencialEntidad;
 import com.miTurno.backend.data.domain.RolEntidad;
 import com.miTurno.backend.data.dtos.request.UsuarioRequest;
 import com.miTurno.backend.data.domain.UsuarioEntidad;
-import com.miTurno.backend.data.dtos.model.Usuario;
+import com.miTurno.backend.data.dtos.response.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

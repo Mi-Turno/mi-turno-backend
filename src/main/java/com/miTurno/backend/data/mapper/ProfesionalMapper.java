@@ -1,7 +1,7 @@
 package com.miTurno.backend.data.mapper;
 
-import com.miTurno.backend.data.dtos.model.Credencial;
-import com.miTurno.backend.data.dtos.model.Profesional;
+import com.miTurno.backend.data.dtos.response.Credencial;
+import com.miTurno.backend.data.dtos.response.Profesional;
 import com.miTurno.backend.data.domain.CredencialEntidad;
 import com.miTurno.backend.data.domain.NegocioEntidad;
 import com.miTurno.backend.data.domain.ProfesionalEntidad;

@@ -1,11 +1,11 @@
 package com.miTurno.backend.data.mapper;
 
-import com.miTurno.backend.data.dtos.model.Credencial;
+import com.miTurno.backend.data.dtos.response.Credencial;
 import com.miTurno.backend.data.domain.CredencialEntidad;
 import com.miTurno.backend.data.domain.RolEntidad;
 import com.miTurno.backend.data.dtos.request.NegocioRequest;
 import com.miTurno.backend.data.domain.NegocioEntidad;
-import com.miTurno.backend.data.dtos.model.Negocio;
+import com.miTurno.backend.data.dtos.response.Negocio;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;

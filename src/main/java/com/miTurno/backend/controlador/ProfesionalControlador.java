@@ -1,7 +1,7 @@
 package com.miTurno.backend.controlador;
 
-import com.miTurno.backend.data.dtos.model.Profesional;
-import com.miTurno.backend.data.dtos.model.Turno;
+import com.miTurno.backend.data.dtos.response.Profesional;
+import com.miTurno.backend.data.dtos.response.Turno;
 import com.miTurno.backend.data.mapper.ProfesionalMapper;
 import com.miTurno.backend.data.dtos.request.ProfesionalRequest;
 import com.miTurno.backend.servicio.ProfesionalService;

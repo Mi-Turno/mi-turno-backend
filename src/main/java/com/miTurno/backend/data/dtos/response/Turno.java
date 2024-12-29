@@ -1,4 +1,4 @@
-package com.miTurno.backend.data.dtos.model;
+package com.miTurno.backend.data.dtos.response;
 
 
 import com.miTurno.backend.tipos.EstadoTurnoEnum;

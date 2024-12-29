@@ -3,7 +3,7 @@ package com.miTurno.backend.data.mapper;
 import com.miTurno.backend.data.domain.ClienteEntidad;
 import com.miTurno.backend.data.domain.CredencialEntidad;
 import com.miTurno.backend.data.domain.RolEntidad;
-import com.miTurno.backend.data.dtos.model.Cliente;
+import com.miTurno.backend.data.dtos.response.Cliente;
 import com.miTurno.backend.data.dtos.request.UsuarioRequest;
 import org.springframework.stereotype.Component;
 

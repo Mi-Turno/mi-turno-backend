@@ -1,7 +1,7 @@
 package com.miTurno.backend.data.mapper;
 
 
-import com.miTurno.backend.data.dtos.model.HorarioProfesional;
+import com.miTurno.backend.data.dtos.response.HorarioProfesional;
 import com.miTurno.backend.data.domain.HorarioProfesionalEntidad;
 import com.miTurno.backend.data.dtos.request.HorarioProfesionalRequest;
 import org.springframework.stereotype.Component;

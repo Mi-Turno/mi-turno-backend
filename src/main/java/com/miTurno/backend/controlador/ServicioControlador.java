@@ -1,7 +1,7 @@
 package com.miTurno.backend.controlador;
 
-import com.miTurno.backend.data.dtos.model.Profesional;
-import com.miTurno.backend.data.dtos.model.Servicio;
+import com.miTurno.backend.data.dtos.response.Profesional;
+import com.miTurno.backend.data.dtos.response.Servicio;
 import com.miTurno.backend.data.dtos.request.ServicioRequest;
 import com.miTurno.backend.servicio.ServicioService;
 import io.swagger.v3.oas.annotations.Operation;

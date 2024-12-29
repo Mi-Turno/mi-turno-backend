@@ -1,5 +1,4 @@
 package com.miTurno.backend.configuracion.Security;
-
 import com.miTurno.backend.data.repositorio.UsuarioRepositorio;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
