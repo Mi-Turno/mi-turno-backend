@@ -1,9 +1,9 @@
 package com.miTurno.backend.controlador;
 
-import com.miTurno.backend.model.Profesional;
-import com.miTurno.backend.model.Servicio;
-import com.miTurno.backend.request.ServicioRequest;
-import com.miTurno.backend.excepcion.ServicioNoExisteException;
+import com.miTurno.backend.data.dtos.model.Profesional;
+import com.miTurno.backend.data.dtos.model.Servicio;
+import com.miTurno.backend.data.dtos.request.ServicioRequest;
+import com.miTurno.backend.excepciones.ServicioNoExisteException;
 import com.miTurno.backend.servicio.ServicioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

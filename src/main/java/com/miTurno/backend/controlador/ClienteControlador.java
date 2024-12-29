@@ -1,10 +1,10 @@
 package com.miTurno.backend.controlador;
 
 
-import com.miTurno.backend.model.Cliente;
-import com.miTurno.backend.model.Turno;
-import com.miTurno.backend.request.UsuarioLoginRequest;
-import com.miTurno.backend.request.UsuarioRequest;
+import com.miTurno.backend.data.dtos.model.Cliente;
+import com.miTurno.backend.data.dtos.model.Turno;
+import com.miTurno.backend.data.dtos.request.UsuarioLoginRequest;
+import com.miTurno.backend.data.dtos.request.UsuarioRequest;
 import com.miTurno.backend.servicio.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

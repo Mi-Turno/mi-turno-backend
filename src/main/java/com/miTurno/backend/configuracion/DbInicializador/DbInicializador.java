@@ -1,22 +1,27 @@
 package com.miTurno.backend.configuracion.DbInicializador;
 
-import com.miTurno.backend.model.Credencial;
-import com.miTurno.backend.model.Usuario;
-import com.miTurno.backend.entidad.*;
-import com.miTurno.backend.mapper.UsuarioMapper;
-import com.miTurno.backend.repositorio.*;
+import com.miTurno.backend.data.domain.DiaEntidad;
+import com.miTurno.backend.data.domain.EstadoTurnoEntidad;
+import com.miTurno.backend.data.domain.MetodoDePagoEntidad;
+import com.miTurno.backend.data.domain.RolEntidad;
+import com.miTurno.backend.data.repositorio.*;
+import com.miTurno.backend.data.dtos.model.Credencial;
+import com.miTurno.backend.data.dtos.model.Usuario;
+import com.miTurno.backend.data.mapper.UsuarioMapper;
 import com.miTurno.backend.tipos.DiasEnum;
 import com.miTurno.backend.tipos.EstadoTurnoEnum;
 import com.miTurno.backend.tipos.MetodosDePagoEnum;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
 @Component
 public class DbInicializador {
+
     //atributos
     private final RolRepositorio rolRepositorio;
     private final DiaRepositorio diaRepositorio;
@@ -24,18 +29,18 @@ public class DbInicializador {
     private final UsuarioRepositorio usuarioRepositorio;
     private final UsuarioMapper usuarioMapper;
     private final EstadoTurnoRepositorio estadoTurnoRepositorio;
-
-
+    private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
-    public DbInicializador(RolRepositorio rolRepositorio, DiaRepositorio diaRepositorio, MetodosDePagoRepositorio metodosDePagoRepositorio, UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, EstadoTurnoRepositorio estadoTurnoRepositorio) {
+    public DbInicializador(RolRepositorio rolRepositorio, DiaRepositorio diaRepositorio, MetodosDePagoRepositorio metodosDePagoRepositorio, UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, EstadoTurnoRepositorio estadoTurnoRepositorio, PasswordEncoder passwordEncoder) {
         this.rolRepositorio = rolRepositorio;
         this.diaRepositorio = diaRepositorio;
         this.metodosDePagoRepositorio = metodosDePagoRepositorio;
         this.usuarioRepositorio = usuarioRepositorio;
         this.usuarioMapper = usuarioMapper;
         this.estadoTurnoRepositorio = estadoTurnoRepositorio;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -58,7 +63,7 @@ public class DbInicializador {
 
            Credencial credencial = Credencial.builder()
                    .estado(true)
-                   .password("flf")
+                   .password(passwordEncoder.encode("flf"))
                    .email("miturno.flf@gmail.com")
                    .telefono("11111111")
                    .build();

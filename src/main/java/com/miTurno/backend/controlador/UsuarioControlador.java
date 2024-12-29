@@ -1,11 +1,13 @@
 package com.miTurno.backend.controlador;
 
 
-import com.miTurno.backend.request.UsuarioLoginRequest;
-import com.miTurno.backend.request.UsuarioRequest;
-import com.miTurno.backend.entidad.UsuarioEntidad;
-import com.miTurno.backend.mapper.UsuarioMapper;
-import com.miTurno.backend.model.Usuario;
+import com.miTurno.backend.configuracion.Security.JwtServiceImpl;
+import com.miTurno.backend.data.domain.UsuarioEntidad;
+import com.miTurno.backend.data.dtos.request.UsuarioLoginRequest;
+import com.miTurno.backend.data.dtos.request.UsuarioRequest;
+import com.miTurno.backend.data.mapper.UsuarioMapper;
+import com.miTurno.backend.data.dtos.model.Usuario;
+import com.miTurno.backend.servicio.AuthService;
 import com.miTurno.backend.servicio.UsuarioService;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,11 +32,16 @@ import java.util.Map;
 public class UsuarioControlador {
     private final UsuarioService usuarioService;
     private final UsuarioMapper usuarioMapper;
+    private final AuthService authService;
+    private final JwtServiceImpl jwtServiceImpl;
+
 
     @Autowired
-    public UsuarioControlador(UsuarioService usuarioService, UsuarioMapper usuarioMapper) {
+    public UsuarioControlador(UsuarioService usuarioService, UsuarioMapper usuarioMapper, AuthService authService, JwtServiceImpl jwtServiceImpl) {
         this.usuarioService = usuarioService;
         this.usuarioMapper = usuarioMapper;
+        this.authService = authService;
+        this.jwtServiceImpl = jwtServiceImpl;
     }
 
     //GET
@@ -63,21 +70,8 @@ public class UsuarioControlador {
         return ResponseEntity.ok(usuario);//200
     }
 
-    //GET
-    //TODO, ESTE POST DEBERIA APUNTAR AL REPOSITORIO DE CREDENCIALES
-    /**Se utiliza POST para no enviar la contraseña por URL eso hace que sea mas seguro el proceso*/
-    @PostMapping("/login")
-    @Operation(summary = "Obtener un usuario por email y contraseña")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "El usuario con los datos solicitados fue devuelto"),
-            @ApiResponse(responseCode = "400", description = "Parámetros inválidos")
-    })
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Usuario> obtenerUsuariosByEmailAndPassword(@RequestBody UsuarioLoginRequest usuarioLoginRequest) {
-        Usuario usuario = usuarioService.obtenerUsuariosByEmailAndPassword(usuarioLoginRequest.getEmail(), usuarioLoginRequest.getPassword());
 
-        return ResponseEntity.ok(usuario); // 200 OK con usuario y credenciales
-    }
+
 
 
    @Operation(summary = "Obtener un usuario por ROL")

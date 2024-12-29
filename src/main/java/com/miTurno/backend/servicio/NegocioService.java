@@ -1,13 +1,14 @@
 package com.miTurno.backend.servicio;
-
-import com.miTurno.backend.entidad.RolEntidad;
-import com.miTurno.backend.excepcion.*;
-import com.miTurno.backend.repositorio.*;
-import com.miTurno.backend.request.NegocioRequest;
-import com.miTurno.backend.entidad.NegocioEntidad;
-import com.miTurno.backend.mapper.NegocioMapper;
-import com.miTurno.backend.model.Negocio;
+import com.miTurno.backend.data.domain.RolEntidad;
+import com.miTurno.backend.data.repositorio.NegocioRepositorio;
+import com.miTurno.backend.data.repositorio.RolRepositorio;
+import com.miTurno.backend.excepciones.*;
+import com.miTurno.backend.data.dtos.request.NegocioRequest;
+import com.miTurno.backend.data.domain.NegocioEntidad;
+import com.miTurno.backend.data.mapper.NegocioMapper;
+import com.miTurno.backend.data.dtos.model.Negocio;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,13 +40,17 @@ public class NegocioService {
 
 
     //GET negocio x id
-    public Negocio obtenerNegocioPorId(Long idNegocio){
-        return negocioMapper.toModel(negocioRepositorio.findById(idNegocio).orElseThrow(()-> new UsuarioNoExistenteException(idNegocio)));
+    public Negocio obtenerNegocioPorId(Long idNegocio) throws EntityNotFoundException{
+
+        return negocioMapper.toModel(negocioRepositorio.findById(idNegocio)
+                .orElseThrow(()-> new EntityNotFoundException("Negocio con id: "+ idNegocio+" no encontrado.")));
     }
 
     //obtener negocio x nombre
     public Negocio obtenerNegocioPorNombre(String nombre) throws NombreNoExisteException {
-       return negocioMapper.toModel(negocioRepositorio.getNegocioEntidadByNombreIgnoreCase(nombre).orElseThrow(()->new NombreNoExisteException(nombre)));
+
+       return negocioMapper.toModel(negocioRepositorio.getNegocioEntidadByNombreIgnoreCase(nombre)
+               .orElseThrow(()->new NombreNoExisteException(nombre)));
     }
 
 
@@ -82,7 +87,8 @@ public class NegocioService {
     //GET id negocio x nombre negocio
     public Long obtenerIdNegocioPorNombreNegocio(String nombreNegocio){
 
-        NegocioEntidad negocioEntidad= negocioRepositorio.getNegocioEntidadByNombreIgnoreCase(nombreNegocio).orElseThrow(()-> new NombreNoExisteException("Nombre negocio"));
+        NegocioEntidad negocioEntidad= negocioRepositorio.getNegocioEntidadByNombreIgnoreCase(nombreNegocio)
+                .orElseThrow(()-> new NombreNoExisteException("Nombre negocio"));
         return negocioEntidad.getId();
     }
 

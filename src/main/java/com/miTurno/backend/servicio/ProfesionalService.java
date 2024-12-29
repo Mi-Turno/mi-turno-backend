@@ -1,43 +1,41 @@
 package com.miTurno.backend.servicio;
-
-import com.miTurno.backend.model.Profesional;
-import com.miTurno.backend.model.Turno;
-import com.miTurno.backend.entidad.*;
-import com.miTurno.backend.excepcion.*;
-import com.miTurno.backend.mapper.ProfesionalMapper;
-import com.miTurno.backend.mapper.TurnoMapper;
-import com.miTurno.backend.mapper.UsuarioMapper;
-import com.miTurno.backend.repositorio.*;
-import com.miTurno.backend.request.ProfesionalRequest;
+import com.miTurno.backend.data.domain.*;
+import com.miTurno.backend.data.repositorio.*;
+import com.miTurno.backend.data.dtos.model.Profesional;
+import com.miTurno.backend.data.dtos.model.Turno;
+import com.miTurno.backend.excepciones.*;
+import com.miTurno.backend.data.mapper.ProfesionalMapper;
+import com.miTurno.backend.data.mapper.TurnoMapper;
+import com.miTurno.backend.data.mapper.UsuarioMapper;
+import com.miTurno.backend.data.dtos.request.ProfesionalRequest;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class ProfesionalService {
+
     private final ProfesionalRepositorio profesionalRepositorio;
     private final RolRepositorio rolRepositorio;
-    private final UsuarioService usuarioService;
-    private final UsuarioMapper usuarioMapper;
     private final NegocioRepositorio negocioRepositorio;
     private final ProfesionalMapper profesionalMapper;
-    private final UsuarioRepositorio usuarioRepositorio;
     private final CredencialesRepositorio credencialesRepositorio;
 
     private final ServicioRepositorio servicioRepositorio;
     private final TurnoMapper turnoMapper;
 
-    public ProfesionalService(ProfesionalRepositorio profesionalRepositorio, RolRepositorio rolRepositorio, UsuarioService usuarioService, UsuarioMapper usuarioMapper,
-                              NegocioRepositorio negocioRepositorio, ProfesionalMapper profesionalMapper, UsuarioRepositorio usuarioRepositorio, CredencialesRepositorio credencialesRepositorio,
+    public ProfesionalService(ProfesionalRepositorio profesionalRepositorio, RolRepositorio rolRepositorio,
+                              NegocioRepositorio negocioRepositorio, ProfesionalMapper profesionalMapper, CredencialesRepositorio credencialesRepositorio,
                               ServicioRepositorio servicioRepositorio, TurnoMapper turnoMapper) {
+
         this.profesionalRepositorio = profesionalRepositorio;
         this.rolRepositorio = rolRepositorio;
-        this.usuarioService = usuarioService;
-        this.usuarioMapper = usuarioMapper;
+
         this.negocioRepositorio = negocioRepositorio;
         this.profesionalMapper = profesionalMapper;
-        this.usuarioRepositorio = usuarioRepositorio;
+
         this.credencialesRepositorio = credencialesRepositorio;
         this.servicioRepositorio = servicioRepositorio;
         this.turnoMapper = turnoMapper;
@@ -46,7 +44,7 @@ public class ProfesionalService {
 
     //POST profesional
 
-    public Profesional crearUnprofesional(Long idNegocio, ProfesionalRequest profesionalRequest) throws RolIncorrectoException, RecursoNoExisteException {
+    public Profesional crearUnprofesional(Long idNegocio, ProfesionalRequest profesionalRequest) throws RolIncorrectoException, EntityNotFoundException {
 
         if (profesionalRequest.getRolUsuario() != RolUsuarioEnum.PROFESIONAL) {
             throw new RolIncorrectoException(RolUsuarioEnum.PROFESIONAL, profesionalRequest.getRolUsuario());
@@ -65,7 +63,8 @@ public class ProfesionalService {
         }
 
         //si el negocio que quiero asignar al profesional no existe, tiro excepcion
-        NegocioEntidad negocioEntidad = negocioRepositorio.findById(idNegocio).orElseThrow(() -> new RecursoNoExisteException("Id negocio"));
+        NegocioEntidad negocioEntidad = negocioRepositorio.findById(idNegocio)
+                .orElseThrow(() -> new EntityNotFoundException("Negocio con id: "+ idNegocio+" no encontrado."));
 
         //buscamos el rol
         RolEntidad rolEntidad = rolRepositorio.findByRol(profesionalRequest.getRolUsuario());
@@ -81,9 +80,10 @@ public class ProfesionalService {
     }
 
     //GET profesionales de negocio x id
-    public List<Profesional> obtenerProfesionalesPorIdNegocio(Long idNegocio) {
+    public List<Profesional> obtenerProfesionalesPorIdNegocio(Long idNegocio) throws EntityNotFoundException{
 
-        NegocioEntidad negocioEntidad = negocioRepositorio.findById(idNegocio).orElseThrow(()->new UsuarioNoExistenteException(idNegocio));
+        NegocioEntidad negocioEntidad = negocioRepositorio.findById(idNegocio)
+                .orElseThrow(()->new EntityNotFoundException("Negocio con id: "+ idNegocio+" no encontrado."));
 
         return profesionalMapper.toModelList(negocioEntidad.getProfesionales());
     }
@@ -95,20 +95,21 @@ public class ProfesionalService {
     }
 
     //GET profesional x id
-    public Profesional obtenerUnProfesional(Long idProfesional) {
-        return profesionalMapper.toModel(profesionalRepositorio.findById(idProfesional).orElseThrow(() -> new UsuarioNoExistenteException(idProfesional)));
+    public Profesional obtenerUnProfesional(Long idProfesional) throws EntityNotFoundException{
+        return profesionalMapper.toModel(profesionalRepositorio.findById(idProfesional)
+                .orElseThrow(() -> new EntityNotFoundException("Profesional con id: "+ idProfesional+" no encontrado.")));
     }
 
 
     //GET listado de turnos agendados del profesional ("/{idProfesional}/turnos")
-    public List<Turno> obtenerTurnosProfesionalPorIdNegocioYIdProfesional(Long idNegocio,Long idProfesional) {
+    public List<Turno> obtenerTurnosProfesionalPorIdNegocioYIdProfesional(Long idNegocio,Long idProfesional)  throws EntityNotFoundException{
 
         if (!negocioRepositorio.existsById(idNegocio)){
-            throw new UsuarioNoExistenteException(idNegocio);
+            throw new EntityNotFoundException("Cliente con id: "+ idNegocio+" no encontrado.");
         }
 
         if (!profesionalRepositorio.existsById(idProfesional)){
-            throw new UsuarioNoExistenteException(idProfesional);
+            throw new EntityNotFoundException("Cliente con id: "+ idProfesional+" no encontrado.");
         }
 
 
@@ -119,7 +120,7 @@ public class ProfesionalService {
 
     //PUT profesional X id
 
-    public Profesional actualizarProfesional(Long idNegocio, Long idProfesionalAActualizar, Profesional nuevoProfesional) throws ServicioNoExisteException {
+    public Profesional actualizarProfesional(Long idNegocio, Long idProfesionalAActualizar, Profesional nuevoProfesional) {
 
 
         ProfesionalEntidad profesionalEntidad = profesionalRepositorio.findByIdAndNegocioEntidadId(idProfesionalAActualizar, idNegocio);
@@ -136,11 +137,15 @@ public class ProfesionalService {
         return profesionalMapper.toModel(profesionalEntidad);
     }
 
-    public Profesional asignarUnServicio(Long idProfesional, Long idServicio) {
+    public Profesional asignarUnServicio(Long idProfesional, Long idServicio) throws EntityNotFoundException {
 
         //Busco los recursos
-        ProfesionalEntidad profesionalEntidad = profesionalRepositorio.findById(idProfesional).orElseThrow(() -> new RecursoNoExisteException("Profesional con ID " + idProfesional + " no existe"));
-        ServicioEntidad servicioEntidad = servicioRepositorio.findById(idServicio).orElseThrow(() -> new RecursoNoExisteException("Servicio con ID " + idServicio + " no existe"));
+        ProfesionalEntidad profesionalEntidad = profesionalRepositorio.findById(idProfesional)
+
+                .orElseThrow(() -> new EntityNotFoundException("Profesional con id: " + idProfesional + " no encontrado."));
+
+        ServicioEntidad servicioEntidad = servicioRepositorio.findById(idServicio)
+                .orElseThrow(() -> new EntityNotFoundException("Servicio con id: " + idServicio + " no encontrado."));
 
         //Obtengo los servicios del profesional y los profesionales del servicio
         List<ServicioEntidad> listaServicios = profesionalEntidad.getListaServiciosEntidad();
@@ -167,12 +172,12 @@ public class ProfesionalService {
     }
 
 
-    public Boolean eliminarUnProfesional(Long idNegocio,Long idProfesionalAEliminar) throws ServicioNoExisteException{
+    public Boolean eliminarUnProfesional(Long idNegocio,Long idProfesionalAEliminar) throws EntityNotFoundException{
         Boolean rta = true;
 
         // Busca la entidad de credenciales por ID
         CredencialEntidad profesionalEntidad = credencialesRepositorio.findById(idProfesionalAEliminar)
-                .orElseThrow(() -> new ServicioNoExisteException(idProfesionalAEliminar));
+                .orElseThrow(() -> new EntityNotFoundException("Profesional con id: " + idProfesionalAEliminar + " no encontrado."));
 
         // Cambia el estado a false para desactivarlo
         profesionalEntidad.setEstado(false);

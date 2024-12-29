@@ -1,18 +1,17 @@
 package com.miTurno.backend.servicio;
-
-import com.miTurno.backend.model.HorarioProfesional;
-import com.miTurno.backend.entidad.DiaEntidad;
-import com.miTurno.backend.entidad.HorarioProfesionalEntidad;
-import com.miTurno.backend.entidad.NegocioEntidad;
-import com.miTurno.backend.entidad.ProfesionalEntidad;
-import com.miTurno.backend.excepcion.RecursoNoExisteException;
-import com.miTurno.backend.mapper.HorarioProfesionalMapper;
-import com.miTurno.backend.repositorio.DiaRepositorio;
-import com.miTurno.backend.repositorio.HorarioProfesionalRepositorio;
-import com.miTurno.backend.repositorio.NegocioRepositorio;
-import com.miTurno.backend.repositorio.ProfesionalRepositorio;
-import com.miTurno.backend.request.HorarioProfesionalRequest;
+import com.miTurno.backend.data.dtos.model.HorarioProfesional;
+import com.miTurno.backend.data.domain.DiaEntidad;
+import com.miTurno.backend.data.domain.HorarioProfesionalEntidad;
+import com.miTurno.backend.data.domain.NegocioEntidad;
+import com.miTurno.backend.data.domain.ProfesionalEntidad;
+import com.miTurno.backend.data.mapper.HorarioProfesionalMapper;
+import com.miTurno.backend.data.repositorio.DiaRepositorio;
+import com.miTurno.backend.data.repositorio.HorarioProfesionalRepositorio;
+import com.miTurno.backend.data.repositorio.NegocioRepositorio;
+import com.miTurno.backend.data.repositorio.ProfesionalRepositorio;
+import com.miTurno.backend.data.dtos.request.HorarioProfesionalRequest;
 import com.miTurno.backend.tipos.DiasEnum;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,10 +37,16 @@ public class HorarioProfesionalService {
         this.negocioRepositorio = negocioRepositorio;
     }
 
-    public HorarioProfesional crearUnHorarioXProfesional(Long idNegocio, Long idProfesional, HorarioProfesionalRequest nuevoHP){
+    public HorarioProfesional crearUnHorarioXProfesional(Long idNegocio,
+                                                         Long idProfesional,
+                                                         HorarioProfesionalRequest nuevoHP) throws EntityNotFoundException {
 
-        NegocioEntidad negocioEntidad=negocioRepositorio.findById(idNegocio).orElseThrow(()-> new RecursoNoExisteException("Id negocio"));
-        ProfesionalEntidad profesionalEntidad= profesionalRepositorio.findById(idProfesional).orElseThrow(()-> new RecursoNoExisteException("Id profesional"));
+        NegocioEntidad negocioEntidad=negocioRepositorio.findById(idNegocio)
+                .orElseThrow(()-> new EntityNotFoundException("Negocio con id:"+ idNegocio +" no encontrado."));
+
+        ProfesionalEntidad profesionalEntidad= profesionalRepositorio.findById(idProfesional)
+                .orElseThrow(()-> new EntityNotFoundException("Profesional con id:"+ idNegocio +" no encontrado."));
+
         DiaEntidad diaEntidad = diaRepositorio.findByDia(nuevoHP.getDia());
 
         HorarioProfesionalEntidad horarioProfesionalEntidad = HorarioProfesionalEntidad.builder()
@@ -56,16 +61,22 @@ public class HorarioProfesionalService {
         return horarioProfesionalMapper.toModel(horarioProfesionalRepositorio.save(horarioProfesionalEntidad));
     }
 
-    public List<HorarioProfesionalEntidad> obtenerListadoDeHorariosDeUnProfesional(Long idNegocio, Long idProfesional){
-        NegocioEntidad negocioEntidad=negocioRepositorio.findById(idNegocio).orElseThrow(()-> new RecursoNoExisteException("Id negocio"));
-        ProfesionalEntidad profesionalEntidad= profesionalRepositorio.findById(idProfesional).orElseThrow(()-> new RecursoNoExisteException("Id profesional"));
+    public List<HorarioProfesionalEntidad> obtenerListadoDeHorariosDeUnProfesional(Long idNegocio, Long idProfesional)throws EntityNotFoundException{
+        NegocioEntidad negocioEntidad=negocioRepositorio.findById(idNegocio)
+                .orElseThrow(()-> new EntityNotFoundException("Negocio con id:"+ idNegocio +" no encontrado."));
+
+        ProfesionalEntidad profesionalEntidad= profesionalRepositorio.findById(idProfesional)
+                .orElseThrow(()-> new EntityNotFoundException("Profesional con id:"+ idNegocio +" no encontrado."));
 
         return horarioProfesionalRepositorio.findByProfesionalEntidadId(idProfesional);
     }
 
-    public List<HorarioProfesionalEntidad> obtenerHorariosPorProfesionalYDia(Long idNegocio,Long idProfesional, Long idDia) {
-        NegocioEntidad negocioEntidad=negocioRepositorio.findById(idNegocio).orElseThrow(()-> new RecursoNoExisteException("Id negocio"));
-        ProfesionalEntidad profesionalEntidad= profesionalRepositorio.findById(idProfesional).orElseThrow(()-> new RecursoNoExisteException("Id profesional"));
+    public List<HorarioProfesionalEntidad> obtenerHorariosPorProfesionalYDia(Long idNegocio,Long idProfesional, Long idDia) throws EntityNotFoundException{
+        NegocioEntidad negocioEntidad=negocioRepositorio.findById(idNegocio)
+                .orElseThrow(()-> new EntityNotFoundException("Negocio con id:"+ idNegocio +" no encontrado."));
+
+        ProfesionalEntidad profesionalEntidad= profesionalRepositorio.findById(idProfesional)
+                .orElseThrow(()-> new EntityNotFoundException("Profesional con id:"+ idNegocio +" no encontrado."));
 
 
         //DiaEntidad diaEntidad = diaRepositorio.findById(idDia).orElseThrow(()-> new RecursoNoExisteException("Id dia"));
@@ -74,11 +85,16 @@ public class HorarioProfesionalService {
         return horarioProfesionalRepositorio.findByProfesionalEntidadIdAndDiaEntidad_Dia(idProfesional, diaEnum);
     }
 
-    public HorarioProfesionalEntidad obtenerHorarioProfesionalPorId(Long idNegocio,Long idProfesional, Long idHorarioProfesional){
-        NegocioEntidad negocioEntidad=negocioRepositorio.findById(idNegocio).orElseThrow(()-> new RecursoNoExisteException("Id negocio"));
-        ProfesionalEntidad profesionalEntidad= profesionalRepositorio.findById(idProfesional).orElseThrow(()-> new RecursoNoExisteException("Id profesional"));
+    public HorarioProfesionalEntidad obtenerHorarioProfesionalPorId(Long idNegocio,Long idProfesional, Long idHorarioProfesional) throws EntityNotFoundException{
 
-        return  horarioProfesionalRepositorio.findById(idHorarioProfesional).orElseThrow(()->new RecursoNoExisteException("Id Horario Profesional"));
+        NegocioEntidad negocioEntidad=negocioRepositorio.findById(idNegocio)
+                .orElseThrow(()-> new EntityNotFoundException("Negocio con id:"+ idNegocio +" no encontrado."));
+
+        ProfesionalEntidad profesionalEntidad= profesionalRepositorio.findById(idProfesional)
+                .orElseThrow(()-> new EntityNotFoundException("Profesional con id:"+ idNegocio +" no encontrado."));
+
+        return  horarioProfesionalRepositorio.findById(idHorarioProfesional)
+                .orElseThrow(()->new EntityNotFoundException("Horario del profesional con id: "+ idHorarioProfesional+" no encontrado."));
 
     }
 

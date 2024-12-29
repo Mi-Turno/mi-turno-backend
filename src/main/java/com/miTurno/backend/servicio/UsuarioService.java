@@ -1,15 +1,17 @@
 package com.miTurno.backend.servicio;
 
-import com.miTurno.backend.entidad.RolEntidad;
-import com.miTurno.backend.repositorio.CredencialesRepositorio;
-import com.miTurno.backend.entidad.UsuarioEntidad;
-import com.miTurno.backend.excepcion.*;
-import com.miTurno.backend.mapper.UsuarioMapper;
-import com.miTurno.backend.model.Usuario;
-import com.miTurno.backend.repositorio.RolRepositorio;
-import com.miTurno.backend.repositorio.UsuarioRepositorio;
+import com.miTurno.backend.data.domain.RolEntidad;
+import com.miTurno.backend.data.repositorio.CredencialesRepositorio;
+import com.miTurno.backend.data.domain.UsuarioEntidad;
+import com.miTurno.backend.excepciones.*;
+import com.miTurno.backend.data.mapper.UsuarioMapper;
+import com.miTurno.backend.data.dtos.model.Usuario;
+import com.miTurno.backend.data.repositorio.RolRepositorio;
+import com.miTurno.backend.data.repositorio.UsuarioRepositorio;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,14 +24,16 @@ public class UsuarioService {
 
     private final CredencialesRepositorio credencialesRepositorio;
     private final RolRepositorio rolRepositorio;
+    private final PasswordEncoder passwordEncoder;
 
 
     @Autowired
-    public UsuarioService(UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, CredencialesRepositorio credencialesRepositorio, RolRepositorio rolRepositorio) {
+    public UsuarioService(UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, CredencialesRepositorio credencialesRepositorio, RolRepositorio rolRepositorio, PasswordEncoder passwordEncoder) {
         this.usuarioRepositorio = usuarioRepositorio;
         this.usuarioMapper = usuarioMapper;
         this.credencialesRepositorio = credencialesRepositorio;
         this.rolRepositorio = rolRepositorio;
+        this.passwordEncoder = passwordEncoder;
     }
 
     //get
@@ -38,25 +42,27 @@ public class UsuarioService {
     }
 
     //get x id
-    public Usuario buscarUsuario(Long id) throws UsuarioNoExistenteException{
+    public Usuario buscarUsuario(Long id) throws EntityNotFoundException{
 
-        return usuarioMapper.toModel(usuarioRepositorio.findById(id).orElseThrow(()-> new UsuarioNoExistenteException(id)));
+        return usuarioMapper.toModel(usuarioRepositorio.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Usuario con id: "+id +" no encontrado.")));
     }
 
     //get x email y contra
-   public Usuario obtenerUsuariosByEmailAndPassword(String email,String password)throws RecursoNoExisteException{
-
-        //email no existe
-        if (!usuarioRepositorio.existsByCredencialEmail(email)){
-            throw new EmailNoExistenteException(email);
-        }
-
-        //email existe pero contrasenia incorrecta
-
-        UsuarioEntidad usuarioEntidad= usuarioRepositorio.findByCredencialEmailAndCredencialPassword(email,password).orElseThrow(()-> new ContraseniaIncorrectaException(password));
-
-        return usuarioMapper.toModel(usuarioEntidad);
-   }
+//   public Usuario obtenerUsuariosByEmailAndPassword(String email,String password)throws RecursoNoExisteException{
+//
+//        //email no existe
+//        if (!usuarioRepositorio.existsByCredencialEmail(email)){
+//            throw new EmailNoExistenteException(email);
+//        }
+//
+//        //email existe pero contrasenia incorrecta
+//
+//        UsuarioEntidad usuarioEntidad= usuarioRepositorio.findByCredencialEmailAndCredencialPassword(email,password)
+//                .orElseThrow(()-> new ContraseniaIncorrectaException(password));
+//
+//        return usuarioMapper.toModel(usuarioEntidad);
+//   }
 
     //get x rol
     public List<Usuario> obtenerUsuariosPorRol(RolUsuarioEnum rol) {
@@ -92,9 +98,14 @@ public class UsuarioService {
         //setteamos el estado del usuario en true
         usuario.getCredencial().setEstado(true);
 
+        //encriptamos la password
+        usuario.getCredencial().setPassword(passwordEncoder.encode(usuario.getCredencial().getPassword()));
+
         RolEntidad rolEntidad = rolRepositorio.findByRol(usuario.getRolUsuario());
 
         UsuarioEntidad usuarioEntidad= usuarioMapper.toEntidad(usuario,rolEntidad);
+
+
 
         usuarioEntidad = usuarioRepositorio.save(usuarioEntidad);
         return usuarioMapper.toModel(usuarioEntidad);
@@ -103,16 +114,18 @@ public class UsuarioService {
 
     //GET usuario x id y rol
    /* public Usuario obtenerUsuarioPorIdyRol(RolUsuarioEnum rolUsuarioEnum,Long idNegocio){
-        CredencialesEntidad credencialesEntidad= credencialesRepositorio.findByIdAndRolEntidad_Rol(idNegocio,rolUsuarioEnum).orElseThrow(()->new UsuarioNoExistenteException(idNegocio));
+        CredencialesEntidad credencialesEntidad= credencialesRepositorio.findByIdAndRolEntidad_Rol(idNegocio,rolUsuarioEnum)
+        .orElseThrow(()->new UsuarioNoExistenteException(idNegocio));
 
         return usuarioMapper.toModel(credencialesEntidad.getUsuario());
 
     }
 */
     //UPDATE
-    public Usuario actualizarUsuarioPorId(Long id, Usuario actualizado) throws UsuarioNoExistenteException {
+    public Usuario actualizarUsuarioPorId(Long id, Usuario actualizado) throws EntityNotFoundException {
 
-        UsuarioEntidad usuarioEntidad = usuarioRepositorio.findById(id).orElseThrow(()-> new UsuarioNoExistenteException(id));
+        UsuarioEntidad usuarioEntidad = usuarioRepositorio.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Usuario con id: "+id +" no encontrado."));
 
         //si existe
         usuarioEntidad.setNombre(actualizado.getNombre());
@@ -135,10 +148,11 @@ public class UsuarioService {
     }
 
     //DELETE
-    public Boolean eliminarUsuarioPorId(Long id){
+    public Boolean eliminarUsuarioPorId(Long id) throws EntityNotFoundException{
         Boolean rta = false;//
         if(usuarioRepositorio.existsById(id)){
-           UsuarioEntidad usuarioEntidad= usuarioRepositorio.findById(id).orElseThrow(()-> new UsuarioNoExistenteException(id));
+           UsuarioEntidad usuarioEntidad= usuarioRepositorio.findById(id)
+                   .orElseThrow(()-> new EntityNotFoundException("Usuario con id: "+id +" no encontrado."));
 
             usuarioEntidad.getCredencial().setEstado(false);
 

@@ -1,16 +1,17 @@
 package com.miTurno.backend.servicio;
 
-import com.miTurno.backend.model.Profesional;
-import com.miTurno.backend.model.Servicio;
-import com.miTurno.backend.entidad.NegocioEntidad;
-import com.miTurno.backend.entidad.ServicioEntidad;
-import com.miTurno.backend.excepcion.ServicioNoExisteException;
-import com.miTurno.backend.excepcion.UsuarioNoExistenteException;
-import com.miTurno.backend.mapper.ProfesionalMapper;
-import com.miTurno.backend.mapper.ServicioMapper;
-import com.miTurno.backend.repositorio.NegocioRepositorio;
-import com.miTurno.backend.repositorio.ServicioRepositorio;
-import com.miTurno.backend.request.ServicioRequest;
+import com.miTurno.backend.data.dtos.model.Profesional;
+import com.miTurno.backend.data.dtos.model.Servicio;
+import com.miTurno.backend.data.domain.NegocioEntidad;
+import com.miTurno.backend.data.domain.ServicioEntidad;
+import com.miTurno.backend.excepciones.ServicioNoExisteException;
+import com.miTurno.backend.excepciones.UsuarioNoExistenteException;
+import com.miTurno.backend.data.mapper.ProfesionalMapper;
+import com.miTurno.backend.data.mapper.ServicioMapper;
+import com.miTurno.backend.data.repositorio.NegocioRepositorio;
+import com.miTurno.backend.data.repositorio.ServicioRepositorio;
+import com.miTurno.backend.data.dtos.request.ServicioRequest;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,10 +54,11 @@ public class ServicioService {
         return profesionalMapper.toModelList(servicioEntidad.getProfesionales());
     }
     //POST
-    public Servicio crearUnServicio(Long idNegocio,ServicioRequest nuevoServicio){
+    public Servicio crearUnServicio(Long idNegocio,ServicioRequest nuevoServicio) throws EntityNotFoundException {
 
         //todo buscar el negocioEntidad aca idNegocio
-        NegocioEntidad negocioEntidad=negocioRepositorio.findById(idNegocio).orElseThrow(()-> new UsuarioNoExistenteException(idNegocio));
+        NegocioEntidad negocioEntidad=negocioRepositorio.findById(idNegocio)
+                .orElseThrow(()-> new EntityNotFoundException("Negocio con id: "+ idNegocio +" no encontrado."));
         ServicioEntidad servicioEntidad =servicioMapper.toEntidad(negocioEntidad,nuevoServicio);
 
 
@@ -72,10 +74,11 @@ public class ServicioService {
     }
 
     //DELETE
-    public Boolean eliminarUnServicio(Long idNegocio,Long idServicioAEliminar) throws ServicioNoExisteException{
+    public Boolean eliminarUnServicio(Long idNegocio,Long idServicioAEliminar) throws EntityNotFoundException{
         Boolean rta = true;
 
-        ServicioEntidad servicioEntidad = servicioRepositorio.findByIdAndNegocioEntidadId(idServicioAEliminar, idNegocio);
+        ServicioEntidad servicioEntidad = servicioRepositorio.findByIdAndNegocioEntidadId(idServicioAEliminar, idNegocio)
+                .orElseThrow(() -> new EntityNotFoundException("Servicio con id: "+ idServicioAEliminar +" no encontrado."));
         //si se encuntra el servicio
         servicioEntidad.setEstado(false);
         servicioRepositorio.save(servicioEntidad);
@@ -85,7 +88,9 @@ public class ServicioService {
     //UPDATE
 
    public Servicio actualizarUnServicio(Long idNegocio,Long idServicioAActualizar,ServicioRequest nuevoServicio) throws ServicioNoExisteException{
-        ServicioEntidad servicioEntidad= servicioRepositorio.findByIdAndNegocioEntidadId(idServicioAActualizar,idNegocio);
+
+        ServicioEntidad servicioEntidad= servicioRepositorio.findByIdAndNegocioEntidadId(idServicioAActualizar,idNegocio)
+                .orElseThrow(() -> new EntityNotFoundException("Servicio con id: "+ idServicioAActualizar +" no encontrado."));
 
         servicioEntidad.setDuracion(nuevoServicio.getDuracion());
         servicioEntidad.setPrecio(nuevoServicio.getPrecio());
