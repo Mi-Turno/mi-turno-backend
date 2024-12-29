@@ -5,6 +5,7 @@ import com.miTurno.backend.data.repositorio.UsuarioRepositorio;
 import com.miTurno.backend.data.dtos.request.UsuarioLoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -22,18 +23,25 @@ public class AuthService {
     }
 
     public UsuarioEntidad authenticate(UsuarioLoginRequest input) {
+        try {
+            // Autentica las credenciales utilizando el AuthenticationManager
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            input.getEmail(),
+                            input.getPassword()
+                    )
+            );
 
+            // Busca al usuario en la base de datos por su email
+            return usuarioRepositorio.findByCredencialEmail(input.getEmail())
+                    .orElseThrow(() -> new UsernameNotFoundException("Email no fue encontrado en el sistema"));
 
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        input.getEmail(),
-                        input.getPassword()
-                )
-        );
-
-        return usuarioRepositorio.findByCredencialEmail(input.getEmail())
-                .orElseThrow(()-> new UsernameNotFoundException("Email no encontrado")
-        );
+        } catch (BadCredentialsException ex) {
+            // Si las credenciales son incorrectas, lanza una excepción personalizada
+            throw new BadCredentialsException("Correo o contraseña incorrectos", ex);
+        } catch (Exception ex) {
+            throw new RuntimeException("Error en el proceso de autenticación", ex);
+        }
 
     }
 }

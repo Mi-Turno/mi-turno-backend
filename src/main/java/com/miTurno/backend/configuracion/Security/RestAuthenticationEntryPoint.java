@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.time.LocalDateTime;
 
 @Component
 public class RestAuthenticationEntryPoint extends BasicAuthenticationEntryPoint {
@@ -18,10 +19,14 @@ public class RestAuthenticationEntryPoint extends BasicAuthenticationEntryPoint 
             HttpServletResponse response,
             AuthenticationException authException)
             throws IOException {
+
 //            response.addHeader("WWW-Authenticate",);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            PrintWriter writer = response.getWriter();
-            writer.println("{ \"codigo\": \"No autorizado\", \"error\": \"" + authException.getMessage() + "\" }");
+            response.setContentType("application/json");
+            response.getWriter().write(
+                    "{\"error\": \"No autorizado\", \"mensaje\": \"Acceso denegado\", \"timestamp\": \"" + LocalDateTime.now() + "\"}"
+            );
+
     }
 
     @Override
