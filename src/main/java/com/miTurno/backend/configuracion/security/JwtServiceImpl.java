@@ -1,4 +1,4 @@
-package com.miTurno.backend.configuracion.Security;
+package com.miTurno.backend.configuracion.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -7,7 +7,6 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
 import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
@@ -37,7 +36,7 @@ public class JwtServiceImpl implements JwtService{
         return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
-    private boolean isTokenExpired(String token) {
+    public boolean isTokenExpired(String token) {
         Date fechaVto = extractExpiration(token);
         return fechaVto.before(new Date());
     }
@@ -54,13 +53,14 @@ public class JwtServiceImpl implements JwtService{
         return extractClaim(token, Claims::getSubject);
     }
 
-    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver){
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }
 
     private Claims extractAllClaims(String token) {
         //logica para obtener todos los claims de un token jwt
+
         return Jwts
                 .parserBuilder()
                 .setSigningKey(getSignInKey())

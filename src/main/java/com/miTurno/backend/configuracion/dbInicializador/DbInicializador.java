@@ -1,4 +1,4 @@
-package com.miTurno.backend.configuracion.DbInicializador;
+package com.miTurno.backend.configuracion.dbInicializador;
 
 import com.miTurno.backend.data.domain.DiaEntidad;
 import com.miTurno.backend.data.domain.EstadoTurnoEntidad;

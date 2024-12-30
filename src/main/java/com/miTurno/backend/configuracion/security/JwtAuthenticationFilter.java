@@ -1,10 +1,11 @@
-package com.miTurno.backend.configuracion.Security;
+package com.miTurno.backend.configuracion.security;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +22,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private UserDetailsService userDetailsService;
     private JwtServiceImpl jwtService;
+
+    @Autowired
+    public JwtAuthenticationFilter(JwtServiceImpl jwtService, UserDetailsService userDetailsService) {
+
+        this.jwtService = jwtService;
+        this.userDetailsService = userDetailsService;
+    }
 
     @Override
     protected void doFilterInternal(
@@ -41,7 +49,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //Extraer y validar el token:
         final String jwt = authHeader.substring(7);
 
+
+
         final String userEmail = jwtService.extractUsername(jwt);
+
+
 
         //Autenticación:
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

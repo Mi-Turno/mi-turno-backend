@@ -1,4 +1,4 @@
-package com.miTurno.backend.configuracion.Security;
+package com.miTurno.backend.configuracion.security;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.AuthenticationException;
@@ -17,11 +17,10 @@ public class RestAuthenticationEntryPoint extends BasicAuthenticationEntryPoint 
             AuthenticationException authException)
             throws IOException {
 
-//            response.addHeader("WWW-Authenticate",);
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.setContentType("application/json");
             response.getWriter().write(
-                    "{\"error\": \"No autorizado\", \"mensaje\": \"Acceso denegado\", \"timestamp\": \"" + LocalDateTime.now() + "\"}"
+                    "{\"error\": \"No autorizado\", \"mensaje\": \"Token expirado\", \"timestamp\": \"" + LocalDateTime.now() + "\"}"
             );
 
     }

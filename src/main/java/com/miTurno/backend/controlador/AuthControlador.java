@@ -1,6 +1,6 @@
 package com.miTurno.backend.controlador;
 
-import com.miTurno.backend.configuracion.Security.JwtServiceImpl;
+import com.miTurno.backend.configuracion.security.JwtServiceImpl;
 import com.miTurno.backend.data.domain.UsuarioEntidad;
 import com.miTurno.backend.data.dtos.request.UsuarioLoginRequest;
 import com.miTurno.backend.servicio.AuthService;
