@@ -2,6 +2,7 @@ package com.miTurno.backend.excepciones.manejador;
 
 
 import com.miTurno.backend.excepciones.*;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -67,6 +68,15 @@ public class ManejadorGlobalExcepciones {
                         "mensaje", ex.getMessage(),
                         "timestamp", LocalDateTime.now()
                 ));
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<?> handleExpiredJwtException(ExpiredJwtException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
+                "error", "Token expirado",
+                "mensaje", ex.getMessage(),
+                "timestamp", LocalDateTime.now()
+        ));
     }
 
     @ExceptionHandler(BadCredentialsException.class)
