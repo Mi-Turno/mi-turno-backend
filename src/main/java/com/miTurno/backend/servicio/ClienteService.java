@@ -67,7 +67,7 @@ public class ClienteService {
         RolEntidad rolEntidad = rolRepositorio.findByRol(usuarioRequest.getRolUsuario());
 
         // Encriptamos password
-        passwordEncoder.encode(usuarioRequest.getCredencial().getPassword());
+        usuarioRequest.getCredencial().setPassword(passwordEncoder.encode(usuarioRequest.getCredencial().getPassword()));
 
         // Crear el cliente
         ClienteEntidad clienteEntidad = clienteMapper.toEntidad(usuarioRequest,rolEntidad);
