@@ -86,7 +86,7 @@ public class NegocioService {
         RolEntidad rolEntidad = rolRepositorio.findByRol(negocioRequest.getRolUsuario());
 
         //encriptamos la pswd
-        passwordEncoder.encode(negocioRequest.getCredencial().getPassword());
+        negocioRequest.getCredencial().setPassword(passwordEncoder.encode(negocioRequest.getCredencial().getPassword()));
 
         //pasamos a model
         Negocio negocio= negocioMapper.toModel(negocioRequest);
