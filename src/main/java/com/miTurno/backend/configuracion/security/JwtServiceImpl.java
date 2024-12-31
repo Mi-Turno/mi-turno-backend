@@ -102,6 +102,7 @@ public class JwtServiceImpl implements JwtService{
         //agregamos extra claims
         claims.put("roles", usuarioEntidad.getAuthorities());
         claims.put("name",usuarioEntidad.getNombre());
+        claims.put("id", usuarioEntidad.getId());
 
         return claims;
     }
