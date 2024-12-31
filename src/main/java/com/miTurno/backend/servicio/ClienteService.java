@@ -15,6 +15,7 @@ import com.miTurno.backend.tipos.RolUsuarioEnum;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,14 +28,16 @@ public class ClienteService {
     private final CredencialesRepositorio credencialesRepositorio;
     private final ClienteMapper clienteMapper;
     private final TurnoMapper turnoMapper;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public ClienteService(ClienteRepositorio clienteRepositorio, RolRepositorio rolRepositorio, CredencialesRepositorio credencialesRepositorio, ClienteMapper clienteMapper, TurnoMapper turnoMapper) {
+    public ClienteService(ClienteRepositorio clienteRepositorio, RolRepositorio rolRepositorio, CredencialesRepositorio credencialesRepositorio, ClienteMapper clienteMapper, TurnoMapper turnoMapper, PasswordEncoder passwordEncoder) {
         this.clienteRepositorio = clienteRepositorio;
         this.rolRepositorio = rolRepositorio;
         this.credencialesRepositorio = credencialesRepositorio;
         this.clienteMapper = clienteMapper;
         this.turnoMapper = turnoMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
 
@@ -61,11 +64,15 @@ public class ClienteService {
         }
 
         //buscamos el rol en el repositorio de roles
-
         RolEntidad rolEntidad = rolRepositorio.findByRol(usuarioRequest.getRolUsuario());
+
+        // Encriptamos password
+        passwordEncoder.encode(usuarioRequest.getCredencial().getPassword());
 
         // Crear el cliente
         ClienteEntidad clienteEntidad = clienteMapper.toEntidad(usuarioRequest,rolEntidad);
+
+
         return clienteMapper.toModel(clienteRepositorio.save(clienteEntidad)) ;
     }
 

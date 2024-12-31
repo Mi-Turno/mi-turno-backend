@@ -42,28 +42,12 @@ public class ClienteControlador {
             @Schema(implementation = Map.Entry.class), examples = @ExampleObject(value = "{ \"nombre\": \"no puede estar vacío\" }"))),
             @ApiResponse(responseCode = "409", description = "El email o telefono ingresado ya existe")
     })
-    @PostMapping
+    @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente crearUnCliente(@Parameter(description = "Datos del cliente")
                                       @Valid @RequestBody UsuarioRequest usuarioRequest) {
 
         return clienteService.crearUnCliente(usuarioRequest);
-    }
-    //POST QUE FUNCIONA COMO GET PARA EL LOGIN
-    @PostMapping("/login")
-    @Operation(summary = "Obtener un cliente por email y contraseña")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "El cliente con los datos solicitados fue devuelto"),
-            @ApiResponse(responseCode = "400", description = "Parámetros inválidos")
-    })
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Cliente> obtenerClienteByEmailAndPassword(@RequestBody UsuarioLoginRequest usuarioLoginRequest) {
-        Cliente cliente = clienteService.obtenerClienteByEmailAndPassword(usuarioLoginRequest.getEmail(), usuarioLoginRequest.getPassword());
-        if (cliente != null) {
-            return ResponseEntity.ok(cliente); // 200 OK con usuario y credenciales
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
     }
 
     //GET listado de turnos por cliente ID

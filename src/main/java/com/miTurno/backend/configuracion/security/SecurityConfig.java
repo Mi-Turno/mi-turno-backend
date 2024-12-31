@@ -32,7 +32,8 @@ public class SecurityConfig{
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs*/**", "/h2-console/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs*/**", "/h2-console/**",
+                                "/clientes/register","/negocios/register","/auth/**").permitAll()
 //                        .requestMatchers(HttpMethod.GET, "/public").permitAll()
 //                        .requestMatchers(HttpMethod.POST, "/public").authenticated()
 //                        .requestMatchers(HttpMethod.GET, "/admin/archivos").hasAuthority(RolUsuario.AUDITOR.name())
