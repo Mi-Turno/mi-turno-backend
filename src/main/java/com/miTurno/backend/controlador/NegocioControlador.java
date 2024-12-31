@@ -41,7 +41,7 @@ public class NegocioControlador {
             @Schema(implementation = Map.Entry.class), examples = @ExampleObject(value = "{ \"nombre\": \"no puede estar vacío\" }"))),
             @ApiResponse(responseCode = "409", description = "El email,telefono o nombre del negocio ingresado ya existe")
     })
-    @PostMapping
+    @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public Negocio crearUnNegocio(@Parameter(description = "Datos del negocio")
                                           @Valid @RequestBody NegocioRequest negocioRequest) {

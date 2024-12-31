@@ -49,11 +49,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //Extraer y validar el token:
         final String jwt = authHeader.substring(7);
 
-
-
         final String userEmail = jwtService.extractUsername(jwt);
-
-
 
         //Autenticación:
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

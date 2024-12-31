@@ -11,6 +11,7 @@ import com.miTurno.backend.tipos.RolUsuarioEnum;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,13 +23,15 @@ public class NegocioService {
     private final NegocioRepositorio negocioRepositorio;
     private final NegocioMapper negocioMapper;
     private final RolRepositorio rolRepositorio;
+    private final PasswordEncoder passwordEncoder;
 
     //constructores
     @Autowired
-    public NegocioService(NegocioMapper negocioMapper, NegocioRepositorio negocioRepositorio, RolRepositorio rolRepositorio) {
+    public NegocioService(NegocioMapper negocioMapper, NegocioRepositorio negocioRepositorio, RolRepositorio rolRepositorio, PasswordEncoder passwordEncoder) {
         this.negocioMapper = negocioMapper;
         this.negocioRepositorio = negocioRepositorio;
         this.rolRepositorio = rolRepositorio;
+        this.passwordEncoder = passwordEncoder;
     }
 
     //metodos
@@ -70,15 +73,22 @@ public class NegocioService {
         if (negocioRepositorio.existsByNombreAndRolEntidad_Rol(nombreNegocio,negocioRequest.getRolUsuario())) {
             throw new EntityExistsException("El negocio cono el nombre: "+nombreNegocio+" ya existe.");
         }
+
         if(negocioRepositorio.existsByCredencial_Email(negocioRequest.getCredencial().getEmail())){
             throw new EntityExistsException("El negocio con el email: "+negocioRequest.getCredencial().getEmail()+" ya existe");
         }
+
         if(negocioRepositorio.existsByCredencial_Telefono(negocioRequest.getCredencial().getTelefono())){
             throw new EntityExistsException("El negocio con el telefono: "+negocioRequest.getCredencial().getTelefono()+" ya existe.");
         }
 
+        //obtenemos el rol negocio
         RolEntidad rolEntidad = rolRepositorio.findByRol(negocioRequest.getRolUsuario());
 
+        //encriptamos la pswd
+        passwordEncoder.encode(negocioRequest.getCredencial().getPassword());
+
+        //pasamos a model
         Negocio negocio= negocioMapper.toModel(negocioRequest);
 
         return negocioMapper.toModel(negocioRepositorio.save(negocioMapper.toEntidad(negocio,rolEntidad)));
