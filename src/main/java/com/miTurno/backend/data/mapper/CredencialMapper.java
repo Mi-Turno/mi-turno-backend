@@ -50,7 +50,8 @@ public class CredencialMapper {
                 .password(credencial.getPassword())
                 .telefono(credencial.getTelefono())
                 .estado(credencial.getEstado()) //el estado del usuario se settea por fuera del mapper
-
+                .codigoVerificacion(credencial.getCodigoVerificacion())
+                .vencimientoCodigoVerificacion(credencial.getVencimientoCodigoVerificacion())
                 .build();
 
     }

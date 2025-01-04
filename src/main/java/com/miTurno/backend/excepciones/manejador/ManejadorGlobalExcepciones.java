@@ -3,11 +3,13 @@ package com.miTurno.backend.excepciones.manejador;
 
 import com.miTurno.backend.excepciones.*;
 import io.jsonwebtoken.ExpiredJwtException;
+import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
@@ -88,6 +90,46 @@ public class ManejadorGlobalExcepciones {
                         "timestamp", LocalDateTime.now()
                 ));
     }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<?>handleUsernameNotFoundException(UsernameNotFoundException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of(
+                        "error", "Usuario no encontrado",
+                        "mensaje", ex.getMessage(),
+                        "timestamp", LocalDateTime.now()
+                ));
+    }
+    @ExceptionHandler(MessagingException.class)
+    public ResponseEntity<?>handleMessagingException(MessagingException ex){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of(
+                        "error", "Error con el envio de email",
+                        "mensaje", ex.getMessage(),
+                        "timestamp", LocalDateTime.now()
+                ));
+    }
+
+    @ExceptionHandler(UsuarioNoVerificadoException.class)
+    public ResponseEntity<?> handleUsuarioNoVerificadoException(UsuarioNoVerificadoException ex){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of(
+                        "error","Email no verificado",
+                        "mensaje", ex.getMessage(),
+                        "timestamp", LocalDateTime.now()
+                ));
+    }
+
+    @ExceptionHandler(CodigoVerificacionException.class)
+    public ResponseEntity<?> handleCodigoVerificacionException(CodigoVerificacionException ex){
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of(
+                        "error","Error codigo de verificacion",
+                        "mensaje", ex.getMessage(),
+                        "timestamp", LocalDateTime.now()
+                ));
+    }
+
 
     @ExceptionHandler(RolIncorrectoException.class)
     public ResponseEntity<?> RolIncorrectoException(RolIncorrectoException ex){

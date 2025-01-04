@@ -1,4 +1,5 @@
 package com.miTurno.backend.configuracion.security;
+import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,20 +15,24 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
+
 import java.io.IOException;
 
 @Component
 @AllArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private UserDetailsService userDetailsService;
-    private JwtServiceImpl jwtService;
+    private final UserDetailsService userDetailsService;
+    private final JwtServiceImpl jwtService;
+    private final HandlerExceptionResolver handlerExceptionResolver;
 
     @Autowired
-    public JwtAuthenticationFilter(JwtServiceImpl jwtService, UserDetailsService userDetailsService) {
+    public JwtAuthenticationFilter(JwtServiceImpl jwtService, UserDetailsService userDetailsService, HandlerExceptionResolver handlerExceptionResolver) {
 
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
+        this.handlerExceptionResolver = handlerExceptionResolver;
     }
 
     @Override
@@ -46,34 +51,42 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        //Extraer y validar el token:
-        final String jwt = authHeader.substring(7);
 
-        final String userEmail = jwtService.extractUsername(jwt);
 
-        //Autenticación:
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        try{
+            //Extraer y validar el token:
+            final String jwt = authHeader.substring(7);
 
-        //verificamos si tenemos el email y el usuario no esta autenticado
-        if (userEmail != null && authentication == null) {
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
+            final String userEmail = jwtService.extractUsername(jwt);
 
-            if (jwtService.isTokenValid(jwt, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null, //se pasa null porque no tenemos las credenciales
-                        userDetails.getAuthorities()
-                );
+            //Autenticación:
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-                authToken.setDetails(new WebAuthenticationDetailsSource()
-                        .buildDetails(request));
+            //verificamos si tenemos el email y el usuario no esta autenticado
+            if (userEmail != null && authentication == null) {
+                UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
-                SecurityContextHolder
-                        .getContext()
-                        .setAuthentication(authToken);
+                if (jwtService.isTokenValid(jwt, userDetails)) {
+                    UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                            userDetails,
+                            null, //se pasa null porque no tenemos las credenciales
+                            userDetails.getAuthorities()
+                    );
+
+                    authToken.setDetails(new WebAuthenticationDetailsSource()
+                            .buildDetails(request));
+
+                    SecurityContextHolder
+                            .getContext()
+                            .setAuthentication(authToken);
+                }
             }
+            filterChain.doFilter(request, response);
+        }catch (ExpiredJwtException ex){
+            handlerExceptionResolver.resolveException(request,response,null,ex);
         }
-        filterChain.doFilter(request, response);
+
+
     }
 }
 

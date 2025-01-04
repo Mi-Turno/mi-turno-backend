@@ -1,11 +1,16 @@
 package com.miTurno.backend.data.dtos.response;
+import jakarta.persistence.Column;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Setter
 @Getter
 @Builder
+@AllArgsConstructor
 public class Credencial {
 
     private Long idCredencial;
@@ -13,15 +18,12 @@ public class Credencial {
     private String password;
     private String telefono;
     private Boolean estado;
+    private String codigoVerificacion;
+    private LocalDateTime vencimientoCodigoVerificacion;
+
 
     public Credencial() {
     }
 
-    public Credencial(Long idCredencial, String email, String password, String telefono, Boolean estado) {
-        this.idCredencial = idCredencial;
-        this.email = email;
-        this.password = password;
-        this.telefono = telefono;
-        this.estado = estado;
-    }
+
 }

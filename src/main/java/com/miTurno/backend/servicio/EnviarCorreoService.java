@@ -2,23 +2,31 @@ package com.miTurno.backend.servicio;
 
 import com.miTurno.backend.data.dtos.request.EmailContactoRequest;
 import com.miTurno.backend.data.dtos.request.EmailRequest;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EnviarCorreoService {
+
+    private final JavaMailSender enviadorMail;
+
     @Autowired
-    private JavaMailSender enviadorMail;
+    public EnviarCorreoService(JavaMailSender enviadorMail) {
+        this.enviadorMail = enviadorMail;
+    }
 
     @Async
-    public void EnviarCorreoService(EmailRequest emailRequest)
+    public void enviarCorreo(EmailRequest emailRequest)
     {
         SimpleMailMessage email = new SimpleMailMessage();
 
-        // Origne y destino
+        // Origen y destino
         email.setTo(emailRequest.getEmail()); // (cliente)
         email.setFrom(emailRequest.getEmailNegocio()); //(negocio)
 
@@ -55,10 +63,10 @@ public class EnviarCorreoService {
                 emailRequest.getEmailNegocio()
         );
         //agrego el cuerpo que cree arriba
-                email.setText(cuerpoCorreo);
+        email.setText(cuerpoCorreo);
 
-                //envio el correo
-                enviadorMail.send(email);
+        //envio el correo
+        enviadorMail.send(email);
     }
 
     @Async
@@ -74,4 +82,18 @@ public class EnviarCorreoService {
         enviadorMail.send(email);
 
     }
+
+    public void enviarCorreoDeVerificacion(String correoCliente, String titulo,String texto) throws MessagingException {
+        MimeMessage message = enviadorMail.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message,true);
+
+        helper.setTo(correoCliente);
+        helper.setSubject(titulo);
+        helper.setText(texto,true);
+
+        enviadorMail.send(message);
+    }
+
+
+
 }

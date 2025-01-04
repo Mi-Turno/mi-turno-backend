@@ -20,7 +20,6 @@ public class ServicioService {
 
     private final ServicioRepositorio servicioRepositorio;
     private final ServicioMapper servicioMapper;
-
     private final NegocioRepositorio negocioRepositorio;
     private final ProfesionalMapper profesionalMapper;
 

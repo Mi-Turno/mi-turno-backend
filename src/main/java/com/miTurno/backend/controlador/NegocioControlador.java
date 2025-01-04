@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,11 +45,10 @@ public class NegocioControlador {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public Negocio crearUnNegocio(@Parameter(description = "Datos del negocio")
-                                          @Valid @RequestBody NegocioRequest negocioRequest) {
+                                          @Valid @RequestBody NegocioRequest negocioRequest) throws MessagingException {
 
         return negocioService.crearUnNegocio(negocioRequest);
     }
-
 
 
     //GET all
