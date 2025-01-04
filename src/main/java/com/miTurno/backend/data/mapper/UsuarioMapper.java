@@ -73,7 +73,7 @@ public class UsuarioMapper {
 
     public List<Usuario> toModelList(List<UsuarioEntidad> listaUsuarioEntidad) {
         // Si la lista es null, retorna una lista vacía en lugar de null
-        if (listaUsuarioEntidad == null) {
+        if (listaUsuarioEntidad == null ) {
             return Collections.emptyList();
         }
 

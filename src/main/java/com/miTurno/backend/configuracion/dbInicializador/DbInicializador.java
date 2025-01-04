@@ -8,6 +8,7 @@ import com.miTurno.backend.data.repositorio.*;
 import com.miTurno.backend.data.dtos.response.Credencial;
 import com.miTurno.backend.data.dtos.response.Usuario;
 import com.miTurno.backend.data.mapper.UsuarioMapper;
+import com.miTurno.backend.servicio.AuthService;
 import com.miTurno.backend.tipos.DiasEnum;
 import com.miTurno.backend.tipos.EstadoTurnoEnum;
 import com.miTurno.backend.tipos.MetodosDePagoEnum;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Component
 public class DbInicializador {
@@ -30,10 +32,11 @@ public class DbInicializador {
     private final UsuarioMapper usuarioMapper;
     private final EstadoTurnoRepositorio estadoTurnoRepositorio;
     private final PasswordEncoder passwordEncoder;
+    private final AuthService authService;
 
 
     @Autowired
-    public DbInicializador(RolRepositorio rolRepositorio, DiaRepositorio diaRepositorio, MetodosDePagoRepositorio metodosDePagoRepositorio, UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, EstadoTurnoRepositorio estadoTurnoRepositorio, PasswordEncoder passwordEncoder) {
+    public DbInicializador(RolRepositorio rolRepositorio, DiaRepositorio diaRepositorio, MetodosDePagoRepositorio metodosDePagoRepositorio, UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, EstadoTurnoRepositorio estadoTurnoRepositorio, PasswordEncoder passwordEncoder, AuthService authService) {
         this.rolRepositorio = rolRepositorio;
         this.diaRepositorio = diaRepositorio;
         this.metodosDePagoRepositorio = metodosDePagoRepositorio;
@@ -41,6 +44,7 @@ public class DbInicializador {
         this.usuarioMapper = usuarioMapper;
         this.estadoTurnoRepositorio = estadoTurnoRepositorio;
         this.passwordEncoder = passwordEncoder;
+        this.authService = authService;
     }
 
 
@@ -66,6 +70,8 @@ public class DbInicializador {
                    .password(passwordEncoder.encode("flf"))
                    .email("miturno.flf@gmail.com")
                    .telefono("11111111")
+                   .vencimientoCodigoVerificacion(null)
+                   .codigoVerificacion(null)
                    .build();
 
            Usuario admin = Usuario.builder()

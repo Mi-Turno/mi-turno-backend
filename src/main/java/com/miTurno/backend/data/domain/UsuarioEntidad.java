@@ -33,7 +33,6 @@ public class UsuarioEntidad implements UserDetails {
     @Column(name = "apellido")
     private String apellido;
 
-
     @Temporal(TemporalType.DATE)
     @Column(insertable = true,updatable = true,columnDefinition ="DATE")
     private LocalDate fechaNacimiento;//(YYYY-MM-DD)
@@ -53,7 +52,6 @@ public class UsuarioEntidad implements UserDetails {
     @ManyToOne(fetch = FetchType.EAGER) // EAGER para cargar el rol junto con el usuario
     @JoinColumn(name = "rol", nullable = false) // Define la clave foránea a RolEntidad
     private RolEntidad rolEntidad;
-
 
 
     //public void agregarRol(RolEntity rol) {

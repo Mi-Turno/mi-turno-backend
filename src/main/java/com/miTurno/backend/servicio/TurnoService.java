@@ -15,7 +15,6 @@ import java.util.List;
 public class TurnoService {
     private final TurnoRepositorio turnoRepositorio;
     private final TurnoMapper turnoMapper;
-
     private final ClienteRepositorio clienteRepositorio;
     private final ProfesionalRepositorio profesionalRepositorio;
     private final NegocioRepositorio negocioRepositorio;

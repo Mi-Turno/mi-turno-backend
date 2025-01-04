@@ -8,12 +8,14 @@ import com.miTurno.backend.data.domain.NegocioEntidad;
 import com.miTurno.backend.data.mapper.NegocioMapper;
 import com.miTurno.backend.data.dtos.response.Negocio;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
+import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -24,14 +26,16 @@ public class NegocioService {
     private final NegocioMapper negocioMapper;
     private final RolRepositorio rolRepositorio;
     private final PasswordEncoder passwordEncoder;
+    private final AuthService authService;
 
     //constructores
     @Autowired
-    public NegocioService(NegocioMapper negocioMapper, NegocioRepositorio negocioRepositorio, RolRepositorio rolRepositorio, PasswordEncoder passwordEncoder) {
+    public NegocioService(NegocioMapper negocioMapper, NegocioRepositorio negocioRepositorio, RolRepositorio rolRepositorio, PasswordEncoder passwordEncoder, AuthService authService) {
         this.negocioMapper = negocioMapper;
         this.negocioRepositorio = negocioRepositorio;
         this.rolRepositorio = rolRepositorio;
         this.passwordEncoder = passwordEncoder;
+        this.authService = authService;
     }
 
     //metodos
@@ -60,7 +64,7 @@ public class NegocioService {
 
     //POST negocio
     public Negocio crearUnNegocio(NegocioRequest negocioRequest)
-            throws RolIncorrectoException, EntityExistsException {
+            throws RolIncorrectoException, EntityExistsException, MessagingException {
 
 
         String nombreNegocio = negocioRequest.getNombre();
@@ -82,16 +86,24 @@ public class NegocioService {
             throw new EntityExistsException("El negocio con el telefono: "+negocioRequest.getCredencial().getTelefono()+" ya existe.");
         }
 
-        //obtenemos el rol negocio
-        RolEntidad rolEntidad = rolRepositorio.findByRol(negocioRequest.getRolUsuario());
-
         //encriptamos la pswd
         negocioRequest.getCredencial().setPassword(passwordEncoder.encode(negocioRequest.getCredencial().getPassword()));
 
-        //pasamos a model
-        Negocio negocio= negocioMapper.toModel(negocioRequest);
+        //obtenemos el rol negocio
+        RolEntidad rolEntidad = rolRepositorio.findByRol(negocioRequest.getRolUsuario());
 
-        return negocioMapper.toModel(negocioRepositorio.save(negocioMapper.toEntidad(negocio,rolEntidad)));
+        //pasamos a entidad
+        NegocioEntidad negocio= negocioMapper.toEntidad(negocioMapper.toModel(negocioRequest),rolEntidad);
+
+        //lo ponemos en falso debido a que no esta verificado
+        negocio.getCredencial().setEstado(false);
+
+        negocio.getCredencial().setCodigoVerificacion(authService.generarCodigoDeVerificacion());
+        negocio.getCredencial().setVencimientoCodigoVerificacion(LocalDateTime.now().plusMinutes(15));
+
+        authService.enviarMailDeVerificacion(negocio);
+
+        return negocioMapper.toModel(negocioRepositorio.save(negocio));
     }
 
     //GET id negocio x nombre negocio

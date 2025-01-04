@@ -12,12 +12,14 @@ import com.miTurno.backend.data.mapper.ClienteMapper;
 import com.miTurno.backend.data.mapper.TurnoMapper;
 import com.miTurno.backend.data.dtos.request.UsuarioRequest;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
+import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -29,15 +31,17 @@ public class ClienteService {
     private final ClienteMapper clienteMapper;
     private final TurnoMapper turnoMapper;
     private final PasswordEncoder passwordEncoder;
+    private final AuthService authService;
 
     @Autowired
-    public ClienteService(ClienteRepositorio clienteRepositorio, RolRepositorio rolRepositorio, CredencialesRepositorio credencialesRepositorio, ClienteMapper clienteMapper, TurnoMapper turnoMapper, PasswordEncoder passwordEncoder) {
+    public ClienteService(ClienteRepositorio clienteRepositorio, RolRepositorio rolRepositorio, CredencialesRepositorio credencialesRepositorio, ClienteMapper clienteMapper, TurnoMapper turnoMapper, PasswordEncoder passwordEncoder, AuthService authService) {
         this.clienteRepositorio = clienteRepositorio;
         this.rolRepositorio = rolRepositorio;
         this.credencialesRepositorio = credencialesRepositorio;
         this.clienteMapper = clienteMapper;
         this.turnoMapper = turnoMapper;
         this.passwordEncoder = passwordEncoder;
+        this.authService = authService;
     }
 
 
@@ -50,7 +54,7 @@ public class ClienteService {
     }
 
     //Crear un cliente
-    public Cliente crearUnCliente(UsuarioRequest usuarioRequest) throws RolIncorrectoException,EntityExistsException {
+    public Cliente crearUnCliente(UsuarioRequest usuarioRequest) throws RolIncorrectoException, EntityExistsException, MessagingException {
 
 
         if (usuarioRequest.getRolUsuario() != RolUsuarioEnum.CLIENTE) {
@@ -71,6 +75,16 @@ public class ClienteService {
 
         // Crear el cliente
         ClienteEntidad clienteEntidad = clienteMapper.toEntidad(usuarioRequest,rolEntidad);
+
+        //todo verificacion modularizar
+
+        //estado en false debido a que no esta verificado
+        clienteEntidad.getCredencial().setEstado(false);
+
+        clienteEntidad.getCredencial().setCodigoVerificacion(authService.generarCodigoDeVerificacion());
+        clienteEntidad.getCredencial().setVencimientoCodigoVerificacion(LocalDateTime.now().plusMinutes(15));
+
+        authService.enviarMailDeVerificacion(clienteEntidad);
 
 
         return clienteMapper.toModel(clienteRepositorio.save(clienteEntidad)) ;

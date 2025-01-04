@@ -3,6 +3,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -26,32 +28,31 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 @EnableWebSecurity
 public class SecurityConfig{
 
-
     private final RestAuthenticationEntryPoint restAuthenticationEntryPoint;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+
+
 
     @Autowired
     public SecurityConfig(RestAuthenticationEntryPoint restAuthenticationEntryPoint, JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.restAuthenticationEntryPoint = restAuthenticationEntryPoint;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(auth -> auth
+        http
+                .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs*/**", "/h2-console/**",
                                 "/clientes/register","/negocios/register","/auth/**").permitAll()
-//                        .requestMatchers(HttpMethod.GET, "/public").permitAll()
 //                        .requestMatchers(HttpMethod.POST, "/public").authenticated()
-//                        .requestMatchers(HttpMethod.GET, "/admin/archivos").hasAuthority(RolUsuario.AUDITOR.name())
 //                        .requestMatchers(HttpMethod.GET, "/admin").hasAuthority(RolUsuario.ADMIN.name())
-//                        .requestMatchers(HttpMethod.POST, "/cuentas").hasAuthority(RolUsuario.ADMIN.name())
-//                        .requestMatchers("/cuentas/**").hasRole("USUARIO")
                         .anyRequest().authenticated())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
-                .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
+                .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS)) // todas las peticiones se tomaran como nuevas por mas que vengan del mismo cliente
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling(e -> e.authenticationEntryPoint(restAuthenticationEntryPoint));
 
@@ -70,13 +71,7 @@ public class SecurityConfig{
 
         return source;
     }
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
+
+
 }

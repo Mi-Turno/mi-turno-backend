@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -45,7 +46,7 @@ public class ClienteControlador {
     @PostMapping("/register")
     @ResponseStatus(HttpStatus.CREATED)
     public Cliente crearUnCliente(@Parameter(description = "Datos del cliente")
-                                      @Valid @RequestBody UsuarioRequest usuarioRequest) {
+                                      @Valid @RequestBody UsuarioRequest usuarioRequest) throws MessagingException {
 
         return clienteService.crearUnCliente(usuarioRequest);
     }

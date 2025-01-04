@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ public class EnviarCorreoControlador {
 
     private final EnviarCorreoService emailService;
 
+    @Autowired
     public EnviarCorreoControlador(EnviarCorreoService emailService) {
         this.emailService = emailService;
     }
@@ -33,9 +35,9 @@ public class EnviarCorreoControlador {
     })
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> enviarCorreo(@Valid @RequestBody EmailRequest emailRequest) {
-        // Delegar la lógica de negocio al servicio
-        emailService.EnviarCorreoService(emailRequest);
+    public ResponseEntity<Boolean> enviarCorreo(@Valid @RequestBody EmailRequest emailRequest) {
+
+        emailService.enviarCorreo(emailRequest);
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
@@ -47,7 +49,7 @@ public class EnviarCorreoControlador {
     })
     @PostMapping("/contacto")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<?> enviarCorreoContacto(@Valid @RequestBody EmailContactoRequest emailRequest) {
+    public ResponseEntity<Boolean> enviarCorreoContacto(@Valid @RequestBody EmailContactoRequest emailRequest) {
         // Delegar la lógica de negocio al servicio
         emailService.EnviarCorreoDeContacto(emailRequest);
         return new ResponseEntity<>(true, HttpStatus.OK);

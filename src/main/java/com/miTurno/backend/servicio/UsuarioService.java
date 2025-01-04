@@ -25,15 +25,17 @@ public class UsuarioService {
     private final CredencialesRepositorio credencialesRepositorio;
     private final RolRepositorio rolRepositorio;
     private final PasswordEncoder passwordEncoder;
+    private final AuthService authService;
 
 
     @Autowired
-    public UsuarioService(UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, CredencialesRepositorio credencialesRepositorio, RolRepositorio rolRepositorio, PasswordEncoder passwordEncoder) {
+    public UsuarioService(UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, CredencialesRepositorio credencialesRepositorio, RolRepositorio rolRepositorio, PasswordEncoder passwordEncoder, AuthService authService) {
         this.usuarioRepositorio = usuarioRepositorio;
         this.usuarioMapper = usuarioMapper;
         this.credencialesRepositorio = credencialesRepositorio;
         this.rolRepositorio = rolRepositorio;
         this.passwordEncoder = passwordEncoder;
+        this.authService = authService;
     }
 
     //get
@@ -81,7 +83,7 @@ public class UsuarioService {
 //        return usuarioRepositorio.findByRolEntidad_RolAndEstado(rol, estado);
 //    }
 
-    //POST usuario
+    //POST usuario todo NO SE USA
     public Usuario crearUnUsuario(Usuario usuario) throws EntityExistsException {
 
         //verificamos en el repo de credenciales
@@ -94,21 +96,19 @@ public class UsuarioService {
         if (credencialesRepositorio.findByTelefono(usuario.getCredencial().getTelefono()).isPresent()){
             throw new EntityExistsException("El cliente con el telefono: "+usuario.getCredencial().getTelefono()+" ya existe.");
         }
-
-        //setteamos el estado del usuario en true
-        usuario.getCredencial().setEstado(true);
-
         //encriptamos la password
         usuario.getCredencial().setPassword(passwordEncoder.encode(usuario.getCredencial().getPassword()));
 
         RolEntidad rolEntidad = rolRepositorio.findByRol(usuario.getRolUsuario());
 
+        //setteamos el estado del usuario en false, debido a que no va estar verificado
+        usuario.getCredencial().setEstado(false);
+
+
+
         UsuarioEntidad usuarioEntidad= usuarioMapper.toEntidad(usuario,rolEntidad);
 
-
-
-        usuarioEntidad = usuarioRepositorio.save(usuarioEntidad);
-        return usuarioMapper.toModel(usuarioEntidad);
+        return usuarioMapper.toModel(usuarioRepositorio.save(usuarioEntidad));
     }
 
 

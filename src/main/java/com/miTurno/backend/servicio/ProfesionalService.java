@@ -22,7 +22,6 @@ public class ProfesionalService {
     private final NegocioRepositorio negocioRepositorio;
     private final ProfesionalMapper profesionalMapper;
     private final CredencialesRepositorio credencialesRepositorio;
-
     private final ServicioRepositorio servicioRepositorio;
     private final TurnoMapper turnoMapper;
 
@@ -32,10 +31,8 @@ public class ProfesionalService {
 
         this.profesionalRepositorio = profesionalRepositorio;
         this.rolRepositorio = rolRepositorio;
-
         this.negocioRepositorio = negocioRepositorio;
         this.profesionalMapper = profesionalMapper;
-
         this.credencialesRepositorio = credencialesRepositorio;
         this.servicioRepositorio = servicioRepositorio;
         this.turnoMapper = turnoMapper;
