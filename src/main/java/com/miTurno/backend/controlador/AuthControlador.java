@@ -24,12 +24,10 @@ public class AuthControlador {
 
     private final JwtServiceImpl jwtServiceImpl;
     private final AuthService authService;
-    private final UsuarioRepositorio usuarioRepositorio;
 
-    public AuthControlador(JwtServiceImpl jwtServiceImpl, AuthService authService, UsuarioRepositorio usuarioRepositorio) {
+    public AuthControlador(JwtServiceImpl jwtServiceImpl, AuthService authService) {
         this.jwtServiceImpl = jwtServiceImpl;
         this.authService = authService;
-        this.usuarioRepositorio = usuarioRepositorio;
     }
 
     /**Se utiliza POST para no enviar la contraseña por URL eso hace que sea mas seguro el proceso*/
