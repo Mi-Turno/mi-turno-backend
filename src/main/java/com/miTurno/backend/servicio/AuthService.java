@@ -63,7 +63,9 @@ public class AuthService {
         UsuarioEntidad usuarioEntidad= usuarioRepositorio.findByCredencialEmail(input.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("Email no fue encontrado en el sistema."));
 
-
+        if (input.getCodigoVerificacion() == null){
+            throw new CodigoVerificacionException("Usuario ya verificado");
+        }
 
         //si el codigo de verificacion esta vencido, la logica seria si HOY esta Antes del vtoCdigoVerif
         if (usuarioEntidad.getCredencial().getVencimientoCodigoVerificacion().isBefore(LocalDateTime.now())) {

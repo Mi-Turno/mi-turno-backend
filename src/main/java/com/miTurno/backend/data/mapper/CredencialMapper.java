@@ -36,6 +36,8 @@ public class CredencialMapper {
                 .telefono(credencialEntidad.getTelefono())
 //                .rolUsuario(credencialEntidad.getRolEntidad().getRol())
                 .estado(credencialEntidad.getEstado())
+                .codigoVerificacion(credencialEntidad.getCodigoVerificacion())
+                .vencimientoCodigoVerificacion(credencialEntidad.getVencimientoCodigoVerificacion())
                 .build();
 
     }

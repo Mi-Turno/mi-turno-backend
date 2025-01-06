@@ -3,6 +3,7 @@ package com.miTurno.backend.data.dtos.request;
 
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 @Setter
 @SuperBuilder
 @Schema(description = "Requisitos para la creacion de un usuario ")
+@AllArgsConstructor
 public class UsuarioRequest {
 
 
@@ -34,15 +36,8 @@ public class UsuarioRequest {
     @Schema(description = "Rol del usuario", example = "CLIENTE")//"CLIENTE", "ADMIN", "PROFESIONAL", "NEGOCIO"
     private RolUsuarioEnum rolUsuario;
 
-
     public UsuarioRequest() {
     super();
     }
 
-    public UsuarioRequest(String apellido, CredencialRequest credencial, LocalDate fechaNacimiento, String nombre) {
-        this.apellido = apellido;
-        this.credencial = credencial;
-        this.fechaNacimiento = fechaNacimiento;
-        this.nombre = nombre;
-    }
 }

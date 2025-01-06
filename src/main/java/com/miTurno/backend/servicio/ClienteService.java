@@ -86,8 +86,8 @@ public class ClienteService {
 
         authService.enviarMailDeVerificacion(clienteEntidad);
 
-
-        return clienteMapper.toModel(clienteRepositorio.save(clienteEntidad)) ;
+        ClienteEntidad clienteGuardado= clienteRepositorio.save(clienteEntidad);
+        return clienteMapper.toModel(clienteGuardado) ;
     }
 
     // Obtener cliente by email and password para el login
