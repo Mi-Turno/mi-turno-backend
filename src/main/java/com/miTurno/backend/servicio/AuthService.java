@@ -15,6 +15,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 @Service
@@ -59,7 +61,10 @@ public class AuthService {
         }
     }
 
-    public String verificarUsuario(VerificarUsuarioRequest input) {
+    public Map<String, String> verificarUsuario(VerificarUsuarioRequest input) {
+        Map<String, String> response = new HashMap<>();
+
+
         UsuarioEntidad usuarioEntidad= usuarioRepositorio.findByCredencialEmail(input.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("Email no fue encontrado en el sistema."));
 
@@ -82,7 +87,8 @@ public class AuthService {
         usuarioEntidad.getCredencial().setCodigoVerificacion(null);
         usuarioEntidad.getCredencial().setVencimientoCodigoVerificacion(null);
         usuarioRepositorio.save(usuarioEntidad);
-        return "Usuario verificado con éxito.";
+        response.put("mensaje", "Usuario verificado con éxito.");
+        return response;
     }
 
     public String reenviarCodigoDeVerificacion(String email) throws MessagingException {
@@ -109,15 +115,14 @@ public class AuthService {
 
         //TODO: actualizar con el logo de mi turno
         String subject = "Verificación de Cuenta en Mi Turno";
-        String codigoDeVerificacion = "Codigo de verificación: " + usuario.getCredencial().getCodigoVerificacion();
+        String codigoDeVerificacion = "Tu codigo de verificación: " + usuario.getCredencial().getCodigoVerificacion();
 
         String htmlMessage = "<html>"
                 + "<body style=\"font-family: Arial, sans-serif;\">"
                 + "<div style=\"background-color: #f5f5f5; padding: 20px;\">"
-                + "<h2 style=\"color: #333;\">Bienvenido a mi turno "+ usuario.getNombre()+"!</h2>"
+                + "<h2 style=\"color: #333;\">Bienvenido a <b style=\"font-size: 2rem\">Mi turno</b> "+ usuario.getNombre()+"!</h2>"
                 + "<p style=\"font-size: 16px;\">Por favor ingresa el codigo de verificacion que recibiste</p>"
                 + "<div style=\"background-color: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1);\">"
-                + "<h3 style=\"color: #333;\">Codigo de verificación:</h3>"
                 + "<p style=\"font-size: 18px; font-weight: bold; color: #007bff;\">" + codigoDeVerificacion + "</p>"
                 + "</div>"
                 + "</div>"
