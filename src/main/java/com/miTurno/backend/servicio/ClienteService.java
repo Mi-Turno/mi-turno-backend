@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -123,7 +124,35 @@ public class ClienteService {
 
         return clienteMapper.toModel(clienteEntidad);
     }
+    //patch cliente
+    public Cliente actualizarParcial(Long id, Cliente clienteParcial) {
+        Optional<ClienteEntidad> clienteExistente = clienteRepositorio.findById(id);
 
+        if (clienteExistente.isPresent()) {
+            ClienteEntidad cliente = clienteExistente.get();
+
+            // Actualiza solo las propiedades que llegan en el clienteParcial
+            if (clienteParcial.getCredencial() != null && clienteParcial.getCredencial().getEmail() != null) {
+                cliente.getCredencial().setEmail(clienteParcial.getCredencial().getEmail());
+            }
+
+            if (clienteParcial.getNombre() != null) {
+                cliente.setNombre(clienteParcial.getNombre());
+            }
+
+            if (clienteParcial.getApellido() != null) {
+                cliente.setApellido(clienteParcial.getApellido());
+            }
+
+            if (clienteParcial.getFechaNacimiento() != null) {
+                cliente.setFechaNacimiento(clienteParcial.getFechaNacimiento());
+            }
+
+            return clienteMapper.toModel(clienteRepositorio.save(cliente));
+        } else {
+            throw new RuntimeException("Cliente no encontrado");
+        }
+    }
     //Delete Cliente
     public Boolean eliminarClientePorId(Long id){
         Boolean rta = false;//

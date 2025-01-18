@@ -15,4 +15,11 @@ public class Cliente extends Usuario{
     private List<Turno> turnos;
     public Cliente() {
     }
+
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "turnos=" + turnos +
+                '}';
+    }
 }
