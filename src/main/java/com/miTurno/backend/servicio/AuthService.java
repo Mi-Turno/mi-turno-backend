@@ -39,9 +39,11 @@ public class AuthService {
             UsuarioEntidad usuarioEntidad= usuarioRepositorio.findByCredencialEmail(input.getEmail())
                     .orElseThrow(() -> new UsernameNotFoundException("Email no fue encontrado en el sistema"));
 
-            if (!usuarioEntidad.getCredencial().getEstado()){
-                throw new UsuarioNoVerificadoException();
-            }
+
+            //validamos si el email del usuario esta verificado.
+//            if (!usuarioEntidad.getCredencial().getEstado()){
+//                throw new UsuarioNoVerificadoException();
+//            }
 
 
             // Autentica las credenciales utilizando el AuthenticationManager
