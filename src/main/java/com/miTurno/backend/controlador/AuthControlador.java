@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthControlador {
@@ -53,11 +55,11 @@ public class AuthControlador {
             @ApiResponse(responseCode = "200", description = "El mail de usuario fue validado con exito."),
             @ApiResponse(responseCode = "400", description = "Parámetros inválidos")
     })
-    public ResponseEntity<String> verificarMailUsuario(
+    public ResponseEntity<Map<String,String>> verificarMailUsuario(
             @RequestBody VerificarUsuarioRequest verificarUsuarioRequest) {
 
-        String mensaje= authService.verificarUsuario(verificarUsuarioRequest);
-        return  ResponseEntity.ok(mensaje);
+
+        return  ResponseEntity.ok(authService.verificarUsuario(verificarUsuarioRequest));
     }
 
     @PostMapping("/reenviar")

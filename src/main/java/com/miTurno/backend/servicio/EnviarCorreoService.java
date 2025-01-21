@@ -83,6 +83,7 @@ public class EnviarCorreoService {
 
     }
 
+    @Async
     public void enviarCorreoDeVerificacion(String correoCliente, String titulo,String texto) throws MessagingException {
         MimeMessage message = enviadorMail.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message,true);
