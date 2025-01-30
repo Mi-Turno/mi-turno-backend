@@ -28,4 +28,17 @@ public class Negocio extends Usuario{
 
     public Negocio() {
     }
+
+    @Override
+    public String toString() {
+        return "Negocio{" +
+                "rubro='" + rubro + '\'' +
+                ", calle='" + calle + '\'' +
+                ", altura='" + altura + '\'' +
+                ", detalle='" + detalle + '\'' +
+                ", profesionales=" + profesionales +
+                ", servicios=" + servicios +
+                ", clientes=" + clientes +
+                '}';
+    }
 }

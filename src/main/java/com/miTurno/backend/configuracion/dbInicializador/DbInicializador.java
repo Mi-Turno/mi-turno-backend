@@ -4,9 +4,11 @@ import com.miTurno.backend.data.domain.DiaEntidad;
 import com.miTurno.backend.data.domain.EstadoTurnoEntidad;
 import com.miTurno.backend.data.domain.MetodoDePagoEntidad;
 import com.miTurno.backend.data.domain.RolEntidad;
+import com.miTurno.backend.data.dtos.response.*;
+import com.miTurno.backend.data.mapper.NegocioMapper;
+import com.miTurno.backend.data.mapper.ProfesionalMapper;
+import com.miTurno.backend.data.mapper.ServicioMapper;
 import com.miTurno.backend.data.repositorio.*;
-import com.miTurno.backend.data.dtos.response.Credencial;
-import com.miTurno.backend.data.dtos.response.Usuario;
 import com.miTurno.backend.data.mapper.UsuarioMapper;
 import com.miTurno.backend.servicio.AuthService;
 import com.miTurno.backend.tipos.DiasEnum;
@@ -20,6 +22,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 @Component
 public class DbInicializador {
@@ -33,10 +36,14 @@ public class DbInicializador {
     private final EstadoTurnoRepositorio estadoTurnoRepositorio;
     private final PasswordEncoder passwordEncoder;
     private final AuthService authService;
+    private final NegocioMapper negocioMapper;
+    private final ProfesionalMapper profesionalMapper;
+    private final ServicioRepositorio servicioRepositorio;
+    private final ServicioMapper servicioMapper;
 
 
     @Autowired
-    public DbInicializador(RolRepositorio rolRepositorio, DiaRepositorio diaRepositorio, MetodosDePagoRepositorio metodosDePagoRepositorio, UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, EstadoTurnoRepositorio estadoTurnoRepositorio, PasswordEncoder passwordEncoder, AuthService authService) {
+    public DbInicializador(RolRepositorio rolRepositorio, DiaRepositorio diaRepositorio, MetodosDePagoRepositorio metodosDePagoRepositorio, UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, EstadoTurnoRepositorio estadoTurnoRepositorio, PasswordEncoder passwordEncoder, AuthService authService, NegocioMapper negocioMapper, ProfesionalMapper profesionalMapper, ServicioRepositorio servicioRepositorio, ServicioMapper servicioMapper) {
         this.rolRepositorio = rolRepositorio;
         this.diaRepositorio = diaRepositorio;
         this.metodosDePagoRepositorio = metodosDePagoRepositorio;
@@ -45,6 +52,10 @@ public class DbInicializador {
         this.estadoTurnoRepositorio = estadoTurnoRepositorio;
         this.passwordEncoder = passwordEncoder;
         this.authService = authService;
+        this.negocioMapper = negocioMapper;
+        this.profesionalMapper = profesionalMapper;
+        this.servicioRepositorio = servicioRepositorio;
+        this.servicioMapper = servicioMapper;
     }
 
 
@@ -57,12 +68,15 @@ public class DbInicializador {
         initMetodoDePagos();
         initEstadoTurno();
         initAdmin();
+        initNegocio();
+        //initProfesional();
+        //initServicio();
+
     }
 
     public void initAdmin(){
     //validacion por si ya existe en la base de datos
        if(!usuarioRepositorio.existsById(1L)){
-
 
 
            Credencial credencial = Credencial.builder()
@@ -92,7 +106,82 @@ public class DbInicializador {
 
     }
 
+    private void initNegocio(){
+        if(!usuarioRepositorio.existsById(2L)){
 
+            ///NEGOCIO
+            Credencial credencialNegocio = Credencial.builder()
+                    .estado(true)
+                    .password(passwordEncoder.encode("123"))
+                    .email("carlos@gmail.com")
+                    .telefono("2222222")
+                    .vencimientoCodigoVerificacion(null)
+                    .codigoVerificacion(null)
+                    .build();
+
+            Negocio negocio = Negocio.builder()
+                    .credencial(credencialNegocio)
+                    .rolUsuario(RolUsuarioEnum.NEGOCIO)
+                    .idUsuario(2L)
+                    .nombre("Carlos")
+                    .apellido("Sam")
+                    .fechaNacimiento(LocalDate.of(2024,10,8))
+                    .altura("1234")
+                    .calle("Av.Pescadores")
+                    .rubro("BarberShop")
+                    .detalle("...")
+                    .profesionales(null)
+                    .servicios(null)
+                    .build();
+
+            System.out.println(negocio);
+            RolEntidad rolEntidad= rolRepositorio.findByRol(RolUsuarioEnum.NEGOCIO);
+            usuarioRepositorio.save(negocioMapper.toEntidad(negocio,rolEntidad));
+        }else {
+            System.out.println(usuarioRepositorio.findById(2L));
+        }
+    }
+    /*public void initProfesional(){ todo fixear con el request o hacer un mapper para el profesional y el servicio
+        if(!usuarioRepositorio.existsById(3L)){
+            /// PROFESIONAL
+            Credencial credencialProfesional = Credencial.builder()
+                    .estado(true)
+                    .password(passwordEncoder.encode("123"))
+                    .email("roberto@gmail.com")
+                    .telefono("33333333")
+                    .vencimientoCodigoVerificacion(null)
+                    .codigoVerificacion(null)
+                    .build();
+
+            Profesional profesional = Profesional.builder()
+                    .idUsuario(3L)
+                    .idNegocio(2L)
+                    .nombre("Roberto")
+                    .apellido("Sonoria")
+                    .fechaNacimiento(LocalDate.of(2024,10,8))
+                    .credencial(credencialProfesional)
+                    .rolUsuario(RolUsuarioEnum.PROFESIONAL)
+                    .turnosAgendados(null)
+                    .build();
+
+            RolEntidad rolEntidad= rolRepositorio.findByRol(RolUsuarioEnum.PROFESIONAL);
+            usuarioRepositorio.save(profesionalMapper.toEntidad(profesional,rolEntidad));
+            System.out.println(profesional);
+        }
+    }*/
+   /* public void initServicio(){
+
+        ///SERVICIO
+        Servicio servicio = Servicio.builder()
+                .idNegocio(2L)
+                .idServicio(1L)
+                .duracion(30)
+                .nombre("Corte")
+                .precio(7000.00)
+                .build();
+        servicioRepositorio.save(servicioMapper.toEntidad());
+        System.out.println(servicio);
+    }*/
 
     public void initRoles() {
         if (rolRepositorio.findByRol(RolUsuarioEnum.ADMIN) == null) {
