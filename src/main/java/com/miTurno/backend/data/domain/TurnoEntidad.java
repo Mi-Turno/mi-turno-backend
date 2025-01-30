@@ -1,5 +1,6 @@
 package com.miTurno.backend.data.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -64,13 +65,15 @@ public class TurnoEntidad {
     @JoinColumn(name = "estado_id",nullable = false)
     private EstadoTurnoEntidad estadoTurno;
 
+    @JsonIgnore  // Ignora este campo en la serialización JSON para que no afecte al cliente
+    private boolean correoEnviado;
 
     //constructores
     public TurnoEntidad() {
 
     }
 
-    public TurnoEntidad(Long id, ServicioEntidad idServicio, MetodoDePagoEntidad metodoDePagoEntidad, ClienteEntidad clienteEntidad, NegocioEntidad negocioEntidad, ProfesionalEntidad profesionalEntidad, HorarioProfesionalEntidad horarioProfesionalEntidad, LocalDate fechaInicio, EstadoTurnoEntidad estado) {
+    public TurnoEntidad(Long id, ServicioEntidad idServicio, MetodoDePagoEntidad metodoDePagoEntidad, ClienteEntidad clienteEntidad, NegocioEntidad negocioEntidad, ProfesionalEntidad profesionalEntidad, HorarioProfesionalEntidad horarioProfesionalEntidad, LocalDate fechaInicio, EstadoTurnoEntidad estadoTurno, boolean correoEnviado) {
         this.id = id;
         this.idServicio = idServicio;
         this.metodoDePagoEntidad = metodoDePagoEntidad;
@@ -79,6 +82,7 @@ public class TurnoEntidad {
         this.profesionalEntidad = profesionalEntidad;
         this.horarioProfesionalEntidad = horarioProfesionalEntidad;
         this.fechaInicio = fechaInicio;
-        this.estadoTurno = estado;
+        this.estadoTurno = estadoTurno;
+        this.correoEnviado = correoEnviado;
     }
 }
