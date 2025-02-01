@@ -79,8 +79,8 @@ public class ClienteService {
 
         //todo verificacion modularizar
 
-        //estado en false debido a que no esta verificado
-        clienteEntidad.getCredencial().setEstado(false);
+
+        clienteEntidad.getCredencial().setEstado(true);
 
         clienteEntidad.getCredencial().setCodigoVerificacion(authService.generarCodigoDeVerificacion());
         clienteEntidad.getCredencial().setVencimientoCodigoVerificacion(LocalDateTime.now().plusMinutes(15));

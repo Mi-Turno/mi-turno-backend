@@ -95,8 +95,7 @@ public class NegocioService {
         //pasamos a entidad
         NegocioEntidad negocio= negocioMapper.toEntidad(negocioMapper.toModel(negocioRequest),rolEntidad);
 
-        //lo ponemos en falso debido a que no esta verificado
-        negocio.getCredencial().setEstado(false);
+        negocio.getCredencial().setEstado(true);
 
         negocio.getCredencial().setCodigoVerificacion(authService.generarCodigoDeVerificacion());
         negocio.getCredencial().setVencimientoCodigoVerificacion(LocalDateTime.now().plusMinutes(15));

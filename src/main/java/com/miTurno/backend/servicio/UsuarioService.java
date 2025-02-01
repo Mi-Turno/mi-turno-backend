@@ -101,10 +101,7 @@ public class UsuarioService {
 
         RolEntidad rolEntidad = rolRepositorio.findByRol(usuario.getRolUsuario());
 
-        //setteamos el estado del usuario en false, debido a que no va estar verificado
-        usuario.getCredencial().setEstado(false);
-
-
+        usuario.getCredencial().setEstado(true);
 
         UsuarioEntidad usuarioEntidad= usuarioMapper.toEntidad(usuario,rolEntidad);
 
