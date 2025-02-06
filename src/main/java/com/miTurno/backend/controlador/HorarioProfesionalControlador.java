@@ -49,6 +49,21 @@ public class HorarioProfesionalControlador {
         return ResponseEntity.ok(horarioProfesional);
     }
 
+    @Operation(summary = "Modificar estado de un horario")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Horario modificado con exito"),
+            @ApiResponse(responseCode = "400", description = "Datos del horario inválidos"),
+    })
+    @PatchMapping("/modificar/{idHorario}") //ya existe un /{id} entonces agrego el /modificar
+    public ResponseEntity<HorarioProfesional> modificarEstadoHorario(
+            @PathVariable Long idHorario,
+            @RequestBody @Parameter(description = "Estado del horario a modificar")
+            @Schema(example = "{\"estado\": true}") Map<String, Boolean> estadoMap) {
+        boolean estado = estadoMap.get("estado");
+        HorarioProfesional horarioProfesional = horarioProfesionalService.modificarEstadoHorario(idHorario, estado);
+        return ResponseEntity.ok(horarioProfesional);
+    }
+
 
     @Operation(summary = "Obtener listado de horarios de un profesional")
     @ApiResponses(value = {
