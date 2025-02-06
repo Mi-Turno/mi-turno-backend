@@ -98,6 +98,14 @@ public class HorarioProfesionalService {
 
     }
 
+    public HorarioProfesional modificarEstadoHorario(Long id, boolean estado) {
+        HorarioProfesionalEntidad horarioProfesionalEntidad = horarioProfesionalRepositorio.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Horario con ID " + id + " no encontrado"));
+        horarioProfesionalEntidad.setEstado(estado);
+
+        return horarioProfesionalMapper.toModel(horarioProfesionalRepositorio.save(horarioProfesionalEntidad));
+    }
+
     public boolean eliminarHorarioPorProfesional(Long idHorarioPorProfesional) {
         boolean rta = false;
         if(horarioProfesionalRepositorio.existsById(idHorarioPorProfesional)) {
