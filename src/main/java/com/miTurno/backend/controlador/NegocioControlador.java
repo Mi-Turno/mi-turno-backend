@@ -15,6 +15,7 @@ import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -64,6 +65,18 @@ public class NegocioControlador {
 
 
     //GET negocio x id
+    @Operation(summary = "Obtener numero del negocio por id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Numero del negocio obtenido con exito"),
+            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
+    })
+    @GetMapping("/numero-soporte/{idNegocio}")
+    public ResponseEntity<Long> obtenerNumeroDelNegocioPorId(@PathVariable Long idNegocio){
+
+        Long telefono = negocioService.obtenerNumeroDeUnNegocioById(idNegocio);
+        return ResponseEntity.ok(telefono);
+    }
+
     @Operation(summary = "Obtener negocio por id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "Negocio obtenido con exito"),
@@ -73,8 +86,6 @@ public class NegocioControlador {
     public Negocio obtenerUnNegocioPorIdNegocio(@PathVariable Long idNegocio){
         return negocioService.obtenerNegocioPorId(idNegocio);
     }
-
-
 
     //GET negocio x nombre
     @Operation(summary = "Obtener negocio por nombre")
