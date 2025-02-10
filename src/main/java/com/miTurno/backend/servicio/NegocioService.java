@@ -60,7 +60,11 @@ public class NegocioService {
        return negocioMapper.toModel(negocioRepositorio.getNegocioEntidadByNombreIgnoreCase(nombre)
                .orElseThrow(()->new EntityNotFoundException("El negocio con el nombre: "+nombre+" no fue encontrado.")));
     }
+    public Long obtenerNumeroDeUnNegocioById (Long idNegocio) {
+        NegocioEntidad negocioEntidad= negocioRepositorio.getNegocioEntidadById(idNegocio);//.orElseThrow(()-> new EntityNotFoundException("El negocio con id: "+idNegocio+" no fue encontrado."));
 
+        return Long.parseLong(negocioEntidad.getCredencial().getTelefono());
+    }
 
     //POST negocio
     public Negocio crearUnNegocio(NegocioRequest negocioRequest)
