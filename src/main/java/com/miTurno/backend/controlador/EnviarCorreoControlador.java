@@ -1,5 +1,6 @@
 package com.miTurno.backend.controlador;
 
+import com.miTurno.backend.data.dtos.request.EmailCancelacionRequest;
 import com.miTurno.backend.data.dtos.request.EmailContactoRequest;
 import com.miTurno.backend.data.dtos.request.EmailRequest;
 
@@ -52,6 +53,32 @@ public class EnviarCorreoControlador {
     public ResponseEntity<Boolean> enviarCorreoContacto(@Valid @RequestBody EmailContactoRequest emailRequest) {
         // Delegar la lógica de negocio al servicio
         emailService.EnviarCorreoDeContacto(emailRequest);
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Enviar correo de cancelacion siendo un negocio", description = "Envía un correo electrónico con la cancelacion de su turno")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Correo enviado exitosamente", content = @Content(schema = @Schema(implementation = Boolean.class))),
+            @ApiResponse(responseCode = "400", description = "Solicitud incorrecta (Bad Request)", content = @Content(schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(schema = @Schema(implementation = String.class)))
+    })
+    @PostMapping("/cancelar-turno-desde-negocio")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Boolean> enviarCorreoCancelacion(@Valid @RequestBody EmailCancelacionRequest emailRequest) {
+        emailService.enviarCorreoCancelacionNegocio(emailRequest);
+        return new ResponseEntity<>(true, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Enviar correo de cancelacion siendo un cliente", description = "Envía un correo electrónico con la cancelacion de su turno")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Correo enviado exitosamente", content = @Content(schema = @Schema(implementation = Boolean.class))),
+            @ApiResponse(responseCode = "400", description = "Solicitud incorrecta (Bad Request)", content = @Content(schema = @Schema(implementation = String.class))),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor", content = @Content(schema = @Schema(implementation = String.class)))
+    })
+    @PostMapping("/cancelar-turno-cliente")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Boolean> enviarCorreoCancelacionCliente(@Valid @RequestBody EmailCancelacionRequest emailRequest) {
+        emailService.enviarCorreoCancelacionCliente(emailRequest);
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
 

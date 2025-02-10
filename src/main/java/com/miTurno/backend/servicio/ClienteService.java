@@ -54,6 +54,14 @@ public class ClienteService {
         return turnoMapper.toModelList(clienteEntidad.getListadoDeTurnos());
     }
 
+    //get email de un cliente
+    public String obtenerEmailPorId(Long idCliente){
+        ClienteEntidad clienteEntidad = clienteRepositorio.findById(idCliente)
+                .orElseThrow(()->new EntityNotFoundException("Usuario con id: "+idCliente+" no encontrado."));
+
+        return clienteEntidad.getCredencial().getEmail();
+    }
+
     //Crear un cliente
     public Cliente crearUnCliente(UsuarioRequest usuarioRequest) throws RolIncorrectoException, EntityExistsException, MessagingException {
 
