@@ -66,6 +66,8 @@ public class ClienteControlador {
         return ResponseEntity.ok(listadoDeturnos);//200
     }
 
+
+
     //GET by ID
     @Operation(summary = "Obtener un cliente por ID")
     @ApiResponses(value = {
@@ -79,6 +81,18 @@ public class ClienteControlador {
         return ResponseEntity.ok(cliente);//200
     }
 
+    //GET email by id
+    @Operation(summary = "Obtener email de un cliente por id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "El email del cliente con el ID fue devuelto"),
+            @ApiResponse(responseCode = "400", description = "Parametros invalidos")
+    })
+    @GetMapping("/email/{id}")
+    public ResponseEntity<String> obtenerEmailCliente(@Parameter(description = "ID del cliente", example = "1")
+                                                       @PathVariable Long id) {
+        String email = clienteService.obtenerEmailPorId(id);
+        return ResponseEntity.ok(email);//200
+    }
 
     //UPDATE cliente
     @Operation(summary = "actualizar usuario por ID")
