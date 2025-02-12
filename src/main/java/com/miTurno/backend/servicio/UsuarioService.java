@@ -159,4 +159,15 @@ public class UsuarioService {
         return rta;
     }
 
+    //PATCH
+    public Usuario cambiarEstadoUsuario(long id){
+        UsuarioEntidad usuarioEntidad = usuarioRepositorio.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Usuario con id: "+id +" no encontrado."));
+
+        usuarioEntidad.getCredencial().setEstado(!usuarioEntidad.getCredencial().getEstado());
+        usuarioEntidad = usuarioRepositorio.save(usuarioEntidad);
+        return usuarioMapper.toModel(usuarioEntidad);
+    }
+
+
 }
