@@ -129,5 +129,17 @@ public class UsuarioControlador {
         }
     }
 
+    //PATCH
+    @Operation(summary = "Modificar el estado del usuairo por  ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "El usuario fue actualizado con exito"),
+            @ApiResponse(responseCode = "404",description = "El usuario no fue encontrado")
+    })
+    @PatchMapping("/{id}/estado")
+    public ResponseEntity<Usuario> actualizarEstadoUsuario(@PathVariable Long id) {
+        Usuario usuario = usuarioService.cambiarEstadoUsuario(id);
+        return ResponseEntity.ok(usuario);
+    }
+
 
 }
