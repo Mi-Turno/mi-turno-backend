@@ -91,6 +91,7 @@ public class ClienteControlador {
     public ResponseEntity<String> obtenerEmailCliente(@Parameter(description = "ID del cliente", example = "1")
                                                        @PathVariable Long id) {
         String email = clienteService.obtenerEmailPorId(id);
+        //todo cambiar por un DTO
         return ResponseEntity.ok(email);//200
     }
 
