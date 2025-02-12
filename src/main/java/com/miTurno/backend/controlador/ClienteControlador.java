@@ -82,17 +82,19 @@ public class ClienteControlador {
     }
 
     //GET email by id
+    /**
+     * @Map.of es para no tener que hacer un DTO por un valor
+     * **/
     @Operation(summary = "Obtener email de un cliente por id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "El email del cliente con el ID fue devuelto"),
             @ApiResponse(responseCode = "400", description = "Parametros invalidos")
     })
     @GetMapping("/email/{id}")
-    public ResponseEntity<String> obtenerEmailCliente(@Parameter(description = "ID del cliente", example = "1")
+    public ResponseEntity<Map<String,String>> obtenerEmailCliente(@Parameter(description = "ID del cliente", example = "1")
                                                        @PathVariable Long id) {
         String email = clienteService.obtenerEmailPorId(id);
-        //todo cambiar por un DTO
-        return ResponseEntity.ok(email);//200
+        return ResponseEntity.ok(Map.of("email",email));//200
     }
 
     //UPDATE cliente
