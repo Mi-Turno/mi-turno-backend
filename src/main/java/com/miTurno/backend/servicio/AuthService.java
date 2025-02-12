@@ -70,7 +70,8 @@ public class AuthService {
         UsuarioEntidad usuarioEntidad= usuarioRepositorio.findByCredencialEmail(input.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("Email no fue encontrado en el sistema."));
 
-        if (input.getCodigoVerificacion() == null){
+        //si el usuario ya se encuentra verificado
+        if (usuarioEntidad.getCredencial().getCodigoVerificacion() == null){
             throw new CodigoVerificacionException("Usuario ya verificado");
         }
 
@@ -97,7 +98,7 @@ public class AuthService {
         UsuarioEntidad usuarioEntidad= usuarioRepositorio.findByCredencialEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Email no fue encontrado en el sistema."));
 
-        if (usuarioEntidad.isEnabled()) {
+       if (usuarioEntidad.getCredencial().getCodigoVerificacion() == null) {
             throw new CodigoVerificacionException("Cuenta ya esta verificada");
         }
 

@@ -12,10 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
@@ -66,13 +63,14 @@ public class AuthControlador {
     @Operation(summary = "Reenviar mail con el codigo de verificacion a un usuario.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "El correo fue reenviado con exito."),
-            @ApiResponse(responseCode = "400", description = "Parámetros inválidos")
+            @ApiResponse(responseCode = "400", description = "Parámetros inválidos"),
+            @ApiResponse(responseCode = "404", description = "No encontrado")
     })
-    public ResponseEntity<String> reenviarMailVerificacion(
-            @RequestBody String email) throws MessagingException {
+    public ResponseEntity<Map<String,String>> reenviarMailVerificacion(
+            @RequestBody VerificarUsuarioRequest request) throws MessagingException {
 
-        String mensaje= authService.reenviarCodigoDeVerificacion(email);
-        return  ResponseEntity.ok(mensaje);
+        String mensaje= authService.reenviarCodigoDeVerificacion(request.getEmail());
+        return ResponseEntity.ok(Map.of("mensaje", mensaje));
     }
 
 }
