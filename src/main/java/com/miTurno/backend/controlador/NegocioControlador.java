@@ -125,4 +125,15 @@ public class NegocioControlador {
     }
 
 
+    //PUT negocio x id
+    @Operation(summary = "Actualizar un negocio")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Negocio actualizado con exito"),
+            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
+    })
+    @PutMapping("/{idNegocio}")
+    public Negocio actualizarNegocio(@PathVariable Long idNegocio, @RequestBody NegocioRequest negocioRequest) throws MessagingException {
+        return negocioService.actualizarNegocioPorID(idNegocio,negocioRequest);
+    }
+
 }

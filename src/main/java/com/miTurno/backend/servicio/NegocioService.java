@@ -124,5 +124,27 @@ public class NegocioService {
         return negocioRepositorio.getNegocioEntidadsByNombreLikeIgnoreCase(nombreNegocio);
     }
 
+    // PUT negocio
+
+    public Negocio actualizarNegocioPorID(Long id, NegocioRequest negocioRequest) throws EntityNotFoundException{
+
+        NegocioEntidad negocioEntidad = negocioRepositorio.findById(id)
+                .orElseThrow(()-> new EntityNotFoundException("Negocio con id: "+ id+" no encontrado."));
+
+        //Actualizo credenciales
+        negocioEntidad.getCredencial().setTelefono(negocioRequest.getCredencial().getTelefono());
+        negocioEntidad.getCredencial().setEmail(negocioRequest.getCredencial().getEmail());
+
+        //Actualizo negocio
+        negocioEntidad.setNombre(negocioRequest.getNombre());
+        negocioEntidad.setAltura(negocioRequest.getAltura());
+        negocioEntidad.setCalle(negocioRequest.getCalle());
+        negocioEntidad.setDetalle(negocioRequest.getDetalle());
+        negocioEntidad.setRubro(negocioRequest.getRubro());
+
+        negocioEntidad = negocioRepositorio.save(negocioEntidad);
+        return negocioMapper.toModel(negocioEntidad);
+
+    }
 
 }
