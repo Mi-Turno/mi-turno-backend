@@ -47,6 +47,17 @@ public class TurnoControlador {
     public List<Turno> listarTurnosPorNegocio(@PathVariable Long idNegocio){
         return turnoService.obtenerTodosLosTurnosPorNegocio(idNegocio);
     }
+    //GET x id
+    @Operation(summary = "Obtener turno por ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Lista de turnos obtenida"),
+            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
+    })
+    @GetMapping("/{turnoId}")
+    public Turno obtenerTurnoPorId(@PathVariable Long turnoId){
+        return turnoService.obtenerTurnoPorId(turnoId);
+    }
+
 
     //POST
     @Operation(summary = "Crear un nuevo turno")

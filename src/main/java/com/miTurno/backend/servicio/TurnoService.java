@@ -113,7 +113,10 @@ public class TurnoService {
         return turnoMapper.toModel(turnoEntidad);
     }
 
-
+    public Turno obtenerTurnoPorId(Long idTurno){
+        return turnoMapper.toModel(turnoRepositorio.findById(idTurno)
+                .orElseThrow(()-> new EntityNotFoundException("Turno con id: "+idTurno+" no encontrado.")));
+    }
     public Boolean eliminarTurnoPorId(Long idNegocio, Long id) {
         Boolean rta = false;
         if (turnoRepositorio.existsById(id)) {
