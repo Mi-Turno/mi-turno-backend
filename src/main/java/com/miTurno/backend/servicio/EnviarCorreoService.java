@@ -246,7 +246,7 @@ public class EnviarCorreoService {
                     "        <p style='text-align: center; font-size: 18px;'><strong> " + emailRequest.getNumeroSoporte() + "</strong></p>" +
                     "        <p>Gracias por su comprensión.</p>" +
                     "        <p>Atentamente,</p>" +
-                    "        <p><strong>Puede comunicarse con el equipo de atención al cliente "+emailRequest.getNombreNegocio()+"</strong></p>" +
+                    "        <p><strong>Puede comunicarse con el equipo de atención al cliente de "+emailRequest.getNombreNegocio()+"</strong></p>" +
                     "    </div>" +
                     "</body>" +
                     "</html>";
