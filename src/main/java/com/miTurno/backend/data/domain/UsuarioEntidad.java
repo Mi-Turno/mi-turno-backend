@@ -34,7 +34,7 @@ public class UsuarioEntidad implements UserDetails {
     private String apellido;
 
     @Temporal(TemporalType.DATE)
-    @Column(insertable = true,updatable = true,columnDefinition ="DATE")
+    @Column(columnDefinition ="DATE")
     private LocalDate fechaNacimiento;//(YYYY-MM-DD)
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -53,6 +53,7 @@ public class UsuarioEntidad implements UserDetails {
     @JoinColumn(name = "rol", nullable = false) // Define la clave foránea a RolEntidad
     private RolEntidad rolEntidad;
 
+    private String urlFotoPerfil;
 
     //public void agregarRol(RolEntity rol) {
     //        this.roles.add(rol);

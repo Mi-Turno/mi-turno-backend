@@ -44,13 +44,15 @@ public class SecurityConfig{
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs*/**", "/h2-console/**",
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs*/**", "/h2-console/**","/archivos/**",
                                 "/clientes/register","/negocios/register","/auth/**").permitAll()
 //                        .requestMatchers(HttpMethod.POST, "/public").authenticated()
 //                        .requestMatchers(HttpMethod.GET, "/admin").hasAuthority(RolUsuario.ADMIN.name())
                         .anyRequest().authenticated())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
+                .httpBasic(AbstractHttpConfigurer::disable)  // Deshabilita Basic Auth si no lo usas
+                .formLogin(AbstractHttpConfigurer::disable)
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS)) // todas las peticiones se tomaran como nuevas por mas que vengan del mismo cliente
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

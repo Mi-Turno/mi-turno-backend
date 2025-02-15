@@ -36,6 +36,9 @@ public class UsuarioRequest {
     @Schema(description = "Rol del usuario", example = "CLIENTE")//"CLIENTE", "ADMIN", "PROFESIONAL", "NEGOCIO"
     private RolUsuarioEnum rolUsuario;
 
+    @Schema(description = "Url de la foto de perfil")
+    private String urlFotoPerfil;
+
     public UsuarioRequest() {
     super();
     }
