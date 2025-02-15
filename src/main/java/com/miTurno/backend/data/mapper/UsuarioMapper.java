@@ -30,6 +30,7 @@ public class UsuarioMapper {
                 .apellido(usuarioEntidad.getApellido())
                 .fechaNacimiento(usuarioEntidad.getFechaNacimiento())
                 .nombre(usuarioEntidad.getNombre())
+                .urlFotoPerfil(usuarioEntidad.getUrlFotoPerfil())
                 .credencial(credencialMapper.toModel(usuarioEntidad.getCredencial()))
                 .build();
     }
@@ -62,6 +63,7 @@ public class UsuarioMapper {
                         .rolEntidad(rolEntidad)
                         .nombre(usuario.getNombre())
                         .apellido(usuario.getApellido())
+                        .urlFotoPerfil(usuario.getUrlFotoPerfil())
                         .fechaNacimiento(usuario.getFechaNacimiento())
                         .build();
 

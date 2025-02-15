@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.client.HttpClientErrorException;
 
+import java.io.IOException;
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -105,6 +106,16 @@ public class ManejadorGlobalExcepciones {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Map.of(
                         "error", "Error con el envio de email",
+                        "mensaje", ex.getMessage(),
+                        "timestamp", LocalDateTime.now()
+                ));
+    }
+
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<?>handleMessagingException(IOException ex){
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of(
+                        "error", "Error de IO",
                         "mensaje", ex.getMessage(),
                         "timestamp", LocalDateTime.now()
                 ));

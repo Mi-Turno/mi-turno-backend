@@ -99,10 +99,13 @@ public class UsuarioService {
         //encriptamos la password
         usuario.getCredencial().setPassword(passwordEncoder.encode(usuario.getCredencial().getPassword()));
 
+        //buscamos el rol
         RolEntidad rolEntidad = rolRepositorio.findByRol(usuario.getRolUsuario());
 
+        //lo activamos
         usuario.getCredencial().setEstado(true);
 
+        //mappeamos a entidad
         UsuarioEntidad usuarioEntidad= usuarioMapper.toEntidad(usuario,rolEntidad);
 
         return usuarioMapper.toModel(usuarioRepositorio.save(usuarioEntidad));
