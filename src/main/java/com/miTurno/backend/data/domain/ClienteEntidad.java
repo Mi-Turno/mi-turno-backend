@@ -21,4 +21,11 @@ public class ClienteEntidad extends UsuarioEntidad{
     public ClienteEntidad() {
     super();
     }
+
+    @Override
+    public String toString() {
+        return "ClienteEntidad{" +
+                "listadoDeTurnos=" + listadoDeTurnos +
+                '}';
+    }
 }
