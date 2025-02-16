@@ -1,7 +1,13 @@
 package com.miTurno.backend.servicio;
+import com.miTurno.backend.data.domain.ClienteEntidad;
 import com.miTurno.backend.data.domain.RolEntidad;
+import com.miTurno.backend.data.domain.TurnoEntidad;
+import com.miTurno.backend.data.dtos.response.personalizados.ClienteTablaResponse;
+import com.miTurno.backend.data.mapper.ClienteMapper;
+import com.miTurno.backend.data.repositorio.ClienteRepositorio;
 import com.miTurno.backend.data.repositorio.NegocioRepositorio;
 import com.miTurno.backend.data.repositorio.RolRepositorio;
+import com.miTurno.backend.data.repositorio.TurnoRepositorio;
 import com.miTurno.backend.excepciones.*;
 import com.miTurno.backend.data.dtos.request.NegocioRequest;
 import com.miTurno.backend.data.domain.NegocioEntidad;
@@ -16,7 +22,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class NegocioService {
@@ -28,14 +37,21 @@ public class NegocioService {
     private final PasswordEncoder passwordEncoder;
     private final AuthService authService;
 
+    private final TurnoRepositorio turnoRepositorio;
+    private final ClienteRepositorio clienteRepositorio;
+    private final ClienteMapper clienteMapper;
+
     //constructores
     @Autowired
-    public NegocioService(NegocioMapper negocioMapper, NegocioRepositorio negocioRepositorio, RolRepositorio rolRepositorio, PasswordEncoder passwordEncoder, AuthService authService) {
-        this.negocioMapper = negocioMapper;
+    public NegocioService(NegocioRepositorio negocioRepositorio, NegocioMapper negocioMapper, RolRepositorio rolRepositorio, PasswordEncoder passwordEncoder, AuthService authService, TurnoRepositorio turnoRepositorio, ClienteRepositorio clienteService,ClienteMapper clienteMapper) {
         this.negocioRepositorio = negocioRepositorio;
+        this.negocioMapper = negocioMapper;
         this.rolRepositorio = rolRepositorio;
         this.passwordEncoder = passwordEncoder;
         this.authService = authService;
+        this.turnoRepositorio = turnoRepositorio;
+        this.clienteRepositorio = clienteService;
+        this.clienteMapper = clienteMapper;
     }
 
     //metodos
@@ -66,6 +82,50 @@ public class NegocioService {
         return Long.parseLong(negocioEntidad.getCredencial().getTelefono());
     }
 
+    /**
+     *1-Si tengo un turno quiere decir que soy o fui cliente
+     *2-Obtengo los clientes y los retorno
+     * @param idNegocio
+     * @return List<ClienteTablaResponse>
+     */
+    //todo hacer response para poder retornar toda la informacion
+    public List<ClienteTablaResponse> obtenerClientesPorNegocioId(Long idNegocio) {
+        List<TurnoEntidad> listaDeTurnos = turnoRepositorio.findAllByNegocioEntidadId(idNegocio);
+        List<ClienteTablaResponse> listaClientes = new ArrayList<>();
+        // Usamos un HashSet con llave compuesta: "idNegocio-idCliente"
+        Set<String> llavesAgregadas = new HashSet<>();
+
+        for (TurnoEntidad turnoEntidad : listaDeTurnos) {
+            Long idCliente = turnoEntidad.getClienteEntidad().getId();
+            // LLave compuesta para que no se repita el id en un mismo negocio
+            // esto permitirá diferenciar si en otro contexto se consultan turnos de distintos negocios.
+            String llave = idNegocio + "-" + idCliente;
+
+            if (!llavesAgregadas.contains(llave)) {
+                llavesAgregadas.add(llave);
+                ClienteEntidad clienteEntidad = clienteRepositorio.findById(idCliente)
+                        .orElseThrow(() -> new EntityNotFoundException("Cliente con id: "+ idCliente+" no encontrado."));
+                ClienteTablaResponse nuevoCliente = crearClienteTablaResponse(clienteEntidad);
+                listaClientes.add(nuevoCliente);
+            }
+        }
+
+        System.out.println(listaClientes);
+        return listaClientes;
+    }
+    private ClienteTablaResponse crearClienteTablaResponse(ClienteEntidad cliente){
+        return ClienteTablaResponse.builder()
+                .id(cliente.getId())
+                .nombre(cliente.getNombre())
+                .apellido(cliente.getApellido())
+                .correo(cliente.getCredencial().getEmail())
+                .telefono(cliente.getCredencial().getTelefono())
+                .rol(cliente.getRolEntidad().getRol().toString())
+                .fechaNacimiento(cliente.getFechaNacimiento())
+                .estado(cliente.getCredencial().getEstado())
+                .build();
+
+    }
     //POST negocio
     public Negocio crearUnNegocio(NegocioRequest negocioRequest)
             throws RolIncorrectoException, EntityExistsException, MessagingException {

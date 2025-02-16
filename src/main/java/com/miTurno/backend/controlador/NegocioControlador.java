@@ -2,7 +2,9 @@ package com.miTurno.backend.controlador;
 
 import com.miTurno.backend.data.domain.NegocioEntidad;
 import com.miTurno.backend.data.dtos.request.NegocioRequest;
+import com.miTurno.backend.data.dtos.response.Cliente;
 import com.miTurno.backend.data.dtos.response.Negocio;
+import com.miTurno.backend.data.dtos.response.personalizados.ClienteTablaResponse;
 import com.miTurno.backend.servicio.NegocioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -125,6 +127,18 @@ public class NegocioControlador {
     }
 
 
+    /**GET clientes por negocio id */
+    @Operation(summary = "Obtener id negocio por nombre")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Negocio obtenido con exito"),
+            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
+    })
+    @GetMapping("/{idNegocio}/clientes")
+    public ResponseEntity<List<ClienteTablaResponse>> obtenerClientesPorNegocio(@PathVariable Long idNegocio){
+
+        List<ClienteTablaResponse> listaClientePorNegocio = negocioService.obtenerClientesPorNegocioId(idNegocio);
+        return ResponseEntity.ok(listaClientePorNegocio);
+    }
     //PUT negocio x id
     @Operation(summary = "Actualizar un negocio")
     @ApiResponses(value = {
