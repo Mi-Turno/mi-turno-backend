@@ -34,9 +34,9 @@ public class ArchivosControlador {
     )
     public ResponseEntity<Boolean> subirArchivo(
             @Parameter(description = "ID del usuario", required = true, example = "123")
-            @RequestParam Long id,
+            @RequestParam("id") Long id,
             @Parameter(description = "Archivo a enviar", required = true)
-            @RequestParam MultipartFile archivo
+            @RequestParam("archivo") MultipartFile archivo
             ) throws IOException {
 
         Boolean sePudoGuardar= archivosService.guardarFotoPerfilUsuario(id, archivo);

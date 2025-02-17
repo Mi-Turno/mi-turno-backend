@@ -27,14 +27,14 @@ public class ArchivosService {
                 .orElseThrow(()-> new EntityNotFoundException("El usuario con el id "+idUsuario+" no existe."));
 
 
-        Path archivoABorrar= Path.of(usuarioEntidad.getUrlFotoPerfil());
+        Path archivoABorrar= Path.of(usuarioEntidad.getFotoPerfil());
 
         if (!Files.exists(archivoABorrar)){
             return flag;
         }
 
         flag= Files.deleteIfExists(archivoABorrar);
-        usuarioEntidad.setUrlFotoPerfil(null);
+        usuarioEntidad.setFotoPerfil(null);
         usuarioRepositorio.save(usuarioEntidad);
 
 
@@ -78,7 +78,7 @@ public class ArchivosService {
 
 
         if (Files.exists(rutaEnDondeSeGuardara)){
-            usuarioEntidad.setUrlFotoPerfil(rutaDelNuevoArchivo.toString());
+            usuarioEntidad.setFotoPerfil(rutaDelNuevoArchivo.toString());
             usuarioRepositorio.save(usuarioEntidad);
             flag=true;
         }
