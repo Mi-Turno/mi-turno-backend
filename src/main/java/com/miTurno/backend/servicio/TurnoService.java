@@ -1,4 +1,5 @@
 package com.miTurno.backend.servicio;
+
 import com.miTurno.backend.data.domain.*;
 import com.miTurno.backend.data.repositorio.*;
 import com.miTurno.backend.data.mapper.TurnoMapper;
@@ -7,8 +8,14 @@ import com.miTurno.backend.data.dtos.request.TurnoRequest;
 import com.miTurno.backend.tipos.EstadoTurnoEnum;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -46,14 +53,14 @@ public class TurnoService {
 
     public Turno crearUnTurno(
             TurnoRequest nuevoTurno,
-            Long idNegocio) throws EntityNotFoundException{
+            Long idNegocio) throws EntityNotFoundException {
         TurnoEntidad turnoEntidad = new TurnoEntidad();
 
 
         //todo si el turno se efectua, se lo tengo que agregar al cliente a su lista para el historial
         //busco si existe el cliente
         ClienteEntidad nuevoCliente = clienteRepositorio.findById(nuevoTurno.getIdCliente())
-                .orElseThrow(() -> new EntityNotFoundException("Usuario con id: "+nuevoTurno.getIdCliente() +" no encontrado."));
+                .orElseThrow(() -> new EntityNotFoundException("Usuario con id: " + nuevoTurno.getIdCliente() + " no encontrado."));
 
         System.out.println("CLIENTE");//esta bien
         System.out.println(nuevoCliente);
@@ -61,28 +68,28 @@ public class TurnoService {
 
         //busco si existe el servicio
         ServicioEntidad nuevoServicio = servicioRepositorio.findById(nuevoTurno.getIdServicio())
-                .orElseThrow(() -> new EntityNotFoundException("Servicio con id: "+nuevoTurno.getIdServicio() +" no encontrado."));
+                .orElseThrow(() -> new EntityNotFoundException("Servicio con id: " + nuevoTurno.getIdServicio() + " no encontrado."));
         turnoEntidad.setIdServicio(nuevoServicio);
         System.out.println("SERVICIO");//esta bien
         System.out.println(nuevoServicio);
         //busco si existe el profesional
 
         ProfesionalEntidad nuevoProfesional = profesionalRepositorio.findById(nuevoTurno.getIdProfesional())
-                .orElseThrow(() -> new EntityNotFoundException("Usuario con id: "+nuevoTurno.getIdProfesional() +" no encontrado."));
+                .orElseThrow(() -> new EntityNotFoundException("Usuario con id: " + nuevoTurno.getIdProfesional() + " no encontrado."));
         turnoEntidad.setProfesionalEntidad(nuevoProfesional);
         System.out.println("PROFESIONAL");//devuelve null
         System.out.println(nuevoProfesional);
 
         //busco si existe el negocio
         NegocioEntidad nuevoNegocio = negocioRepositorio.findById(idNegocio)
-                .orElseThrow(() -> new EntityNotFoundException("Negocio con id: "+ idNegocio +" no encontrado."));
+                .orElseThrow(() -> new EntityNotFoundException("Negocio con id: " + idNegocio + " no encontrado."));
         turnoEntidad.setNegocioEntidad(nuevoNegocio);
         System.out.println("NEGOCIO");
         System.out.println(nuevoNegocio);
 
         //busco el horario profesional entidad
         HorarioProfesionalEntidad nuevoHorario = horarioProfesionalRepositorio.findById(nuevoTurno.getHorarioProfesional().getIdHorario())
-                .orElseThrow(() -> new EntityNotFoundException("Horario con id:"+ nuevoTurno.getHorarioProfesional().getIdHorario() +" no encontrado."));
+                .orElseThrow(() -> new EntityNotFoundException("Horario con id:" + nuevoTurno.getHorarioProfesional().getIdHorario() + " no encontrado."));
         turnoEntidad.setHorarioProfesionalEntidad(nuevoHorario);
         System.out.println("HORARIO");//devuelve null
         System.out.println(nuevoHorario);
@@ -113,10 +120,11 @@ public class TurnoService {
         return turnoMapper.toModel(turnoEntidad);
     }
 
-    public Turno obtenerTurnoPorId(Long idTurno){
+    public Turno obtenerTurnoPorId(Long idTurno) {
         return turnoMapper.toModel(turnoRepositorio.findById(idTurno)
-                .orElseThrow(()-> new EntityNotFoundException("Turno con id: "+idTurno+" no encontrado.")));
+                .orElseThrow(() -> new EntityNotFoundException("Turno con id: " + idTurno + " no encontrado.")));
     }
+
     public Boolean eliminarTurnoPorId(Long idNegocio, Long id) {
         Boolean rta = false;
         if (turnoRepositorio.existsById(id)) {
@@ -135,6 +143,44 @@ public class TurnoService {
         EstadoTurnoEntidad estadoTurnoEntidad = estadoTurnoRepositorio.findByEstadoTurno(estadoTurnoEnum);
         turnoEntidad.setEstadoTurno(estadoTurnoEntidad);
         return turnoMapper.toModel(turnoRepositorio.save(turnoEntidad));
+    }
+
+    /**
+     * Este metodo lo que hace es revisar en un periodo de 10 minutos hacia atras (Por si ya pasamos la hora cuando lo revisa) que el turno este en curso por si el front esta cerrado o sin conexion
+     */
+    @Async
+    @Transactional
+    @Scheduled(fixedRate = 180000) //evalua cada 3 minutos
+    protected void ponerEnCursoLosTurnos() {
+        // Obtengo los turnos reservados
+        List<TurnoEntidad> turnoEntidadList = estadoTurnoRepositorio.findByEstadoTurno(EstadoTurnoEnum.RESERVADO).getTurnoEntidad();
+
+        if (!turnoEntidadList.isEmpty()) {
+            // Obtengo la fecha y hora actual con una tolerancia de 10 minutos hacia atras por ej 12:00 analiza hasta 11:50
+            LocalDateTime ahora = LocalDateTime.now();
+            LocalDateTime tolerancia = ahora.minusMinutes(10);
+
+            for (TurnoEntidad turnoEntidad : turnoEntidadList) {
+                // Genero el formato de fecha para comparar
+                LocalDate fechaTurno = turnoEntidad.getFechaInicio();
+                LocalTime horaTurno = turnoEntidad.getHorarioProfesionalEntidad().getHoraInicio();
+                LocalDateTime fechaHoraTurno = LocalDateTime.of(fechaTurno, horaTurno);
+
+                // Verifico que la fecha y hora del turno se encuentre entre (ahora - 10 min) y ahora
+                if (!fechaHoraTurno.isBefore(tolerancia) && !fechaHoraTurno.isAfter(ahora)) {
+                    modificarEstadoTurno(turnoEntidad,EstadoTurnoEnum.EN_CURSO);
+                }
+            }
+        } else {
+            System.out.println("No hay turnos reservados.");
+        }
+    }
+
+    private void modificarEstadoTurno(TurnoEntidad turnoEntidad, EstadoTurnoEnum estadoTurnoEnum) {
+        EstadoTurnoEntidad estadoEnCurso = estadoTurnoRepositorio.findByEstadoTurno(estadoTurnoEnum);
+        turnoEntidad.setEstadoTurno(estadoEnCurso);
+        // Se guarda el turno actualizado en la base de datos
+        turnoRepositorio.save(turnoEntidad);
     }
 
 }
