@@ -80,6 +80,7 @@ public class ArchivosService {
 
         if (Files.exists(rutaEnDondeSeGuardara)){
             usuarioEntidad.setUrlFotoPerfil(rutaDelNuevoArchivo.toString());
+            usuarioRepositorio.save(usuarioEntidad);
             flag=true;
         }
         return flag;
