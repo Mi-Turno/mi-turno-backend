@@ -26,6 +26,7 @@ public class ArchivosService {
         UsuarioEntidad usuarioEntidad = usuarioRepositorio.findById(idUsuario)
                 .orElseThrow(()-> new EntityNotFoundException("El usuario con el id "+idUsuario+" no existe."));
 
+
         Path archivoABorrar= Path.of(usuarioEntidad.getUrlFotoPerfil());
 
         if (!Files.exists(archivoABorrar)){
@@ -54,9 +55,7 @@ public class ArchivosService {
             return flag;
         }
 
-        Path rutaArchivosMiTurno = obtenerDirectorioMiTurno();
-
-        Path rutaArchivosCliente = obtenerDirectorioCliente(rutaArchivosMiTurno,idUsuario);
+        Path rutaArchivosCliente = obtenerDirectorioCliente(idUsuario);
 
         flag = guardarUnArchivoEnUnUsuario(archivo,rutaArchivosCliente,usuarioEntidad);
 
@@ -86,7 +85,9 @@ public class ArchivosService {
         return flag;
     }
 
-    private Path obtenerDirectorioCliente(Path rutaMiTurno, Long idUsuario) throws IOException {
+    private Path obtenerDirectorioCliente(Long idUsuario) throws IOException {
+        Path rutaMiTurno = obtenerDirectorioMiTurno();
+
         //ruta donde se guardaran los archivos del cliente, el nombre del directorio sera el id del usuario
         Path rutaArchivosCliente = rutaMiTurno.resolve(String.valueOf(idUsuario));
 
