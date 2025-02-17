@@ -72,6 +72,11 @@ public class ArchivosService {
             return flag;
         }
 
+        //si tiene foto de perfil
+//        if (!usuarioEntidad.getFotoPerfil().isEmpty() ){
+//            eliminarFotoPerfilUsuario(usuarioEntidad.getId());
+//        }
+
         Path rutaDelNuevoArchivo = rutaEnDondeSeGuardara.resolve(nombreNuevoArchivo);
 
         Files.copy(archivo.getInputStream(),rutaDelNuevoArchivo, StandardCopyOption.REPLACE_EXISTING);

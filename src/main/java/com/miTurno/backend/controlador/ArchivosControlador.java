@@ -4,6 +4,7 @@ import com.miTurno.backend.servicio.ArchivosService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,7 +22,7 @@ public class ArchivosControlador {
 
     //post un archivo
 
-    @PostMapping(value = "/subir", consumes = "multipart/form-data")
+    @PostMapping(value = "/subir", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(
             summary = "Subir un archivo asociado a un ID",
             description = "Permite subir un archivo y guardarlo con respecto al ID del usuario.",
