@@ -1,5 +1,6 @@
 package com.miTurno.backend.data.dtos.response;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,6 +8,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
 public class Servicio {
     //atributos
     private Long idServicio;
@@ -15,33 +17,23 @@ public class Servicio {
     private Integer duracion;
     private Double precio;
     private Boolean estado;
-    
+    private String fotoServicio;
     //constructores
     
     public Servicio() {
     }
 
-    public Servicio(Long idServicio, Long idNegocio, String nombre, Integer duracion, Double precio, Boolean estado) {
-        this.idServicio = idServicio;
-        this.idNegocio = idNegocio;
-        this.nombre = nombre;
-        this.duracion = duracion;
-        this.precio = precio;
-        this.estado = estado;
-    }
-
     //metodos
-
-
     @Override
     public String toString() {
         return "Servicio{" +
-                "idServicio=" + idServicio +
+                "duracion=" + duracion +
+                ", idServicio=" + idServicio +
                 ", idNegocio=" + idNegocio +
                 ", nombre='" + nombre + '\'' +
-                ", duracion=" + duracion +
                 ", precio=" + precio +
                 ", estado=" + estado +
+                ", fotoServicio='" + fotoServicio + '\'' +
                 '}';
     }
 }

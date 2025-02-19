@@ -2,6 +2,7 @@ package com.miTurno.backend.data.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.util.List;
 @Builder
 @Entity
 @Table(name = "servicios")
+@AllArgsConstructor
 public class ServicioEntidad {
 
     @Id
@@ -32,6 +34,8 @@ public class ServicioEntidad {
     @Column(name = "precio")
     private Double precio;
 
+    @Column(name = "foto_servicio")
+    private String fotoServicio;
 
     @Column(name = "estado")
     private Boolean estado;
@@ -48,20 +52,11 @@ public class ServicioEntidad {
     @OneToMany(mappedBy = "idServicio" ,fetch = FetchType.LAZY)
     private List<TurnoEntidad> turnos;
 
-    //constructores
-
-    public ServicioEntidad(Long id, String nombre, Integer duracion, Double precio, Boolean estado, List<ProfesionalEntidad> profesionales, NegocioEntidad negocioEntidad, List<TurnoEntidad> turnos) {
-        this.id = id;
-        this.nombre = nombre;
-        this.duracion = duracion;
-        this.precio = precio;
-        this.estado = estado;
-        this.profesionales = profesionales;
-        this.negocioEntidad = negocioEntidad;
-        this.turnos = turnos;
-    }
-
     public ServicioEntidad() {
 
     }
+
+    //constructores
+
+
 }

@@ -26,6 +26,7 @@ public class ServicioMapper {
                 .estado(servicioEntidad.getEstado())
                 .precio(servicioEntidad.getPrecio())
                 .nombre(servicioEntidad.getNombre())
+                .fotoServicio(servicioEntidad.getFotoServicio())
                 .build();
     }
     public List<Servicio> toModelList(List<ServicioEntidad> listaServicioEntidad) {
@@ -50,18 +51,18 @@ public class ServicioMapper {
 
     //request a entidad
     public ServicioEntidad toEntidad(NegocioEntidad negocioEntidad,ServicioRequest servicioRequest) {
-        ServicioEntidad servicioEntidad= new ServicioEntidad();
 
-        servicioEntidad.setNegocioEntidad(negocioEntidad);
+        return ServicioEntidad.builder()
+                .negocioEntidad(negocioEntidad)
+                .duracion(servicioRequest.getDuracion())
+                .nombre(servicioRequest.getNombre())
+                .estado(true)
+                .precio(servicioRequest.getPrecio())
+                .build();
 
 
 
-        servicioEntidad.setDuracion(servicioRequest.getDuracion());
-        servicioEntidad.setNombre(servicioRequest.getNombre());
-        servicioEntidad.setEstado(true);
-        servicioEntidad.setPrecio(servicioRequest.getPrecio());
 
-        return servicioEntidad;
     }
 
 
