@@ -7,6 +7,7 @@ import com.miTurno.backend.excepciones.*;
 import com.miTurno.backend.data.dtos.request.NegocioRequest;
 import com.miTurno.backend.data.mapper.NegocioMapper;
 import com.miTurno.backend.data.dtos.response.Negocio;
+import com.miTurno.backend.tipos.MetodosDePagoEnum;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import jakarta.mail.MessagingException;
 import jakarta.persistence.EntityExistsException;
@@ -228,6 +229,19 @@ public class NegocioService {
         negocio.getMetodosDePago().remove(metodo);
 
         return negocioMapper.toModel(negocioRepositorio.save(negocio));
+    }
+    //Obtener metodos de pago por negocio
+    public List<MetodosDePagoEnum>obtenerMetodosDePago(Long idNegocio){
+
+        NegocioEntidad negocioEntidad = negocioRepositorio.findById(idNegocio)
+                .orElseThrow(()-> new EntityNotFoundException("Negocio con id: "+ idNegocio+" no encontrado."));
+        List<MetodosDePagoEnum> listaMetodoDePagoNegocio = new ArrayList<>();
+
+        for(MetodoDePagoEntidad metodoDePagoEntidad : negocioEntidad.getMetodosDePago()){
+            listaMetodoDePagoNegocio.add(metodoDePagoEntidad.getMetodoDePago());
+        }
+
+        return listaMetodoDePagoNegocio;
     }
 
 }

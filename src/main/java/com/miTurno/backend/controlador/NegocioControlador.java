@@ -5,6 +5,7 @@ import com.miTurno.backend.data.dtos.request.NegocioRequest;
 import com.miTurno.backend.data.dtos.response.Negocio;
 import com.miTurno.backend.data.dtos.response.personalizados.ClienteTablaResponse;
 import com.miTurno.backend.servicio.NegocioService;
+import com.miTurno.backend.tipos.MetodosDePagoEnum;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -148,6 +149,21 @@ public class NegocioControlador {
     public Negocio actualizarNegocio(@PathVariable Long idNegocio, @RequestBody NegocioRequest negocioRequest) throws MessagingException {
         return negocioService.actualizarNegocioPorID(idNegocio,negocioRequest);
     }
+
+    @Operation(
+            summary = "Obtener metodos de pago de un negocio",
+            description = "Permite obtener los metodos de pago de un negocio.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Lista de metodos de pago devuelta correctamente."),
+                    @ApiResponse(responseCode = "404", description = "Negocio o lista de metodos de pago no encontrada.")
+            }
+    )
+    @GetMapping("{idNegocio}/metodos-de-pago")
+    public ResponseEntity<List<MetodosDePagoEnum>> obtenerMetodosDePago(@PathVariable Long idNegocio){
+        List<MetodosDePagoEnum> metodosDePago = negocioService.obtenerMetodosDePago(idNegocio);
+        return ResponseEntity.ok(metodosDePago);
+    }
+
     @Operation(
             summary = "Agregar un método de pago al negocio",
             description = "Permite agregar un método de pago a un negocio existente.",
@@ -183,5 +199,6 @@ public class NegocioControlador {
         Negocio negocioActualizado = negocioService.eliminarMetodoPago(negocioId, metodoDePagoId);
         return ResponseEntity.ok(negocioActualizado);
     }
+
 
 }
