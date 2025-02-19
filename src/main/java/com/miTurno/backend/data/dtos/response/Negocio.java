@@ -2,6 +2,7 @@ package com.miTurno.backend.data.dtos.response;
 
 
 import com.miTurno.backend.data.domain.ClienteEntidad;
+import com.miTurno.backend.data.domain.MetodoDePagoEntidad;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -22,6 +23,7 @@ public class Negocio extends Usuario{
     private List<Profesional> profesionales;
     private List<Servicio>servicios;
     private List<ClienteEntidad> clientes;
+    private List<MetodoDePagoEntidad> metodosDePago;
 
     //constructor
 
@@ -39,6 +41,7 @@ public class Negocio extends Usuario{
                 ", profesionales=" + profesionales +
                 ", servicios=" + servicios +
                 ", clientes=" + clientes +
+                ", metodosDePago=" + metodosDePago +
                 '}';
     }
 }
