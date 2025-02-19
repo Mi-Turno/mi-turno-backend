@@ -43,6 +43,7 @@ public class NegocioMapper {
                 .calle(negocioRequest.getCalle())
                 .altura(negocioRequest.getAltura())
                 .detalle(negocioRequest.getDetalle())
+                .metodosDePago(null)
                 .build();
     }
 
@@ -64,6 +65,7 @@ public class NegocioMapper {
                 .detalle(negocio.getDetalle())
                 .fechaNacimiento(negocio.getFechaNacimiento())
                 .credencial(credencialEntidad)
+                .metodosDePago(negocio.getMetodosDePago())
                 .build();
 
     }
@@ -95,6 +97,7 @@ public class NegocioMapper {
                .profesionales(profesionalMapper.toModelList(negocioEntidad.getProfesionales()))
                .servicios(servicioMapper.toModelList(negocioEntidad.getServicios()))
                .clientes(negocioEntidad.getClientes())
+               .metodosDePago(negocioEntidad.getMetodosDePago())
                .build();
     }
     public List<Negocio> toModelList(List<NegocioEntidad> listaNegociosEntidad) {
