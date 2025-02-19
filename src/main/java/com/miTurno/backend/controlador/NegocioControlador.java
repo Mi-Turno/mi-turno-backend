@@ -156,7 +156,7 @@ public class NegocioControlador {
                     @ApiResponse(responseCode = "404", description = "Negocio o método de pago no encontrado")
             }
     )
-    @PatchMapping("/{negocioId}/metodos-pago/alta")
+    @PatchMapping("/{negocioId}/metodos-de-pago/alta")
     public ResponseEntity<Negocio> altaMetodoPago(
             @Parameter(description = "ID del negocio", required = true)
             @PathVariable Long negocioId,
@@ -174,7 +174,7 @@ public class NegocioControlador {
                     @ApiResponse(responseCode = "404", description = "Negocio o método de pago no encontrado")
             }
     )
-    @PatchMapping("/{negocioId}/metodos-pago/baja")
+    @PatchMapping("/{negocioId}/metodos-de-pago/baja")
     public ResponseEntity<Negocio> bajaMetodoPago(
             @Parameter(description = "ID del negocio", required = true)
             @PathVariable Long negocioId,
