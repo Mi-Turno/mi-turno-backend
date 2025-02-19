@@ -53,11 +53,11 @@ public class ServicioService {
     //POST
     public Servicio crearUnServicio(Long idNegocio,ServicioRequest nuevoServicio) throws EntityNotFoundException {
 
-        //todo buscar el negocioEntidad aca idNegocio
+
         NegocioEntidad negocioEntidad=negocioRepositorio.findById(idNegocio)
                 .orElseThrow(()-> new EntityNotFoundException("Negocio con id: "+ idNegocio +" no encontrado."));
-        ServicioEntidad servicioEntidad =servicioMapper.toEntidad(negocioEntidad,nuevoServicio);
 
+        ServicioEntidad servicioEntidad =servicioMapper.toEntidad(negocioEntidad,nuevoServicio);
 
         // Agregar el servicio a la lista de servicios del negocio
         negocioEntidad.getServicios().add(servicioEntidad);

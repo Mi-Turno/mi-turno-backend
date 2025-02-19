@@ -18,7 +18,7 @@ public class Usuario {
     private LocalDate fechaNacimiento;
     private Credencial credencial;
     private RolUsuarioEnum rolUsuario;
-    private String urlFotoPerfil;
+    private String fotoPerfil;
     //constructor
 
     public Usuario() {}

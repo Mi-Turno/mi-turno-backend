@@ -53,7 +53,8 @@ public class UsuarioEntidad implements UserDetails {
     @JoinColumn(name = "rol", nullable = false) // Define la clave foránea a RolEntidad
     private RolEntidad rolEntidad;
 
-    private String urlFotoPerfil;
+
+    private String fotoPerfil;
 
     //public void agregarRol(RolEntity rol) {
     //        this.roles.add(rol);

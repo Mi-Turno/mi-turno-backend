@@ -36,7 +36,7 @@ public class ProfesionalMapper {
     public ProfesionalEntidad toEntidad(ProfesionalRequest profesionalRequest, NegocioEntidad negocioEntidad, RolEntidad rolEntidad){
 
 
-    //todo esto se puede mejorar, haciendo un mapper de request a entidad
+
         CredencialEntidad credencialEntidad = credencialMapper.toEntidad(credencialMapper.toModel(profesionalRequest.getCredencial()));
 
 
@@ -63,6 +63,8 @@ public class ProfesionalMapper {
                 .rolUsuario(profesionalEntidad.getRolEntidad().getRol())
                 .fechaNacimiento(profesionalEntidad.getFechaNacimiento())
                 .idNegocio(profesionalEntidad.getNegocioEntidad().getId())
+                .fotoPerfil(profesionalEntidad.getFotoPerfil())
+
 
                 .credencial(unaCredencial)
 
