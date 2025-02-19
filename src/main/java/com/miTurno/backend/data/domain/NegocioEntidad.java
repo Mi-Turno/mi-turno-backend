@@ -46,7 +46,13 @@ public class NegocioEntidad extends UsuarioEntidad{
     @JoinColumn(name = "usuario_id")
     private List<ClienteEntidad> clientes;
 
-
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "negocio_metodos_pago",
+            joinColumns = @JoinColumn(name = "negocio_id"),
+            inverseJoinColumns = @JoinColumn(name = "metodo_pago_id")
+    )
+    private List<MetodoDePagoEntidad> metodosDePago;
 
     public NegocioEntidad() {
         super();

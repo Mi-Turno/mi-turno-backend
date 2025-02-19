@@ -2,7 +2,6 @@ package com.miTurno.backend.controlador;
 
 import com.miTurno.backend.data.domain.NegocioEntidad;
 import com.miTurno.backend.data.dtos.request.NegocioRequest;
-import com.miTurno.backend.data.dtos.response.Cliente;
 import com.miTurno.backend.data.dtos.response.Negocio;
 import com.miTurno.backend.data.dtos.response.personalizados.ClienteTablaResponse;
 import com.miTurno.backend.servicio.NegocioService;
@@ -148,6 +147,41 @@ public class NegocioControlador {
     @PutMapping("/{idNegocio}")
     public Negocio actualizarNegocio(@PathVariable Long idNegocio, @RequestBody NegocioRequest negocioRequest) throws MessagingException {
         return negocioService.actualizarNegocioPorID(idNegocio,negocioRequest);
+    }
+    @Operation(
+            summary = "Agregar un método de pago al negocio",
+            description = "Permite agregar un método de pago a un negocio existente.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Método de pago agregado correctamente"),
+                    @ApiResponse(responseCode = "404", description = "Negocio o método de pago no encontrado")
+            }
+    )
+    @PatchMapping("/{negocioId}/metodos-pago/alta")
+    public ResponseEntity<Negocio> altaMetodoPago(
+            @Parameter(description = "ID del negocio", required = true)
+            @PathVariable Long negocioId,
+            @Parameter(description = "ID del método de pago a agregar", required = true)
+            @RequestParam Long metodoDePagoId) {
+        Negocio negocioActualizado = negocioService.agregarMetodoPago(negocioId, metodoDePagoId);
+        return ResponseEntity.ok(negocioActualizado);
+    }
+
+    @Operation(
+            summary = "Eliminar un método de pago del negocio",
+            description = "Permite eliminar un método de pago de un negocio existente.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Método de pago eliminado correctamente"),
+                    @ApiResponse(responseCode = "404", description = "Negocio o método de pago no encontrado")
+            }
+    )
+    @PatchMapping("/{negocioId}/metodos-pago/baja")
+    public ResponseEntity<Negocio> bajaMetodoPago(
+            @Parameter(description = "ID del negocio", required = true)
+            @PathVariable Long negocioId,
+            @Parameter(description = "ID del método de pago a eliminar", required = true)
+            @RequestParam Long metodoDePagoId) {
+        Negocio negocioActualizado = negocioService.eliminarMetodoPago(negocioId, metodoDePagoId);
+        return ResponseEntity.ok(negocioActualizado);
     }
 
 }

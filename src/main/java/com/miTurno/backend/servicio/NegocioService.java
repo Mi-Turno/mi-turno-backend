@@ -1,16 +1,10 @@
 package com.miTurno.backend.servicio;
-import com.miTurno.backend.data.domain.ClienteEntidad;
-import com.miTurno.backend.data.domain.RolEntidad;
-import com.miTurno.backend.data.domain.TurnoEntidad;
+import com.miTurno.backend.data.domain.*;
 import com.miTurno.backend.data.dtos.response.personalizados.ClienteTablaResponse;
 import com.miTurno.backend.data.mapper.ClienteMapper;
-import com.miTurno.backend.data.repositorio.ClienteRepositorio;
-import com.miTurno.backend.data.repositorio.NegocioRepositorio;
-import com.miTurno.backend.data.repositorio.RolRepositorio;
-import com.miTurno.backend.data.repositorio.TurnoRepositorio;
+import com.miTurno.backend.data.repositorio.*;
 import com.miTurno.backend.excepciones.*;
 import com.miTurno.backend.data.dtos.request.NegocioRequest;
-import com.miTurno.backend.data.domain.NegocioEntidad;
 import com.miTurno.backend.data.mapper.NegocioMapper;
 import com.miTurno.backend.data.dtos.response.Negocio;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
@@ -40,10 +34,11 @@ public class NegocioService {
     private final TurnoRepositorio turnoRepositorio;
     private final ClienteRepositorio clienteRepositorio;
     private final ClienteMapper clienteMapper;
+    private final MetodosDePagoRepositorio metodosDePagoRepositorio;
 
     //constructores
     @Autowired
-    public NegocioService(NegocioRepositorio negocioRepositorio, NegocioMapper negocioMapper, RolRepositorio rolRepositorio, PasswordEncoder passwordEncoder, AuthService authService, TurnoRepositorio turnoRepositorio, ClienteRepositorio clienteService,ClienteMapper clienteMapper) {
+    public NegocioService(NegocioRepositorio negocioRepositorio, NegocioMapper negocioMapper, RolRepositorio rolRepositorio, PasswordEncoder passwordEncoder, AuthService authService, TurnoRepositorio turnoRepositorio, ClienteRepositorio clienteService, ClienteMapper clienteMapper, MetodosDePagoRepositorio metodosDePagoRepositorio) {
         this.negocioRepositorio = negocioRepositorio;
         this.negocioMapper = negocioMapper;
         this.rolRepositorio = rolRepositorio;
@@ -52,6 +47,7 @@ public class NegocioService {
         this.turnoRepositorio = turnoRepositorio;
         this.clienteRepositorio = clienteService;
         this.clienteMapper = clienteMapper;
+        this.metodosDePagoRepositorio = metodosDePagoRepositorio;
     }
 
     //metodos
@@ -205,6 +201,33 @@ public class NegocioService {
         negocioEntidad = negocioRepositorio.save(negocioEntidad);
         return negocioMapper.toModel(negocioEntidad);
 
+    }
+    //Agregar metodo de pago
+    public Negocio agregarMetodoPago(Long negocioId, Long metodoDePagoId) {
+        NegocioEntidad negocio = negocioRepositorio.findById(negocioId)
+                .orElseThrow(() -> new EntityNotFoundException("Negocio con id: "+ negocioId+" no encontrado."));
+
+        MetodoDePagoEntidad metodo = metodosDePagoRepositorio.findById(metodoDePagoId)
+                .orElseThrow(() -> new EntityNotFoundException("Metodo de pago con id: "+ metodoDePagoId+" no encontrado."));
+
+        // Evito que ya este duplicado
+        if (!negocio.getMetodosDePago().contains(metodo)) {
+            negocio.getMetodosDePago().add(metodo);
+            negocioRepositorio.save(negocio);
+        }
+        return negocioMapper.toModel(negocio);
+    }
+    //Eliminar metodo de pago
+    public Negocio eliminarMetodoPago(Long negocioId, Long metodoDePagoId) {
+        NegocioEntidad negocio = negocioRepositorio.findById(negocioId)
+                .orElseThrow(() -> new EntityNotFoundException("Negocio con id: "+ negocioId+" no encontrado."));
+
+        MetodoDePagoEntidad metodo = metodosDePagoRepositorio.findById(metodoDePagoId)
+                .orElseThrow(() -> new EntityNotFoundException("Metodo de pago con id: "+ metodoDePagoId+" no encontrado."));
+
+        negocio.getMetodosDePago().remove(metodo);
+
+        return negocioMapper.toModel(negocioRepositorio.save(negocio));
     }
 
 }
