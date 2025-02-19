@@ -1,8 +1,9 @@
 package com.miTurno.backend.servicio;
 
+import com.miTurno.backend.data.domain.ServicioEntidad;
 import com.miTurno.backend.data.domain.UsuarioEntidad;
+import com.miTurno.backend.data.repositorio.ServicioRepositorio;
 import com.miTurno.backend.data.repositorio.UsuarioRepositorio;
-import com.miTurno.backend.tipos.EntidadEnum;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.core.io.Resource;
@@ -21,12 +22,14 @@ import java.nio.file.StandardCopyOption;
 public class ArchivosService {
 
     private final UsuarioRepositorio usuarioRepositorio;
+    private final ServicioRepositorio servicioRepositorio;
 
-    public ArchivosService(UsuarioRepositorio usuarioRepositorio) {
+    public ArchivosService(UsuarioRepositorio usuarioRepositorio, ServicioRepositorio servicioRepositorio) {
         this.usuarioRepositorio = usuarioRepositorio;
+        this.servicioRepositorio = servicioRepositorio;
     }
 
-    public Resource obtenerFotoPerfil(Long idUsuario) throws MalformedURLException, FileNotFoundException {
+    public Resource obtenerFotoPerfilUsuario(Long idUsuario) throws MalformedURLException, FileNotFoundException {
         UsuarioEntidad usuarioEntidad = usuarioRepositorio.findById(idUsuario)
                 .orElseThrow(()-> new EntityNotFoundException("El usuario con el id "+idUsuario+" no existe."));
 
@@ -36,11 +39,30 @@ public class ArchivosService {
 
 
         Path imagenPath = Path.of(usuarioEntidad.getFotoPerfil());
+
         return new UrlResource(imagenPath.toUri());
 
     }
 
-    public Boolean eliminarFotoPerfilUsuario(Long idUsuario) throws IOException {
+    public Resource obtenerFotoServicio(Long idServicio,Long idNegocio) throws MalformedURLException, FileNotFoundException {
+        UsuarioEntidad usuarioEntidad = usuarioRepositorio.findById(idNegocio)
+                .orElseThrow(()-> new EntityNotFoundException("El negocio con el id "+idNegocio+" no existe."));
+
+        ServicioEntidad servicioEntidad = servicioRepositorio.findById(idServicio)
+                .orElseThrow(()-> new EntityNotFoundException("El servicio con el id "+idServicio+" no existe."));
+
+        if (servicioEntidad.getFotoServicio() == null){
+            throw new FileNotFoundException("El servicio no tiene foto de perfil");
+        }
+
+        Path imagenPath = Path.of(servicioEntidad.getFotoServicio());
+
+        return new UrlResource(imagenPath.toUri());
+
+
+    }
+
+    public boolean eliminarFotoPerfilUsuario(Long idUsuario) throws IOException {
         boolean flag=false;
 
         UsuarioEntidad usuarioEntidad = usuarioRepositorio.findById(idUsuario)
@@ -53,7 +75,7 @@ public class ArchivosService {
         Path archivoABorrar= Path.of(usuarioEntidad.getFotoPerfil());
 
         if (!Files.exists(archivoABorrar)){
-            return flag;
+            throw new FileNotFoundException("El usuario no tiene foto de perfil");
         }
 
         flag= Files.deleteIfExists(archivoABorrar);
@@ -63,25 +85,23 @@ public class ArchivosService {
         return flag;
     }
 
-    public Boolean guardarFotoPerfilUsuario(Long id, MultipartFile archivo, EntidadEnum entidadEnum) throws IOException,EntityNotFoundException {
-        boolean flag=false;
+    public boolean guardarFotoServicio(Long idServicio, Long idNegocio, MultipartFile archivo) throws IOException {
+        boolean flag = false;
 
-        switch (entidadEnum){
-            case USUARIO -> {
-                flag = logicaGuardarArchivoUsuario(id,archivo);
-            }
-            case SERVICIOS -> {
+        UsuarioEntidad usuarioEntidad = usuarioRepositorio.findById(idNegocio)
+                .orElseThrow(()-> new EntityNotFoundException("El negocio con el id "+idNegocio+" no existe."));
 
-            }
-            case null, default -> {
-                //arrojo error entidad no existe
-            }
-        }
+        ServicioEntidad servicioEntidad = servicioRepositorio.findById(idServicio)
+                .orElseThrow(()-> new EntityNotFoundException("El servicio con el id "+idServicio+" no existe."));
+
+        Path rutaDondeSeGuardaServicio = obtenerDirectorioServicios(obtenerDirectorioCliente(idNegocio));
+
+        flag = guardarArchivoEnUnServicio(archivo,rutaDondeSeGuardaServicio,servicioEntidad);
 
         return flag;
     }
 
-    private Boolean logicaGuardarArchivoUsuario(Long id, MultipartFile archivo) throws IOException {
+    public boolean guardarFotoPerfilUsuario(Long id, MultipartFile archivo) throws IOException {
         boolean flag=false;
         UsuarioEntidad usuarioEntidad = usuarioRepositorio.findById(id)
                 .orElseThrow(()-> new EntityNotFoundException("El usuario con el id "+id+" no existe."));
@@ -90,18 +110,13 @@ public class ArchivosService {
             return flag;
         }
 
-
         Path rutaArchivosCliente = obtenerDirectorioCliente(id);
 
-        if (usuarioEntidad.getRolEntidad().getRol() == RolUsuarioEnum.NEGOCIO){
-            Path rutaArchivosNegocio= obtenerDirectorioServicios(rutaArchivosCliente);
-        }
-
-        flag = guardarUnArchivoEnUnUsuario(archivo,rutaArchivosCliente,usuarioEntidad);
+        flag = guardarArchivoEnUnUsuario(archivo,rutaArchivosCliente,usuarioEntidad);
         return flag;
     }
 
-   private Path obtenerDirectorioServicios(Path rutaArchivosNegocio) throws IOException {
+    private Path obtenerDirectorioServicios(Path rutaArchivosNegocio) throws IOException {
        //ruta donde se guardaran los archivos del cliente, el nombre del directorio sera el id del usuario
        Path rutaArchivosServicios = rutaArchivosNegocio.resolve("servicios");
 
@@ -112,13 +127,63 @@ public class ArchivosService {
        return rutaArchivosServicios;
    }
 
-
-    private boolean guardarUnArchivoEnUnUsuario(MultipartFile archivo, Path rutaEnDondeSeGuardara, UsuarioEntidad usuarioEntidad) throws IOException {
+    private boolean guardarArchivoEnUnServicio(MultipartFile archivo, Path rutaEnDondeSeGuardara, ServicioEntidad servicioEntidad) throws IOException {
         boolean flag=false;
 
         String nombreNuevoArchivo = archivo.getOriginalFilename();
 
-        if (nombreNuevoArchivo == null){
+        if (nombreNuevoArchivo == null || nombreNuevoArchivo.isBlank()){
+            return flag;
+        }
+
+        //si tiene foto de perfil
+        if (servicioEntidad.getFotoServicio() != null){
+            eliminarFotoServicio(servicioEntidad.getId());
+        }
+
+        Path rutaDelNuevoArchivo = rutaEnDondeSeGuardara.resolve(nombreNuevoArchivo);
+
+        Files.copy(archivo.getInputStream(),rutaDelNuevoArchivo, StandardCopyOption.REPLACE_EXISTING);
+
+        if (Files.exists(rutaDelNuevoArchivo)){
+            rutaDelNuevoArchivo = rutaDelNuevoArchivo.normalize();
+
+            servicioEntidad.setFotoServicio(String.valueOf(rutaDelNuevoArchivo));
+            servicioRepositorio.save(servicioEntidad);
+            flag=true;
+        }
+        return flag;
+    }
+
+    public boolean eliminarFotoServicio(Long idServicio) throws IOException {
+        boolean flag=false;
+
+        ServicioEntidad servicioEntidad = servicioRepositorio.findById(idServicio)
+                .orElseThrow(()-> new EntityNotFoundException("El servicio con el id "+idServicio+" no existe."));
+
+        if (servicioEntidad.getFotoServicio() == null){
+            throw new FileNotFoundException("El servicio no tiene foto de perfil");
+        }
+
+        Path archivoABorrar= Path.of(servicioEntidad.getFotoServicio());
+
+        if (!Files.exists(archivoABorrar)){
+            throw new FileNotFoundException("El servicio no tiene foto de perfil");
+        }
+
+        flag= Files.deleteIfExists(archivoABorrar);
+        servicioEntidad.setFotoServicio(null);
+        servicioRepositorio.save(servicioEntidad);
+
+        return flag;
+    }
+
+    private boolean guardarArchivoEnUnUsuario(MultipartFile archivo, Path rutaEnDondeSeGuardara, UsuarioEntidad usuarioEntidad) throws IOException {
+        boolean flag=false;
+
+        String nombreNuevoArchivo = archivo.getOriginalFilename();
+
+        if (nombreNuevoArchivo == null || nombreNuevoArchivo.isBlank()){
             return flag;
         }
 

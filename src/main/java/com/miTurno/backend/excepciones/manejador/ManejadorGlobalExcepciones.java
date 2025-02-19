@@ -122,6 +122,16 @@ public class ManejadorGlobalExcepciones {
                 ));
     }
 
+    @ExceptionHandler(EnumConstantNotPresentException.class)
+    public ResponseEntity<?>handleMessagingException(EnumConstantNotPresentException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of(
+                        "error", "No se encontro la constante en el enum",
+                        "mensaje", ex.getMessage(),
+                        "timestamp", LocalDateTime.now()
+                ));
+    }
+
     @ExceptionHandler(IOException.class)
     public ResponseEntity<?>handleMessagingException(IOException ex){
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

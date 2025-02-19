@@ -26,7 +26,7 @@ public class ArchivosControlador {
 
     //post un archivo
 
-    @PostMapping(value = "/subir", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/subirArchivoUsuario", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(
             summary = "Subir un archivo asociado a un ID",
             description = "Permite subir un archivo y guardarlo con respecto al ID del usuario.",
@@ -37,24 +37,39 @@ public class ArchivosControlador {
                     @ApiResponse(responseCode = "500", description = "Error al guardar el archivo.")
             }
     )
-    public ResponseEntity<Boolean> subirArchivo(
+    public ResponseEntity<Boolean> subirArchivoUsuario(
             @Parameter(description = "ID de la entidad", required = true, example = "123")
-            @RequestParam("id") Long id,
+            @RequestParam("idUsuario") Long id,
             @Parameter(description = "Archivo a enviar", required = true)
-            @RequestParam("archivo") MultipartFile archivo,
-            @Parameter(description = "Entidad", required = true, example = "USUARIO")
-            @RequestParam("entidad") String nombreEntidadStr
+            @RequestParam("archivo") MultipartFile archivo
             ) throws IOException {
 
-        // Convertimos el String a Enum manualmente
-        EntidadEnum nombreEntidad;
-        try {
-            nombreEntidad = EntidadEnum.valueOf(nombreEntidadStr.toUpperCase()); // Convierte el String a Enum
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(false); // Manejo de error si el valor no es válido
-        }
+        Boolean sePudoGuardar= archivosService.guardarFotoPerfilUsuario(id, archivo);
 
-        Boolean sePudoGuardar= archivosService.guardarFotoPerfilUsuario(id, archivo,nombreEntidad);
+        return ResponseEntity.ok(sePudoGuardar);
+    }
+
+    @PostMapping(value = "/subirArchivoServicio", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(
+            summary = "Subir un archivo asociado a un ID",
+            description = "Permite subir un archivo y guardarlo con respecto al ID del usuario.",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Archivo subido correctamente."),
+                    @ApiResponse(responseCode = "400", description = "Error en la solicitud."),
+                    @ApiResponse(responseCode = "404", description = "Usuario no encontrado."),
+                    @ApiResponse(responseCode = "500", description = "Error al guardar el archivo.")
+            }
+    )
+    public ResponseEntity<Boolean> subirArchivoServicio(
+            @Parameter(description = "ID de la entidad", required = true, example = "4")
+            @RequestParam("idServicio") Long idServicio,
+            @Parameter(description = "ID de la entidad", required = true, example = "2")
+            @RequestParam("idNegocio") Long idNegocio,
+            @Parameter(description = "Archivo a enviar", required = true)
+            @RequestParam("archivo") MultipartFile archivo
+    ) throws IOException {
+
+        Boolean sePudoGuardar= archivosService.guardarFotoServicio(idServicio,idNegocio, archivo);
 
         return ResponseEntity.ok(sePudoGuardar);
     }
@@ -71,19 +86,46 @@ public class ArchivosControlador {
                     @ApiResponse(responseCode = "500", description = "Error servidor.")
             }
     )
-    public ResponseEntity<Resource> getArchivo(
+    public ResponseEntity<Resource> getArchivoUsuario(
             @Parameter(description = "ID del usuario", required = true, example = "123")
             @PathVariable Long id
     ) throws IOException {
 
-        Resource resource = archivosService.obtenerFotoPerfil(id);
+        Resource resource = archivosService.obtenerFotoPerfilUsuario(id);
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + "nombreArchivo" + "\"")
                 .body(resource);
     }
 
-    @DeleteMapping(value = "/eliminar")
+    @GetMapping("/{idNegocio}/{idServicio}")
+    @Operation(
+            summary = "Obtener un archivo asociado a un ID.",
+            description = "Permite obtener un archivo a partir del nombre relacionado a un usuario.",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Archivo obtenido correctamente."),
+                    @ApiResponse(responseCode = "400", description = "Error en la solicitud."),
+                    @ApiResponse(responseCode = "404", description = "Usuario no encontrado."),
+                    @ApiResponse(responseCode = "500", description = "Error servidor.")
+            }
+    )
+    public ResponseEntity<Resource> getArchivoServicio(
+            @Parameter(description = "ID del negocio", required = true, example = "2")
+            @PathVariable Long idNegocio,
+            @Parameter(description = "ID del servicio", required = true, example = "1")
+            @PathVariable Long idServicio
+    ) throws IOException {
+
+        Resource resource = archivosService.obtenerFotoServicio(idServicio,idNegocio);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + "nombreArchivo" + "\"")
+                .body(resource);
+    }
+
+
+
+    @DeleteMapping(value = "/eliminarArchivoUsuario")
     @Operation(
             summary = "Eliminar un archivo asociado a un ID",
             description = "Permite eliminar un archivo con respecto al ID del usuario.",
@@ -94,12 +136,33 @@ public class ArchivosControlador {
                     @ApiResponse(responseCode = "500", description = "Error servidor.")
             }
     )
-    public ResponseEntity<Boolean> eliminarArchivo(
+    public ResponseEntity<Boolean> eliminarArchivoUsuario(
             @Parameter(description = "ID del usuario", required = true, example = "123")
             @RequestParam Long id
     ) throws IOException {
 
         Boolean sePudoEliminar= archivosService.eliminarFotoPerfilUsuario(id);
+
+        return ResponseEntity.ok(sePudoEliminar);
+    }
+
+    @DeleteMapping(value = "/eliminarArchivoServicio")
+    @Operation(
+            summary = "Eliminar un archivo asociado a un ID",
+            description = "Permite eliminar un archivo con respecto al ID del usuario.",
+            responses = {
+                    @ApiResponse(responseCode = "204", description = "Archivo eliminado correctamente."),
+                    @ApiResponse(responseCode = "400", description = "Error en la solicitud."),
+                    @ApiResponse(responseCode = "404", description = "Usuario no encontrado."),
+                    @ApiResponse(responseCode = "500", description = "Error servidor.")
+            }
+    )
+    public ResponseEntity<Boolean> eliminarArchivoServicio(
+            @Parameter(description = "ID del servicio", required = true, example = "123")
+            @RequestParam Long id
+    ) throws IOException {
+
+        Boolean sePudoEliminar= archivosService.eliminarFotoServicio(id);
 
         return ResponseEntity.ok(sePudoEliminar);
     }
