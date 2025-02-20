@@ -1,5 +1,8 @@
 package com.miTurno.backend.servicio;
 
+import com.miTurno.backend.data.dtos.request.CredencialRequest;
+import com.miTurno.backend.data.dtos.response.Credencial;
+import com.miTurno.backend.data.mapper.CredencialMapper;
 import com.miTurno.backend.data.repositorio.ClienteRepositorio;
 import com.miTurno.backend.data.repositorio.CredencialesRepositorio;
 import com.miTurno.backend.data.repositorio.RolRepositorio;
@@ -19,9 +22,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class ClienteService {
@@ -33,6 +38,7 @@ public class ClienteService {
     private final TurnoMapper turnoMapper;
     private final PasswordEncoder passwordEncoder;
     private final AuthService authService;
+    private final AtomicLong contadorEmail = new AtomicLong(1); // Inicialización del contador
 
     @Autowired
     public ClienteService(ClienteRepositorio clienteRepositorio, RolRepositorio rolRepositorio, CredencialesRepositorio credencialesRepositorio, ClienteMapper clienteMapper, TurnoMapper turnoMapper, PasswordEncoder passwordEncoder, AuthService authService) {
@@ -99,6 +105,43 @@ public class ClienteService {
         return clienteMapper.toModel(clienteGuardado) ;
     }
 
+    //Crear un cliente invitado
+public Cliente crearUsuarioInvitado(String nombreCliente, String nombreNegocio){
+
+        String nombreNegocioFinal =  nombreNegocio.replace(" ", "_");
+
+        String email = "invitado@" + nombreNegocioFinal + contadorEmail.getAndIncrement() + ".miturno";
+
+
+        UsuarioRequest usuarioRequest = UsuarioRequest.builder()
+                .nombre(nombreCliente)
+                .apellido("Invitado")
+                .fechaNacimiento(LocalDate.now())
+                .credencial(CredencialRequest.builder()
+                        .telefono("00000" + contadorEmail)
+                        .email(email)
+                        .password(passwordEncoder.encode("invitado"))
+                        .build())
+                .rolUsuario(RolUsuarioEnum.CLIENTE)
+                .build();
+
+
+        RolEntidad rolEntidad = rolRepositorio.findByRol(usuarioRequest.getRolUsuario());
+        ClienteEntidad clienteEntidad = clienteMapper.toEntidad(usuarioRequest,rolEntidad);
+        ClienteEntidad clienteGuardado= clienteRepositorio.save(clienteEntidad);
+        return clienteMapper.toModel(clienteGuardado);
+}
+
+
+    //Obtener el último cliente invitado por negocio
+    public Cliente getLastClienteInvitadoByNegocio(String nombreNegocio){
+        String nombreNegocioFinal =  nombreNegocio.replace(" ", "_");
+        return clienteMapper.toModel(clienteRepositorio.findFirstByCredencial_EmailContainingOrderByIdDesc("invitado@" + nombreNegocioFinal));
+    }
+
+
+
+
     // Obtener cliente by email and password para el login
     public Cliente obtenerClienteByEmailAndPassword(String email, String password) throws EntityNotFoundException{
         return clienteMapper.toModel(clienteRepositorio.findByCredencial_EmailAndCredencial_Password(email,password));
@@ -117,9 +160,6 @@ public class ClienteService {
         ClienteEntidad clienteEntidad = clienteRepositorio.findById(id)
                 .orElseThrow(()-> new EntityNotFoundException("Cliente con id: "+ id+" no encontrado."));
 
-
-
-
         clienteEntidad.setNombre(clienteActualizado.getNombre());
         clienteEntidad.setApellido(clienteActualizado.getApellido());
 
@@ -132,6 +172,11 @@ public class ClienteService {
 
         return clienteMapper.toModel(clienteEntidad);
     }
+
+
+
+
+
     //patch cliente
     public Cliente actualizarParcial(Long id, Cliente clienteParcial) {
         Optional<ClienteEntidad> clienteExistente = clienteRepositorio.findById(id);
