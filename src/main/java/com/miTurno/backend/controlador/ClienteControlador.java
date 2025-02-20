@@ -52,6 +52,20 @@ public class ClienteControlador {
         return clienteService.crearUnCliente(usuarioRequest);
     }
 
+
+    @Operation(summary = "Crear un nuevo cliente invitado")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Cliente invitado creado con éxito"),
+            @ApiResponse(responseCode = "400", description = "Datos del cliente inválidos")
+    })
+    @PostMapping("/{nombreCliente}/invitado/{nombreNegocio}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Cliente crearUsuarioInvitado(@Parameter(description = "Nombre del cliente invitado") @PathVariable String nombreCliente, @PathVariable String nombreNegocio) {
+        return clienteService.crearUsuarioInvitado(nombreCliente, nombreNegocio);
+    }
+
+
+
     //GET listado de turnos por cliente ID
 
     @Operation(summary = "Obtener un listado de turnos del cliente por ID")
@@ -79,6 +93,19 @@ public class ClienteControlador {
                                                        @PathVariable Long id) {
         Cliente cliente = clienteService.buscarCliente(id);
         return ResponseEntity.ok(cliente);//200
+    }
+
+
+    @Operation(summary = "Obtener el último cliente invitado por negocio")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "El cliente invitado fue devuelto"),
+            @ApiResponse(responseCode = "400", description = "Cliente no encontrado")
+    })
+    @GetMapping("/ultimo-invitado")
+    public ResponseEntity<Cliente> obtenerUltimoClienteInvitadoPorNegocio(
+            @Parameter(description = "Nombre del negocio", example = "NombreNegocio") @RequestParam String nombreNegocio) {
+        Cliente cliente = clienteService.getLastClienteInvitadoByNegocio(nombreNegocio);
+        return ResponseEntity.ok(cliente);
     }
 
     //GET email by id
