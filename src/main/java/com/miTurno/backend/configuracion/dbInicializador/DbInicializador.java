@@ -237,6 +237,9 @@ public class DbInicializador {
         if(metodosDePagoRepositorio.findByMetodoDePago(MetodosDePagoEnum.TARJETA_CREDITO)==null){
             metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.TARJETA_CREDITO));
         }
+        if(metodosDePagoRepositorio.findByMetodoDePago(MetodosDePagoEnum.OTRO)==null) {
+            metodosDePagoRepositorio.save(new MetodoDePagoEntidad(MetodosDePagoEnum.OTRO));
+        }
     }
     public void initEstadoTurno(){
         if(estadoTurnoRepositorio.findByEstadoTurno(EstadoTurnoEnum.LIBRE)==null){

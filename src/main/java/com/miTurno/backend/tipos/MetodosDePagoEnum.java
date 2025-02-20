@@ -5,5 +5,6 @@ public enum MetodosDePagoEnum {
     MERCADO_PAGO,
     TARJETA_CREDITO,
     TARJETA_DEBITO,
-    TRANSFERENCIA
+    TRANSFERENCIA,
+    OTRO
 }
