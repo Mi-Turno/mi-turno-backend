@@ -36,6 +36,7 @@ public class EnviarCorreoService {
     @Scheduled(fixedRate = 60000) // Revisa cada 1 minutos
     @Transactional // Asegura que la sesión esté abierta durante la operación
     public void enviarCorreosProgramados() {
+
         LocalDateTime ahora = LocalDateTime.now();
         LocalDateTime enDosHoras = ahora.plusHours(2);
 
@@ -53,9 +54,11 @@ public class EnviarCorreoService {
         for (TurnoEntidad turno : turnosProximos) {
             if (!turno.isCorreoEnviado()) { //yo solo quiero enviar mails que no se hayan enviado antes
                 try {
-                    enviarCorreoProgramado(turno);
-                    turno.setCorreoEnviado(true);
-                    turnoRepositorio.save(turno);
+                    if(!turno.getClienteEntidad().getCredencial().getEmail().toLowerCase().contains("invitado")){
+                        enviarCorreoProgramado(turno);
+                        turno.setCorreoEnviado(true);
+                        turnoRepositorio.save(turno);
+                    }
                 } catch (MessagingException e) {
                     e.printStackTrace();
                 }
@@ -183,40 +186,44 @@ public class EnviarCorreoService {
     public void enviarCorreoCancelacionNegocio(EmailCancelacionRequest emailRequest)  {
         MimeMessage mensaje = enviadorMail.createMimeMessage();
         MimeMessageHelper helper = null;
-        try {
-            helper = new MimeMessageHelper(mensaje, true);
-            helper.setTo(emailRequest.getEmailCliente());  // email del cliente
-            helper.setFrom("miturno.flf@gmail.com");
-            helper.setSubject("❌ TURNO CANCELADO");
+        if(emailRequest.getEmailCliente().toLowerCase().contains("invitado"))
+        {
+            try {
+                helper = new MimeMessageHelper(mensaje, true);
+                helper.setTo(emailRequest.getEmailCliente());  // email del cliente
+                helper.setFrom("miturno.flf@gmail.com");
+                helper.setSubject("❌ TURNO CANCELADO");
 
-            String htmlContenido = "<!DOCTYPE html>" +
-                    "<html lang='es'>" +
-                    "<head>" +
-                    "    <meta charset='UTF-8'>" +
-                    "    <meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
-                    "    <title>Cancelación de Turno</title>" +
-                    "</head>" +
-                    "<body style='font-family: Arial, sans-serif; background-color: #f8f8f8; padding: 20px;'>" +
-                    "    <div style='max-width: 600px; background: white; padding: 20px; border-radius: 8px; " +
-                    "box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);'>" +
-                    "        <h2 style='color: red; text-align: center;'>  TURNO CANCELADO</h2>" +
-                    "        <p>Estimado/a <strong>" + emailRequest.getNombreCliente() + "</strong>,</p>" +
-                    "        <p>Lamentamos informarle que su turno ha sido cancelado.</p>" +
-                    "        <p>Si necesita más información o desea reprogramar, no dude en comunicarse con nosotros al siguiente número:</p>" +
-                    "        <p style='text-align: center; font-size: 18px;'><strong>" + emailRequest.getNumeroSoporte() + "</strong></p>" +
-                    "        <p>Gracias por su comprensión.</p>" +
-                    "        <p>Atentamente,</p>" +
-                    "        <p><strong>El equipo de atención al cliente de "+emailRequest.getNombreNegocio()+"</strong></p>" +
-                    "    </div>" +
-                    "</body>" +
-                    "</html>";
+                String htmlContenido = "<!DOCTYPE html>" +
+                        "<html lang='es'>" +
+                        "<head>" +
+                        "    <meta charset='UTF-8'>" +
+                        "    <meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
+                        "    <title>Cancelación de Turno</title>" +
+                        "</head>" +
+                        "<body style='font-family: Arial, sans-serif; background-color: #f8f8f8; padding: 20px;'>" +
+                        "    <div style='max-width: 600px; background: white; padding: 20px; border-radius: 8px; " +
+                        "box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);'>" +
+                        "        <h2 style='color: red; text-align: center;'>  TURNO CANCELADO</h2>" +
+                        "        <p>Estimado/a <strong>" + emailRequest.getNombreCliente() + "</strong>,</p>" +
+                        "        <p>Lamentamos informarle que su turno ha sido cancelado.</p>" +
+                        "        <p>Si necesita más información o desea reprogramar, no dude en comunicarse con nosotros al siguiente número:</p>" +
+                        "        <p style='text-align: center; font-size: 18px;'><strong>" + emailRequest.getNumeroSoporte() + "</strong></p>" +
+                        "        <p>Gracias por su comprensión.</p>" +
+                        "        <p>Atentamente,</p>" +
+                        "        <p><strong>El equipo de atención al cliente de "+emailRequest.getNombreNegocio()+"</strong></p>" +
+                        "    </div>" +
+                        "</body>" +
+                        "</html>";
 
-            helper.setText(htmlContenido, true);
-            System.out.println("Enviando email negocio");
-            enviadorMail.send(mensaje);
-        } catch (MessagingException e) {
-            System.out.println(e.getMessage());
+                helper.setText(htmlContenido, true);
+                System.out.println("Enviando email negocio");
+                enviadorMail.send(mensaje);
+            } catch (MessagingException e) {
+                System.out.println(e.getMessage());
+            }
         }
+
 
     }
     @Async
