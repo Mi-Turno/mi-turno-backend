@@ -69,8 +69,6 @@ public class AuthControlador {
     })
     public ResponseEntity<Map<String,String>> verificarMailUsuario(
             @RequestBody VerificarUsuarioRequest verificarUsuarioRequest) {
-
-
         return  ResponseEntity.ok(authService.verificarUsuario(verificarUsuarioRequest));
     }
 
@@ -86,6 +84,18 @@ public class AuthControlador {
 
         String mensaje= authService.reenviarCodigoDeVerificacion(request.getEmail());
         return ResponseEntity.ok(Map.of("mensaje", mensaje));
+    }
+
+    @PatchMapping("/cambiar-contrasenia")
+    @Operation(summary = "Cambiar la contraseña de un usuario.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "La contraseña fue cambiada con exito."),
+            @ApiResponse(responseCode = "400", description = "Parámetros inválidos"),
+            @ApiResponse(responseCode = "404", description = "No encontrado")
+    })
+    public ResponseEntity<Map<String,String>> cambiarContrasenia(
+            @RequestBody String token , @RequestBody String password) {
+        return ResponseEntity.ok(authService.cambiarContrasenia(token, password));
     }
 
 }

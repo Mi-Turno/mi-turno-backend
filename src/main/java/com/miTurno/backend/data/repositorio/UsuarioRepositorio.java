@@ -1,5 +1,6 @@
 package com.miTurno.backend.data.repositorio;
 
+import com.miTurno.backend.data.domain.CredencialEntidad;
 import com.miTurno.backend.data.domain.UsuarioEntidad;
 import com.miTurno.backend.tipos.RolUsuarioEnum;
 import jakarta.validation.constraints.Email;

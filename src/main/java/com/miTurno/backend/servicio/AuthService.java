@@ -1,7 +1,10 @@
 package com.miTurno.backend.servicio;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
+import com.miTurno.backend.data.domain.CredencialEntidad;
 import com.miTurno.backend.data.domain.UsuarioEntidad;
 import com.miTurno.backend.data.dtos.request.VerificarUsuarioRequest;
+import com.miTurno.backend.data.repositorio.CredencialesRepositorio;
 import com.miTurno.backend.data.repositorio.UsuarioRepositorio;
 import com.miTurno.backend.data.dtos.request.UsuarioLoginRequest;
 import com.miTurno.backend.excepciones.CodigoVerificacionException;
@@ -12,6 +15,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -23,15 +27,18 @@ import java.util.UUID;
 @Service
 public class AuthService {
     private final UsuarioRepositorio usuarioRepositorio;
-
+    private final CredencialesRepositorio credencialesRepositorio;
     private final AuthenticationManager authenticationManager;
     private final EnviarCorreoService enviarCorreoService;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public AuthService(UsuarioRepositorio usuarioRepositorio, AuthenticationManager authenticationManager, EnviarCorreoService enviarCorreoService) {
+    public AuthService(UsuarioRepositorio usuarioRepositorio, AuthenticationManager authenticationManager, PasswordEncoder passwordEncoder, CredencialesRepositorio credencialesRepositorio,EnviarCorreoService enviarCorreoService) {
         this.usuarioRepositorio = usuarioRepositorio;
         this.authenticationManager = authenticationManager;
         this.enviarCorreoService = enviarCorreoService;
+        this.passwordEncoder = passwordEncoder;
+        this.credencialesRepositorio = credencialesRepositorio;
     }
 
     public HashMap<String, String> generarTokenOlvidasteContrasenia(String email) throws MessagingException {
@@ -111,6 +118,7 @@ public class AuthService {
 
         //si el codigo de verificacion no es igual al que tiene en la bd
         if (!usuarioEntidad.getCredencial().getCodigo().equals(input.getCodigo())) {
+
             throw new CodigoVerificacionException("Codigo de verificacion invalido.");
         }
 
@@ -144,6 +152,33 @@ public class AuthService {
     }
 
 
+    public Map<String, String> cambiarContrasenia( String token, String password) {
+
+        CredencialEntidad credencialEntidad = credencialesRepositorio.findCredencialEntidadByCodigo(token)
+                .orElseThrow(() -> new UsernameNotFoundException("Email no fue encontrado en el sistema."));
+
+        if (!credencialEntidad.getUsuarioVerificado()) {
+            throw new UsuarioNoVerificadoException("El correo del usuario no está verificado.");
+        }
+
+        if (credencialEntidad.getVencimientoCodigo().isBefore(LocalDateTime.now())) {
+            throw new CodigoVerificacionException("El código de verificación ha expirado.");
+        }
+
+        if (!credencialEntidad.getCodigo().equals(token)) {
+            throw new CodigoVerificacionException("El código de verificación es inválido.");
+        }
+
+        credencialEntidad.setPassword(passwordEncoder.encode(password));
+        credencialEntidad.setCodigo(null);
+
+
+        credencialesRepositorio.save(credencialEntidad);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("mensaje", "Contraseña cambiada con éxito.");
+        return response;
+    }
 
     public String generarCodigoDeVerificacion() {
         Random random = new Random();
