@@ -51,7 +51,7 @@ public class AuthService {
         usuarioRepositorio.save(usuarioEntidad);
 
         //enviamos el mail
-
+        enviarCorreoService.enviarMailDeReestablecerContrasenia(usuarioEntidad);
 
         //si salio bien
         flag = true;
