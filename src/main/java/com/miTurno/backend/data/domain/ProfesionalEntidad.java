@@ -18,7 +18,7 @@ public class ProfesionalEntidad extends UsuarioEntidad{
 
     // negocio al que esta relacionado
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id",nullable = false) // Clave foránea hacia Negocio
+    @JoinColumn(name = "negocio_id",nullable = false) // Clave foránea hacia Negocio
     private NegocioEntidad negocioEntidad;
 
     // Servicios específicos que ofrece el profesional

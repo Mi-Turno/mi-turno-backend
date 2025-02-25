@@ -1,5 +1,4 @@
 package com.miTurno.backend.data.dtos.response;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,9 +17,9 @@ public class Credencial {
     private String password;
     private String telefono;
     private Boolean estado;
-    private String codigoVerificacion;
-    private LocalDateTime vencimientoCodigoVerificacion;
-
+    private String codigo;
+    private LocalDateTime vencimientoCodigo;
+    private Boolean usuarioVerificado;
 
     public Credencial() {
     }

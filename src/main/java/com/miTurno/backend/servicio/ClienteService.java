@@ -38,10 +38,11 @@ public class ClienteService {
     private final TurnoMapper turnoMapper;
     private final PasswordEncoder passwordEncoder;
     private final AuthService authService;
+    private final EnviarCorreoService enviarCorreoService;
     private final AtomicLong contadorEmail = new AtomicLong(1); // Inicialización del contador
 
     @Autowired
-    public ClienteService(ClienteRepositorio clienteRepositorio, RolRepositorio rolRepositorio, CredencialesRepositorio credencialesRepositorio, ClienteMapper clienteMapper, TurnoMapper turnoMapper, PasswordEncoder passwordEncoder, AuthService authService) {
+    public ClienteService(ClienteRepositorio clienteRepositorio, RolRepositorio rolRepositorio, CredencialesRepositorio credencialesRepositorio, ClienteMapper clienteMapper, TurnoMapper turnoMapper, PasswordEncoder passwordEncoder, AuthService authService, EnviarCorreoService enviarCorreoService) {
         this.clienteRepositorio = clienteRepositorio;
         this.rolRepositorio = rolRepositorio;
         this.credencialesRepositorio = credencialesRepositorio;
@@ -49,6 +50,7 @@ public class ClienteService {
         this.turnoMapper = turnoMapper;
         this.passwordEncoder = passwordEncoder;
         this.authService = authService;
+        this.enviarCorreoService = enviarCorreoService;
     }
 
 
@@ -95,13 +97,14 @@ public class ClienteService {
 
 
         clienteEntidad.getCredencial().setEstado(true);
+        clienteEntidad.getCredencial().setUsuarioVerificado(false);
+        clienteEntidad.getCredencial().setCodigo(authService.generarCodigoDeVerificacion());
+        clienteEntidad.getCredencial().setVencimientoCodigo(LocalDateTime.now().plusMinutes(15));
 
-        clienteEntidad.getCredencial().setCodigoVerificacion(authService.generarCodigoDeVerificacion());
-        clienteEntidad.getCredencial().setVencimientoCodigoVerificacion(LocalDateTime.now().plusMinutes(15));
-
-        authService.enviarMailDeVerificacion(clienteEntidad);
+        enviarCorreoService.enviarMailDeVerificacion(clienteEntidad);
 
         ClienteEntidad clienteGuardado= clienteRepositorio.save(clienteEntidad);
+
         return clienteMapper.toModel(clienteGuardado) ;
     }
 

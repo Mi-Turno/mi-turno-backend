@@ -1,6 +1,7 @@
 package com.miTurno.backend.servicio;
 
 import com.miTurno.backend.data.domain.TurnoEntidad;
+import com.miTurno.backend.data.domain.UsuarioEntidad;
 import com.miTurno.backend.data.dtos.request.EmailCancelacionRequest;
 import com.miTurno.backend.data.dtos.request.EmailContactoRequest;
 import com.miTurno.backend.data.dtos.request.EmailRequest;
@@ -18,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class EnviarCorreoService {
@@ -49,7 +49,7 @@ public class EnviarCorreoService {
                             .atTime(turno.getHorarioProfesionalEntidad().getHoraInicio());  // Usamos la hora del turno
                     return turnoFechaHora.isAfter(ahora) && turnoFechaHora.isBefore(enDosHoras);
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         for (TurnoEntidad turno : turnosProximos) {
             if (!turno.isCorreoEnviado()) { //yo solo quiero enviar mails que no se hayan enviado antes
@@ -110,7 +110,7 @@ public class EnviarCorreoService {
     }
 
     @Async
-    public void enviarCorreo(EmailRequest emailRequest) {
+    public void enviarCorreoConfirmacion(EmailRequest emailRequest) {
         SimpleMailMessage email = new SimpleMailMessage();
 
         // Origen y destino
@@ -264,8 +264,30 @@ public class EnviarCorreoService {
         } catch (MessagingException e) {
             System.out.println(e.getMessage());
         }
-
     }
+
+    public void enviarMailDeVerificacion(UsuarioEntidad usuario) throws MessagingException {
+
+        //TODO: actualizar con el logo de mi turno
+        String subject = "Verificación de Cuenta en Mi Turno";
+        String codigoDeVerificacion = "Tu codigo de verificación: " + usuario.getCredencial().getCodigo();
+
+        String htmlMessage = "<html>"
+                + "<body style=\"font-family: Arial, sans-serif;\">"
+                + "<div style=\"background-color: #f5f5f5; padding: 20px;\">"
+                + "<h2 style=\"color: #333;\">Bienvenido a <b style=\"font-size: 2rem\">Mi turno</b> "+ usuario.getNombre()+"!</h2>"
+                + "<p style=\"font-size: 16px;\">Por favor ingresa el codigo de verificacion que recibiste</p>"
+                + "<div style=\"background-color: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1);\">"
+                + "<p style=\"font-size: 18px; font-weight: bold; color: #007bff;\">" + codigoDeVerificacion + "</p>"
+                + "</div>"
+                + "</div>"
+                + "</body>"
+                + "</html>";
+
+        enviarCorreoDeVerificacion(usuario.getCredencial().getEmail(), subject, htmlMessage);
+    }
+
+
 }
 
 

@@ -35,11 +35,14 @@ public class CredencialEntidad {
     @Column(nullable = false)
     private Boolean estado;
 
-    @Column(name = "codigo_verificacion")
-    private String codigoVerificacion;
+    @Column(name = "codigo")
+    private String codigo;
 
-    @Column(name = "vencimiento_codigo_verifcacion")
-    private LocalDateTime vencimientoCodigoVerificacion;
+    @Column(name = "vencimiento_codigo")
+    private LocalDateTime vencimientoCodigo;
+
+    @Column(name="usuario_verificado")
+    private Boolean usuarioVerificado;
 
     public CredencialEntidad() {
 

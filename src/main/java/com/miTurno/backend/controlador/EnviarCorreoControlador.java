@@ -38,7 +38,7 @@ public class EnviarCorreoControlador {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<Boolean> enviarCorreo(@Valid @RequestBody EmailRequest emailRequest) {
 
-        emailService.enviarCorreo(emailRequest);
+        emailService.enviarCorreoConfirmacion(emailRequest);
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
 

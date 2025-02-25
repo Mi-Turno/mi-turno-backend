@@ -1,5 +1,6 @@
 package com.miTurno.backend.servicio;
 
+import com.miTurno.backend.data.domain.ProfesionalEntidad;
 import com.miTurno.backend.data.dtos.response.Profesional;
 import com.miTurno.backend.data.dtos.response.Servicio;
 import com.miTurno.backend.data.domain.NegocioEntidad;
@@ -7,6 +8,7 @@ import com.miTurno.backend.data.domain.ServicioEntidad;
 import com.miTurno.backend.data.mapper.ProfesionalMapper;
 import com.miTurno.backend.data.mapper.ServicioMapper;
 import com.miTurno.backend.data.repositorio.NegocioRepositorio;
+import com.miTurno.backend.data.repositorio.ProfesionalRepositorio;
 import com.miTurno.backend.data.repositorio.ServicioRepositorio;
 import com.miTurno.backend.data.dtos.request.ServicioRequest;
 import jakarta.persistence.EntityNotFoundException;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ServicioService {
@@ -22,13 +25,15 @@ public class ServicioService {
     private final ServicioMapper servicioMapper;
     private final NegocioRepositorio negocioRepositorio;
     private final ProfesionalMapper profesionalMapper;
+    private final ProfesionalRepositorio profesionalRepositorio;
 
     @Autowired
-    public ServicioService(ServicioRepositorio servicioRepositorio, ServicioMapper servicioMapper, NegocioRepositorio negocioRepositorio, ProfesionalMapper profesionalMapper) {
+    public ServicioService(ServicioRepositorio servicioRepositorio, ServicioMapper servicioMapper, NegocioRepositorio negocioRepositorio, ProfesionalMapper profesionalMapper, ProfesionalRepositorio profesionalRepositorio) {
         this.servicioRepositorio = servicioRepositorio;
         this.servicioMapper= servicioMapper;
         this.negocioRepositorio = negocioRepositorio;
         this.profesionalMapper = profesionalMapper;
+        this.profesionalRepositorio = profesionalRepositorio;
     }
 
 
@@ -47,9 +52,21 @@ public class ServicioService {
     //GET listado profesionales que dan el servicio x IdServicio
 
     public List<Profesional> obtenerListadoDeProfesionalesPorIdServicioYIdNegocio(Long idServicio,Long idNegocio){
-        ServicioEntidad servicioEntidad = servicioRepositorio.getServicioEntidadByNegocioEntidadIdAndId(idNegocio,idServicio);
-        return profesionalMapper.toModelList(servicioEntidad.getProfesionales());
+
+        List<ProfesionalEntidad> profesionalEntidadList = profesionalRepositorio.findAllByNegocioEntidadIdAndCredencial_Estado(idNegocio,true);
+
+
+        //recorro cada servicio de cada profesional de la lista, y si ofrece ese servicio lo guardo en la nueva lista
+        List<ProfesionalEntidad> listadoProfesionalesConServicioEspecifico = profesionalEntidadList.stream()
+                .filter(unProfesional -> unProfesional.getListaServiciosEntidad()
+                        .stream().anyMatch(unServicio -> unServicio.getId().equals(idServicio)))
+                .collect(Collectors.toList());
+
+
+        return profesionalMapper.toModelList(listadoProfesionalesConServicioEspecifico);
     }
+
+
     //POST
     public Servicio crearUnServicio(Long idNegocio,ServicioRequest nuevoServicio) throws EntityNotFoundException {
 

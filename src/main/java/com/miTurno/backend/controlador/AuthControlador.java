@@ -46,6 +46,21 @@ public class AuthControlador {
         return ResponseEntity.ok(jwtToken); // 200 OK con usuario y credenciales
     }
 
+
+
+
+    @PostMapping("/generar-token-olvidaste-contrasenia")
+    @Operation(summary = "Verifica si un usuario tiene el mail validado.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "400", description = "Parámetros inválidos"),
+            @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
+    })
+    public ResponseEntity<Map<String,String>> postGenerarTokenOlvidasteContrasenia(
+            @RequestParam String emailUsuario) throws MessagingException {
+
+        return ResponseEntity.ok(authService.generarTokenOlvidasteContrasenia(emailUsuario));
+    }
+
     @PostMapping("/verificar")
     @Operation(summary = "Validar codigo de verificacion enviado al email del usuario.")
     @ApiResponses(value = {

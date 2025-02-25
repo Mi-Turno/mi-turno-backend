@@ -19,6 +19,7 @@ public class Usuario {
     private Credencial credencial;
     private RolUsuarioEnum rolUsuario;
     private String fotoPerfil;
+
     //constructor
 
     public Usuario() {}

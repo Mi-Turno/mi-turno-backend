@@ -35,11 +35,12 @@ public class NegocioService {
     private final TurnoRepositorio turnoRepositorio;
     private final ClienteRepositorio clienteRepositorio;
     private final ClienteMapper clienteMapper;
+    private final EnviarCorreoService enviarCorreoService;
     private final MetodosDePagoRepositorio metodosDePagoRepositorio;
 
     //constructores
     @Autowired
-    public NegocioService(NegocioRepositorio negocioRepositorio, NegocioMapper negocioMapper, RolRepositorio rolRepositorio, PasswordEncoder passwordEncoder, AuthService authService, TurnoRepositorio turnoRepositorio, ClienteRepositorio clienteService, ClienteMapper clienteMapper, MetodosDePagoRepositorio metodosDePagoRepositorio) {
+    public NegocioService(NegocioRepositorio negocioRepositorio, EnviarCorreoService enviarCorreoService,NegocioMapper negocioMapper, RolRepositorio rolRepositorio, PasswordEncoder passwordEncoder, AuthService authService, TurnoRepositorio turnoRepositorio, ClienteRepositorio clienteService, ClienteMapper clienteMapper, MetodosDePagoRepositorio metodosDePagoRepositorio) {
         this.negocioRepositorio = negocioRepositorio;
         this.negocioMapper = negocioMapper;
         this.rolRepositorio = rolRepositorio;
@@ -48,6 +49,7 @@ public class NegocioService {
         this.turnoRepositorio = turnoRepositorio;
         this.clienteRepositorio = clienteService;
         this.clienteMapper = clienteMapper;
+        this.enviarCorreoService = enviarCorreoService;
         this.metodosDePagoRepositorio = metodosDePagoRepositorio;
     }
 
@@ -157,11 +159,11 @@ public class NegocioService {
         NegocioEntidad negocio= negocioMapper.toEntidad(negocioMapper.toModel(negocioRequest),rolEntidad);
 
         negocio.getCredencial().setEstado(true);
+        negocio.getCredencial().setUsuarioVerificado(false);
+        negocio.getCredencial().setCodigo(authService.generarCodigoDeVerificacion());
+        negocio.getCredencial().setVencimientoCodigo(LocalDateTime.now().plusMinutes(15));
 
-        negocio.getCredencial().setCodigoVerificacion(authService.generarCodigoDeVerificacion());
-        negocio.getCredencial().setVencimientoCodigoVerificacion(LocalDateTime.now().plusMinutes(15));
-
-        authService.enviarMailDeVerificacion(negocio);
+        enviarCorreoService.enviarMailDeVerificacion(negocio);
 
         return negocioMapper.toModel(negocioRepositorio.save(negocio));
     }

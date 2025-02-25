@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class VerificarUsuarioRequest {
     private String email;
-    private String codigoVerificacion;
+    private String codigo;
 
     public VerificarUsuarioRequest() {
     }

@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 
 @Service
 public class AuthService {
@@ -31,6 +32,34 @@ public class AuthService {
         this.usuarioRepositorio = usuarioRepositorio;
         this.authenticationManager = authenticationManager;
         this.enviarCorreoService = enviarCorreoService;
+    }
+
+    public HashMap<String, String> generarTokenOlvidasteContrasenia(String email) throws MessagingException {
+        boolean flag =false;
+
+        UsuarioEntidad usuarioEntidad= usuarioRepositorio.findByCredencialEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Email no fue encontrado en el sistema"));
+
+        if (!usuarioEntidad.getCredencial().getUsuarioVerificado()){
+            reenviarCodigoDeVerificacion(email);
+            throw new UsuarioNoVerificadoException("El correo del usuario no esta verificado, es necesaria la verificacion para reestablecer la contraseña.");
+        }
+
+        //generamos los codigos necesarios
+        usuarioEntidad.getCredencial().setCodigo(UUID.randomUUID().toString());
+        usuarioEntidad.getCredencial().setVencimientoCodigo(LocalDateTime.now().plusMinutes(20));
+        usuarioRepositorio.save(usuarioEntidad);
+
+        //enviamos el mail
+
+
+        //si salio bien
+        flag = true;
+        HashMap<String, String> response = new HashMap<>();
+        response.put("exito", String.valueOf(flag));
+
+        return response;
+
     }
 
     public UsuarioEntidad authenticate(UsuarioLoginRequest input) {
@@ -71,24 +100,24 @@ public class AuthService {
                 .orElseThrow(() -> new UsernameNotFoundException("Email no fue encontrado en el sistema."));
 
         //si el usuario ya se encuentra verificado
-        if (usuarioEntidad.getCredencial().getCodigoVerificacion() == null){
-            throw new CodigoVerificacionException("Usuario ya verificado");
+        if (usuarioEntidad.getCredencial().getUsuarioVerificado()){
+            throw new CodigoVerificacionException("Usuario ya esta verificado");
         }
 
         //si el codigo de verificacion esta vencido, la logica seria si HOY esta Antes del vtoCdigoVerif
-        if (usuarioEntidad.getCredencial().getVencimientoCodigoVerificacion().isBefore(LocalDateTime.now())) {
+        if (usuarioEntidad.getCredencial().getVencimientoCodigo().isBefore(LocalDateTime.now())) {
             throw new CodigoVerificacionException("Codigo de verificacion ha expirado.");
         }
 
         //si el codigo de verificacion no es igual al que tiene en la bd
-        if (!usuarioEntidad.getCredencial().getCodigoVerificacion().equals(input.getCodigoVerificacion())) {
+        if (!usuarioEntidad.getCredencial().getCodigo().equals(input.getCodigo())) {
             throw new CodigoVerificacionException("Codigo de verificacion invalido.");
         }
 
 
-        usuarioEntidad.getCredencial().setEstado(true);
-        usuarioEntidad.getCredencial().setCodigoVerificacion(null);
-        usuarioEntidad.getCredencial().setVencimientoCodigoVerificacion(null);
+        usuarioEntidad.getCredencial().setUsuarioVerificado(true);
+        usuarioEntidad.getCredencial().setCodigo(null);
+        usuarioEntidad.getCredencial().setVencimientoCodigo(null);
         usuarioRepositorio.save(usuarioEntidad);
         response.put("mensaje", "Usuario verificado con éxito.");
         return response;
@@ -98,42 +127,22 @@ public class AuthService {
         UsuarioEntidad usuarioEntidad= usuarioRepositorio.findByCredencialEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Email no fue encontrado en el sistema."));
 
-       if (usuarioEntidad.getCredencial().getCodigoVerificacion() == null) {
-            throw new CodigoVerificacionException("Cuenta ya esta verificada");
+       if (usuarioEntidad.getCredencial().getUsuarioVerificado()) {
+            throw new CodigoVerificacionException("Usuario ya esta verificado");
         }
 
-        usuarioEntidad.getCredencial().setCodigoVerificacion(generarCodigoDeVerificacion());
+        usuarioEntidad.getCredencial().setCodigo(generarCodigoDeVerificacion());
 
         //le damos mas tiempo, 20 mins
-        usuarioEntidad.getCredencial().setVencimientoCodigoVerificacion(LocalDateTime.now().plusMinutes(20));
+        usuarioEntidad.getCredencial().setVencimientoCodigo(LocalDateTime.now().plusMinutes(20));
 
-        enviarMailDeVerificacion(usuarioEntidad);
+        enviarCorreoService.enviarMailDeVerificacion(usuarioEntidad);
 
         usuarioRepositorio.save(usuarioEntidad);
 
         return "Codigo de verificación reenviado con éxito.";
     }
 
-    public void enviarMailDeVerificacion(UsuarioEntidad usuario) throws MessagingException {
-
-        //TODO: actualizar con el logo de mi turno
-        String subject = "Verificación de Cuenta en Mi Turno";
-        String codigoDeVerificacion = "Tu codigo de verificación: " + usuario.getCredencial().getCodigoVerificacion();
-
-        String htmlMessage = "<html>"
-                + "<body style=\"font-family: Arial, sans-serif;\">"
-                + "<div style=\"background-color: #f5f5f5; padding: 20px;\">"
-                + "<h2 style=\"color: #333;\">Bienvenido a <b style=\"font-size: 2rem\">Mi turno</b> "+ usuario.getNombre()+"!</h2>"
-                + "<p style=\"font-size: 16px;\">Por favor ingresa el codigo de verificacion que recibiste</p>"
-                + "<div style=\"background-color: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1);\">"
-                + "<p style=\"font-size: 18px; font-weight: bold; color: #007bff;\">" + codigoDeVerificacion + "</p>"
-                + "</div>"
-                + "</div>"
-                + "</body>"
-                + "</html>";
-
-        enviarCorreoService.enviarCorreoDeVerificacion(usuario.getCredencial().getEmail(), subject, htmlMessage);
-    }
 
 
     public String generarCodigoDeVerificacion() {
