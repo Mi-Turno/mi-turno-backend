@@ -21,8 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 @Component
 public class DbInicializador {
@@ -35,15 +33,12 @@ public class DbInicializador {
     private final UsuarioMapper usuarioMapper;
     private final EstadoTurnoRepositorio estadoTurnoRepositorio;
     private final PasswordEncoder passwordEncoder;
-    private final AuthService authService;
     private final NegocioMapper negocioMapper;
-    private final ProfesionalMapper profesionalMapper;
-    private final ServicioRepositorio servicioRepositorio;
-    private final ServicioMapper servicioMapper;
+
 
 
     @Autowired
-    public DbInicializador(RolRepositorio rolRepositorio, DiaRepositorio diaRepositorio, MetodosDePagoRepositorio metodosDePagoRepositorio, UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, EstadoTurnoRepositorio estadoTurnoRepositorio, PasswordEncoder passwordEncoder, AuthService authService, NegocioMapper negocioMapper, ProfesionalMapper profesionalMapper, ServicioRepositorio servicioRepositorio, ServicioMapper servicioMapper) {
+    public DbInicializador(RolRepositorio rolRepositorio, DiaRepositorio diaRepositorio, MetodosDePagoRepositorio metodosDePagoRepositorio, UsuarioRepositorio usuarioRepositorio, UsuarioMapper usuarioMapper, EstadoTurnoRepositorio estadoTurnoRepositorio, PasswordEncoder passwordEncoder  , NegocioMapper negocioMapper) {
         this.rolRepositorio = rolRepositorio;
         this.diaRepositorio = diaRepositorio;
         this.metodosDePagoRepositorio = metodosDePagoRepositorio;
@@ -51,11 +46,7 @@ public class DbInicializador {
         this.usuarioMapper = usuarioMapper;
         this.estadoTurnoRepositorio = estadoTurnoRepositorio;
         this.passwordEncoder = passwordEncoder;
-        this.authService = authService;
         this.negocioMapper = negocioMapper;
-        this.profesionalMapper = profesionalMapper;
-        this.servicioRepositorio = servicioRepositorio;
-        this.servicioMapper = servicioMapper;
     }
 
 
@@ -84,8 +75,9 @@ public class DbInicializador {
                    .password(passwordEncoder.encode("flf"))
                    .email("miturno.flf@gmail.com")
                    .telefono("11111111")
-                   .vencimientoCodigoVerificacion(null)
-                   .codigoVerificacion(null)
+                   .vencimientoCodigo(null)
+                   .codigo(null)
+                   .usuarioVerificado(true)
                    .build();
 
            Usuario admin = Usuario.builder()
@@ -115,8 +107,9 @@ public class DbInicializador {
                     .password(passwordEncoder.encode("123"))
                     .email("carlos@gmail.com")
                     .telefono("2222222")
-                    .vencimientoCodigoVerificacion(null)
-                    .codigoVerificacion(null)
+                    .vencimientoCodigo(null)
+                    .codigo(null)
+                    .usuarioVerificado(true)
                     .build();
 
             Negocio negocio = Negocio.builder()
@@ -133,8 +126,7 @@ public class DbInicializador {
                     .profesionales(null)
                     .servicios(null)
                     .build();
-
-            System.out.println(negocio);
+            
             RolEntidad rolEntidad= rolRepositorio.findByRol(RolUsuarioEnum.NEGOCIO);
             usuarioRepositorio.save(negocioMapper.toEntidad(negocio,rolEntidad));
         }else {

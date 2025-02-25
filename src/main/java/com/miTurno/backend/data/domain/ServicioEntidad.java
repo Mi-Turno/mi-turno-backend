@@ -18,6 +18,7 @@ import java.util.List;
 public class ServicioEntidad {
 
     @Id
+    @Column(name = "servicio_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -41,12 +42,12 @@ public class ServicioEntidad {
     private Boolean estado;
 
     // Relación con los profesionales que ofrecen este servicio
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<ProfesionalEntidad> profesionales;
+//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+//    private List<ProfesionalEntidad> profesionales;
 
     //relacion con el negocio
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id",nullable = false) // Clave foránea hacia Negocio
+    @JoinColumn(name = "negocio_id",nullable = false) // Clave foránea hacia Negocio
     private NegocioEntidad negocioEntidad;
 
     @OneToMany(mappedBy = "idServicio" ,fetch = FetchType.LAZY)

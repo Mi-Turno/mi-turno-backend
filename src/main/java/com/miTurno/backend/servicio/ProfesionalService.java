@@ -12,6 +12,7 @@ import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -24,10 +25,11 @@ public class ProfesionalService {
     private final CredencialesRepositorio credencialesRepositorio;
     private final ServicioRepositorio servicioRepositorio;
     private final TurnoMapper turnoMapper;
+    private final AuthService authService;
 
     public ProfesionalService(ProfesionalRepositorio profesionalRepositorio, RolRepositorio rolRepositorio,
                               NegocioRepositorio negocioRepositorio, ProfesionalMapper profesionalMapper, CredencialesRepositorio credencialesRepositorio,
-                              ServicioRepositorio servicioRepositorio, TurnoMapper turnoMapper) {
+                              ServicioRepositorio servicioRepositorio, TurnoMapper turnoMapper, AuthService authService) {
 
         this.profesionalRepositorio = profesionalRepositorio;
         this.rolRepositorio = rolRepositorio;
@@ -36,6 +38,7 @@ public class ProfesionalService {
         this.credencialesRepositorio = credencialesRepositorio;
         this.servicioRepositorio = servicioRepositorio;
         this.turnoMapper = turnoMapper;
+        this.authService = authService;
     }
 
 
@@ -68,8 +71,16 @@ public class ProfesionalService {
         // Crear el usuario
         ProfesionalEntidad profesionalEntidad = profesionalMapper.toEntidad(profesionalRequest,negocioEntidad,rolEntidad);
 
+        //setteamos las propiedades en la credencial
+        profesionalEntidad.getCredencial().setEstado(true);
+        profesionalEntidad.getCredencial().setUsuarioVerificado(false);
+        profesionalEntidad.getCredencial().setCodigo(authService.generarCodigoDeVerificacion());
+        profesionalEntidad.getCredencial().setVencimientoCodigo(LocalDateTime.now().plusMinutes(15));
+
         //agrego el profesional al listado del negocio
         negocioEntidad.getProfesionales().add(profesionalEntidad);
+
+        negocioRepositorio.save(negocioEntidad);
 
         return profesionalMapper.toModel(profesionalRepositorio.save(profesionalEntidad));
     }
@@ -108,7 +119,8 @@ public class ProfesionalService {
         }
 
 
-        ProfesionalEntidad profesionalEntidad= profesionalRepositorio.findByIdAndNegocioEntidadId(idProfesional,idNegocio);
+        ProfesionalEntidad profesionalEntidad= profesionalRepositorio.findByIdAndNegocioEntidadId(idProfesional,idNegocio)
+                .orElseThrow(()-> new EntityNotFoundException("Profesional con id: "+idProfesional+" no se encuentra en el negocio con id: "+ idNegocio));
 
         return turnoMapper.toModelList(profesionalEntidad.getTurnosAgendados());
     }
@@ -118,7 +130,8 @@ public class ProfesionalService {
     public Profesional actualizarProfesional(Long idNegocio, Long idProfesionalAActualizar, Profesional nuevoProfesional) {
 
 
-        ProfesionalEntidad profesionalEntidad = profesionalRepositorio.findByIdAndNegocioEntidadId(idProfesionalAActualizar, idNegocio);
+        ProfesionalEntidad profesionalEntidad = profesionalRepositorio.findByIdAndNegocioEntidadId(idProfesionalAActualizar, idNegocio)
+                .orElseThrow(()-> new EntityNotFoundException("Profesional con id: "+nuevoProfesional.getIdUsuario()+" no se encuentra en el negocio con id: "+ idNegocio));;
 
         CredencialEntidad credencialEntidad = profesionalEntidad.getCredencial();
         credencialEntidad.setEmail(nuevoProfesional.getCredencial().getEmail());
@@ -136,33 +149,34 @@ public class ProfesionalService {
 
         //Busco los recursos
         ProfesionalEntidad profesionalEntidad = profesionalRepositorio.findById(idProfesional)
-
                 .orElseThrow(() -> new EntityNotFoundException("Profesional con id: " + idProfesional + " no encontrado."));
 
         ServicioEntidad servicioEntidad = servicioRepositorio.findById(idServicio)
                 .orElseThrow(() -> new EntityNotFoundException("Servicio con id: " + idServicio + " no encontrado."));
 
+        profesionalEntidad.getListaServiciosEntidad().add(servicioEntidad);
+
         //Obtengo los servicios del profesional y los profesionales del servicio
         List<ServicioEntidad> listaServicios = profesionalEntidad.getListaServiciosEntidad();
-        List<ProfesionalEntidad> listaProfesionales = servicioEntidad.getProfesionales();
-
-        //los matcheo
-        if (!listaServicios.contains(servicioEntidad)) {
-            // Agrego el servicio al profesional
-            listaServicios.add(servicioEntidad);
-        } else {
-            // Elimino el servicio del profesional
-            listaServicios.remove(servicioEntidad);
-        }
-
-        if (!listaProfesionales.contains(profesionalEntidad)) {
-            listaProfesionales.add(profesionalEntidad); // Agrego el profesional al servicio
-        } else {
-            listaProfesionales.remove(profesionalEntidad);
-        }
+//        List<ProfesionalEntidad> listaProfesionales = servicioEntidad.getProfesionales();
+//
+//        //los matcheo
+//        if (!listaServicios.contains(servicioEntidad)) {
+//            // Agrego el servicio al profesional
+//            listaServicios.add(servicioEntidad);
+//        } else {
+//            // Elimino el servicio del profesional
+//            listaServicios.remove(servicioEntidad);
+//        }
+//
+//        if (!listaProfesionales.contains(profesionalEntidad)) {
+//            listaProfesionales.add(profesionalEntidad); // Agrego el profesional al servicio
+//        } else {
+//            listaProfesionales.remove(profesionalEntidad);
+//        }
 
         //los guardo
-        servicioRepositorio.save(servicioEntidad);
+//        profesionalRepositorio.save(profesionalEntidad);
         return profesionalMapper.toModel(profesionalRepositorio.save(profesionalEntidad));
     }
 

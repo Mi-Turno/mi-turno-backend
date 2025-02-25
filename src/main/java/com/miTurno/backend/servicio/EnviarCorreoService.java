@@ -1,10 +1,13 @@
 package com.miTurno.backend.servicio;
 
 import com.miTurno.backend.data.domain.TurnoEntidad;
+import com.miTurno.backend.data.domain.UsuarioEntidad;
 import com.miTurno.backend.data.dtos.request.EmailCancelacionRequest;
 import com.miTurno.backend.data.dtos.request.EmailContactoRequest;
 import com.miTurno.backend.data.dtos.request.EmailRequest;
 import com.miTurno.backend.data.repositorio.TurnoRepositorio;
+import com.miTurno.backend.excepciones.CodigoVerificacionException;
+import com.miTurno.backend.excepciones.UsuarioNoVerificadoException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +21,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class EnviarCorreoService {
@@ -49,7 +51,7 @@ public class EnviarCorreoService {
                             .atTime(turno.getHorarioProfesionalEntidad().getHoraInicio());  // Usamos la hora del turno
                     return turnoFechaHora.isAfter(ahora) && turnoFechaHora.isBefore(enDosHoras);
                 })
-                .collect(Collectors.toList());
+                .toList();
 
         for (TurnoEntidad turno : turnosProximos) {
             if (!turno.isCorreoEnviado()) { //yo solo quiero enviar mails que no se hayan enviado antes
@@ -110,7 +112,7 @@ public class EnviarCorreoService {
     }
 
     @Async
-    public void enviarCorreo(EmailRequest emailRequest) {
+    public void enviarCorreoConfirmacion(EmailRequest emailRequest) {
         SimpleMailMessage email = new SimpleMailMessage();
 
         // Origen y destino
@@ -264,8 +266,74 @@ public class EnviarCorreoService {
         } catch (MessagingException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void enviarMailDeVerificacion(UsuarioEntidad usuario) throws MessagingException {
+
+        //TODO: actualizar con el logo de mi turno
+        String subject = "📬 Verificación de Cuenta en Mi Turno";
+        String codigoDeVerificacion = "Tu codigo de verificación: " + usuario.getCredencial().getCodigo();
+
+        String htmlMessage = "<html>"
+                + "<body style=\"font-family: Arial, sans-serif;\">"
+                + "<div style=\"background-color: #f5f5f5; padding: 20px;\">"
+                + "<h2 style=\"color: #333;\">Bienvenido a <b style=\"font-size: 2rem\">Mi turno</b> "+ usuario.getNombre()+"!</h2>"
+                + "<p style=\"font-size: 16px;\">Por favor ingresa el codigo de verificacion que recibiste</p>"
+                + "<div style=\"background-color: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.1);\">"
+                + "<p style=\"font-size: 18px; font-weight: bold; color: #007bff;\">" + codigoDeVerificacion + "</p>"
+                + "</div>"
+                + "</div>"
+                + "</body>"
+                + "</html>";
+
+        enviarCorreoDeVerificacion(usuario.getCredencial().getEmail(), subject, htmlMessage);
+    }
+
+
+    public void enviarMailDeReestablecerContrasenia(UsuarioEntidad usuarioEntidad){
+
+        if (!usuarioEntidad.getCredencial().getUsuarioVerificado()){
+            throw new UsuarioNoVerificadoException();
+        }
+
+        String asunto = "🔑 Restablecimiento de Contraseña";
+        String urlRestablecimiento = String.format("http://localhost:4200/login/nueva-password?token=%s",usuarioEntidad.getCredencial().getCodigo());
+        String cuerpoHtml = "<!DOCTYPE html>" +
+                "<html lang='es'>" +
+                "<head><meta charset='UTF-8'></head>" +
+                "<body style='font-family: Arial, sans-serif; background-color: #e6e6fa; text-align: center; padding: 20px;'>" +
+                "<div style='max-width: 600px; margin: auto; background: linear-gradient(to right, #6a5acd, #483d8b); border-radius: 10px; padding: 20px; color: white;'>" +
+                "<h1>Restablecimiento de Contraseña</h1>" +
+                "<p>Hola, " + usuarioEntidad.getNombre() + ", hemos recibido una solicitud para restablecer tu contraseña.</p>" +
+                "<div style='background: white; padding: 20px; border-radius: 10px; color: black;'>" +
+                "<p>Para continuar con el proceso, haz clic en el siguiente botón:</p>" +
+                "<a href='" + urlRestablecimiento + "' style='display: inline-block; padding: 12px 20px; margin-top: 15px; font-size: 16px; color: white; background-color: #6a5acd; text-decoration: none; border-radius: 5px; font-weight: bold;'>Restablecer Contraseña</a>" +
+                "<p>Si no solicitaste este cambio, ignora este mensaje.</p>" +
+                "</div>" +
+                "<p style='margin-top: 20px; font-size: 12px; opacity: 0.8;'>Este enlace expirará en 24 horas. Si necesitas ayuda, contáctanos.</p>" +
+                "</div>" +
+                "</body>" +
+                "</html>";
+
+        try {
+            MimeMessage mensaje = enviadorMail.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mensaje, true);
+
+            helper.setTo(usuarioEntidad.getCredencial().getEmail());
+            helper.setFrom("miturno.flf@gmail.com");
+            helper.setSubject(asunto);
+            helper.setText(cuerpoHtml, true);
+
+            enviadorMail.send(helper.getMimeMessage());
+        }catch (MessagingException e) {
+            System.out.println(e.getMessage());
+        }
+
+
 
     }
+
+
 }
 
 
