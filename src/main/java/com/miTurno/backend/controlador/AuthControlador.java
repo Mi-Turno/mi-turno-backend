@@ -104,7 +104,7 @@ public class AuthControlador {
     }
 
     //get x mail
-    @GetMapping("/mail/{email}")
+    @GetMapping("/email/{email}")
     @Operation(summary = "Obtener un usuario por EMAIL")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "El usuario con el ID fue devuelto"),
