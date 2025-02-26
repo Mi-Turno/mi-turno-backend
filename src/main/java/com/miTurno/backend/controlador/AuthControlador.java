@@ -2,8 +2,10 @@ package com.miTurno.backend.controlador;
 
 import com.miTurno.backend.configuracion.security.JwtServiceImpl;
 import com.miTurno.backend.data.domain.UsuarioEntidad;
+import com.miTurno.backend.data.dtos.request.CambiarContrasenia;
 import com.miTurno.backend.data.dtos.request.UsuarioLoginRequest;
 import com.miTurno.backend.data.dtos.request.VerificarUsuarioRequest;
+import com.miTurno.backend.data.dtos.response.Usuario;
 import com.miTurno.backend.data.repositorio.UsuarioRepositorio;
 import com.miTurno.backend.servicio.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -86,6 +88,31 @@ public class AuthControlador {
 
         String mensaje= authService.reenviarCodigoDeVerificacion(request.getEmail());
         return ResponseEntity.ok(Map.of("mensaje", mensaje));
+    }
+
+
+    @PatchMapping("/cambiar-contrasenia")
+    @Operation(summary = "Cambiar la contraseña de un usuario.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "La contraseña fue cambiada con exito."),
+            @ApiResponse(responseCode = "400", description = "Parámetros inválidos"),
+            @ApiResponse(responseCode = "404", description = "No encontrado")
+    })
+    public ResponseEntity<Map<String,String>> cambiarContrasenia(
+            @RequestBody CambiarContrasenia request) {
+        return ResponseEntity.ok(authService.cambiarContrasenia(request.getToken(), request.getContrasenia()));
+    }
+
+    //get x mail
+    @GetMapping("/mail/{email}")
+    @Operation(summary = "Obtener un usuario por EMAIL")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "El usuario con el ID fue devuelto"),
+            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
+    })
+    public ResponseEntity<Usuario> obtenerUsuarioPorEmail(@PathVariable String email) {
+        Usuario usuario = authService.getUsuarioPorEmail(email);
+        return ResponseEntity.ok(usuario);
     }
 
 }
