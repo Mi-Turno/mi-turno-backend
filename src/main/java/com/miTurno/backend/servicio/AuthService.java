@@ -1,5 +1,6 @@
 package com.miTurno.backend.servicio;
 
+import com.miTurno.backend.data.domain.CredencialEntidad;
 import com.miTurno.backend.data.domain.UsuarioEntidad;
 import com.miTurno.backend.data.dtos.request.VerificarUsuarioRequest;
 
@@ -17,6 +18,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -33,6 +35,7 @@ public class AuthService {
     private final EnviarCorreoService enviarCorreoService;
     private final PasswordEncoder passwordEncoder;
     private final UsuarioMapper usuarioMapper;
+    private final CredencialesRepositorio credencialesRepositorio;
 
     @Autowired
     public AuthService(UsuarioRepositorio usuarioRepositorio, AuthenticationManager authenticationManager, UsuarioMapper usuarioMapper, PasswordEncoder passwordEncoder, CredencialesRepositorio credencialesRepositorio,EnviarCorreoService enviarCorreoService) {
