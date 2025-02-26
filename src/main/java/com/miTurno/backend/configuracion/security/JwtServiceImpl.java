@@ -1,6 +1,7 @@
 package com.miTurno.backend.configuracion.security;
 import com.miTurno.backend.data.domain.UsuarioEntidad;
 import com.miTurno.backend.data.repositorio.UsuarioRepositorio;
+import com.miTurno.backend.tipos.RolUsuarioEnum;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -25,6 +26,9 @@ public class JwtServiceImpl implements JwtService{
 
     @Value("${jwt.expiration}")
     private Long jwtExpiration;
+
+    @Value("${jwt.expirationNegocio}")
+    private Long jwtExpirationNegocio;
 
     public JwtServiceImpl(UsuarioRepositorio usuarioRepositorio) {
         this.usuarioRepositorio = usuarioRepositorio;
@@ -110,16 +114,33 @@ public class JwtServiceImpl implements JwtService{
     private String buildToken(
             Map<String, Object> extraClaims,
             UserDetails userDetails
-    ) {
+    )
+    {
+        long expirationTime = getExpirationTime(userDetails); // Usa el tiempo de expiración basado en el rol
+
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis())) //fecha inicio
-                .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration)) //fecha vto
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime)) //fecha vto
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)  //firma con la clave secreta
                 .compact();
     }
+    private long getExpirationTime(UserDetails userDetails) {
+        Optional<UsuarioEntidad> usuarioOpt = usuarioRepositorio.findByCredencialEmail(userDetails.getUsername());
+
+        if (usuarioOpt.isPresent()) {
+            UsuarioEntidad usuario = usuarioOpt.get();
+            if (usuario.getRolEntidad().getRol() == RolUsuarioEnum.CLIENTE) {
+                return jwtExpiration;
+            } else if (usuario.getRolEntidad().getRol() == RolUsuarioEnum.NEGOCIO) {
+                return jwtExpirationNegocio;
+            }
+        }
+        return jwtExpiration; //Si es otro rol uso el mismo que el cliente
+    }
+
 
 
 
