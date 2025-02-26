@@ -2,6 +2,11 @@ package com.miTurno.backend.servicio;
 
 import com.miTurno.backend.data.domain.UsuarioEntidad;
 import com.miTurno.backend.data.dtos.request.VerificarUsuarioRequest;
+
+import com.miTurno.backend.data.dtos.response.Usuario;
+import com.miTurno.backend.data.mapper.UsuarioMapper;
+import com.miTurno.backend.data.repositorio.CredencialesRepositorio;
+
 import com.miTurno.backend.data.repositorio.UsuarioRepositorio;
 import com.miTurno.backend.data.dtos.request.UsuarioLoginRequest;
 import com.miTurno.backend.excepciones.CodigoVerificacionException;
@@ -26,12 +31,17 @@ public class AuthService {
 
     private final AuthenticationManager authenticationManager;
     private final EnviarCorreoService enviarCorreoService;
+    private final PasswordEncoder passwordEncoder;
+    private final UsuarioMapper usuarioMapper;
 
     @Autowired
-    public AuthService(UsuarioRepositorio usuarioRepositorio, AuthenticationManager authenticationManager, EnviarCorreoService enviarCorreoService) {
+    public AuthService(UsuarioRepositorio usuarioRepositorio, AuthenticationManager authenticationManager, UsuarioMapper usuarioMapper, PasswordEncoder passwordEncoder, CredencialesRepositorio credencialesRepositorio,EnviarCorreoService enviarCorreoService) {
         this.usuarioRepositorio = usuarioRepositorio;
         this.authenticationManager = authenticationManager;
         this.enviarCorreoService = enviarCorreoService;
+        this.passwordEncoder = passwordEncoder;
+        this.credencialesRepositorio = credencialesRepositorio;
+        this.usuarioMapper = usuarioMapper;
     }
 
     public HashMap<String, String> generarTokenOlvidasteContrasenia(String email) throws MessagingException {
@@ -145,12 +155,45 @@ public class AuthService {
 
 
 
+    public Map<String, String> cambiarContrasenia( String token, String password) {
+
+        CredencialEntidad credencialEntidad = credencialesRepositorio.findCredencialEntidadByCodigo(token)
+                .orElseThrow(() -> new UsernameNotFoundException("Email no fue encontrado en el sistema."));
+
+        if (!credencialEntidad.getUsuarioVerificado()) {
+            throw new UsuarioNoVerificadoException("El correo del usuario no está verificado.");
+        }
+
+        if (credencialEntidad.getVencimientoCodigo().isBefore(LocalDateTime.now())) {
+            throw new CodigoVerificacionException("El código de verificación ha expirado.");
+        }
+
+        if (!credencialEntidad.getCodigo().equals(token)) {
+            throw new CodigoVerificacionException("El código de verificación es inválido.");
+        }
+
+        credencialEntidad.setPassword(passwordEncoder.encode(password));
+        credencialEntidad.setCodigo(null);
+        credencialEntidad.setVencimientoCodigo(null);
+
+
+        credencialesRepositorio.save(credencialEntidad);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("mensaje", "Contraseña cambiada con éxito.");
+        return response;
+    }
+
     public String generarCodigoDeVerificacion() {
         Random random = new Random();
         int code = random.nextInt(900000) + 100000;
         return String.valueOf(code);
     }
 
+    public Usuario getUsuarioPorEmail(String email){
+        return usuarioMapper.toModel( usuarioRepositorio.findByCredencialEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Email no fue encontrado en el sistema.")));
+    }
 
 
 }
