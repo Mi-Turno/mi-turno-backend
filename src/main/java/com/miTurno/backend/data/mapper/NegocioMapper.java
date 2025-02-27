@@ -88,7 +88,7 @@ public class NegocioMapper {
                .nombre(negocioEntidad.getNombre())
                .apellido(negocioEntidad.getApellido())
                .fechaNacimiento(negocioEntidad.getFechaNacimiento())
-
+               .fotoPerfil(negocioEntidad.getFotoPerfil())
                .rubro(negocioEntidad.getRubro())
                .calle(negocioEntidad.getCalle())
                .altura(negocioEntidad.getAltura())
