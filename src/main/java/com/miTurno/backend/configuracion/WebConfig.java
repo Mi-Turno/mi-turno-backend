@@ -8,11 +8,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-       /* registry.addMapping("/**")
+       registry.addMapping("/**")
                 .allowedOrigins("http://localhost:4200")  // Permite solicitudes solo desde este origen
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
                 .allowedHeaders("Content-Type", "Authorization") //* esto para permitir todos(es mala practica)
-                .allowCredentials(true);  // Permite el uso de credenciales como cookies*/
+                .allowCredentials(true);  // Permite el uso de credenciales como cookies
     }
 
 }

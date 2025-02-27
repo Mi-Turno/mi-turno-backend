@@ -18,7 +18,6 @@ import java.util.List;
 public class ServicioEntidad {
 
     @Id
-    @Column(name = "servicio_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
