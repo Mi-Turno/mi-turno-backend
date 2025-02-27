@@ -58,7 +58,7 @@ public class AuthControlador {
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
     public ResponseEntity<Map<String,String>> postGenerarTokenOlvidasteContrasenia(
-            @RequestParam String emailUsuario) throws MessagingException {
+            @RequestBody String emailUsuario) throws MessagingException {
 
         return ResponseEntity.ok(authService.generarTokenOlvidasteContrasenia(emailUsuario));
     }
@@ -101,18 +101,6 @@ public class AuthControlador {
     public ResponseEntity<Map<String,String>> cambiarContrasenia(
             @RequestBody CambiarContrasenia request) {
         return ResponseEntity.ok(authService.cambiarContrasenia(request.getToken(), request.getContrasenia()));
-    }
-
-    //get x mail
-    @GetMapping("/mail/{email}")
-    @Operation(summary = "Obtener un usuario por EMAIL")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",description = "El usuario con el ID fue devuelto"),
-            @ApiResponse(responseCode = "400",description = "Parametros invalidos")
-    })
-    public ResponseEntity<Usuario> obtenerUsuarioPorEmail(@PathVariable String email) {
-        Usuario usuario = authService.getUsuarioPorEmail(email);
-        return ResponseEntity.ok(usuario);
     }
 
 }
