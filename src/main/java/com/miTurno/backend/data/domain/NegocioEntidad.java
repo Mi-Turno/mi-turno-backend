@@ -38,7 +38,7 @@ public class NegocioEntidad extends UsuarioEntidad{
 
     //servicios que ofrece el negocio
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "servicio_id")
+    //@JoinColumn(name = "servicio_id")
     private List<ServicioEntidad> servicios;
 
     //listado de clientes
